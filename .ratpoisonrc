@@ -1,13 +1,16 @@
 startup_message off
+
+exec xsetroot -display :0.0 -cursor_name left_ptr -bg black
+exec xsetroot -display :0.1 -cursor_name left_ptr -bg black
+
 exec $HOME/ggw-pos-standalone/init_pos.sh
-exec xsetroot -display :0.0 -cursor_name left_ptr -gray
-exec xsetroot -display :0.1 -cursor_name left_ptr -gray
 exec nodewebkit $HOME/ggw-pos-standalone/pointofsale
+
 nextscreen
+
 exec $HOME/ggw-pos-standalone/init_cv.sh
 exec nodewebkit $HOME/ggw-pos-standalone/customerview
-#exec gnome-settings-daemon #power settings
-#exec python /opt/com.py #call program
+
 # unbind *all* keys
 unbind a
 unbind C-a
