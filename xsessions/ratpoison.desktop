@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Ratpoison
+Encoding=UTF-8
+Comment=Launch Ratpoison Window Manager
+Exec=ratpoison
+TryExec=ratpoison
+#Exec=/home/mainuser/ggw-pos-standalone/ratpoison.sh
+Type=Xsession
