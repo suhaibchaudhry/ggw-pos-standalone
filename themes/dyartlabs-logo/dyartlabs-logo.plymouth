@@ -1,8 +1,8 @@
 [Plymouth Theme]
-Name=Ubuntu Logo
+Name=Dyart Labs Logo
 Description=A theme that features a blank background with a logo.
 ModuleName=script
 
 [script]
-ImageDir=/lib/plymouth/themes/ubuntu-logo
-ScriptFile=/lib/plymouth/themes/ubuntu-logo/ubuntu-logo.script
+ImageDir=/lib/plymouth/themes/dyartlabs-logo
+ScriptFile=/lib/plymouth/themes/dyartlabs-logo/dyartlabs-logo.script
