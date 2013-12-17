@@ -1,5 +1,11 @@
 Dyart Labs POS distribution configuration.
 
+Packages:
+Xorg -> Display Server
+LightDM -> Display Manager
+Ratpoison -> Window Manager
+ifplugd -> Ethernet checker
+
 1) Move xsessions to /usr/share/xsessions to add session a xsession to ligthDM login list.
 
 2) Move ligthdm conf.
