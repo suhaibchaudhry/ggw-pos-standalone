@@ -1,6 +1,7 @@
 Dyart Labs POS distribution configuration.
 
-Packages:
+Rquired/Optional Packages:
+nodewebkit in global space
 Xorg -> Display Server
 LightDM -> Display Manager
 Ratpoison -> Window Manager
