@@ -10,3 +10,6 @@ Install Plymouth Theme:
 cp --recursive themes/dyartlabs-logo /lib/plymouth/themes
 sudo ln -sf /lib/plymouth/themes/dyartlabs-logo/dyartlabs-logo.plymouth /etc/alternatives/default.plymouth
 sudo ln -sf /lib/plymouth/themes/dyartlabs-logo/dyartlabs-logo.grub /etc/alternatives/default.plymouth.grub
+
+sudo update-initramfs -u
+sudo update-grub
