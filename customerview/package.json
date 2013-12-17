@@ -4,8 +4,8 @@
   "description": "General Goods Wholesale Customer View.",
   "main": "main.html",
   "window": {
-    "width": 1600,
-    "height": 900,
+    "width": 1280,
+    "height": 800,
     "title": "GGW Customer View",
     "toolbar": false,
     "kiosk": true

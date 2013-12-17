@@ -20,3 +20,8 @@ sudo ln -sf /lib/plymouth/themes/dyartlabs-logo/dyartlabs-logo.grub /etc/alterna
 
 sudo update-initramfs -u
 sudo update-grub
+
+
+Todo:
+
+Add screen count dependency to ratpoisonrc
