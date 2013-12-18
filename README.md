@@ -18,7 +18,7 @@ ifplugd -> Ethernet checker
 Install Plymouth Theme:
 -----------------------
 Replace text in text.playmouth
-Add "quiet splash" parameters to grub
+
 cp --recursive themes/dyartlabs-logo /lib/plymouth/themes
 sudo ln -sf /lib/plymouth/themes/dyartlabs-logo/dyartlabs-logo.plymouth /etc/alternatives/default.plymouth
 sudo ln -sf /lib/plymouth/themes/dyartlabs-logo/dyartlabs-logo.grub /etc/alternatives/default.plymouth.grub
