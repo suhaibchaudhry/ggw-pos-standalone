@@ -26,9 +26,10 @@ sudo ln -sf /lib/plymouth/themes/dyartlabs-logo/dyartlabs-logo.grub /etc/alterna
 sudo update-initramfs -u
 sudo update-grub
 
-Todo:
------
+Deployment Todo:
+----------------
 
 Add screen count dependency to ratpoisonrc
 Create Base Pos User
 Remove TTY1-6 and Disable keys CLTR+ALT+FN1-12 based on user
+Deploy nodewebkit project as an ecrypted .nw accessible via certificate signed by Dyart labs
