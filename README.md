@@ -30,3 +30,5 @@ Todo:
 -----
 
 Add screen count dependency to ratpoisonrc
+Create Base Pos User
+Remove TTY1-6 and Disable keys CLTR+ALT+FN1-12 based on user
