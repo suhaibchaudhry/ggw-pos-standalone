@@ -55,9 +55,9 @@ USB Pin Pad and Card Reader for Customer
 
 Thermal Reciept Printer / Regular Printer (GGW will use regular printer)
 
-Modem Register
+Modem Register (Identive SPR332)
 
-1 x Credit Card Swipers for Employee Screen
+1 x Credit Card Swipers for Employee Screen (Mini USB 3TK)
 
 USB Barcode Scanner
 
@@ -68,3 +68,5 @@ Future Hardware:
 Pin Pad Replacement with Cheap China Tablet / Signature input and PIN entry
 
 Table Attached Barcode Scanner
+
+Allow Physical Verifone Terminals to conntect via RS232 as Payment Methods
