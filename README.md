@@ -51,12 +51,20 @@ Harware:
 
 *Backpanel 7-bit BCD LCD for Customer Total
 
-Verifone Pin Pad Replacement with Cheap China Tablet for Signature input and PIN entry
+USB Pin Pad and Card Reader for Customer
 
 Thermal Reciept Printer / Regular Printer (GGW will use regular printer)
 
 Modem Register
 
-Credit Card Swipers
+1 x Credit Card Swipers for Employee Screen
 
-* = Implemented
+USB Barcode Scanner
+
+Internet Based Payment
+
+Future Hardware:
+----------------
+Pin Pad Replacement with Cheap China Tablet / Signature input and PIN entry
+
+Table Attached Barcode Scanner
