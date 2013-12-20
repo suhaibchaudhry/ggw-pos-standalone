@@ -51,10 +51,12 @@ Harware:
 
 *Backpanel 7-bit BCD LCD for Customer Total
 
-Verifone Pin Pad or Cheap China Tablet for signiture input and PIN entry
+Verifone Pin Pad Replacement with Cheap China Tablet for Signiture input and PIN entry
 
 Thermal Reciept Printer / Regular Printer (GGW will use regular printer)
 
 Modem Register
+
+Credit Card Swipers
 
 * = Implemented
