@@ -1,6 +1,6 @@
 startup_message off
 
-SCREEN_COUNT=$($HOME/ggw-pos-standalone/utils/x11_count_screens)
+SCREEN_COUNT=$($HOME/ggw-pos-standalone/utils/x11_count_displays)
 
 exec xsetroot -display :0.0 -cursor_name left_ptr -bg black
 
