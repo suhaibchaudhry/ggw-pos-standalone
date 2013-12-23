@@ -1,22 +1,29 @@
 startup_message off
 
+SCREEN_COUNT=$($HOME/ggw-pos-standalone/utils/x11_count_screens)
+
 exec xsetroot -display :0.0 -cursor_name left_ptr -bg black
-exec xsetroot -display :0.1 -cursor_name left_ptr -bg black
+
+if [ "$SCREEN_COUNT" == "2"]; then
+	exec xsetroot -display :0.1 -cursor_name left_ptr -bg black
+fi
 
 exec $HOME/ggw-pos-standalone/init_pos.sh
 exec nodewebkit $HOME/ggw-pos-standalone/pointofsale
 
-nextscreen
+if [ "$SCREEN_COUNT" == "2" ]; then
+	nextscreen
 
-exec $HOME/ggw-pos-standalone/init_cv.sh
-exec nodewebkit $HOME/ggw-pos-standalone/customerview
+	exec $HOME/ggw-pos-standalone/init_cv.sh
+	exec nodewebkit $HOME/ggw-pos-standalone/customerview
+fi
 
-# unbind *all* keys
+# unbind *all* keys - Disable c and N after before deploying
 unbind a
 unbind C-a
 unbind b
 unbind C-b
-unbind c
+#unbind c
 unbind C-c
 unbind d
 unbind C-d
@@ -90,7 +97,7 @@ unbind L
 unbind C-L
 unbind M
 unbind C-M
-unbind N
+#unbind N
 unbind C-N
 unbind O
 unbind C-O

@@ -18,13 +18,12 @@ int main(void) {
             Display *disp = XOpenDisplay(display_name);
             if (disp != NULL) {
                 int count = XScreenCount(disp);
-                printf("Display %s has %d screens\n",
-                    display_name, count);
+                printf("%d", count);
 
-                int i;
-                for (i=0; i<count; i++)
-                    printf(" %d: %dx%d\n",
-                        i, XDisplayWidth(disp, i), XDisplayHeight(disp, i));
+                //int i;
+                //for (i=0; i<count; i++)
+                //    printf(" %d: %dx%d\n",
+                //        i, XDisplayWidth(disp, i), XDisplayHeight(disp, i));
 
                 XCloseDisplay(disp);
             }

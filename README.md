@@ -3,6 +3,8 @@ Dyart Labs POS distribution configuration.
 
 Required/Optional Packages:
 ---------------------------
+xorg-dev and libX11-dev are required to compile utilities.
+
 node npm and nodewebkit in global space
 
 Xorg -> Display Server
