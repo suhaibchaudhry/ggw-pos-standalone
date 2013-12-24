@@ -57,7 +57,7 @@ USB Pin Pad and Card Reader for Customer
 
 Thermal Reciept Printer / Regular Printer (GGW will use regular printer)
 
-Modem Register (Identive SPR332)
+USB Register
 
 1 x Credit Card Swipers for Employee Screen (Mini USB 3TK)
 
