@@ -23,6 +23,9 @@ ifplugd -> Ethernet checker
 
 Install Plymouth Theme:
 -----------------------
+sudo apt-get install plymouth-theme-ubuntu-logo
+sudo apt-get install plymouth-theme-text
+
 Replace text in text.playmouth
 
 cp --recursive themes/dyartlabs-logo /lib/plymouth/themes
