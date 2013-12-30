@@ -75,3 +75,7 @@ Pin Pad Replacement with Cheap China Tablet / Signature input and PIN entry
 Table Attached Barcode Scanner
 
 Allow Physical Verifone Terminals to conntect via RS232 as Payment Methods
+
+VirtualBox Notes:
+-----------------
+Packages Reccomended: virtualbox-guest-x11
