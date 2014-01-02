@@ -36,7 +36,7 @@ unbind l
 unbind C-l
 unbind m
 unbind C-m
-unbind n
+#unbind n
 unbind C-n
 unbind o
 unbind C-o
@@ -88,7 +88,7 @@ unbind L
 unbind C-L
 unbind M
 unbind C-M
-#unbind N
+unbind N
 unbind C-N
 unbind O
 unbind C-O
