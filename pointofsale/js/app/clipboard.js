@@ -9,7 +9,7 @@ var contextMenu = Backbone.Model.extend({
     //  this.menu.append(this.copy);
     //  this.menu.append(this.paste);
     } else {
-    //  this.menu.append(this.copy);
+      this.menu.append(this.copy);
     }
   },
 
