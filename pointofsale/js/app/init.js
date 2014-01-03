@@ -6,3 +6,5 @@ $(document).ready(function() {
     	elements.height($(window).height()-$('.header').height()-$('.footer').height());
 	});
 });
+
+//App Models

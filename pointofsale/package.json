@@ -4,8 +4,8 @@
   "description": "General Goods Wholesale Point of Sale.",
   "main": "main.html",
   "window": {
-    "width": 1280,
-    "height": 800,
+    "width": 1000,
+    "height": 600,
     "title": "GGW POS",
     "toolbar": true,
     "kiosk": false
