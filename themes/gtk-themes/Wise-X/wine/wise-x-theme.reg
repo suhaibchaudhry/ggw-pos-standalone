@@ -1,0 +1,79 @@
+REGEDIT4
+
+; Set the colors to match the "Wise-X" gtk theme
+[HKEY_CURRENT_USER\Control Panel\Colors]
+"ActiveBorder"="214 214 214"
+"ActiveTitle"="102 126 77"
+"AppWorkSpace"="255 255 255"
+"Background"="0 0 0"
+"ButtonAlternateFace"="214 214 214"
+"ButtonDkShadow"="0 0 0"
+"ButtonFace"="214 214 214"
+"ButtonHilight"="255 255 255"
+"ButtonLight"="214 214 214"
+"ButtonShadow"="150 150 150"
+"ButtonText"="33 33 33"
+"GradientActiveTitle"="190 219 161"
+"GradientInactiveTitle"="255 255 255"
+"GrayText"="150 150 150"
+"Hilight"="172 205 138"
+"HilightText"="255 255 255"
+"HotTrackingColor"="255 255 255"
+"InactiveBorder"="214 214 214"
+"InactiveTitle"="150 150 150"
+"InactiveTitleText"="255 255 255"
+"InfoText"="0 0 0"
+"InfoWindow"="251 234 160"
+"Menu"="60 60 60"
+"MenuBar"="60 60 60"
+"MenuHilight"="146 183 108"
+"MenuText"="230 230 230"
+"Scrollbar"="214 214 214"
+"TitleText"="255 255 255"
+"Window"="255 255 255"
+"WindowFrame"="172 197 146"
+"WindowText"="26 26 26"
+
+; Set the font smoothing to "subpixel rendering"
+[HKEY_CURRENT_USER\Control Panel\Desktop]
+"FontSmoothing"="2"
+"FontSmoothingGamma"=dword:00000578
+"FontSmoothingOrientation"=dword:00000001
+"FontSmoothingType"=dword:00000002
+
+; Set the dpi to "96"
+[HKEY_CURRENT_CONFIG\Software\Fonts]
+"LogPixels"=dword:00000060
+
+; Set the fonts to "DejaVu Sans"
+[HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics]
+"CaptionFont"=hex:f3,ff,ff,ff,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,\
+  00,00,00,00,00,00,00,00,44,00,65,00,6a,00,61,00,56,00,75,00,20,00,53,00,61,\
+  00,6e,00,73,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+"IconFont"=hex:f3,ff,ff,ff,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,\
+  00,00,00,00,00,00,00,00,44,00,65,00,6a,00,61,00,56,00,75,00,20,00,53,00,61,\
+  00,6e,00,73,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+"MenuFont"=hex:f3,ff,ff,ff,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,\
+  00,00,00,00,00,00,00,00,44,00,65,00,6a,00,61,00,56,00,75,00,20,00,53,00,61,\
+  00,6e,00,73,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+"MessageFont"=hex:f3,ff,ff,ff,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,\
+  00,00,00,00,00,00,00,00,44,00,65,00,6a,00,61,00,56,00,75,00,20,00,53,00,61,\
+  00,6e,00,73,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+"SmCaptionFont"=hex:f3,ff,ff,ff,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,\
+  00,00,00,00,00,00,00,00,44,00,65,00,6a,00,61,00,56,00,75,00,20,00,53,00,61,\
+  00,6e,00,73,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+"StatusFont"=hex:f3,ff,ff,ff,00,00,00,00,00,00,00,00,00,00,00,00,90,01,00,00,\
+  00,00,00,00,00,00,00,00,44,00,65,00,6a,00,61,00,56,00,75,00,20,00,53,00,61,\
+  00,6e,00,73,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,\
+  00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00
+
+; Set the default legacy fonts to "DejaVu Sans"
+[HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\FontSubstitutes]
+"MS Shell Dlg"="DejaVu Sans"
+"MS Shell Dlg 2"="DejaVu Sans"
+

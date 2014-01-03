@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Wise-X
+Comment=A Linux Mint theme with the colors from Mint-X and the button styles from Shiki-Wise.
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=Wise-X
+GtkColorScheme=fg_color:#212121,bg_color:#d6d6d6,text_color:#1a1a1a,base_color:#ffffff,selected_fg_color:#ffffff,selected_bg_color:#accd8a,tooltip_fg_color:#000000,tooltip_bg_color:#fbeaa0
+MetacityTheme=Shiki-Colors-Metacity
+IconTheme=Mint-Box
+CursorTheme=DMZ (White)
+

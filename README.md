@@ -40,13 +40,32 @@ sudo update-grub
 
 Deployment Todo:
 ----------------
-Add screen count dependency to ratpoisonrc
+Test screen count dependency
 
 Create Base Pos User
 
 Remove TTY1-6 and Disable keys CLTR+ALT+FN1-12 based on user
 
 Deploy nodewebkit project as an ecrypted .nw accessible via certificate signed by Dyart labs
+
+VirtualBox Notes:
+-----------------
+Packages Reccomended: virtualbox-guest-x11
+
+X11 Icons and Cursors:
+----------------------
+Copy themes/icons to ~/.icons to do a user wide install
+Copy themes/icons to /usr/share/icons/ for a system wide instal
+
+Create a symbolic link named "default" pointed to the icon themes directory either in ~/,icons or /usr/share/icons
+
+GTK Theme:
+----------
+Copy themes/gtk-themes to ~/.themes to do a user wide install
+Copy themes/gtk-themes to /usr/share/themes for a system wide install
+
+Use gtk-chtheme package to change theme
+more details: http://fluxbox-wiki.org/index.php?title=Using_gtk_themes
 
 Harware:
 --------
@@ -75,14 +94,3 @@ Pin Pad Replacement with Cheap China Tablet / Signature input and PIN entry
 Table Attached Barcode Scanner
 
 Allow Physical Verifone Terminals to conntect via RS232 as Payment Methods
-
-VirtualBox Notes:
------------------
-Packages Reccomended: virtualbox-guest-x11
-
-X11 Icons and Cursors:
-----------------------
-Copy themes/icons to ~/.icons to do a user wide install
-Copy themes/icons to /usr/share/icons/ for a system wide instal
-
-Create a symbolic link named "default" pointed to the icon themes directory either in ~/,icons or /usr/share/icons
