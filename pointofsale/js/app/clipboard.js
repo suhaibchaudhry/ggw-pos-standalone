@@ -1,3 +1,4 @@
+/*
 var gui = require('nw.gui');
 
 var contextMenu = Backbone.Model.extend({
@@ -44,12 +45,12 @@ var contextMenu = Backbone.Model.extend({
 
 var EditableMenu = new contextMenu({editable: true}, {editable: true});
 var DOMMenu = new contextMenu({editable: false}, {editable: false});
-
+*/
 $(document).on("contextmenu", function(e) {
   e.preventDefault();
-  if($(e.toElement).is('input, textarea') || e.toElement.isContentEditable) {
-    EditableMenu.popup(e.clientX, e.clientY);
-  } else {
-    DOMMenu.popup(e.clientX, e.clientY);
-  }
+  //if($(e.toElement).is('input, textarea') || e.toElement.isContentEditable) {
+  //  EditableMenu.popup(e.clientX, e.clientY);
+  //} else {
+  //  DOMMenu.popup(e.clientX, e.clientY);
+  //}
 });
