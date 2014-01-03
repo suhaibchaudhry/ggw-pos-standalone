@@ -1,43 +1,55 @@
-$(function(
-  function Menu(cutLabel, copyLabel, pasteLabel) {
-    var gui = require('nw.gui')
-      , menu = new gui.Menu()
- 
-      , cut = new gui.MenuItem({
-        label: cutLabel || "Cut"
-        , click: function() {
-          document.execCommand("cut");
-          console.log('Menu:', 'cutted to clipboard');
-        }
-      })
- 
-      , copy = new gui.MenuItem({
-        label: copyLabel || "Copy"
-        , click: function() {
-          document.execCommand("copy");
-          console.log('Menu:', 'copied to clipboard');
-        }
-      })
- 
-      , paste = new gui.MenuItem({
-        label: pasteLabel || "Paste"
-        , click: function() {
-          document.execCommand("paste");
-          console.log('Menu:', 'pasted to textarea');
-        }
-      })
-    ;
- 
-    menu.append(cut);
-    menu.append(copy);
-    menu.append(paste);
- 
-    return menu;
+var gui = require('nw.gui');
+
+var contextMenu = Backbone.Model.extend({
+  editable: false,
+
+  initialize: function(attr, options) {
+    this.menu = new gui.Menu();
+
+    if(options.editable) {
+      this.menu.append(this.cut);
+      this.menu.append(this.copy);
+      this.menu.append(this.paste);
+    } else {
+      this.menu.append(this.copy);
+    }
+  },
+
+  popup: function(x, y) {
+    this.menu.popup(x, y);
+  },
+
+  cut: new gui.MenuItem({
+            label: "Cut",
+            click: function() {
+              document.execCommand("cut");
+            }
+  }),
+
+  copy: new gui.MenuItem({
+            label: "Copy",
+            click: function() {
+              document.execCommand("copy");
+            }
+  }),
+
+  paste: new gui.MenuItem({
+            label: "Paste",
+            click: function() {
+              document.execCommand("paste");
+            }
+  })
+
+});
+
+var EditableMenu = new contextMenu({editable: true}, {editable: true});
+var DOMMenu = new contextMenu({editable: false}, {editable: false});
+
+$(document).on("contextmenu", function(e) {
+  e.preventDefault();
+  if($(e.toElement).is('input, textarea') || e.toElement.isContentEditable) {
+    EditableMenu.popup(e.clientX, e.clientY);
+  } else {
+    DOMMenu.popup(e.clientX, e.clientY);
   }
- 
-  var menu = new Menu(/* pass cut, copy, paste labels if you need i18n*/);
-  $(document).on("contextmenu", function(e) {
-    e.preventDefault();
-    menu.popup(e.originalEvent.x, e.originalEvent.y);
-  });
-));
+});
