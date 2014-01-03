@@ -83,4 +83,6 @@ Packages Reccomended: virtualbox-guest-x11
 X11 Icons and Cursors:
 ----------------------
 Copy themes/icons to ~/.icons to do a user wide install
-Copy themes/icons to /usr/share/icons/ for a system wide install
+Copy themes/icons to /usr/share/icons/ for a system wide instal
+
+Create a symbolic link named "default" pointed to the icon themes directory either in ~/,icons or /usr/share/icons
