@@ -6,7 +6,7 @@ var contextMenu = Backbone.Model.extend({
 
     if(options.editable) {
       this.menu.append(this.cut);
-      this.menu.append(this.copyStatic); //Linux nodewebkit causes error possibly when two native context menus point to same method in javascript.
+      this.menu.append(this.copy); //Linux nodewebkit causes error when two native context menus point to same method in javascript.
       this.menu.append(this.paste);
     } else {
       this.menu.append(this.copy);
