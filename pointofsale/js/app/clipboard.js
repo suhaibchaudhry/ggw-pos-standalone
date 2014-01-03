@@ -6,8 +6,8 @@ var contextMenu = Backbone.Model.extend({
 
     if(options.editable) {
       this.menu.append(this.cut);
-      //Linux nodewebkit causes error when two native context menus point to same method in javascript.
-      this.menu.append(this.copyStatic);
+      //Linux nodewebkit causes error when two native context Menus point to same MenuItem object.
+      this.menu.append(this.copyClone);
       this.menu.append(this.paste);
     } else {
       this.menu.append(this.copy);
@@ -32,7 +32,7 @@ var contextMenu = Backbone.Model.extend({
             }
   }),
 
-  copyStatic: new gui.MenuItem({
+  copyClone: new gui.MenuItem({
             label: "Copy",
             click: function() {
               document.execCommand("copy");
@@ -56,7 +56,6 @@ $(document).on("contextmenu", function(e) {
   if($(e.toElement).is('input, textarea') || e.toElement.isContentEditable) {
     EditableMenu.popup(e.clientX, e.clientY);
   } else {
-    //EditableMenu.popup(e.clientX, e.clientY);
     DOMMenu.popup(e.clientX, e.clientY);
   }
 });
