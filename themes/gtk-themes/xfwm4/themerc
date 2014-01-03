@@ -1,0 +1,19 @@
+# Radiance-Xfwm4 theme by V3n3RiX
+# Based on radiance-xfce-lxde theme
+# Fully redrawn title borders and buttons
+# Use Radiance theme as GTK theme for best results
+
+button_offset=9
+button_spacing=0
+maximized_offset=9
+title_full_width=true
+title_horizontal_offset=8
+title_vertical_offset_active=0
+title_vertical_offset_inactive=0
+title_shadow_active=frame
+title_shadow_inactive=frame
+show_app_icon=false # Change to true or false if you want a app icon on each window. (Default is false)
+active_text_color=#4C4942
+active_text_shadow_color=#E5E2D8
+inactive_text_color=#a39e9a
+inactive_text_shadow_color=#E5E2D8
