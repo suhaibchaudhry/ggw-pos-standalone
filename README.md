@@ -79,3 +79,8 @@ Allow Physical Verifone Terminals to conntect via RS232 as Payment Methods
 VirtualBox Notes:
 -----------------
 Packages Reccomended: virtualbox-guest-x11
+
+X11 Icons and Cursors:
+----------------------
+Copy themes/icons to ~/.icons to do a user wide install
+Copy themes/icons to /usr/share/icons/ for a system wide install
