@@ -4,13 +4,13 @@ var contextMenu = Backbone.Model.extend({
   initialize: function(attr, options) {
     this.menu = new gui.Menu();
 
-    if(options.editable) {
-      this.menu.append(this.cut);
-      this.menu.append(this.copy);
-      this.menu.append(this.paste);
-    } else {
-      this.menu.append(this.copy);
-    }
+    //if(options.editable) {
+    //  this.menu.append(this.cut);
+    //  this.menu.append(this.copy);
+    //  this.menu.append(this.paste);
+    //} else {
+    //  this.menu.append(this.copy);
+    //}
   },
 
   popup: function(x, y) {
