@@ -5,9 +5,9 @@ var contextMenu = Backbone.Model.extend({
     this.menu = new gui.Menu();
 
     if(options.editable) {
-    //  this.menu.append(this.cut);
-    //  this.menu.append(this.copy);
-    //  this.menu.append(this.paste);
+      this.menu.append(this.cut);
+      this.menu.append(this.copyStatic); //Linux nodewebkit causes error possibly when two native context menus point to same method in javascript.
+      this.menu.append(this.paste);
     } else {
       this.menu.append(this.copy);
     }
@@ -25,6 +25,13 @@ var contextMenu = Backbone.Model.extend({
   }),
 
   copy: new gui.MenuItem({
+            label: "Copy",
+            click: function() {
+              document.execCommand("copy");
+            }
+  }),
+
+  copyStatic: new gui.MenuItem({
             label: "Copy",
             click: function() {
               document.execCommand("copy");
