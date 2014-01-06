@@ -48,6 +48,8 @@ Remove TTY1-6 and Disable keys CLTR+ALT+FN1-12 based on user
 
 Deploy nodewebkit project as an ecrypted .nw accessible via certificate signed by Dyart labs
 
+Nodewebkit Icons and branding: https://github.com/rogerwang/node-webkit/wiki/Icons
+
 VirtualBox Notes:
 -----------------
 Packages Reccomended: virtualbox-guest-x11
