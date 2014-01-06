@@ -95,3 +95,7 @@ Pin Pad Replacement with Cheap China Tablet / Signature input and PIN entry
 Table Attached Barcode Scanner
 
 Allow Physical Verifone Terminals to conntect via RS232 as Payment Methods
+
+Issues:
+-------
+Multiple successive refreshes crash 'nw' if native context menus are used. Refreshing will be disabled for this application, so refreshing issue isn't that big. Does happen on node <= v0.10.24 and nodewebkit <= 0.8.4
