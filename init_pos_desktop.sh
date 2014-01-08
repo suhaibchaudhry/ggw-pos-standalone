@@ -12,7 +12,7 @@ echo "{
     \"width\": 1000,
     \"height\": 600,
     \"title\": \"GGW POS\",
-    \"toolbar\": false,
+    \"toolbar\": true,
     \"kiosk\": false
   }
 }" > $HOME/ggw-pos-standalone/pointofsale/package.json
