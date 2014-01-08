@@ -1,10 +1,10 @@
 //App Models
 var employeeSession = Backbone.Model.extend({
-  initialize: function() {
+  initialSession: function() {
   	if(sessionStorage.token) {
-  		this.set({token: sessionStorage.token, status: true});
+  		this.set({token: sessionStorage.token, login: true});
   	} else {
-  		this.set({token: '', status: false, message: ''});
+  		this.set({token: '', login: false, message: ''});
   	}
   },
   login: function(uname, pass) {
@@ -16,15 +16,15 @@ var employeeSession = Backbone.Model.extend({
   		data: {request: requestedUser},
   		timeout: 15000,
   		success: function(res, status, xhr) {
-  			if(res.status == 'success') {
+  			if(res.login) {
   				sessionStorage.token = res.token;
-  				session.set({token: res.token, status: true});
+  				session.set({token: res.token, login: true});
   			} else {
-  				session.set({token: '', status: false, message: 'Provided employee login/password were invalid.'});
+  				session.set({token: '', login: false, message: 'Provided employee login/password were invalid.'});
   			}
   		},
   		error: function(xhr, errorType, error) {
-  			session.set({token: '', status: false, message: 'Error connecting to the network. Check connection and try again.'});
+  			session.set({token: '', login: false, message: 'Error connecting to the network. Check connection and try again.'});
   		}
   	});
   }
@@ -35,7 +35,9 @@ var employeeSession = Backbone.Model.extend({
 var applicationFrame = Backbone.View.extend({
 	tagName: 'div',
 	initialize: function() {
-		this.listenTo(this.model, 'change:[status]', this.render);
+    this.employeeSession = new employeeSession();
+		this.listenTo(this.employeeSession, 'change:token', this.render);
+    this.employeeSession.initialSession();
 	},
 	render: function(model, value, options) {
 		if(value) {
@@ -51,9 +53,7 @@ var applicationFrame = Backbone.View.extend({
 });
 
 var appBootstrap = function() {
-	var session = new employeeSession;
 	var app = new applicationFrame({
-		model: session,
 		el: $('div.app-wrap').get(0)
 	});
 }
