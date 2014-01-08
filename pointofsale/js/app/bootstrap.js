@@ -5,6 +5,4 @@ $(document).ready(function() {
 	$(window).resize(function() {
     	elements.height($(window).height()-$('.header').height()-$('.footer').height());
 	});
-
-	appBootstrap();
 });
