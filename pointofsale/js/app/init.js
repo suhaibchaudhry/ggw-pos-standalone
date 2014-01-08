@@ -33,28 +33,34 @@ jQuery(function($) {
   	apiServer: 'http://www.general-goods.com'
   });
 
-  var Modal = Backbone.Modal.extend({
-    template: _.template($('#modal-template').html()),
-    cancelEl: '.bbm-button'
+  var loginModal = Backbone.Modal.extend({
+    template: _.template($('#login-modal').html()),
+    initialize: function(attributes, options) {
+      this.employeeSession = options['employeeSession'];
+      this.listenTo(this.employeeSession, 'change:login', this.display);
+    },
+    beforeCancel: function() {
+      return false;
+    },
+    display: function(session, login, options) {
+      if(login) {
+        $('.modalOverlay').hide();
+      } else {
+        $('.modalOverlay').show().html(this.render().el);
+      }
+    }
   });
 
   var applicationFrame = Backbone.View.extend({
   	tagName: 'div',
   	initialize: function() {
       this.employeeSession = new employeeSession();
-  		this.listenTo(this.employeeSession, 'change:token', this.render);
+  		this.loginModal = new loginModal({}, {employeeSession: this.employeeSession});
+
+      this.listenTo(this.employeeSession, 'change:login', this.render);
       this.employeeSession.initialSession();
   	},
-  	render: function(model, value, options) {
-  		if(value) {
-  			console.log('login true');
-  			//alert('login true');
-  		} else {
-        var modalView = new Modal();
-        $('.app').html(modalView.render().el);
-        //this.employeeLoginDialog.render().showModal();	
-  		}
-
+  	render: function(session, login, options) {
   		return this;
   	}
   });
