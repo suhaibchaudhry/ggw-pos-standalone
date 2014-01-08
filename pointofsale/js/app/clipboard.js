@@ -1,3 +1,4 @@
+/*
 var gui = require('nw.gui');
 
 var contextMenu = Backbone.Model.extend({
@@ -59,3 +60,4 @@ $(document).on("contextmenu", function(e) {
     DOMMenu.popup(e.clientX, e.clientY);
   }
 });
+*/
