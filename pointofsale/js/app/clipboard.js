@@ -1,4 +1,8 @@
 var gui = require('nw.gui');
+var debug = true;
+if(debug) {
+  require('nw.gui').Window.get().showDevTools("", false);
+}
 
 var contextMenu = Backbone.Model.extend({
   initialize: function(attr, options) {
