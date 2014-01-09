@@ -12,6 +12,9 @@ jQuery(function($) {
     	}
     },
     login: function(uname, pass) {
+      //Set session to initial state to get change events on attributes.
+      this.set({message: ''});
+
     	var requestedUser = JSON.stringify({uname: uname, pass: pass});
     	var session = this;
 
@@ -21,7 +24,6 @@ jQuery(function($) {
     		data: {request: requestedUser},
     		timeout: 15000,
     		success: function(res, status, xhr) {
-          console.log(res);
     			if(res.login) {
     				sessionStorage.token = res.token;
     				session.set({token: res.token, login: true});
@@ -45,8 +47,10 @@ jQuery(function($) {
     loginSubmit: function(e) {
       e.preventDefault();
       e.stopPropagation();
-
-      this.employeeSession.login('asad', 'xyz786');
+      var uname = this.$('input#login-uname').val();
+      var pass = this.$('input#login-password').val();
+      
+      this.employeeSession.login(uname, pass);
     },
     template: _.template($('#login-modal').html()),
     render: function() {
@@ -61,6 +65,7 @@ jQuery(function($) {
     initialize: function(attributes, options) {
       this.employeeSession = options['employeeSession'];
       this.listenTo(this.employeeSession, 'change:login', this.display);
+      this.listenTo(this.employeeSession, 'change:message', this.messagePrompt);
       this.loginView = new loginView({el: $('.modalOverlay').get(0)});
       this.loginView.employeeSession = this.employeeSession;
     },
@@ -72,6 +77,11 @@ jQuery(function($) {
         $('.modalOverlay').fadeOut();
       } else {
         $('.modalOverlay').show().html(this.render().el);
+      }
+    },
+    messagePrompt: function(session, message, options) {
+      if(message) {
+        alert(message);
       }
     }
   });
