@@ -76,6 +76,9 @@ div.modalOverlay {
 	display: none;
 	z-index: 100;
 }
+.bbm-wrapper {
+    overflow: auto;
+}
 
 .login-form input[type="text"], .login-form input[type="password"] {
 	width: 100%;
