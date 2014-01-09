@@ -1,7 +1,10 @@
 jQuery(function($) {
   //App Models
   var employeeSession = Backbone.Model.extend({
-    initialSession: function() {
+    initialize: function(attributes, options) {
+      this.apiServer = options['apiServer'];
+    },
+    initialSession: function(attributes, options) {
     	if(sessionStorage.token) {
     		this.set({token: sessionStorage.token, login: true});
     	} else {
@@ -11,12 +14,14 @@ jQuery(function($) {
     login: function(uname, pass) {
     	var requestedUser = JSON.stringify({uname: uname, pass: pass});
     	var session = this;
+
     	$.ajax({
     		type: 'POST',
     		url: session.apiServer+'/pos-api/auth',
     		data: {request: requestedUser},
     		timeout: 15000,
     		success: function(res, status, xhr) {
+          console.log(res);
     			if(res.login) {
     				sessionStorage.token = res.token;
     				session.set({token: res.token, login: true});
@@ -29,15 +34,35 @@ jQuery(function($) {
     		}
     	});
     }
-  }, {
-  	apiServer: 'http://www.general-goods.com'
+  });
+
+  var loginView = Backbone.View.extend({
+    tagName: 'div',
+    className: 'modalOverlay',
+    events: {
+      "submit form": "loginSubmit"
+    },
+    loginSubmit: function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      this.employeeSession.login('asad', 'xyz786');
+    },
+    template: _.template($('#login-modal').html()),
+    render: function() {
+      return this;
+    }
   });
 
   var loginModal = Backbone.Modal.extend({
-    template: _.template($('#login-modal').html()),
+    template: function() {
+      return this.loginView.template();
+    },
     initialize: function(attributes, options) {
       this.employeeSession = options['employeeSession'];
       this.listenTo(this.employeeSession, 'change:login', this.display);
+      this.loginView = new loginView({el: $('.modalOverlay').get(0)});
+      this.loginView.employeeSession = this.employeeSession;
     },
     beforeCancel: function() {
       return false;
@@ -54,7 +79,7 @@ jQuery(function($) {
   var applicationFrame = Backbone.View.extend({
   	tagName: 'div',
   	initialize: function() {
-      this.employeeSession = new employeeSession();
+      this.employeeSession = new employeeSession({}, {apiServer: 'http://www.general-goods.com'});
   		this.loginModal = new loginModal({}, {employeeSession: this.employeeSession});
 
       this.listenTo(this.employeeSession, 'change:login', this.render);
