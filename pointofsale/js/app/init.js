@@ -69,7 +69,7 @@ jQuery(function($) {
     },
     display: function(session, login, options) {
       if(login) {
-        $('.modalOverlay').hide();
+        $('.modalOverlay').fadeOut();
       } else {
         $('.modalOverlay').show().html(this.render().el);
       }
