@@ -3,7 +3,7 @@ startup_message off
 exec xsetroot -display :0.0 -cursor_name left_ptr -bg black
 
 exec $HOME/ggw-pos-standalone/init_pos.sh
-exec nodewebkit $HOME/ggw-pos-standalone/pointofsale
+exec nodewebkit --remote-debugging-port=9222 $HOME/ggw-pos-standalone/pointofsale
 
 nextscreen
 
