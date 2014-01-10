@@ -7,7 +7,7 @@
     "width": 1000,
     "height": 600,
     "title": "GGW POS",
-    "toolbar": false,
-    "kiosk": true
+    "toolbar": true,
+    "kiosk": false
   }
 }
