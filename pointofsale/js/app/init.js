@@ -12,12 +12,14 @@ jQuery(function($) {
     	}
     },
     login: function(uname, pass) {
+      var model = this;
       //Set session to initial state to get change events on attributes.
       this.set({message: ''});
 
     	var requestedUser = JSON.stringify({uname: uname, pass: pass});
     	var session = this;
 
+      this.trigger('session:login-preloader', true);
     	$.ajax({
     		type: 'POST',
     		url: session.apiServer+'/pos-api/auth',
@@ -30,6 +32,8 @@ jQuery(function($) {
     			} else {
     				session.set({token: '', login: false, message: 'Provided employee login/password were invalid.'});
     			}
+
+          model.trigger('session:login-preloader', false);
     		},
     		error: function(xhr, errorType, error) {
     			session.set({token: '', login: false, message: 'Error connecting to the network. Check connection and try again.'});
@@ -55,6 +59,13 @@ jQuery(function($) {
     template: _.template($('#login-modal').html()),
     render: function() {
       return this;
+    },
+    loginPreloader: function(displayLoader) {
+      if(displayLoader) {
+        this.$(".preloader").show();
+      } else {
+        this.$(".preloader").hide();
+      }
     }
   });
 
@@ -68,6 +79,7 @@ jQuery(function($) {
       this.listenTo(this.employeeSession, 'change:message', this.messagePrompt);
       this.loginView = new loginView({el: $('.modalOverlay').get(0)});
       this.loginView.employeeSession = this.employeeSession;
+      this.listenTo(this.employeeSession, 'session:login-preloader', this.loginView.loginPreloader);
     },
     beforeCancel: function() {
       return false;
@@ -93,6 +105,7 @@ jQuery(function($) {
   		this.loginModal = new loginModal({}, {employeeSession: this.employeeSession});
 
       this.listenTo(this.employeeSession, 'change:login', this.render);
+
       this.employeeSession.initialSession();
   	},
   	render: function(session, login, options) {
