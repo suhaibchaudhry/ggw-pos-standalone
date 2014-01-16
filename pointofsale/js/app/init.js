@@ -107,10 +107,19 @@ jQuery(function($) {
       this.listenTo(this.employeeSession, 'change:login', this.render);
 
       this.employeeSession.initialSession();
+      this.heightAdjust();
+
+      $(window).on('resize', _.bind(this.heightAdjust, this));
   	},
   	render: function(session, login, options) {
   		return this;
-  	}
+  	},
+    heightAdjust: function() {
+      this.$('.viewport-main, .right, .left').
+        height(
+          $(window).height() - this.$('.header').height() - this.$('.footer').height()
+        );
+    }
   });
 
   var appBootstrap = function() {
