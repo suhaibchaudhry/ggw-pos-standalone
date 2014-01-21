@@ -83,3 +83,18 @@ div.modalOverlay {
 .login-form input[type="text"], .login-form input[type="password"] {
 	width: 100%;
 }
+/*Preloaders*/
+.preloader {
+    width: 30px;
+    height: 30px;
+    background: url(../images/preloader.gif);
+}
+.login-modal-bottombar {
+    position: relative;
+}
+.login-modal-bottombar .preloader {
+    position: absolute;
+    right: 100px;
+    bottom: 23px;
+    display: none;
+}

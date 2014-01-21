@@ -14,7 +14,7 @@ unbind a
 unbind C-a
 unbind b
 unbind C-b
-#unbind c
+unbind c
 unbind C-c
 unbind d
 unbind C-d
@@ -36,7 +36,7 @@ unbind l
 unbind C-l
 unbind m
 unbind C-m
-#unbind n
+unbind n
 unbind C-n
 unbind o
 unbind C-o
