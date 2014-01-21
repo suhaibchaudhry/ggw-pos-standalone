@@ -112,6 +112,11 @@ jQuery(function($) {
       $(window).on('resize', _.bind(this.heightAdjust, this));
   	},
   	render: function(session, login, options) {
+      if(login) {
+        console.log('Login: Draw UI');
+      } else {
+        console.log('Login: Draw UI');
+      }
   		return this;
   	},
     heightAdjust: function() {
