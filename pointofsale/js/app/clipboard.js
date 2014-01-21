@@ -1,3 +1,4 @@
+//Context menu enabled on linux machines only
 var gui = require('nw.gui');
 
 var contextMenu = Backbone.Model.extend({
