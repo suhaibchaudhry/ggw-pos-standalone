@@ -25,6 +25,7 @@
 }
 
 /*Application Level Styling*/
+
 body {
 	padding: 0;
 	margin: 0;
@@ -41,6 +42,10 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
+}
+
+.header .viewport-main {
+    margin: 0 270px 0 330px;
 }
 
 div.header.region {
@@ -62,6 +67,11 @@ div.left.region {
     top: 0;    
 }
 
+div.left.region.logo {
+    width: 330px;
+    background: url(../images/ggw_logo.png) no-repeat center center;
+}
+
 div.right.region {
     width: 200px;
 
@@ -69,6 +79,10 @@ div.right.region {
     right: 0;
     bottom: 0;
     top: 0;
+}
+
+div.header div.right.region {
+    width: 270px;
 }
 
 div.footer.region {
@@ -108,6 +122,12 @@ div.modalOverlay {
     display: none;
 }
 
+.clock {
+    zoom: .5;
+    margin: 0;
+}
+
+/* Misc */
 .gradient {
     margin: 0;
     box-shadow: 0 0 4px #000;

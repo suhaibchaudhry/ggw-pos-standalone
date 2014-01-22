@@ -98,9 +98,25 @@ jQuery(function($) {
     }
   });
 
+  var employeeOperationsView = Backbone.View.extend({
+    tagName: 'div',
+    render: function() {
+      this.$('.clock').FlipClock({
+        clockFace: 'TwelveHourClock'
+      });
+      return this;
+    },
+    demolish: function() {
+      return this;
+    }
+  });
+
   var applicationFrame = Backbone.View.extend({
   	tagName: 'div',
   	initialize: function() {
+      //Regional Views
+      this.employeeOperationsRegion = new employeeOperationsView({el: this.$('.employeeOperations').get(0)});
+
       this.employeeSession = new employeeSession({}, {apiServer: 'http://www.general-goods.com'});
   		this.loginModal = new loginModal({}, {employeeSession: this.employeeSession});
 
@@ -113,7 +129,7 @@ jQuery(function($) {
   	},
   	render: function(session, login, options) {
       if(login) {
-        console.log('Login: Draw UI');
+        this.employeeOperationsRegion.render();
       } else {
         console.log('Login: Draw UI');
       }
