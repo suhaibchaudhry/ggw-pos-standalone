@@ -64,6 +64,11 @@ jQuery(function($) {
     }
   });
 
+  var activeTicket = Backbone.Model.extend({
+    
+  });
+
+  //Application Views
   var loginView = Backbone.View.extend({
     tagName: 'div',
     className: 'modalOverlay',
