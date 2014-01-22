@@ -5,10 +5,27 @@ jQuery(function($) {
       this.apiServer = options['apiServer'];
     },
     initialSession: function(attributes, options) {
+      //Get latest clock flag on start
     	if(sessionStorage.token) {
-    		this.set({token: sessionStorage.token, login: true});
+        var session = this;
+    		session.set({token: sessionStorage.token, login: true, clock: false, lunch: false});
+        
+        var clockStateReq = JSON.stringify({token: sessionStorage.token});
+        $.ajax({
+          type: 'POST',
+          url: session.apiServer+'/pos-api/clockState',
+          data: {request: clockStateReq},
+          timeout: 15000,
+          success: function(res, status, xhr) {
+            session.set({clock: res.clock, lunch: res.lunch});
+          },
+          error: function(xhr, errorType, error) {
+            session.set({clock: false, lunch: false});
+          }
+        });
+
     	} else {
-    		this.set({token: '', login: false, message: ''});
+    		this.set({token: '', login: false, message: '', clock: false, lunch: false});
     	}
     },
     login: function(uname, pass) {
@@ -28,7 +45,7 @@ jQuery(function($) {
     		success: function(res, status, xhr) {
     			if(res.login) {
     				sessionStorage.token = res.token;
-    				session.set({token: res.token, login: true});
+    				session.set({token: res.token, login: true, clock: res.clock, lunch: res.lunch});
     			} else {
     				session.set({token: '', login: false, message: 'Provided employee login/password were invalid.'});
     			}
@@ -42,7 +59,8 @@ jQuery(function($) {
     },
     logout: function() {
       sessionStorage.token = '';
-      this.set({token: '', login: false, message: ''});
+      //Reset Clock state on logout
+      this.set({token: '', login: false, message: '', clock: false, lunch: false});
     }
   });
 
@@ -106,10 +124,101 @@ jQuery(function($) {
     tagName: 'div',
 
     events: {
-      "click a.logout": "logout"
+      "click a.logout": "logout",
+      "click a.clock-in": "clockRecord",
+      "click a.lunch-in": "lunchRecord"
     },
 
     template: _.template($('#employee-operations-buttons').html()),
+
+    initialize: function(attributes, options) {
+      this.employeeSession = options['employeeSession'];
+      this.listenTo(this.employeeSession, 'change:clock', this.clockStateChange);
+      this.listenTo(this.employeeSession, 'change:lunch', this.lunchStateChange);
+    },
+
+    clockRecord: function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      var lunch_in = this.employeeSession.get("lunch");
+      if(lunch_in) {
+        this.lunchRecord(e);
+      }
+
+      var token = this.employeeSession.get("token");
+      var clockEvent = JSON.stringify({
+        token: token,
+        event_type: 'clock'
+      });
+
+      var session = this.employeeSession;
+
+      $.ajax({
+        type: 'POST',
+        url: this.employeeSession.apiServer+'/pos-api/clock',
+        data: {request: clockEvent},
+        timeout: 15000,
+        success: function(res, status, xhr) {
+          session.set({clock: res.checkin});
+        },
+        error: function(xhr, errorType, error) {
+          session.set({clock: false});
+        }
+      });
+    },
+
+    lunchRecord: function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      var clocked_in = this.employeeSession.get("clock");
+
+      if(clocked_in) {
+        var token = this.employeeSession.get("token");
+        var clockEvent = JSON.stringify({
+          token: token,
+          event_type: 'lunch'
+        });
+
+        var session = this.employeeSession;
+
+        $.ajax({
+          type: 'POST',
+          url: this.employeeSession.apiServer+'/pos-api/clock',
+          data: {request: clockEvent},
+          timeout: 15000,
+          success: function(res, status, xhr) {
+            session.set({lunch: res.checkin});
+          },
+          error: function(xhr, errorType, error) {
+            session.set({lunch: false});
+          }
+        });
+      } else {
+        alert("You must be clocked in before starting lunch.");
+      }
+    },
+
+    clockStateChange: function(session, clock, options) {
+      if(clock) {
+        //User is clocked in display clockout button
+        this.$('a.clock-in').text('Clock Out').removeClass('pure-button-success').addClass('pure-button-error');
+      } else {
+        //User is clocked out display clockout button
+        this.$('a.clock-in').text('Clock In').removeClass('pure-button-error').addClass('pure-button-success');
+      }
+    },
+
+    lunchStateChange: function(session, lunch, options) {
+      if(lunch) {
+        //User is clocked in display clockout button
+        this.$('a.lunch-in').text('Lunch Out').removeClass('pure-button-success').addClass('pure-button-error');
+      } else {
+        //User is clocked out display clockout button
+        this.$('a.lunch-in').text('Lunch In').removeClass('pure-button-error').addClass('pure-button-success');
+      }
+    },    
 
     render: function() {
       this.clock = $('<div class="clock"></div>');
@@ -123,7 +232,9 @@ jQuery(function($) {
     },
 
     demolish: function() {
-      this.clock.remove();
+      if(this.clock) {
+        this.clock.remove();
+      }
       this.$('.controls').empty();
       return this;
     },
@@ -139,15 +250,19 @@ jQuery(function($) {
   var applicationFrame = Backbone.View.extend({
   	tagName: 'div',
   	initialize: function() {
+      //Employee Session Model
       this.employeeSession = new employeeSession({}, {apiServer: 'http://www.general-goods.com'});
-  		this.loginModal = new loginModal({}, {employeeSession: this.employeeSession});
+ 
+  		//Regional Views
+      this.employeeOperationsRegion = new employeeOperationsView({el: this.$('.employeeOperations').get(0)}, {employeeSession: this.employeeSession});
 
-            //Regional Views
-      this.employeeOperationsRegion = new employeeOperationsView({el: this.$('.employeeOperations').get(0)});
-      this.employeeOperationsRegion.employeeSession = this.employeeSession;
+      //Modal View
+      this.loginModal = new loginModal({}, {employeeSession: this.employeeSession});
 
+      //Bind Events
       this.listenTo(this.employeeSession, 'change:login', this.render);
 
+      //Bootstrap Application
       this.employeeSession.initialSession();
       this.heightAdjust();
 

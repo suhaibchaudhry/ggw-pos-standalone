@@ -45,7 +45,7 @@ body {
 }
 
 .header .viewport-main {
-    margin: 0 270px 0 330px;
+    margin: 0 300px 0 330px;
 }
 
 div.header.region {
@@ -82,7 +82,7 @@ div.right.region {
 }
 
 div.header div.right.region {
-    width: 270px;
+    width: 300px;
 }
 
 div.footer.region {
@@ -145,10 +145,10 @@ div.modalOverlay {
 .employeeOperations .controls {
     margin: 7px 0 0;
 }
-.employeeOperations .controls a.clock-in {
+.employeeOperations .controls a {
     float: left;
+    margin: 0 5px 0 0;
 }
 .employeeOperations .controls a.logout {
-    float: right;
-    margin: 0 40px 0 0;
+    margin: 0;
 }
