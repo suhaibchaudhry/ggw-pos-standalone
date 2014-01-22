@@ -39,6 +39,10 @@ jQuery(function($) {
     			session.set({token: '', login: false, message: 'Error connecting to the network. Check connection and try again.'});
     		}
     	});
+    },
+    logout: function() {
+      sessionStorage.token = '';
+      this.set({token: '', login: false, message: ''});
     }
   });
 
@@ -100,38 +104,61 @@ jQuery(function($) {
 
   var employeeOperationsView = Backbone.View.extend({
     tagName: 'div',
+
+    events: {
+      "click a.logout": "logout"
+    },
+
+    template: _.template($('#employee-operations-buttons').html()),
+
     render: function() {
-      this.$('.clock').FlipClock({
+      this.clock = $('<div class="clock"></div>');
+      this.$('.controls').before(this.clock);
+      this.clock.FlipClock({
         clockFace: 'TwelveHourClock'
       });
+
+      this.$('.controls').html(this.template());
       return this;
     },
+
     demolish: function() {
+      this.clock.remove();
+      this.$('.controls').empty();
       return this;
+    },
+
+    logout: function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      this.employeeSession.logout();
     }
+
   });
 
   var applicationFrame = Backbone.View.extend({
   	tagName: 'div',
   	initialize: function() {
-      //Regional Views
-      this.employeeOperationsRegion = new employeeOperationsView({el: this.$('.employeeOperations').get(0)});
-
       this.employeeSession = new employeeSession({}, {apiServer: 'http://www.general-goods.com'});
   		this.loginModal = new loginModal({}, {employeeSession: this.employeeSession});
+
+            //Regional Views
+      this.employeeOperationsRegion = new employeeOperationsView({el: this.$('.employeeOperations').get(0)});
+      this.employeeOperationsRegion.employeeSession = this.employeeSession;
 
       this.listenTo(this.employeeSession, 'change:login', this.render);
 
       this.employeeSession.initialSession();
       this.heightAdjust();
 
+      //Handle window resize
       $(window).on('resize', _.bind(this.heightAdjust, this));
   	},
   	render: function(session, login, options) {
       if(login) {
         this.employeeOperationsRegion.render();
       } else {
-        console.log('Login: Draw UI');
+        this.employeeOperationsRegion.demolish();
       }
   		return this;
   	},

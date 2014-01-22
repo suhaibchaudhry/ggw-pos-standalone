@@ -140,3 +140,15 @@ div.modalOverlay {
     background: linear-gradient(to bottom, #7ABCFF 0%,#60ABF8 44%,#4096EE 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', endColorstr='#4096ee',GradientType=0 );
 }
+
+/*Buttons*/
+.employeeOperations .controls {
+    margin: 7px 0 0;
+}
+.employeeOperations .controls a.clock-in {
+    float: left;
+}
+.employeeOperations .controls a.logout {
+    float: right;
+    margin: 0 40px 0 0;
+}
