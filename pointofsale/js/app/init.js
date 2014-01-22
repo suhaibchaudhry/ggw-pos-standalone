@@ -120,7 +120,7 @@ jQuery(function($) {
   		return this;
   	},
     heightAdjust: function() {
-      this.$('.viewport-main, .right, .left').
+      this.$('.content.region').
         height(
           $(window).height() - this.$('.header').height() - this.$('.footer').height()
         );

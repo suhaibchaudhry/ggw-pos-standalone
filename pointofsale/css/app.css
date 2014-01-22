@@ -30,41 +30,49 @@ body {
 	margin: 0;
 }
 .app-wrap {
-  min-width: 960px;   
-}
-
-.viewport-wrapper {
- float: left;
- width: 100%;
+    min-width: 960px;   
 }
 
 .viewport-main {
- margin: 0px 200px;
- height: 400px;
+    margin: 0px 200px;
+ 
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+div.header.region {
+    height: 100px;
+    position: relative;
+}
+
+div.content.region {
+    clear: both;
+    position: relative;
+    /*height: COMPUTED WITH JS*/
 }
 
 div.left.region {
- width: 200px;
- height: 400px;
- float: left;
- margin-left: -100%;    
+    width: 200px;
+
+    position: absolute;
+    bottom: 0;
+    top: 0;    
 }
 
 div.right.region {
- width: 200px;
- height: 400px;
- float: left;
- margin-left: -200px;
-}
+    width: 200px;
 
-div.header.region, div.footer.region {
-     width: 100%;
-     height: 100px;    
-     float: left;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    top: 0;
 }
 
 div.footer.region {
-    clear: both;
+    height: 100px;
 }
 
 div.modalOverlay {
@@ -76,6 +84,7 @@ div.modalOverlay {
 	display: none;
 	z-index: 100;
 }
+
 .bbm-wrapper {
     overflow: auto;
 }
@@ -97,4 +106,17 @@ div.modalOverlay {
     right: 100px;
     bottom: 23px;
     display: none;
+}
+
+.gradient {
+    margin: 0;
+    box-shadow: 0 0 4px #000;
+    background: #7ABCFF;
+    background: -moz-linear-gradient(top, #7abcff 0%, #60abf8 44%, #4096ee 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7ABCFF), color-stop(44%,#60ABF8), color-stop(100%,#4096EE));
+    background: -webkit-linear-gradient(top, #7ABCFF 0%,#60ABF8 44%,#4096EE 100%);
+    background: -o-linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%);
+    background: -ms-linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%);
+    background: linear-gradient(to bottom, #7ABCFF 0%,#60ABF8 44%,#4096EE 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', endColorstr='#4096ee',GradientType=0 );
 }
