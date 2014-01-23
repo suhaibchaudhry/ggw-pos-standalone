@@ -169,15 +169,18 @@ div.modalOverlay {
 
 /*Buttons*/
 .employeeOperations .controls {
-    margin: 7px 10px 0;
-    float: right;
+    margin: 7px auto 0;
 }
 .employeeOperations .clock {
-    margin: 15px 30px 0 0;
-    font-size: 42px;
+    margin: 10px 0 0 0;
+    font-size: 35px;
     float: right;
+}
+
+.employeeOperations .clock, .employeeOperations .greeting {
     text-shadow: 2px 2px 3px #fff;
 }
+
 .employeeOperations .controls a {
     float: left;
     margin: 0 5px 0 0;
@@ -185,3 +188,15 @@ div.modalOverlay {
 .employeeOperations .controls a.logout {
     margin: 0;
 }
+
+.employeeOperations .wrapper {
+    background: rgba(255, 255, 255, 0.3);
+    float: right;
+    margin: 4px 6px 2px 0;
+    border-radius: 10px;
+    padding: 3px 7px;
+}
+
+
+
+

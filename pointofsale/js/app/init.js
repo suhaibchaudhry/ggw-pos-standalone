@@ -45,8 +45,10 @@ jQuery(function($) {
     		success: function(res, status, xhr) {
     			if(res.login) {
     				sessionStorage.token = res.token;
+            sessionStorage.account = uname;
     				session.set({token: res.token, login: true, clock: res.clock, lunch: res.lunch});
     			} else {
+            sessionStorage.account = '';
     				session.set({token: '', login: false, message: 'Provided employee login/password were invalid.'});
     			}
 
@@ -233,12 +235,16 @@ jQuery(function($) {
       }
     },
 
+    formatTwoDigit: function(number) {
+      return ("0"+number).slice(-2); //Convert to double digit
+    },
+
     formatHour: function(hours) {
       if(hours > 12) {
         hours -= 12;
       }
 
-      return ("0"+hours).slice(-2); //Convert to double digit
+      return this.formatTwoDigit(hours); //Convert to double digit
     },
 
     fetchCurrentTime: function() {
@@ -248,7 +254,7 @@ jQuery(function($) {
         minutes: date.getMinutes()
       }
 
-      return this.formatHour(time.hours)+":"+time.minutes+" "+this.computeAMPM(time.hours);
+      return this.formatHour(time.hours)+":"+this.formatTwoDigit(time.minutes)+" "+this.computeAMPM(time.hours);
     },
 
     render: function() {
@@ -260,7 +266,12 @@ jQuery(function($) {
         view.$clock.text(view.fetchCurrentTime());
       }, 2000);
 
+      if(sessionStorage.account) {
+        this.$('.greeting').append('<span class="label">Account ID: </span>'+sessionStorage.account);
+      }
+
       this.$('.controls').html(this.template());
+
       return this;
     },
 
@@ -269,8 +280,11 @@ jQuery(function($) {
         this.$clock.empty();
       }
 
+      this.$('.greeting')
+
       clearInterval(this.clockIntervalId);
       this.$('.controls').empty();
+
       return this;
     },
 
