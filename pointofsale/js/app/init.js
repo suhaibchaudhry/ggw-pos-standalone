@@ -226,11 +226,11 @@ jQuery(function($) {
     },    
 
     render: function() {
-      this.clock = $('<div class="clock"></div>');
-      this.$('.controls').before(this.clock);
-      this.clock.FlipClock({
-        clockFace: 'TwelveHourClock'
-      });
+      //this.clock = $('<div class="clock"></div>');
+      //this.$('.controls').before(this.clock);
+      //this.clock.FlipClock({
+      //  clockFace: 'TwelveHourClock'
+      //});
 
       this.$('.controls').html(this.template());
       return this;
