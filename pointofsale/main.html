@@ -3,15 +3,17 @@
 <head>
 	<meta charset="utf-8" />
 
-	<link type="text/css" rel="stylesheet" href="css/backbone.modal.css">
-    <link type="text/css" rel="stylesheet" href="css/backbone.modal.theme.css">
+	<link type="text/css" rel="stylesheet" href="css/vendor/backbone.modal.css">
+    <link type="text/css" rel="stylesheet" href="css/vendor/backbone.modal.theme.css">
     <link type="text/css" rel="stylesheet" href="css/vendor/forms.css">
     <link type="text/css" rel="stylesheet" href="css/vendor/buttons-core.css">
     <link type="text/css" rel="stylesheet" href="css/vendor/buttons.css">
+    <link type="text/css" rel="stylesheet" href="css/typeahead.css">
     <link type="text/css" rel="stylesheet" href="css/app.css">
 
 	<script type="text/javascript" src="js/vendor/underscore-min.js"></script>
 	<script type="text/javascript" src="js/vendor/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript" src="js/vendor/typeahead.js"></script>
 	<script type="text/javascript" src="js/vendor/backbone-min.js"></script>
 	<script type="text/javascript" src="js/vendor/backbone.modal.js"></script>
 	
@@ -24,13 +26,27 @@
 	<div class="modalOverlay"></div>
 
 	<div class="app-wrap">
-    	<div class="header region"></div>
-    	<div class="viewport-wrapper">
-    	    <div class="viewport-main"></div>
+    	<div class="header region gradient">
+	    	<div class="viewport-main"></div>
+	    	<div class="left region logo"></div>
+	    	<div class="right region employeeOperations">
+	    		<div class="wrapper">
+	    			<div class="greeting"></div>
+	    			<div class="controls"></div>
+	    			<div class="clock"></div>
+	    		</div>
+	    	</div>
     	</div>
-    	<div class="left region"></div>
-    	<div class="right region"></div>
-    	<div class="footer region"></div>
+    	<div class="content region">
+	    	<div class="viewport-main activeTicket">
+	    		<div class="item-search"></div>
+	    	</div>
+	    	<div class="left region"></div>
+	    	<div class="right region"></div>
+    	</div>
+    	<div class="footer region">
+    		<div class="viewport-main"></div>
+    	</div>
 	</div>
 
 	<script type="text/template" id="login-modal">
@@ -52,6 +68,11 @@
 			</div>
 		</form>
 	</script>
-	
+
+	<script type="text/template" id="employee-operations-buttons">
+		<a class="pure-button pure-button-success clock-in" href="#">Clock In</a>
+		<a class="pure-button pure-button-success lunch-in" href="#">Lunch In</a>
+		<a class="pure-button pure-button-error logout" href="#">Logout</a>
+	</script>
 </body>
 </html>

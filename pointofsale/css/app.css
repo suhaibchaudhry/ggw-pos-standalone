@@ -25,46 +25,94 @@
 }
 
 /*Application Level Styling*/
+
 body {
 	padding: 0;
 	margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 .app-wrap {
-  min-width: 960px;   
-}
-
-.viewport-wrapper {
- float: left;
- width: 100%;
+    min-width: 960px;   
 }
 
 .viewport-main {
- margin: 0px 200px;
- height: 400px;
+    margin: 0px 200px;
+ 
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.header .viewport-main {
+    margin: 0 300px 0 330px;
+}
+
+div.header.region {
+    height: 100px;
+    position: relative;
+    z-index: 20;
+}
+
+div.content.region {
+    clear: both;
+    position: relative;
+    /*height: COMPUTED WITH JS*/
 }
 
 div.left.region {
- width: 200px;
- height: 400px;
- float: left;
- margin-left: -100%;    
+    width: 200px;
+
+    position: absolute;
+    bottom: 0;
+    top: 0;    
+}
+
+div.content.region div.left.region, div.content.region div.right.region {
+    bottom: -100px; /* (-1)*footer_height*/
+    background: #ccc;
+}
+
+div.content.region div.left.region {
+    box-shadow: -1px 0px 12px #000;
+    z-index: 10;
+}
+
+div.content.region div.right.region {
+    box-shadow: 2px 0px 12px #000;
+    z-index: 10;
+}
+
+div.left.region.logo {
+    width: 330px;
+    background: url(../images/ggw_logo.png) no-repeat center center;
 }
 
 div.right.region {
- width: 200px;
- height: 400px;
- float: left;
- margin-left: -200px;
+    width: 200px;
+
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    top: 0;
 }
 
-div.header.region, div.footer.region {
-     width: 100%;
-     height: 100px;    
-     float: left;
+div.header div.right.region {
+    width: 300px;
 }
 
 div.footer.region {
-    clear: both;
+    height: 100px;
+    position: relative;
+}
+
+div.footer.region .viewport-main {
+    background: #000;
+    border: 4px solid green;
+    right: 10px;
+    left: 10px;
+    bottom: 5px;
 }
 
 div.modalOverlay {
@@ -76,6 +124,7 @@ div.modalOverlay {
 	display: none;
 	z-index: 100;
 }
+
 .bbm-wrapper {
     overflow: auto;
 }
@@ -98,3 +147,56 @@ div.modalOverlay {
     bottom: 23px;
     display: none;
 }
+
+.clock {
+    zoom: .5;
+    margin: 0;
+}
+
+/* Misc */
+.gradient {
+    margin: 0;
+    box-shadow: 0 0 4px #000;
+    background: #7ABCFF;
+    background: -moz-linear-gradient(top, #7abcff 0%, #60abf8 44%, #4096ee 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7ABCFF), color-stop(44%,#60ABF8), color-stop(100%,#4096EE));
+    background: -webkit-linear-gradient(top, #7ABCFF 0%,#60ABF8 44%,#4096EE 100%);
+    background: -o-linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%);
+    background: -ms-linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%);
+    background: linear-gradient(to bottom, #7ABCFF 0%,#60ABF8 44%,#4096EE 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', endColorstr='#4096ee',GradientType=0 );
+}
+
+/*Buttons*/
+.employeeOperations .controls {
+    margin: 7px auto 0;
+}
+.employeeOperations .clock {
+    margin: 10px 0 0 0;
+    font-size: 35px;
+    float: right;
+}
+
+.employeeOperations .clock, .employeeOperations .greeting {
+    text-shadow: 2px 2px 3px #fff;
+}
+
+.employeeOperations .controls a {
+    float: left;
+    margin: 0 5px 0 0;
+}
+.employeeOperations .controls a.logout {
+    margin: 0;
+}
+
+.employeeOperations .wrapper {
+    background: rgba(255, 255, 255, 0.3);
+    float: right;
+    margin: 4px 6px 2px 0;
+    border-radius: 10px;
+    padding: 3px 7px;
+}
+
+
+
+
