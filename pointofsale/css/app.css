@@ -46,7 +46,7 @@ body {
 }
 
 .header .viewport-main {
-    margin: 0 300px 0 330px;
+    margin: 0 350px 0 330px;
 }
 
 div.header.region {
@@ -99,7 +99,7 @@ div.right.region {
 }
 
 div.header div.right.region {
-    width: 300px;
+    width: auto;
 }
 
 div.footer.region {
@@ -196,7 +196,3 @@ div.modalOverlay {
     border-radius: 10px;
     padding: 3px 7px;
 }
-
-
-
-
