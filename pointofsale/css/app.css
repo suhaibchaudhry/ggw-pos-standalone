@@ -29,6 +29,7 @@
 body {
 	padding: 0;
 	margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 .app-wrap {
     min-width: 960px;   
@@ -168,7 +169,14 @@ div.modalOverlay {
 
 /*Buttons*/
 .employeeOperations .controls {
-    margin: 7px 0 0;
+    margin: 7px 10px 0;
+    float: right;
+}
+.employeeOperations .clock {
+    margin: 15px 30px 0 0;
+    font-size: 42px;
+    float: right;
+    text-shadow: 2px 2px 3px #fff;
 }
 .employeeOperations .controls a {
     float: left;

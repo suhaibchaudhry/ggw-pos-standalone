@@ -223,23 +223,53 @@ jQuery(function($) {
         //User is clocked out display clockout button
         this.$('a.lunch-in').text('Lunch In').removeClass('pure-button-error').addClass('pure-button-success');
       }
-    },    
+    },
+
+    computeAMPM: function(hours) {
+      if(hours >= 12) {
+        return "PM";
+      } else {
+        return "AM";
+      }
+    },
+
+    formatHour: function(hours) {
+      if(hours > 12) {
+        hours -= 12;
+      }
+
+      return ("0"+hours).slice(-2); //Convert to double digit
+    },
+
+    fetchCurrentTime: function() {
+      var date = new Date();
+      var time = {
+        hours: date.getHours(),
+        minutes: date.getMinutes()
+      }
+
+      return this.formatHour(time.hours)+":"+time.minutes+" "+this.computeAMPM(time.hours);
+    },
 
     render: function() {
-      //this.clock = $('<div class="clock"></div>');
-      //this.$('.controls').before(this.clock);
-      //this.clock.FlipClock({
-      //  clockFace: 'TwelveHourClock'
-      //});
+      this.$clock = this.$('.clock');
+
+      var view = this;
+      view.$clock.text(view.fetchCurrentTime());
+      this.clockIntervalId = setInterval(function() {
+        view.$clock.text(view.fetchCurrentTime());
+      }, 2000);
 
       this.$('.controls').html(this.template());
       return this;
     },
 
     demolish: function() {
-      if(this.clock) {
-        this.clock.remove();
+      if(this.$clock) {
+        this.$clock.empty();
       }
+
+      clearInterval(this.clockIntervalId);
       this.$('.controls').empty();
       return this;
     },
