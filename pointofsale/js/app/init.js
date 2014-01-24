@@ -94,26 +94,6 @@ jQuery(function($) {
     }
   });
 
-  //Break down to model later
-  var activeTicketView = Backbone.View.extend({
-    tagName: 'div',
-    render: function() {
-      //Move to template
-      this.$('.item-search').append('<input class="search typeahead" placeholder="Search Items ..." autocomplete="off" type="text" />');
-      this.$('.item-search input.search').typeahead({
-        valueKey: 'name',                                
-        name: 'search-items',                                                        
-        remote: 'http://import.general-goods.com/pos-api/products/%QUERY',                                        
-        limit: 15,
-        template: _.template('<p><strong><%= sku %></strong> – <%= name %></p>')                                                        
-      });
-    },
-    demolish: function() {
-       this.$('.item-search input.search').typeahead('destroy');
-       this.$('.item-search').empty();
-    }
-  });
-
   var loginModal = Backbone.Modal.extend({
     template: function() {
       return this.loginView.template();
@@ -296,7 +276,7 @@ jQuery(function($) {
         this.$clock.empty();
       }
 
-      this.$('.greeting')
+      this.$('.greeting').empty();
 
       clearInterval(this.clockIntervalId);
       this.$('.controls').empty();
@@ -312,6 +292,29 @@ jQuery(function($) {
 
   });
 
+  //Break down to model later
+  var activeTicketView = Backbone.View.extend({
+    tagName: 'div',
+    initialize: function(attributes, options) {
+      this.employeeSession = options['employeeSession'];
+    },
+    render: function() {
+      //Move to template
+      this.$('.item-search').append('<input class="search typeahead" placeholder="Search Items ..." autocomplete="off" type="text" />');
+      this.$('.item-search input.search').typeahead({
+        valueKey: 'name',                                
+        name: 'search-items',                                                        
+        remote: this.employeeSession.apiServer+'/pos-api/products/%QUERY',                                        
+        limit: 15,
+        template: _.template('<p><strong><%= sku %></strong> – <%= name %></p>')                                                        
+      });
+    },
+    demolish: function() {
+       this.$('.item-search input.search').typeahead('destroy');
+       this.$('.item-search').empty();
+    }
+  });
+
   var applicationFrame = Backbone.View.extend({
   	tagName: 'div',
   	initialize: function() {
@@ -320,7 +323,7 @@ jQuery(function($) {
  
   		//Regional Views
       this.employeeOperationsRegion = new employeeOperationsView({el: this.$('.employeeOperations').get(0)}, {employeeSession: this.employeeSession});
-      this.activeTicketRegion = new activeTicketView({el: this.$('.activeTicket').get(0)});
+      this.activeTicketRegion = new activeTicketView({el: this.$('.activeTicket').get(0)}, {employeeSession: this.employeeSession});
 
       //Modal View
       this.loginModal = new loginModal({}, {employeeSession: this.employeeSession});
