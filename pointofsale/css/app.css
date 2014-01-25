@@ -53,6 +53,8 @@ div.header.region {
     height: 100px;
     position: relative;
     z-index: 20;
+    -webkit-user-select: none;
+    cursor: default;
 }
 
 div.content.region {
