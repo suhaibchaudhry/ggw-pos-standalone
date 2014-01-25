@@ -238,6 +238,8 @@ jQuery(function($) {
     formatHour: function(hours) {
       if(hours > 12) {
         hours -= 12;
+      } else if(hours == 0) {
+        hours = 12;
       }
 
       return this.formatTwoDigit(hours); //Convert to double digit
