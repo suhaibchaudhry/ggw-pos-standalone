@@ -265,7 +265,7 @@ jQuery(function($) {
       }, 2000);
 
       if(sessionStorage.account) {
-        this.$('.greeting').append('<span class="label">Account ID: </span>'+sessionStorage.account);
+        this.$('.greeting').append('<span class="label">Employee ID: </span>'+sessionStorage.account);
       }
 
       this.$('.controls').html(this.template());
