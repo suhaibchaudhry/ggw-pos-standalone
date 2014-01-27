@@ -300,6 +300,12 @@ jQuery(function($) {
     initialize: function(attributes, options) {
       this.employeeSession = options['employeeSession'];
     },
+    prepareRequest: function(jqXHR, settings) {
+      //Modify typeahead requests for token based authentication
+      settings.type = 'POST';
+      console.log(this);
+      settings.data = {request: JSON.stringify({token: this.employeeSession.get('token')})};
+    },
     template: _.template($('#item-search-components').html()),
     render: function() {
       //Move to template
@@ -307,7 +313,10 @@ jQuery(function($) {
       this.$('.item-search input.search').typeahead({
         valueKey: 'name',
         name: 'search-items',
-        remote: this.employeeSession.apiServer+'/pos-api/products/%QUERY',
+        remote: {
+            url: this.employeeSession.apiServer+'/pos-api/products/%QUERY',
+            beforeSend: _.bind(this.prepareRequest, this)
+        },
         limit: 12,
         template: _.template($('#item-search-result').html())
       });
