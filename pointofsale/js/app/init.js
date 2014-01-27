@@ -300,15 +300,16 @@ jQuery(function($) {
     initialize: function(attributes, options) {
       this.employeeSession = options['employeeSession'];
     },
+    template: _.template($('#item-search-components').html()),
     render: function() {
       //Move to template
-      this.$('.item-search').append('<input class="search typeahead" placeholder="Search Items ..." autocomplete="off" type="text" />');
+      this.$('.item-search').append(this.template());
       this.$('.item-search input.search').typeahead({
-        valueKey: 'name',                                
-        name: 'search-items',                                                        
-        remote: this.employeeSession.apiServer+'/pos-api/products/%QUERY',                                        
-        limit: 15,
-        template: _.template('<p><strong><%= sku %></strong> – <%= name %></p>')                                                        
+        valueKey: 'name',
+        name: 'search-items',
+        remote: this.employeeSession.apiServer+'/pos-api/products/%QUERY',
+        limit: 12,
+        template: _.template($('#item-search-result').html())
       });
     },
     demolish: function() {
