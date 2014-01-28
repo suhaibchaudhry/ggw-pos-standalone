@@ -55,9 +55,9 @@
 		</div>
 		<form name="login-form" method="post" class="pure-form pure-form-stacked login-form">
 			<div class="bbm-modal__section">
-				<p>Login using your General Goods Wholesale Account ID and Password.</p>
-			        <label for="uname">Account ID</label>
-			        <input id="login-uname" name="uname" type="text" placeholder="Account ID">
+				<p>Login using your General Goods Wholesale Employee ID and Password.</p>
+			        <label for="uname">Employee ID</label>
+			        <input id="login-uname" name="uname" type="text" placeholder="Employee ID">
 
 			        <label for="password">Password</label>
 			        <input id="login-password" name="password" type="password" placeholder="Password">
@@ -73,6 +73,20 @@
 		<a class="pure-button pure-button-success clock-in" href="#">Clock In</a>
 		<a class="pure-button pure-button-success lunch-in" href="#">Lunch In</a>
 		<a class="pure-button pure-button-error logout" href="#">Logout</a>
+	</script>
+
+	<script type="text/template" id="item-search-components">
+		<input class="search typeahead" placeholder="Search Items ..." autocomplete="off" type="text" />
+	</script>
+
+	<script type="text/template" id="item-search-result">
+		<div class="search-result">
+			<div class="info">
+			<div class="sku"><%= sku %></div>
+			<div class="name"><%= name %></div>
+			</div>
+			<div class="image" style="background-image: url(<%= image %>);"></div>
+		</div>
 	</script>
 </body>
 </html>

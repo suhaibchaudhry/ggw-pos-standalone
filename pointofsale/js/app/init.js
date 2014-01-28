@@ -265,7 +265,7 @@ jQuery(function($) {
       }, 2000);
 
       if(sessionStorage.account) {
-        this.$('.greeting').append('<span class="label">Account ID: </span>'+sessionStorage.account);
+        this.$('.greeting').append('<span class="label">Employee ID: </span>'+sessionStorage.account);
       }
 
       this.$('.controls').html(this.template());
@@ -300,15 +300,25 @@ jQuery(function($) {
     initialize: function(attributes, options) {
       this.employeeSession = options['employeeSession'];
     },
+    prepareRequest: function(jqXHR, settings) {
+      //Modify typeahead requests for token based authentication
+      settings.type = 'POST';
+      console.log(this);
+      settings.data = {request: JSON.stringify({token: this.employeeSession.get('token')})};
+    },
+    template: _.template($('#item-search-components').html()),
     render: function() {
       //Move to template
-      this.$('.item-search').append('<input class="search typeahead" placeholder="Search Items ..." autocomplete="off" type="text" />');
+      this.$('.item-search').append(this.template());
       this.$('.item-search input.search').typeahead({
-        valueKey: 'name',                                
-        name: 'search-items',                                                        
-        remote: this.employeeSession.apiServer+'/pos-api/products/%QUERY',                                        
-        limit: 15,
-        template: _.template('<p><strong><%= sku %></strong> – <%= name %></p>')                                                        
+        valueKey: 'name',
+        name: 'search-items',
+        remote: {
+            url: this.employeeSession.apiServer+'/pos-api/products/%QUERY',
+            beforeSend: _.bind(this.prepareRequest, this)
+        },
+        limit: 12,
+        template: _.template($('#item-search-result').html())
       });
     },
     demolish: function() {
