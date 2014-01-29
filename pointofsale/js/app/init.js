@@ -1,10 +1,13 @@
 jQuery(function($) {
   //App Models
   var employeeSession = Backbone.Model.extend({
-    initialize: function(attributes, options) {
-      this.apiServer = options['apiServer'];
+    initialize: function(attribtues) {
+      //this.apiServer = options['apiServer'];
+      this.set({
+        apiServer: attribtues['apiServer']
+      });
     },
-    initialSession: function(attributes, options) {
+    initialSession: function() {
       //Get latest clock flag on start
     	if(sessionStorage.token) {
         var session = this;
@@ -13,7 +16,7 @@ jQuery(function($) {
         var clockStateReq = JSON.stringify({token: sessionStorage.token});
         $.ajax({
           type: 'POST',
-          url: session.apiServer+'/pos-api/clockState',
+          url: session.get('apiServer')+'/pos-api/clockState',
           data: {request: clockStateReq},
           timeout: 15000,
           success: function(res, status, xhr) {
@@ -39,7 +42,7 @@ jQuery(function($) {
       this.trigger('session:login-preloader', true);
     	$.ajax({
     		type: 'POST',
-    		url: session.apiServer+'/pos-api/auth',
+    		url: session.get('apiServer')+'/pos-api/auth',
     		data: {request: requestedUser},
     		timeout: 15000,
     		success: function(res, status, xhr) {
@@ -168,7 +171,7 @@ jQuery(function($) {
 
       $.ajax({
         type: 'POST',
-        url: this.employeeSession.apiServer+'/pos-api/clock',
+        url: this.employeeSession.get('apiServer')+'/pos-api/clock',
         data: {request: clockEvent},
         timeout: 15000,
         success: function(res, status, xhr) {
@@ -197,7 +200,7 @@ jQuery(function($) {
 
         $.ajax({
           type: 'POST',
-          url: this.employeeSession.apiServer+'/pos-api/clock',
+          url: this.employeeSession.get('apiServer')+'/pos-api/clock',
           data: {request: clockEvent},
           timeout: 15000,
           success: function(res, status, xhr) {
@@ -340,7 +343,7 @@ jQuery(function($) {
         valueKey: 'name',
         name: 'search-items',
         remote: {
-            url: this.employeeSession.apiServer+'/pos-api/products/'+this.employeeSession.get("token"),
+            url: this.employeeSession.get('apiServer')+'/pos-api/products/'+this.employeeSession.get("token"),
             replace: function(url, uriEncodedQuery) {
               var newurl = url + '/' + encodeURIComponent(searchbox.val().replace(/\//g, ''));
               return newurl;
@@ -360,7 +363,7 @@ jQuery(function($) {
   	tagName: 'div',
   	initialize: function() {
       //Employee Session Model
-      this.employeeSession = new employeeSession({}, {apiServer: 'http://www.general-goods.com'});
+      this.employeeSession = new employeeSession({apiServer: 'http://www.general-goods.com'});
  
   		//Regional Views
       this.employeeOperationsRegion = new employeeOperationsView({el: this.$('.employeeOperations').get(0)}, {employeeSession: this.employeeSession});
