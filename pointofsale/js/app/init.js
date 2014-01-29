@@ -1,10 +1,13 @@
 jQuery(function($) {
   //App Models
   var employeeSession = Backbone.Model.extend({
-    initialize: function(attributes, options) {
-      this.apiServer = options['apiServer'];
+    initialize: function(attribtues) {
+      //this.apiServer = options['apiServer'];
+      this.set({
+        apiServer: attribtues['apiServer']
+      });
     },
-    initialSession: function(attributes, options) {
+    initialSession: function() {
       //Get latest clock flag on start
     	if(sessionStorage.token) {
         var session = this;
@@ -13,7 +16,7 @@ jQuery(function($) {
         var clockStateReq = JSON.stringify({token: sessionStorage.token});
         $.ajax({
           type: 'POST',
-          url: session.apiServer+'/pos-api/clockState',
+          url: session.get('apiServer')+'/pos-api/clockState',
           data: {request: clockStateReq},
           timeout: 15000,
           success: function(res, status, xhr) {
@@ -39,7 +42,7 @@ jQuery(function($) {
       this.trigger('session:login-preloader', true);
     	$.ajax({
     		type: 'POST',
-    		url: session.apiServer+'/pos-api/auth',
+    		url: session.get('apiServer')+'/pos-api/auth',
     		data: {request: requestedUser},
     		timeout: 15000,
     		success: function(res, status, xhr) {
@@ -64,6 +67,15 @@ jQuery(function($) {
       //Reset Clock state on logout
       this.set({token: '', login: false, message: '', clock: false, lunch: false});
     }
+  });
+
+  //Product Model
+  var ticketProduct = Backbone.Model.extend({
+
+  });
+
+  var ticketProductCollection = Backbone.Collection.extend({
+    model: ticketProduct
   });
 
   //Application Views
@@ -159,7 +171,7 @@ jQuery(function($) {
 
       $.ajax({
         type: 'POST',
-        url: this.employeeSession.apiServer+'/pos-api/clock',
+        url: this.employeeSession.get('apiServer')+'/pos-api/clock',
         data: {request: clockEvent},
         timeout: 15000,
         success: function(res, status, xhr) {
@@ -188,7 +200,7 @@ jQuery(function($) {
 
         $.ajax({
           type: 'POST',
-          url: this.employeeSession.apiServer+'/pos-api/clock',
+          url: this.employeeSession.get('apiServer')+'/pos-api/clock',
           data: {request: clockEvent},
           timeout: 15000,
           success: function(res, status, xhr) {
@@ -297,25 +309,45 @@ jQuery(function($) {
   //Break down to model later
   var activeTicketView = Backbone.View.extend({
     tagName: 'div',
+    events: {
+      "typeahead:selected .item-search" : 'itemSelected',
+      "click .line-item": 'removeLineItem'
+    },
     initialize: function(attributes, options) {
       this.employeeSession = options['employeeSession'];
+      this.productCollection = new ticketProductCollection();
+
+      this.listenTo(this.productCollection, 'add', this.addItem);
+      this.listenTo(this.productCollection, 'remove', this.removeItem);
     },
-    prepareRequest: function(jqXHR, settings) {
-      //Modify typeahead requests for token based authentication
-      settings.type = 'POST';
-      console.log(this);
-      settings.data = {request: JSON.stringify({token: this.employeeSession.get('token')})};
+    itemSelected: function(e, datum) {
+      //console.log(e);
+      this.productCollection.add(datum);
     },
-    template: _.template($('#item-search-components').html()),
+    removeLineItem: function(e) {
+      this.productCollection.remove(e.currentTarget.dataset.id);
+    },
+    addItem: function(model) {
+      this.$('.ticket-container').append(this.lineItemTemplate(model.attributes));
+    },
+    removeItem: function(model) {
+      this.$('.ticket-container #line-item-'+model.get('id')).remove();
+    },
+    searchResultTemplate: _.template($('#item-search-components').html()),
+    lineItemTemplate: _.template($('#ticket-line-item').html()),
     render: function() {
       //Move to template
-      this.$('.item-search').append(this.template());
-      this.$('.item-search input.search').typeahead({
+      this.$('.item-search').append(this.searchResultTemplate());
+      var searchbox = this.$('.item-search input.search');
+      searchbox.typeahead({
         valueKey: 'name',
         name: 'search-items',
         remote: {
-            url: this.employeeSession.apiServer+'/pos-api/products/%QUERY',
-            beforeSend: _.bind(this.prepareRequest, this)
+            url: this.employeeSession.get('apiServer')+'/pos-api/products/'+this.employeeSession.get("token"),
+            replace: function(url, uriEncodedQuery) {
+              var newurl = url + '/' + encodeURIComponent(searchbox.val().replace(/\//g, ''));
+              return newurl;
+            }
         },
         limit: 12,
         template: _.template($('#item-search-result').html())
@@ -331,7 +363,7 @@ jQuery(function($) {
   	tagName: 'div',
   	initialize: function() {
       //Employee Session Model
-      this.employeeSession = new employeeSession({}, {apiServer: 'http://www.general-goods.com'});
+      this.employeeSession = new employeeSession({apiServer: 'http://www.general-goods.com'});
  
   		//Regional Views
       this.employeeOperationsRegion = new employeeOperationsView({el: this.$('.employeeOperations').get(0)}, {employeeSession: this.employeeSession});
