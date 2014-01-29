@@ -66,6 +66,15 @@ jQuery(function($) {
     }
   });
 
+  //Product Model
+  var ticketProduct = Backbone.Model.extend({
+
+  });
+
+  var ticketProductCollection = Backbone.Collection.extend({
+    model: ticketProduct
+  });
+
   //Application Views
   var loginView = Backbone.View.extend({
     tagName: 'div',
@@ -297,13 +306,35 @@ jQuery(function($) {
   //Break down to model later
   var activeTicketView = Backbone.View.extend({
     tagName: 'div',
+    events: {
+      "typeahead:selected .item-search" : 'itemSelected',
+      "click .line-item": 'removeLineItem'
+    },
     initialize: function(attributes, options) {
       this.employeeSession = options['employeeSession'];
+      this.productCollection = new ticketProductCollection();
+
+      this.listenTo(this.productCollection, 'add', this.addItem);
+      this.listenTo(this.productCollection, 'remove', this.removeItem);
     },
-    template: _.template($('#item-search-components').html()),
+    itemSelected: function(e, datum) {
+      //console.log(e);
+      this.productCollection.add(datum);
+    },
+    removeLineItem: function(e) {
+      this.productCollection.remove(e.currentTarget.dataset.id);
+    },
+    addItem: function(model) {
+      this.$('.ticket-container').append(this.lineItemTemplate(model.attributes));
+    },
+    removeItem: function(model) {
+      this.$('.ticket-container #line-item-'+model.get('id')).remove();
+    },
+    searchResultTemplate: _.template($('#item-search-components').html()),
+    lineItemTemplate: _.template($('#ticket-line-item').html()),
     render: function() {
       //Move to template
-      this.$('.item-search').append(this.template());
+      this.$('.item-search').append(this.searchResultTemplate());
       var searchbox = this.$('.item-search input.search');
       searchbox.typeahead({
         valueKey: 'name',
