@@ -300,26 +300,20 @@ jQuery(function($) {
     initialize: function(attributes, options) {
       this.employeeSession = options['employeeSession'];
     },
-    /*
-    prepareRequest: function(jqXHR, settings) {
-      //Modify typeahead requests for token based authentication
-      settings.type = 'POST';
-      settings.hasContent = true;
-      settings.contentType = 'application/x-www-form-urlencoded; charset=UTF-8'; //PHP can only handle this
-      //settings.data = jQuery.param({request: JSON.stringify({token: this.employeeSession.get('token')})});
-      settings.data = {test: 'test'};
-    },
-    */
     template: _.template($('#item-search-components').html()),
     render: function() {
       //Move to template
       this.$('.item-search').append(this.template());
-      this.$('.item-search input.search').typeahead({
+      var searchbox = this.$('.item-search input.search');
+      searchbox.typeahead({
         valueKey: 'name',
         name: 'search-items',
         remote: {
-            url: this.employeeSession.apiServer+'/pos-api/products/%QUERY/'+this.employeeSession.get("token"),
-            //beforeSend: _.bind(this.prepareRequest, this)
+            url: this.employeeSession.apiServer+'/pos-api/products/'+this.employeeSession.get("token"),
+            replace: function(url, uriEncodedQuery) {
+              var newurl = url + '/' + encodeURIComponent(searchbox.val().replace(/\//g, ''));
+              return newurl;
+            }
         },
         limit: 12,
         template: _.template($('#item-search-result').html())
