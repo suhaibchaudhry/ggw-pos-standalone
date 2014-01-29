@@ -111,7 +111,7 @@ jQuery(function($) {
       return this.loginView.template();
     },
     initialize: function(attributes, options) {
-      this.employeeSession = options['employeeSession'];
+      this.employeeSession = attributes['employeeSession'];
       this.listenTo(this.employeeSession, 'change:login', this.display);
       this.listenTo(this.employeeSession, 'change:message', this.messagePrompt);
       this.loginView = new loginView({el: $('.modalOverlay').get(0)});
@@ -147,7 +147,7 @@ jQuery(function($) {
     template: _.template($('#employee-operations-buttons').html()),
 
     initialize: function(attributes, options) {
-      this.employeeSession = options['employeeSession'];
+      this.employeeSession = attributes['employeeSession'];
       this.listenTo(this.employeeSession, 'change:clock', this.clockStateChange);
       this.listenTo(this.employeeSession, 'change:lunch', this.lunchStateChange);
     },
@@ -314,7 +314,7 @@ jQuery(function($) {
       "click .line-item": 'removeLineItem'
     },
     initialize: function(attributes, options) {
-      this.employeeSession = options['employeeSession'];
+      this.employeeSession = attributes['employeeSession'];
       this.productCollection = new ticketProductCollection();
 
       this.listenTo(this.productCollection, 'add', this.addItem);
@@ -366,11 +366,11 @@ jQuery(function($) {
       this.employeeSession = new employeeSession({apiServer: 'http://www.general-goods.com'});
  
   		//Regional Views
-      this.employeeOperationsRegion = new employeeOperationsView({el: this.$('.employeeOperations').get(0)}, {employeeSession: this.employeeSession});
-      this.activeTicketRegion = new activeTicketView({el: this.$('.activeTicket').get(0)}, {employeeSession: this.employeeSession});
+      this.employeeOperationsRegion = new employeeOperationsView({el: this.$('.employeeOperations').get(0), employeeSession: this.employeeSession});
+      this.activeTicketRegion = new activeTicketView({el: this.$('.activeTicket').get(0), employeeSession: this.employeeSession});
 
       //Modal View
-      this.loginModal = new loginModal({}, {employeeSession: this.employeeSession});
+      this.loginModal = new loginModal({employeeSession: this.employeeSession});
 
       //Bind Events
       this.listenTo(this.employeeSession, 'change:login', this.render);
