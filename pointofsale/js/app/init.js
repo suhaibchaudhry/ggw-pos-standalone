@@ -408,8 +408,14 @@ jQuery(function($) {
       this.employeeSession.initialSession();
       this.heightAdjust();
 
+      //Global Window level event catching and handling
       //Handle window resize
       $(window).on('resize', _.bind(this.heightAdjust, this));
+
+      //Catch mouse releases outside of application window.
+      $(window).mouseup(function(){
+         $('.mousetrap').css('z-index', 0);
+      });
   	},
   	render: function(session, login, options) {
       if(login) {
@@ -433,11 +439,6 @@ jQuery(function($) {
   	var app = new applicationFrame({
   		el: $('div.app-wrap').get(0)
   	});
-
-    //Catch mouse releases outside of application window.
-    $(window).mouseup(function(){
-       $('.mousetrap').css('z-index', 0);
-    });
   }
 
   appBootstrap();
