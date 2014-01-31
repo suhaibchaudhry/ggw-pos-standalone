@@ -30,6 +30,7 @@ body {
 	padding: 0;
 	margin: 0;
     font: 16px Arial, Helvetica, sans-serif;
+     -webkit-user-select: none;
 }
 .app-wrap {
     min-width: 960px;   
@@ -53,7 +54,6 @@ div.header.region {
     height: 100px;
     position: relative;
     z-index: 20;
-    -webkit-user-select: none;
     cursor: default;
 }
 
