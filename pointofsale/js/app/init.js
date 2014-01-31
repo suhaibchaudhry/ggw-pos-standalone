@@ -341,6 +341,7 @@ jQuery(function($) {
       this.ticketRegionClicked = false;
       this.ticketRegionClickY = 0;
       this.$ticketContainer = this.$('.ticket-container');
+      this.$mouseTrap = this.$('.mousetrap');
 
       this.listenTo(this.ticket.get('productCollection'), 'add', this.addItem);
       this.listenTo(this.ticket.get('productCollection'), 'remove', this.removeItem);
@@ -354,10 +355,10 @@ jQuery(function($) {
     searchResultTemplate: _.template($('#item-search-components').html()),
     lineItemTemplate: _.template($('#ticket-line-item').html()),
     panTicket: function() {
-      this.$('.mousetrap').css('z-index', 2);
+      this.$mouseTrap.css('z-index', 2);
     },
     stopPanTicket: function() {
-      this.$('.mousetrap').css('z-index', 0);
+      this.$mouseTrap.css('z-index', 0);
     },
     render: function() {
       //Move to template
