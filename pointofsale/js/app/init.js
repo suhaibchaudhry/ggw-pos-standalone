@@ -317,6 +317,18 @@ jQuery(function($) {
     removeItem: function(productId) {
       this.get('productCollection').remove(productId);
       //Remove Item from database
+    },
+    clearTicket: function() {
+      //Clear ticket on ui
+      this.get('productCollection').reset();
+    },
+    emptyTicket: function() {
+      //Empty ticket on server and ui use clearTicket
+
+    },
+    deleteTicket: function() {
+      //Delete ticket and clear on ui
+
     }
   });
 
@@ -345,12 +357,16 @@ jQuery(function($) {
 
       this.listenTo(this.ticket.get('productCollection'), 'add', this.addItem);
       this.listenTo(this.ticket.get('productCollection'), 'remove', this.removeItem);
+      this.listenTo(this.ticket.get('productCollection'), 'reset', this.clearTicket);
     },
     addItem: function(model) {
       this.$ticketContainer.append(this.lineItemTemplate(model.attributes));
     },
     removeItem: function(model) {
       this.$ticketContainer.find('#line-item-'+model.get('id')).remove();
+    },
+    clearTicket: function() {
+      this.$ticketContainer.empty();
     },
     searchResultTemplate: _.template($('#item-search-components').html()),
     lineItemTemplate: _.template($('#ticket-line-item').html()),
@@ -360,24 +376,27 @@ jQuery(function($) {
     stopPanTicket: function() {
       this.$mouseTrap.css('z-index', 0);
     },
+    resolveSearchRPC: function(url, uriEncodedQuery) {
+      var newurl = url + '/' + encodeURIComponent(this.$searchbox.val().replace(/\//g, ''));
+      return newurl;
+    },
     render: function() {
       //Move to template
       this.$('.item-search').append(this.searchResultTemplate());
-      var searchbox = this.$('.item-search input.search');
+      this.$searchbox = this.$('.item-search input.search');
+
+      //Avoid re-initialization or figure out how to destroy in demolish, or move a level up in view hiearchy.
       this.$ticketContainer.kinetic({
         moved: _.bind(this.panTicket, this),
         stopped: _.bind(this.stopPanTicket, this)
       });
       
-      searchbox.typeahead({
+      this.$searchbox.typeahead({
         valueKey: 'name',
         name: 'search-items',
         remote: {
             url: this.employeeSession.get('apiServer')+'/pos-api/products/'+this.employeeSession.get("token"),
-            replace: function(url, uriEncodedQuery) {
-              var newurl = url + '/' + encodeURIComponent(searchbox.val().replace(/\//g, ''));
-              return newurl;
-            }
+            replace: _.bind(this.resolveSearchRPC, this)
         },
         limit: 12,
         template: _.template($('#item-search-result').html())
@@ -386,6 +405,8 @@ jQuery(function($) {
     demolish: function() {
        this.$('.item-search input.search').typeahead('destroy');
        this.$('.item-search').empty();
+       //this.$ticketContainer.kinetic('detach');
+       this.ticket.clearTicket();
     }
   });
 
