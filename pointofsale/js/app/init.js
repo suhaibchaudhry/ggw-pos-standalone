@@ -353,7 +353,7 @@ jQuery(function($) {
       this.ticketRegionClicked = false;
       this.ticketRegionClickY = 0;
       this.$ticketContainer = this.$('.ticket-container');
-      this.$ticketContainer.get(0).innerHTML = '<div class="product-table"></div>';
+      this.$ticketContainer.get(0).innerHTML = '<div class="product-table">'+$("#ticket-line-item-heading").html()+'</div>';
       this.$mouseTrap = this.$('.mousetrap');
 
       this.listenTo(this.ticket.get('productCollection'), 'add', this.addItem);
@@ -367,7 +367,7 @@ jQuery(function($) {
       this.$ticketContainer.find('#line-item-'+model.get('id')).remove();
     },
     clearTicket: function() {
-      this.$ticketContainer.get(0).innerHTML = '<div class="product-table"></div>';
+      this.$ticketContainer.get(0).innerHTML = '<div class="product-table">'+$("#ticket-line-item-heading").html()+'</div>';
     },
     searchResultTemplate: _.template($('#item-search-components').html()),
     lineItemTemplate: _.template($('#ticket-line-item').html()),

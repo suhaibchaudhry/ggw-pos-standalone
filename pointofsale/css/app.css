@@ -223,10 +223,18 @@ div.ticket-container .product-table {
     display: table;
     width: 100%;
 }
-div.ticket-container .product-table .line-item {
+div.ticket-container .product-table .line-item, div.ticket-container .product-table .line-item-heading {
     display: table-row;
 }
-div.ticket-container .product-table .line-item > div {
+div.ticket-container .product-table .line-item-heading {
+    background: #E9E9E9;
+}
+div.ticket-container .product-table .line-item > div, div.ticket-container .product-table .line-item-heading > div {
     display: table-cell;
     vertical-align: middle;
+    padding: 0 5px;
+}
+div.ticket-container .product-table .line-item-heading > div {
+    padding: 5px;
+    font-weight: bold;
 }
