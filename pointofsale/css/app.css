@@ -219,3 +219,14 @@ div.ticket-container {
     border: 1px solid #96B8F0;
     margin: 8px 10px;
 }
+div.ticket-container .product-table {
+    display: table;
+    width: 100%;
+}
+div.ticket-container .product-table .line-item {
+    display: table-row;
+}
+div.ticket-container .product-table .line-item > div {
+    display: table-cell;
+    vertical-align: middle;
+}
