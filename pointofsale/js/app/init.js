@@ -325,7 +325,7 @@ jQuery(function($) {
     tagName: 'div',
     events: {
       "typeahead:selected .item-search": 'itemSelected',
-      //"click .line-item": 'removeLineItem'
+      //"click .line-item": 'removeLineItem',
     },
     //Event Controllers
     itemSelected: function(e, datum) {
@@ -353,11 +353,20 @@ jQuery(function($) {
     },
     searchResultTemplate: _.template($('#item-search-components').html()),
     lineItemTemplate: _.template($('#ticket-line-item').html()),
+    panTicket: function() {
+      this.$('.mousetrap').css('z-index', 2);
+    },
+    stopPanTicket: function() {
+      this.$('.mousetrap').css('z-index', 0);
+    },
     render: function() {
       //Move to template
       this.$('.item-search').append(this.searchResultTemplate());
       var searchbox = this.$('.item-search input.search');
-      this.$ticketContainer.kinetic();
+      this.$ticketContainer.kinetic({
+        moved: _.bind(this.panTicket, this),
+        stopped: _.bind(this.stopPanTicket, this)
+      });
       
       searchbox.typeahead({
         valueKey: 'name',
@@ -424,6 +433,11 @@ jQuery(function($) {
   	var app = new applicationFrame({
   		el: $('div.app-wrap').get(0)
   	});
+
+    //Catch mouse releases outside of application window.
+    $(window).mouseup(function(){
+       $('.mousetrap').css('z-index', 0);
+    });
   }
 
   appBootstrap();
