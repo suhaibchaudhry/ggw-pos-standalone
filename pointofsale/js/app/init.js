@@ -324,8 +324,8 @@ jQuery(function($) {
   var activeTicketView = Backbone.View.extend({
     tagName: 'div',
     events: {
-      "typeahead:selected .item-search" : 'itemSelected',
-      "click .line-item": 'removeLineItem'
+      "typeahead:selected .item-search": 'itemSelected',
+      //"click .line-item": 'removeLineItem'
     },
     //Event Controllers
     itemSelected: function(e, datum) {
@@ -338,15 +338,18 @@ jQuery(function($) {
     initialize: function(attributes, options) {
       this.employeeSession = attributes['employeeSession'];
       this.ticket = new Ticket();
+      this.ticketRegionClicked = false;
+      this.ticketRegionClickY = 0;
+      this.$ticketContainer = this.$('.ticket-container');
 
       this.listenTo(this.ticket.get('productCollection'), 'add', this.addItem);
       this.listenTo(this.ticket.get('productCollection'), 'remove', this.removeItem);
     },
     addItem: function(model) {
-      this.$('.ticket-container').append(this.lineItemTemplate(model.attributes));
+      this.$ticketContainer.append(this.lineItemTemplate(model.attributes));
     },
     removeItem: function(model) {
-      this.$('.ticket-container #line-item-'+model.get('id')).remove();
+      this.$ticketContainer.find('#line-item-'+model.get('id')).remove();
     },
     searchResultTemplate: _.template($('#item-search-components').html()),
     lineItemTemplate: _.template($('#ticket-line-item').html()),
@@ -354,7 +357,8 @@ jQuery(function($) {
       //Move to template
       this.$('.item-search').append(this.searchResultTemplate());
       var searchbox = this.$('.item-search input.search');
-
+      this.$ticketContainer.kinetic();
+      
       searchbox.typeahead({
         valueKey: 'name',
         name: 'search-items',
