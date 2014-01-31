@@ -11,6 +11,8 @@
     <link type="text/css" rel="stylesheet" href="css/typeahead.css">
     <link type="text/css" rel="stylesheet" href="css/app.css">
 
+    <script type="text/javascript" src="js/vendor/accounting.js"></script>
+
 	<script type="text/javascript" src="js/vendor/jquery-2.0.3.min.js"></script>
 	<script type="text/javascript" src="js/vendor/typeahead.js"></script>
 	<script type="text/javascript" src="js/vendor/jquery.kinetic.min.js"></script>
@@ -98,6 +100,7 @@
 		<div id="line-item-<%= id %>" data-id="<%= id %>" class="line-item">
 			<div class="sku"><%= sku %></div>
 			<div class="name"><%= name %></div>
+			<div class="price"><%= accounting.formatMoney(sell_price) %></div>
 			<img src="<%= thumbnail %>" alt="" />
 		</div>
 	</script>

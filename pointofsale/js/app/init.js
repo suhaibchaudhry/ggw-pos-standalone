@@ -353,6 +353,7 @@ jQuery(function($) {
       this.ticketRegionClicked = false;
       this.ticketRegionClickY = 0;
       this.$ticketContainer = this.$('.ticket-container');
+      this.$ticketContainer.get(0).innerHTML = '<div class="product-table"></div>';
       this.$mouseTrap = this.$('.mousetrap');
 
       this.listenTo(this.ticket.get('productCollection'), 'add', this.addItem);
@@ -360,13 +361,13 @@ jQuery(function($) {
       this.listenTo(this.ticket.get('productCollection'), 'reset', this.clearTicket);
     },
     addItem: function(model) {
-      this.$ticketContainer.append(this.lineItemTemplate(model.attributes));
+      this.$ticketContainer.find('.product-table').append(this.lineItemTemplate(model.attributes));
     },
     removeItem: function(model) {
       this.$ticketContainer.find('#line-item-'+model.get('id')).remove();
     },
     clearTicket: function() {
-      this.$ticketContainer.empty();
+      this.$ticketContainer.get(0).innerHTML = '<div class="product-table"></div>';
     },
     searchResultTemplate: _.template($('#item-search-components').html()),
     lineItemTemplate: _.template($('#ticket-line-item').html()),
