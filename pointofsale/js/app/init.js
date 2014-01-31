@@ -325,7 +325,7 @@ jQuery(function($) {
     tagName: 'div',
     events: {
       "typeahead:selected .item-search": 'itemSelected',
-      //"click .line-item": 'removeLineItem'
+      //"click .line-item": 'removeLineItem',
     },
     //Event Controllers
     itemSelected: function(e, datum) {
@@ -341,6 +341,7 @@ jQuery(function($) {
       this.ticketRegionClicked = false;
       this.ticketRegionClickY = 0;
       this.$ticketContainer = this.$('.ticket-container');
+      this.$mouseTrap = this.$('.mousetrap');
 
       this.listenTo(this.ticket.get('productCollection'), 'add', this.addItem);
       this.listenTo(this.ticket.get('productCollection'), 'remove', this.removeItem);
@@ -353,11 +354,20 @@ jQuery(function($) {
     },
     searchResultTemplate: _.template($('#item-search-components').html()),
     lineItemTemplate: _.template($('#ticket-line-item').html()),
+    panTicket: function() {
+      this.$mouseTrap.css('z-index', 2);
+    },
+    stopPanTicket: function() {
+      this.$mouseTrap.css('z-index', 0);
+    },
     render: function() {
       //Move to template
       this.$('.item-search').append(this.searchResultTemplate());
       var searchbox = this.$('.item-search input.search');
-      this.$ticketContainer.kinetic();
+      this.$ticketContainer.kinetic({
+        moved: _.bind(this.panTicket, this),
+        stopped: _.bind(this.stopPanTicket, this)
+      });
       
       searchbox.typeahead({
         valueKey: 'name',
@@ -399,8 +409,14 @@ jQuery(function($) {
       this.employeeSession.initialSession();
       this.heightAdjust();
 
+      //Global Window level event catching and handling
       //Handle window resize
       $(window).on('resize', _.bind(this.heightAdjust, this));
+
+      //Catch mouse releases outside of application window.
+      $(window).mouseup(function(){
+         $('.mousetrap').css('z-index', 0);
+      });
   	},
   	render: function(session, login, options) {
       if(login) {
