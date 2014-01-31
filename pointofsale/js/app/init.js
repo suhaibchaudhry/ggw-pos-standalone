@@ -313,10 +313,14 @@ jQuery(function($) {
         productCollection: new ticketProductCollection()
       });
 
-      this.listenTo(this.get('productCollection'), 'add', this.computeTotals);
+      this.listenTo(this.get('productCollection'), 'add', this.addToTotals);
+      this.listenTo(this.get('productCollection'), 'remove', this.subtractFromTotals);
     },
-    computeTotals: function(model) {
+    addToTotals: function(model) {
       this.set('total', this.get('total')+accounting.unformat(model.get('sell_price')));
+    },
+    subtractFromTotals: function(model) {
+      this.set('total', this.get('total')-accounting.unformat(model.get('sell_price')));
     },
     addItem: function(productAttributes) {
       this.get('productCollection').add(productAttributes);
@@ -345,14 +349,16 @@ jQuery(function($) {
     tagName: 'div',
     events: {
       "typeahead:selected .item-search": 'itemSelected',
-      //"click .line-item": 'removeLineItem',
+      "click .line-item a.delete-item": 'removeLineItem',
     },
     //Event Controllers
     itemSelected: function(e, datum) {
       this.ticket.addItem(datum);
     },
     removeLineItem: function(e) {
-      this.ticket.removeItem(e.currentTarget.dataset.id);
+      e.preventDefault();
+      e.stopPropagation();
+      this.ticket.removeItem(e.currentTarget.parentNode.parentNode.dataset.id);
     },
     //View Callbacks
     initialize: function(attributes, options) {
@@ -402,7 +408,6 @@ jQuery(function($) {
       return newurl;
     },
     render: function() {
-      //Move to template
       this.$('.item-search').append(this.searchResultTemplate());
       this.$searchbox = this.$('.item-search input.search');
 

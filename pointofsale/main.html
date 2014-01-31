@@ -113,7 +113,7 @@
 
 	<script type="text/template" id="ticket-line-item">
 		<div id="line-item-<%= id %>" data-id="<%= id %>" class="line-item">
-			<div class="sku"><%= sku %></div>
+			<div class="sku"><a href="#" class="delete-item">Delete Product</a> <%= sku %></div>
 			<div class="name"><%= name %></div>
 			<div class="price"><%= accounting.formatMoney(sell_price) %></div>
 			<div class="image"><img src="<%= thumbnail %>" alt="" width="35" height="35" /></div>

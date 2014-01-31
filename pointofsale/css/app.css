@@ -226,6 +226,18 @@ div.ticket-container .product-table {
 div.ticket-container .product-table .line-item, div.ticket-container .product-table .line-item-heading {
     display: table-row;
 }
+div.ticket-container .product-table .line-item a.delete-item {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url(../images/delete-outline.png) no-repeat;
+    text-indent: -999px;
+    background-size: cover;
+}
+div.ticket-container .product-table .line-item a.delete-item:hover {
+    background-image: url(../images/delete.png);
+}
+
 div.ticket-container .product-table .line-item-heading {
     background: #E9E9E9;
 }
