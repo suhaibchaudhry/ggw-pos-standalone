@@ -52,7 +52,9 @@
 	    	<div class="right region"></div>
     	</div>
     	<div class="footer region">
-    		<div class="viewport-main"></div>
+    		<div class="viewport-main register-display">
+    			<div class="subtotal calculation"></div>
+    		</div>
     	</div>
 	</div>
 
@@ -94,6 +96,10 @@
 			</div>
 			<div class="image" style="background-image: url(<%= image %>);"></div>
 		</div>
+	</script>
+
+	<script type="text/template" id="labelize-data">
+		<span class="label"><%= label %>: </span><span class="value"><%= value %></span>
 	</script>
 
 	<script type="text/template" id="ticket-line-item-heading">

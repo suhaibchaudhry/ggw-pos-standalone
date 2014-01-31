@@ -238,3 +238,14 @@ div.ticket-container .product-table .line-item-heading > div {
     padding: 5px;
     font-weight: bold;
 }
+
+div.register-display {
+    color: #fff;
+}
+div.register-display .subtotal {
+    font-size: 1.2em;
+}
+div.register-display span.label {
+    color: #68b800;
+    text-transform: uppercase;
+}

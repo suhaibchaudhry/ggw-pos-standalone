@@ -308,7 +308,15 @@ jQuery(function($) {
 
   var Ticket = Backbone.Model.extend({
     initialize: function() {
-      this.set({productCollection: new ticketProductCollection()});
+      this.set({
+        total: 0,
+        productCollection: new ticketProductCollection()
+      });
+
+      this.listenTo(this.get('productCollection'), 'add', this.computeTotals);
+    },
+    computeTotals: function(model) {
+      this.set('total', this.get('total')+accounting.unformat(model.get('sell_price')));
     },
     addItem: function(productAttributes) {
       this.get('productCollection').add(productAttributes);
@@ -349,6 +357,8 @@ jQuery(function($) {
     //View Callbacks
     initialize: function(attributes, options) {
       this.employeeSession = attributes['employeeSession'];
+      this.$registerDisplay = attributes['registerDisplay'];
+
       this.ticket = new Ticket();
       this.ticketRegionClicked = false;
       this.ticketRegionClickY = 0;
@@ -359,6 +369,14 @@ jQuery(function($) {
       this.listenTo(this.ticket.get('productCollection'), 'add', this.addItem);
       this.listenTo(this.ticket.get('productCollection'), 'remove', this.removeItem);
       this.listenTo(this.ticket.get('productCollection'), 'reset', this.clearTicket);
+
+      this.listenTo(this.ticket, 'change:total', this.updateTotal);
+    },
+    updateTotal: function(model, value, options) {
+      this.$registerDisplay.find('.subtotal').html(this.labelizeTemplate({
+        label: 'Subtotal',
+        value: accounting.formatMoney(value)
+      }));
     },
     addItem: function(model) {
       this.$ticketContainer.find('.product-table').append(this.lineItemTemplate(model.attributes));
@@ -368,9 +386,11 @@ jQuery(function($) {
     },
     clearTicket: function() {
       this.$ticketContainer.get(0).innerHTML = '<div class="product-table">'+$("#ticket-line-item-heading").html()+'</div>';
+      this.$registerDisplay.find('.calculation').empty();
     },
     searchResultTemplate: _.template($('#item-search-components').html()),
     lineItemTemplate: _.template($('#ticket-line-item').html()),
+    labelizeTemplate: _.template($('#labelize-data').html()),
     panTicket: function() {
       this.$mouseTrap.css('z-index', 2);
     },
@@ -419,7 +439,11 @@ jQuery(function($) {
  
   		//Regional Views
       this.employeeOperationsRegion = new employeeOperationsView({el: this.$('.employeeOperations').get(0), employeeSession: this.employeeSession});
-      this.activeTicketRegion = new activeTicketView({el: this.$('.activeTicket').get(0), employeeSession: this.employeeSession});
+      this.activeTicketRegion = new activeTicketView({
+        el: this.$('.activeTicket').get(0),
+        employeeSession: this.employeeSession,
+        registerDisplay: this.$('.register-display')
+      });
 
       //Modal View
       this.loginModal = new loginModal({employeeSession: this.employeeSession});
