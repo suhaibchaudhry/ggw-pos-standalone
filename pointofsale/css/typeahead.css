@@ -1,6 +1,6 @@
 /*Main Product Search*/
 .item-search {
-  margin: 10px 0 0;
+  margin: 10px 9px 0;
 }
 .item-search .twitter-typeahead {
   width: 100%;
@@ -8,8 +8,7 @@
 .item-search .typeahead,
 .item-search .tt-query,
 .item-search .tt-hint {
-  width: 90%;
-  height: 30px;
+  width: 100%;
   padding: 8px 12px;
   font-size: 24px;
   line-height: 30px;
@@ -18,8 +17,9 @@
   -moz-border-radius: 8px;
   border-radius: 8px;
   outline: none;
-  margin: 0 auto;
+  margin: 0;
   display: block;
+  box-sizing: border-box;
 }
 
 .item-search .tt-dataset-search-items {
@@ -58,8 +58,7 @@
      -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
           box-shadow: 0 5px 10px rgba(0,0,0,.2);
 
-  right: 3% !important;
-  left: 3% !important;
+  width: 100%;
 }
 
 .item-search .tt-suggestion {

@@ -69,15 +69,6 @@ jQuery(function($) {
     }
   });
 
-  //Product Model
-  var ticketProduct = Backbone.Model.extend({
-
-  });
-
-  var ticketProductCollection = Backbone.Collection.extend({
-    model: ticketProduct
-  });
-
   //Application Views
   var loginView = Backbone.View.extend({
     tagName: 'div',
@@ -306,32 +297,59 @@ jQuery(function($) {
 
   });
 
-  //Break down to model later
+  //Product Model
+  var ticketProduct = Backbone.Model.extend({
+
+  });
+
+  var ticketProductCollection = Backbone.Collection.extend({
+    model: ticketProduct
+  });
+
+  var Ticket = Backbone.Model.extend({
+    initialize: function() {
+      this.set({productCollection: new ticketProductCollection()});
+    },
+    addItem: function(productAttributes) {
+      this.get('productCollection').add(productAttributes);
+      //Add Item to database
+    },
+    removeItem: function(productId) {
+      this.get('productCollection').remove(productId);
+      //Remove Item from database
+    }
+  });
+
+  //Split visible ticket and ticket ui operation in to different views
   var activeTicketView = Backbone.View.extend({
     tagName: 'div',
     events: {
-      "typeahead:selected .item-search" : 'itemSelected',
-      "click .line-item": 'removeLineItem'
+      "typeahead:selected .item-search": 'itemSelected',
+      //"click .line-item": 'removeLineItem'
     },
-    initialize: function(attributes, options) {
-      this.employeeSession = attributes['employeeSession'];
-      this.productCollection = new ticketProductCollection();
-
-      this.listenTo(this.productCollection, 'add', this.addItem);
-      this.listenTo(this.productCollection, 'remove', this.removeItem);
-    },
+    //Event Controllers
     itemSelected: function(e, datum) {
-      //console.log(e);
-      this.productCollection.add(datum);
+      this.ticket.addItem(datum);
     },
     removeLineItem: function(e) {
-      this.productCollection.remove(e.currentTarget.dataset.id);
+      this.ticket.removeItem(e.currentTarget.dataset.id);
+    },
+    //View Callbacks
+    initialize: function(attributes, options) {
+      this.employeeSession = attributes['employeeSession'];
+      this.ticket = new Ticket();
+      this.ticketRegionClicked = false;
+      this.ticketRegionClickY = 0;
+      this.$ticketContainer = this.$('.ticket-container');
+
+      this.listenTo(this.ticket.get('productCollection'), 'add', this.addItem);
+      this.listenTo(this.ticket.get('productCollection'), 'remove', this.removeItem);
     },
     addItem: function(model) {
-      this.$('.ticket-container').append(this.lineItemTemplate(model.attributes));
+      this.$ticketContainer.append(this.lineItemTemplate(model.attributes));
     },
     removeItem: function(model) {
-      this.$('.ticket-container #line-item-'+model.get('id')).remove();
+      this.$ticketContainer.find('#line-item-'+model.get('id')).remove();
     },
     searchResultTemplate: _.template($('#item-search-components').html()),
     lineItemTemplate: _.template($('#ticket-line-item').html()),
@@ -339,6 +357,8 @@ jQuery(function($) {
       //Move to template
       this.$('.item-search').append(this.searchResultTemplate());
       var searchbox = this.$('.item-search input.search');
+      this.$ticketContainer.kinetic();
+      
       searchbox.typeahead({
         valueKey: 'name',
         name: 'search-items',
