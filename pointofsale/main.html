@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-
+	<!-- Application and Frameworks' Styles -->
 	<link type="text/css" rel="stylesheet" href="css/vendor/backbone.modal.css">
     <link type="text/css" rel="stylesheet" href="css/vendor/backbone.modal.theme.css">
     <link type="text/css" rel="stylesheet" href="css/vendor/forms.css">
@@ -11,17 +11,34 @@
     <link type="text/css" rel="stylesheet" href="css/typeahead.css">
     <link type="text/css" rel="stylesheet" href="css/app.css">
 
+    <!-- JS Libraries -->
     <script type="text/javascript" src="js/vendor/accounting.js"></script>
 
+    <!-- JQuery -->
 	<script type="text/javascript" src="js/vendor/jquery-2.0.3.min.js"></script>
 	<script type="text/javascript" src="js/vendor/typeahead.js"></script>
 	<script type="text/javascript" src="js/vendor/jquery.kinetic.min.js"></script>
 
+	<!-- Backbone JS -->
 	<script type="text/javascript" src="js/vendor/underscore-min.js"></script>
 	<script type="text/javascript" src="js/vendor/backbone-min.js"></script>
 	<script type="text/javascript" src="js/vendor/backbone.modal.js"></script>
 	
-	<script type="text/javascript" src="js/app/clipboard.js"></script>
+	<!-- Nodewebkit Specific Code -->
+	<script type="text/javascript" src="js/app/native/clipboard.js"></script>
+
+	<!-- Models -->
+	<script type="text/javascript" src="js/app/models/employeeSession.js"></script>
+	<script type="text/javascript" src="js/app/models/ticketProduct.js"></script>
+	<script type="text/javascript" src="js/app/models/Ticket.js"></script>
+
+	<!-- Views -->
+	<script type="text/javascript" src="js/app/views/loginView.js"></script>
+	<script type="text/javascript" src="js/app/views/employeeOperationsView.js"></script>
+	<script type="text/javascript" src="js/app/views/activeTicketView.js"></script>
+	<script type="text/javascript" src="js/app/views/loginModal.js"></script>
+
+	<!-- Bootstrap App -->
 	<script type="text/javascript" src="js/app/init.js"></script>
 
 	<title>Point of Sale</title>
