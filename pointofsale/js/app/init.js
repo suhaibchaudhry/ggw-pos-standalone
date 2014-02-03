@@ -336,11 +336,17 @@ jQuery(function($) {
     },
     emptyTicket: function() {
       //Empty ticket on server and ui use clearTicket
-
+      this.clearTicket();
     },
     deleteTicket: function() {
       //Delete ticket and clear on ui
 
+    },
+    loadTicket: function() {
+      //Load another Ticket from database
+    },
+    unloadTicket: function() {
+      //Unload current ticket from client
     }
   });
 
@@ -353,6 +359,7 @@ jQuery(function($) {
     },
     //Event Controllers
     itemSelected: function(e, datum) {
+      datum['qty'] = 1;
       this.ticket.addItem(datum);
     },
     removeLineItem: function(e) {
