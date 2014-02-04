@@ -4,7 +4,10 @@ jQuery(function($) {
     tagName: 'div',
     events: {
       "typeahead:selected .item-search": 'itemSelected',
+      //Move to product line item view
       "click .line-item a.delete-item": 'removeLineItem',
+      "click .line-item .qty a.increase": 'incrementQty',
+      "click .line-item .qty a.decrease": 'decreaseQty'
     },
     //Event Controllers
     itemSelected: function(e, datum) {
@@ -15,6 +18,24 @@ jQuery(function($) {
       e.preventDefault();
       e.stopPropagation();
       this.ticket.removeItem(e.currentTarget.parentNode.parentNode.dataset.id);
+    },
+    incrementQty: function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var product = this.ticket.get('productCollection').get(e.currentTarget.parentNode.parentNode.dataset.id);
+      product.set('qty', product.get('qty')+1);
+    },
+    decreaseQty: function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var product = this.ticket.get('productCollection').get(e.currentTarget.parentNode.parentNode.dataset.id);
+      var qty = product.get('qty');
+      if(qty > 1) {
+        product.set('qty', product.get('qty')-1);
+      }
+    },
+    changeQuantyDisplay: function(product, qty, options) {
+      this.$('#line-item-'+product.id+' .qty span.value').text(qty);
     },
     //View Callbacks
     initialize: function(attributes, options) {
@@ -31,6 +52,8 @@ jQuery(function($) {
       this.listenTo(this.ticket.get('productCollection'), 'add', this.addItem);
       this.listenTo(this.ticket.get('productCollection'), 'remove', this.removeItem);
       this.listenTo(this.ticket.get('productCollection'), 'reset', this.clearTicket);
+
+      this.listenTo(this.ticket.get('productCollection'), 'change:qty', this.changeQuantyDisplay);
 
       this.listenTo(this.ticket, 'change:total', this.updateTotal);
     },
