@@ -9,11 +9,20 @@ jQuery(function($) {
       this.listenTo(this.get('productCollection'), 'add', this.addToTotals);
       this.listenTo(this.get('productCollection'), 'remove', this.subtractFromTotals);
     },
-    addToTotals: function(model) {
-      this.set('total', this.get('total')+accounting.unformat(model.get('sell_price')));
+    addToTotals: function(product) {
+      this.set('total', this.get('total')+accounting.unformat(product.get('sell_price')));
     },
-    subtractFromTotals: function(model) {
-      this.set('total', this.get('total')-accounting.unformat(model.get('sell_price')));
+    incrementQty: function(product) {
+      product.set('qty', product.get('qty')+1);
+      this.set('total', this.get('total')+accounting.unformat(product.get('sell_price')));
+    },
+    decrementQty: function(product) {
+      product.set('qty', product.get('qty')-1);
+      this.set('total', this.get('total')-accounting.unformat(product.get('sell_price')));
+    },
+    subtractFromTotals: function(product) {
+      var product_total = product.get('qty')*accounting.unformat(product.get('sell_price'));
+      this.set('total', this.get('total')-product_total);
     },
     addItem: function(productAttributes) {
       this.get('productCollection').add(productAttributes);

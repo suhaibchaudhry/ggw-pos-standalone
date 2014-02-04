@@ -23,15 +23,14 @@ jQuery(function($) {
       e.preventDefault();
       e.stopPropagation();
       var product = this.ticket.get('productCollection').get(e.currentTarget.parentNode.parentNode.dataset.id);
-      product.set('qty', product.get('qty')+1);
+      this.ticket.incrementQty(product);
     },
     decreaseQty: function(e) {
       e.preventDefault();
       e.stopPropagation();
       var product = this.ticket.get('productCollection').get(e.currentTarget.parentNode.parentNode.dataset.id);
-      var qty = product.get('qty');
-      if(qty > 1) {
-        product.set('qty', product.get('qty')-1);
+      if(product.get('qty') > 1) {
+        this.ticket.decrementQty(product);
       }
     },
     changeQuantyDisplay: function(product, qty, options) {
