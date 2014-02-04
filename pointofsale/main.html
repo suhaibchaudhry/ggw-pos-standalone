@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-
+	<!-- Application and Frameworks' Styles -->
 	<link type="text/css" rel="stylesheet" href="css/vendor/backbone.modal.css">
     <link type="text/css" rel="stylesheet" href="css/vendor/backbone.modal.theme.css">
     <link type="text/css" rel="stylesheet" href="css/vendor/forms.css">
@@ -11,15 +11,34 @@
     <link type="text/css" rel="stylesheet" href="css/typeahead.css">
     <link type="text/css" rel="stylesheet" href="css/app.css">
 
+    <!-- JS Libraries -->
+    <script type="text/javascript" src="js/vendor/accounting.js"></script>
+
+    <!-- JQuery -->
 	<script type="text/javascript" src="js/vendor/jquery-2.0.3.min.js"></script>
 	<script type="text/javascript" src="js/vendor/typeahead.js"></script>
 	<script type="text/javascript" src="js/vendor/jquery.kinetic.min.js"></script>
 
+	<!-- Backbone JS -->
 	<script type="text/javascript" src="js/vendor/underscore-min.js"></script>
 	<script type="text/javascript" src="js/vendor/backbone-min.js"></script>
 	<script type="text/javascript" src="js/vendor/backbone.modal.js"></script>
 	
-	<script type="text/javascript" src="js/app/clipboard.js"></script>
+	<!-- Nodewebkit Specific Code -->
+	<script type="text/javascript" src="js/app/native/clipboard.js"></script>
+
+	<!-- Models -->
+	<script type="text/javascript" src="js/app/models/employeeSession.js"></script>
+	<script type="text/javascript" src="js/app/models/ticketProduct.js"></script>
+	<script type="text/javascript" src="js/app/models/Ticket.js"></script>
+
+	<!-- Views -->
+	<script type="text/javascript" src="js/app/views/loginView.js"></script>
+	<script type="text/javascript" src="js/app/views/employeeOperationsView.js"></script>
+	<script type="text/javascript" src="js/app/views/activeTicketView.js"></script>
+	<script type="text/javascript" src="js/app/views/loginModal.js"></script>
+
+	<!-- Bootstrap App -->
 	<script type="text/javascript" src="js/app/init.js"></script>
 
 	<title>Point of Sale</title>
@@ -50,7 +69,9 @@
 	    	<div class="right region"></div>
     	</div>
     	<div class="footer region">
-    		<div class="viewport-main"></div>
+    		<div class="viewport-main register-display">
+    			<div class="subtotal calculation"></div>
+    		</div>
     	</div>
 	</div>
 
@@ -94,11 +115,27 @@
 		</div>
 	</script>
 
+	<script type="text/template" id="labelize-data">
+		<span class="label"><%= label %>: </span><span class="value"><%= value %></span>
+	</script>
+
+	<script type="text/template" id="ticket-line-item-heading">
+		<div class="line-item-heading">
+			<div class="sku">Barcode</div>
+			<div class="name">Product</div>
+			<div class="price">Price</div>
+			<div class="image"></div>
+			<div class="qty">Qty</div>
+		</div>
+	</script>
+
 	<script type="text/template" id="ticket-line-item">
 		<div id="line-item-<%= id %>" data-id="<%= id %>" class="line-item">
-			<div class="sku"><%= sku %></div>
+			<div class="sku"><a href="#" class="delete-item">Delete Product</a> <%= sku %></div>
 			<div class="name"><%= name %></div>
-			<img src="<%= image %>" alt="" />
+			<div class="price"><%= accounting.formatMoney(sell_price) %></div>
+			<div class="image"><img src="<%= thumbnail %>" alt="" width="35" height="35" /></div>
+			<div class="qty"><%= qty %></div>
 		</div>
 	</script>
 </body>
