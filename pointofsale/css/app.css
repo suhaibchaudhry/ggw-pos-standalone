@@ -237,6 +237,34 @@ div.ticket-container .product-table .line-item a.delete-item {
 div.ticket-container .product-table .line-item a.delete-item:hover {
     background-image: url(../images/delete.png);
 }
+div.ticket-container .product-table .line-item .qty span {
+    float: left
+}
+div.ticket-container .product-table .line-item .qty a {
+    display: block;
+    width: 16px;
+    height: 16px;
+    text-indent: -9999px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    float: right;
+}
+
+div.ticket-container .product-table .line-item .qty a.increase {
+    background-image: url(../images/plus-outline.png);
+}
+
+div.ticket-container .product-table .line-item .qty a.decrease {
+    background-image: url(../images/minus-outline.png);
+}
+
+div.ticket-container .product-table .line-item .qty a.increase:hover {
+    background-image: url(../images/plus.png);
+}
+
+div.ticket-container .product-table .line-item .qty a.decrease:hover {
+    background-image: url(../images/minus.png);
+}
 
 div.ticket-container .product-table .line-item-heading {
     background: #E9E9E9;
@@ -261,3 +289,4 @@ div.register-display span.label {
     color: #68b800;
     text-transform: uppercase;
 }
+
