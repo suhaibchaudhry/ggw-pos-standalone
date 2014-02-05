@@ -11,8 +11,13 @@ jQuery(function($) {
     },
     //Event Controllers
     itemSelected: function(e, datum) {
-      datum['qty'] = 1;
-      this.ticket.addItem(datum);
+      var product = this.ticket.get('productCollection').get(datum['id']);
+      if(product) {
+        this.ticket.incrementQty(product);
+      } else {
+        datum['qty'] = 1;
+        this.ticket.addItem(datum);
+      }
     },
     removeLineItem: function(e) {
       e.preventDefault();
@@ -57,6 +62,7 @@ jQuery(function($) {
       this.listenTo(this.ticket, 'change:total', this.updateTotal);
     },
     updateTotal: function(model, value, options) {
+      //Update other totals here
       this.$registerDisplay.find('.subtotal').html(this.labelizeTemplate({
         label: 'Subtotal',
         value: accounting.formatMoney(value)
