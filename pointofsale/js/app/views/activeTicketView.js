@@ -55,6 +55,12 @@ jQuery(function($) {
       this.$ticketContainer.get(0).innerHTML = '<div class="product-table">'+$("#ticket-line-item-heading").html()+'</div>';
       this.$mouseTrap = this.$('.mousetrap');
 
+      //Avoided re-initialization
+      this.$ticketContainer.kinetic({
+        moved: _.bind(this.panTicket, this),
+        stopped: _.bind(this.stopPanTicket, this)
+      });
+
       this.listenTo(this.ticket.get('productCollection'), 'add', this.addItem);
       this.listenTo(this.ticket.get('productCollection'), 'remove', this.removeItem);
       this.listenTo(this.ticket.get('productCollection'), 'reset', this.clearTicket);
@@ -97,12 +103,6 @@ jQuery(function($) {
       this.activeCustomerView.render();
       this.$('.item-search').append(this.searchBoxTemplate());
       this.$searchbox = this.$('.item-search input.search');
-
-      //Avoid re-initialization or figure out how to destroy in demolish, or move a level up in view hiearchy.
-      this.$ticketContainer.kinetic({
-        moved: _.bind(this.panTicket, this),
-        stopped: _.bind(this.stopPanTicket, this)
-      });
       
       this.$searchbox.typeahead({
         valueKey: 'name',
