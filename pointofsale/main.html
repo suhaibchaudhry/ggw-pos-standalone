@@ -109,10 +109,20 @@
 	</script>
 
 	<script type="text/template" id="customer-search-components">
-		<input class="search-customer typeahead" placeholder="Search Customer ..." autocomplete="off" type="text" />
+		<input class="search typeahead" placeholder="Search Customer ..." autocomplete="off" type="text" />
 	</script>
 
 	<script type="text/template" id="item-search-result">
+		<div class="search-result">
+			<div class="info">
+			<div class="sku"><%= sku %></div>
+			<div class="name"><%= name %></div>
+			</div>
+			<div class="image" style="background-image: url(<%= image %>);"></div>
+		</div>
+	</script>
+
+	<script type="text/template" id="customer-search-result">
 		<div class="search-result">
 			<div class="info">
 			<div class="sku"><%= sku %></div>

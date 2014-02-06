@@ -9,7 +9,8 @@ jQuery(function($) {
       this.employeeOperationsRegion = new employeeOperationsView({el: this.$('.employeeOperations').get(0), employeeSession: this.employeeSession});
 
       this.activeCustomerRegion = new activeCustomerView({
-        el: this.$('.activeCustomer').get(0)
+        el: this.$('.activeCustomer').get(0),
+        employeeSession: this.employeeSession
       });
 
       this.activeTicketRegion = new activeTicketView({
