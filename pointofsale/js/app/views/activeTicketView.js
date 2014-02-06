@@ -16,6 +16,7 @@ jQuery(function($) {
         this.ticket.incrementQty(product);
       } else {
         datum['qty'] = 1;
+        console.log(datum);
         this.ticket.addItem(datum);
       }
     },
