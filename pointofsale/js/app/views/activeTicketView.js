@@ -46,6 +46,7 @@ jQuery(function($) {
     initialize: function(attributes, options) {
       this.employeeSession = attributes['employeeSession'];
       this.$registerDisplay = attributes['registerDisplay'];
+      this.activeCustomerView = attributes['activeCustomerView'];
 
       this.ticket = new Ticket();
       this.ticketRegionClicked = false;
@@ -79,7 +80,7 @@ jQuery(function($) {
       this.$ticketContainer.get(0).innerHTML = '<div class="product-table">'+$("#ticket-line-item-heading").html()+'</div>';
       this.$registerDisplay.find('.calculation').empty();
     },
-    searchResultTemplate: _.template($('#item-search-components').html()),
+    searchBoxTemplate: _.template($('#item-search-components').html()),
     lineItemTemplate: _.template($('#ticket-line-item').html()),
     labelizeTemplate: _.template($('#labelize-data').html()),
     panTicket: function() {
@@ -93,7 +94,8 @@ jQuery(function($) {
       return newurl;
     },
     render: function() {
-      this.$('.item-search').append(this.searchResultTemplate());
+      this.activeCustomerView.render();
+      this.$('.item-search').append(this.searchBoxTemplate());
       this.$searchbox = this.$('.item-search input.search');
 
       //Avoid re-initialization or figure out how to destroy in demolish, or move a level up in view hiearchy.
@@ -114,9 +116,9 @@ jQuery(function($) {
       });
     },
     demolish: function() {
+       this.activeCustomerView.demolish();
        this.$('.item-search input.search').typeahead('destroy');
        this.$('.item-search').empty();
-       //this.$ticketContainer.kinetic('detach');
        this.ticket.clearTicket();
     }
   });

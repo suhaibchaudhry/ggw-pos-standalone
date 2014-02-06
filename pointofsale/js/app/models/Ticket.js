@@ -35,6 +35,7 @@ jQuery(function($) {
     clearTicket: function() {
       //Clear ticket on ui
       this.get('productCollection').reset();
+      this.set('total', 0);
     },
     emptyTicket: function() {
       //Empty ticket on server and ui use clearTicket

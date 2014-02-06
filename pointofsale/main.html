@@ -35,6 +35,7 @@
 	<!-- Views -->
 	<script type="text/javascript" src="js/app/views/loginView.js"></script>
 	<script type="text/javascript" src="js/app/views/employeeOperationsView.js"></script>
+	<script type="text/javascript" src="js/app/views/activeCustomerView.js"></script>
 	<script type="text/javascript" src="js/app/views/activeTicketView.js"></script>
 	<script type="text/javascript" src="js/app/views/loginModal.js"></script>
 
@@ -65,7 +66,9 @@
 	    			<div class="ticket-container"></div>
 	    		</div>
 	    	</div>
-	    	<div class="left region"></div>
+	    	<div class="left region activeCustomer">
+	    		<div class="customer-search"></div>
+	    	</div>
 	    	<div class="right region"></div>
     	</div>
     	<div class="footer region">
@@ -103,6 +106,10 @@
 
 	<script type="text/template" id="item-search-components">
 		<input class="search typeahead" placeholder="Search Items ..." autocomplete="off" type="text" />
+	</script>
+
+	<script type="text/template" id="customer-search-components">
+		<input class="search-customer typeahead" placeholder="Search Customer ..." autocomplete="off" type="text" />
 	</script>
 
 	<script type="text/template" id="item-search-result">
