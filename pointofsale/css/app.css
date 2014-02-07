@@ -307,3 +307,12 @@ div.register-display span.label {
 .price span.orig {
     text-decoration: line-through;
 }
+.selected-customer {
+    font-size: 11px;
+}
+.selected-customer span.label {
+    font-weight: bold;
+}
+.selected-customer div {
+    margin: 0 0 2px;
+}
