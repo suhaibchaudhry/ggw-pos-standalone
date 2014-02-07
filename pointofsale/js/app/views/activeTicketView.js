@@ -16,7 +16,7 @@ jQuery(function($) {
     //Event Controllers
     itemSelected: function(e, datum) {
       var product = this.ticket.get('productCollection').get(datum['id']);
-      this.$searchbox.val('');
+      this.$searchbox.typeahead('setQuery', '');
       if(product) {
         this.ticket.incrementQty(product);
       } else {
