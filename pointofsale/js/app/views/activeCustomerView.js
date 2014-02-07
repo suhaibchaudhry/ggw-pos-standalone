@@ -17,7 +17,6 @@ jQuery(function($) {
 			this.listenTo(this.activeCustomer, 'change:id', this.customerChanged);
 		},
 		customerChanged: function(model, value, options) {
-			console.log(value);
 			if(value) {
 				this.$('.selected-customer').html(this.selectedCustomerTemplate(model.attributes));
 			} else {
