@@ -7,16 +7,20 @@ jQuery(function($) {
       //Move to product line item view
       "click .line-item a.delete-item": 'removeLineItem',
       "click .line-item .qty a.increase": 'incrementQty',
-      "click .line-item .qty a.decrease": 'decreaseQty'
+      "click .line-item .qty a.decrease": 'decreaseQty',
+      "click": 'activateScanFocus'
+    },
+    activateScanFocus: function(e) {
+      this.$searchbox.focus();
     },
     //Event Controllers
     itemSelected: function(e, datum) {
       var product = this.ticket.get('productCollection').get(datum['id']);
+      this.$searchbox.val('');
       if(product) {
         this.ticket.incrementQty(product);
       } else {
         datum['qty'] = 1;
-        console.log(datum);
         this.ticket.addItem(datum);
       }
     },
@@ -105,7 +109,7 @@ jQuery(function($) {
       this.$searchbox = this.$('.item-search input.search');
       
       this.$searchbox.typeahead({
-        valueKey: 'name',
+        valueKey: 'id',
         name: 'search-items',
         remote: {
             url: this.employeeSession.get('apiServer')+'/pos-api/products/'+this.employeeSession.get("token"),

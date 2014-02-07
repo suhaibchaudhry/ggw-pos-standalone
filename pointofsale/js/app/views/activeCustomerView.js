@@ -16,10 +16,10 @@ jQuery(function($) {
 
 			//Create TypeaheadJs Box
 			this.$searchbox.typeahead({
-		      valueKey: 'name',
+		      valueKey: 'id',
 		      name: 'search-customers',
 		      remote: {
-		         url: this.employeeSession.get('apiServer')+'/pos-api/products/'+this.employeeSession.get("token"),
+		         url: this.employeeSession.get('apiServer')+'/pos-api/customers/'+this.employeeSession.get("token"),
 		         replace: _.bind(this.resolveSearchRPC, this)
 		      },
 		      limit: 12,
