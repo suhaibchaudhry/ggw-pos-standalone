@@ -289,4 +289,18 @@ div.register-display span.label {
     color: #68b800;
     text-transform: uppercase;
 }
-
+.default-customer-badge {
+    font-size: .6em;
+}
+.default-customer-badge p {
+    margin: 0;
+    color: rgb(202, 60, 60);
+    font-weight: bold;
+    padding: 0 0 0 .2em;
+}
+.default-customer-badge ul {
+    margin: .4em 0;
+}
+.search-result span.label {
+    font-weight: bold;
+}

@@ -31,6 +31,7 @@
 	<script type="text/javascript" src="js/app/models/employeeSession.js"></script>
 	<script type="text/javascript" src="js/app/models/ticketProduct.js"></script>
 	<script type="text/javascript" src="js/app/models/Ticket.js"></script>
+	<script type="text/javascript" src="js/app/models/activeCustomer.js"></script>
 
 	<!-- Views -->
 	<script type="text/javascript" src="js/app/views/loginView.js"></script>
@@ -124,12 +125,9 @@
 
 	<script type="text/template" id="customer-search-result">
 		<div class="search-result">
-			<div class="id"><%= id %></div>
-			<div class="account_id"><%= account_id %></div>
-			<div class="company_name"><%= company_name %></div>
-			<div class="company_phone"><%= company_phone %></div>
-			<div class="agent_phone"><%= agent_phone %></div>
-			<div class="company_address"><%= company_address %></div>
+			<div class="account_id"><span class="label">Account #: </span><%= account_id %></div>
+			<div class="company_name"><span class="label">Company: </span><%= company_name %></div>
+			<div class="company_phone"><span class="label">Phone #: </span><%= company_phone %></div>
 		</div>
 	</script>
 
@@ -159,6 +157,33 @@
 				<a href="#" class="increase">+</a>
 			</div>
 		</div>
+	</script>
+
+	<script type="text/template" id="default-customer-badge">
+		<div class="default-customer-badge">
+			<p>Search customers by: </p>
+			<ul>
+				<li>Account #</li>
+				<li>Company Name</li>
+				<li>Phone Number</li>
+				<li>Address or Zip code</li>
+			</ul>
+		</div>
+	</script>
+
+	<script type="text/template" id="selected-customer">
+		<div class="account-id"><span class="label">Account #: </span><span class="value"><%= account_id %></span></div>
+		<div class="company-name"><span class="label">Company: </span><span class="value"><%= company_name %></span></div>
+		<div class="company-phone"><span class="label">Phone #: </span><span class="value"><%= company_phone %></span></div>
+		<div class="company-address"><span class="label">Address: </span><span class="value"><%= company_address %></span></div>
+	</script>
+
+	<script type="text/template" id="default-customer">
+		<div class="customer"><span class="label">Customer: </span><span class="value">Walk-in Customer</span></div>
+	</script>
+
+	<script type="text/template" id="default-customer-wrap">
+		<div class="selected-customer"></div>
 	</script>
 </body>
 </html>
