@@ -304,3 +304,6 @@ div.register-display span.label {
 .search-result span.label {
     font-weight: bold;
 }
+.price span.orig {
+    text-decoration: line-through;
+}

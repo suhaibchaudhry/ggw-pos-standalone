@@ -21,6 +21,7 @@ jQuery(function($) {
         this.ticket.incrementQty(product);
       } else {
         datum['qty'] = 1;
+        datum['activeTicketView'] = this;
         this.ticket.addItem(datum);
       }
     },
@@ -70,9 +71,34 @@ jQuery(function($) {
       this.listenTo(this.ticket.get('productCollection'), 'reset', this.clearTicket);
 
       this.listenTo(this.ticket.get('productCollection'), 'change:qty', this.changeQuantyDisplay);
+      this.listenTo(this.ticket.get('productCollection'), 'change:price', this.priceUpdate);
 
       this.listenTo(this.ticket, 'change:total', this.updateTotal);
+
+      //this.listenTo(this.activeCustomerView.activeCustomer, 'change:id', this.customerChanged);
     },
+    priceUpdate: function(product, value, options) {
+      //Update physical view price of item.
+      if(product.get('retail')) {
+        this.$('#line-item-'+product.id+' .price').html(accounting.formatMoney(product.get('price')));
+      } else {
+        this.$('#line-item-'+product.id+' .price').html('<span class="orig">'+accounting.formatMoney(product.get('sell_price'))+'</span>'+'<span class="special">'+accounting.formatMoney(product.get('price'))+'</span>');
+      }
+
+      //Update Total
+      var total = 0;
+      this.ticket.get('productCollection').each(function(product) {
+        total += product.get('qty')*product.get('price');
+      });
+
+      this.ticket.set('total', total);
+    },
+    /*
+    customerChanged: function(model, value, options) {
+      //Adjust ticket total for changed prices, trigger event after prices are updated
+      console.log('Update all prices');
+    },
+    */
     updateTotal: function(model, value, options) {
       //Update other totals here
       this.$registerDisplay.find('.subtotal').html(this.labelizeTemplate({
@@ -80,8 +106,13 @@ jQuery(function($) {
         value: accounting.formatMoney(value)
       }));
     },
-    addItem: function(model) {
-      this.$ticketContainer.find('.product-table').append(this.lineItemTemplate(model.attributes));
+    addItem: function(product) {
+      this.$ticketContainer.find('.product-table').append(this.lineItemTemplate(product.attributes));
+      if(product.get('retail')) {
+        this.$('#line-item-'+product.id+' .price').html(accounting.formatMoney(product.get('price')));
+      } else {
+        this.$('#line-item-'+product.id+' .price').html('<span class="orig">'+accounting.formatMoney(product.get('sell_price'))+'</span>'+'<span class="special">'+accounting.formatMoney(product.get('price'))+'</span>');
+      }
     },
     removeItem: function(model) {
       this.$ticketContainer.find('#line-item-'+model.get('id')).remove();
