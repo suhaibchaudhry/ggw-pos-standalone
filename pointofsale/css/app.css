@@ -331,7 +331,8 @@ div.register-display span.label {
 }
 .selected-customer .company-address {
     position: relative;
-    height: 40px;
+    float: left;
+    margin: 0 0 10px;
 }
 .selected-customer .company-address span.label {
     float: left;
