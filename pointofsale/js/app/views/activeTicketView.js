@@ -24,6 +24,9 @@ jQuery(function($) {
       this.$ticketContainer.get(0).innerHTML = '<div class="product-table">'+$("#ticket-line-item-heading").html()+'</div>';
       this.$mouseTrap = this.$('.mousetrap');
 
+      //Activate search text on click.
+      this.$registerDisplay.on('click', _.bind(this.activateScanFocus, this));
+
       this.listenTo(this.ticket.get('productCollection'), 'add', this.addItem);
       this.listenTo(this.ticket.get('productCollection'), 'remove', this.removeItem);
       this.listenTo(this.ticket.get('productCollection'), 'reset', this.clearTicket);
@@ -94,18 +97,18 @@ jQuery(function($) {
     },
     removeLineItem: function(e) {
       e.preventDefault();
-      e.stopPropagation();
+      //e.stopPropagation(); //Allow propagation to select text box.
       this.ticket.removeItem(e.currentTarget.parentNode.parentNode.dataset.id);
     },
     incrementQty: function(e) {
       e.preventDefault();
-      e.stopPropagation();
+      //e.stopPropagation();
       var product = this.ticket.get('productCollection').get(e.currentTarget.parentNode.parentNode.dataset.id);
       this.ticket.incrementQty(product);
     },
     decreaseQty: function(e) {
       e.preventDefault();
-      e.stopPropagation();
+      //e.stopPropagation();
       var product = this.ticket.get('productCollection').get(e.currentTarget.parentNode.parentNode.dataset.id);
       if(product.get('qty') > 1) {
         this.ticket.decrementQty(product);
