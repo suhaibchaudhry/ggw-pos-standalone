@@ -24,12 +24,6 @@ jQuery(function($) {
       this.$ticketContainer.get(0).innerHTML = '<div class="product-table">'+$("#ticket-line-item-heading").html()+'</div>';
       this.$mouseTrap = this.$('.mousetrap');
 
-      //Avoided re-initialization
-      this.$ticketContainer.kinetic({
-        moved: _.bind(this.panTicket, this),
-        stopped: _.bind(this.stopPanTicket, this)
-      });
-
       this.listenTo(this.ticket.get('productCollection'), 'add', this.addItem);
       this.listenTo(this.ticket.get('productCollection'), 'remove', this.removeItem);
       this.listenTo(this.ticket.get('productCollection'), 'reset', this.clearTicket);
