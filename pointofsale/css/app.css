@@ -33,7 +33,7 @@ body {
      -webkit-user-select: none;
 }
 .app-wrap {
-    min-width: 960px;   
+    min-width: 1000px;   
 }
 
 .viewport-main {
