@@ -57,7 +57,7 @@ jQuery(function($) {
 			and a render shouldn't be called twice before calling a demolish.*/
 
 			//Destroy Typeaheadjs Box
-			this.$searchbox.typeahead('destroy');
+			this.$('.customer-search input.search').typeahead('destroy');
 			this.$customer_search.empty();
 		}
 	});

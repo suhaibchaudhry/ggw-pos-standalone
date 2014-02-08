@@ -1,19 +1,92 @@
 jQuery(function($) {
-  //Split visible ticket and ticket ui operation in to different views
   activeTicketView = Backbone.View.extend({
     tagName: 'div',
     events: {
       "typeahead:selected .item-search": 'itemSelected',
-      //Move to product line item view
       "click .line-item a.delete-item": 'removeLineItem',
       "click .line-item .qty a.increase": 'incrementQty',
       "click .line-item .qty a.decrease": 'decreaseQty',
       "click": 'activateScanFocus'
     },
+    //Ticket Templates
+    searchBoxTemplate: _.template($('#item-search-components').html()),
+    lineItemTemplate: _.template($('#ticket-line-item').html()),
+    labelizeTemplate: _.template($('#labelize-data').html()),
+    initialize: function(attributes, options) {
+      this.employeeSession = attributes['employeeSession'];
+      this.$registerDisplay = attributes['registerDisplay'];
+      this.activeCustomerView = attributes['activeCustomerView'];
+
+      this.ticket = new Ticket();
+      this.ticketRegionClicked = false;
+      this.ticketRegionClickY = 0;
+      this.$ticketContainer = this.$('.ticket-container');
+      this.$ticketContainer.get(0).innerHTML = '<div class="product-table">'+$("#ticket-line-item-heading").html()+'</div>';
+      this.$mouseTrap = this.$('.mousetrap');
+
+      //Avoided re-initialization
+      this.$ticketContainer.kinetic({
+        moved: _.bind(this.panTicket, this),
+        stopped: _.bind(this.stopPanTicket, this)
+      });
+
+      this.listenTo(this.ticket.get('productCollection'), 'add', this.addItem);
+      this.listenTo(this.ticket.get('productCollection'), 'remove', this.removeItem);
+      this.listenTo(this.ticket.get('productCollection'), 'reset', this.clearTicket);
+
+      this.listenTo(this.ticket.get('productCollection'), 'change:qty', this.changeQuantyDisplay);
+      this.listenTo(this.ticket.get('productCollection'), 'change:price', this.priceUpdate);
+
+      this.listenTo(this.ticket, 'change:total', this.updateTotal);
+    },
+
+    //Backbone Event Handlers
+    addItem: function(product) {
+      this.$ticketContainer.find('.product-table').append(this.lineItemTemplate(product.attributes));
+      if(product.get('retail')) {
+        this.$('#line-item-'+product.id+' .price').html(accounting.formatMoney(product.get('price')));
+      } else {
+        this.$('#line-item-'+product.id+' .price').html('<span class="orig">'+accounting.formatMoney(product.get('sell_price'))+'</span>'+'<span class="special">'+accounting.formatMoney(product.get('price'))+'</span>');
+      }
+    },
+    removeItem: function(model) {
+      this.$ticketContainer.find('#line-item-'+model.get('id')).remove();
+    },
+    clearTicket: function() {
+      this.$ticketContainer.get(0).innerHTML = '<div class="product-table">'+$("#ticket-line-item-heading").html()+'</div>';
+      this.$registerDisplay.find('.calculation').empty();
+    },
+    changeQuantyDisplay: function(product, qty, options) {
+      this.$('#line-item-'+product.id+' .qty span.value').text(qty);
+    },
+    priceUpdate: function(product, value, options) {
+      //Update physical view price of item.
+      if(product.get('retail')) {
+        this.$('#line-item-'+product.id+' .price').html(accounting.formatMoney(product.get('price')));
+      } else {
+        this.$('#line-item-'+product.id+' .price').html('<span class="orig">'+accounting.formatMoney(product.get('sell_price'))+'</span>'+'<span class="special">'+accounting.formatMoney(product.get('price'))+'</span>');
+      }
+
+      //Update Total
+      var total = 0;
+      this.ticket.get('productCollection').each(function(product) {
+        total += product.get('qty')*product.get('price');
+      });
+
+      this.ticket.set('total', total);
+    },
+    updateTotal: function(model, value, options) {
+      //Update other totals here
+      this.$registerDisplay.find('.subtotal').html(this.labelizeTemplate({
+        label: 'Subtotal',
+        value: accounting.formatMoney(value)
+      }));
+    },
+
+    //DOM Event Controllers
     activateScanFocus: function(e) {
       this.$searchbox.focus();
     },
-    //Event Controllers
     itemSelected: function(e, datum) {
       var product = this.ticket.get('productCollection').get(datum['id']);
       this.$searchbox.typeahead('setQuery', '');
@@ -44,86 +117,7 @@ jQuery(function($) {
         this.ticket.decrementQty(product);
       }
     },
-    changeQuantyDisplay: function(product, qty, options) {
-      this.$('#line-item-'+product.id+' .qty span.value').text(qty);
-    },
-    //View Callbacks
-    initialize: function(attributes, options) {
-      this.employeeSession = attributes['employeeSession'];
-      this.$registerDisplay = attributes['registerDisplay'];
-      this.activeCustomerView = attributes['activeCustomerView'];
-
-      this.ticket = new Ticket();
-      this.ticketRegionClicked = false;
-      this.ticketRegionClickY = 0;
-      this.$ticketContainer = this.$('.ticket-container');
-      this.$ticketContainer.get(0).innerHTML = '<div class="product-table">'+$("#ticket-line-item-heading").html()+'</div>';
-      this.$mouseTrap = this.$('.mousetrap');
-
-      //Avoided re-initialization
-      this.$ticketContainer.kinetic({
-        moved: _.bind(this.panTicket, this),
-        stopped: _.bind(this.stopPanTicket, this)
-      });
-
-      this.listenTo(this.ticket.get('productCollection'), 'add', this.addItem);
-      this.listenTo(this.ticket.get('productCollection'), 'remove', this.removeItem);
-      this.listenTo(this.ticket.get('productCollection'), 'reset', this.clearTicket);
-
-      this.listenTo(this.ticket.get('productCollection'), 'change:qty', this.changeQuantyDisplay);
-      this.listenTo(this.ticket.get('productCollection'), 'change:price', this.priceUpdate);
-
-      this.listenTo(this.ticket, 'change:total', this.updateTotal);
-
-      //this.listenTo(this.activeCustomerView.activeCustomer, 'change:id', this.customerChanged);
-    },
-    priceUpdate: function(product, value, options) {
-      //Update physical view price of item.
-      if(product.get('retail')) {
-        this.$('#line-item-'+product.id+' .price').html(accounting.formatMoney(product.get('price')));
-      } else {
-        this.$('#line-item-'+product.id+' .price').html('<span class="orig">'+accounting.formatMoney(product.get('sell_price'))+'</span>'+'<span class="special">'+accounting.formatMoney(product.get('price'))+'</span>');
-      }
-
-      //Update Total
-      var total = 0;
-      this.ticket.get('productCollection').each(function(product) {
-        total += product.get('qty')*product.get('price');
-      });
-
-      this.ticket.set('total', total);
-    },
-    /*
-    customerChanged: function(model, value, options) {
-      //Adjust ticket total for changed prices, trigger event after prices are updated
-      console.log('Update all prices');
-    },
-    */
-    updateTotal: function(model, value, options) {
-      //Update other totals here
-      this.$registerDisplay.find('.subtotal').html(this.labelizeTemplate({
-        label: 'Subtotal',
-        value: accounting.formatMoney(value)
-      }));
-    },
-    addItem: function(product) {
-      this.$ticketContainer.find('.product-table').append(this.lineItemTemplate(product.attributes));
-      if(product.get('retail')) {
-        this.$('#line-item-'+product.id+' .price').html(accounting.formatMoney(product.get('price')));
-      } else {
-        this.$('#line-item-'+product.id+' .price').html('<span class="orig">'+accounting.formatMoney(product.get('sell_price'))+'</span>'+'<span class="special">'+accounting.formatMoney(product.get('price'))+'</span>');
-      }
-    },
-    removeItem: function(model) {
-      this.$ticketContainer.find('#line-item-'+model.get('id')).remove();
-    },
-    clearTicket: function() {
-      this.$ticketContainer.get(0).innerHTML = '<div class="product-table">'+$("#ticket-line-item-heading").html()+'</div>';
-      this.$registerDisplay.find('.calculation').empty();
-    },
-    searchBoxTemplate: _.template($('#item-search-components').html()),
-    lineItemTemplate: _.template($('#ticket-line-item').html()),
-    labelizeTemplate: _.template($('#labelize-data').html()),
+    //Event handlers for kinectic, to stop typeahead box interfering with drag scroll.
     panTicket: function() {
       this.$mouseTrap.css('z-index', 2);
     },
@@ -134,6 +128,8 @@ jQuery(function($) {
       var newurl = url + '/' + encodeURIComponent(this.$searchbox.val().replace(/\//g, ''));
       return newurl;
     },
+
+    //Render and demolish logic
     render: function() {
       this.activeCustomerView.render();
       this.$('.item-search').append(this.searchBoxTemplate());
@@ -152,7 +148,7 @@ jQuery(function($) {
     },
     demolish: function() {
        this.activeCustomerView.demolish();
-       this.$searchbox.typeahead('destroy');
+       this.$('.item-search input.search').typeahead('destroy');
        this.$('.item-search').empty();
        this.ticket.clearTicket();
     }
