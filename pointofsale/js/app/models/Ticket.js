@@ -9,9 +9,16 @@ jQuery(function($) {
       this.listenTo(this.get('productCollection'), 'add', this.addToTotals);
       this.listenTo(this.get('productCollection'), 'remove', this.subtractFromTotals);
     },
+    //Product Collection Event Handlers
     addToTotals: function(product) {
       this.set('total', this.get('total')+accounting.unformat(product.get('price')));
     },
+    subtractFromTotals: function(product) {
+      var product_total = product.get('qty')*accounting.unformat(product.get('price'));
+      this.set('total', this.get('total')-product_total);
+    },
+
+    //Product Model Methods
     incrementQty: function(product) {
       product.set('qty', product.get('qty')+1);
       this.set('total', this.get('total')+accounting.unformat(product.get('price')));
@@ -19,10 +26,6 @@ jQuery(function($) {
     decrementQty: function(product) {
       product.set('qty', product.get('qty')-1);
       this.set('total', this.get('total')-accounting.unformat(product.get('price')));
-    },
-    subtractFromTotals: function(product) {
-      var product_total = product.get('qty')*accounting.unformat(product.get('price'));
-      this.set('total', this.get('total')-product_total);
     },
     addItem: function(productAttributes) {
       this.get('productCollection').add(productAttributes);

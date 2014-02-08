@@ -40,11 +40,12 @@ jQuery(function($) {
       //Handle window resize
       $(window).on('resize', _.bind(this.heightAdjust, this));
 
-      //Catch mouse releases outside of application window.
+      //Catch mouse releases outside of application window, and release all mousetraps.
       $(window).mouseup(function(){
          $('.mousetrap').css('z-index', 0);
       });
   	},
+    //No demolish is neccesary for this always-on singleton view.
   	render: function(session, login, options) {
       if(login) {
         this.employeeOperationsRegion.render();
