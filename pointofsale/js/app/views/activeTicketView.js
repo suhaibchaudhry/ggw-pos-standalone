@@ -152,7 +152,7 @@ jQuery(function($) {
     },
     demolish: function() {
        this.activeCustomerView.demolish();
-       this.$('.item-search input.search').typeahead('destroy');
+       this.$searchbox.typeahead('destroy');
        this.$('.item-search').empty();
        this.ticket.clearTicket();
     }

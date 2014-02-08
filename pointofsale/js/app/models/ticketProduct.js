@@ -65,6 +65,7 @@ jQuery(function($) {
     }
   });
 
+  //Product Collection
   ticketProductCollection = Backbone.Collection.extend({
     model: ticketProduct
   });

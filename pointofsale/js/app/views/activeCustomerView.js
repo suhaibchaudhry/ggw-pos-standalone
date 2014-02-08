@@ -3,7 +3,6 @@ jQuery(function($) {
 		events: {
 			"typeahead:selected .customer-search": 'itemSelected'
 		},
-		//Implement ActiveCustomer model, and typeahead customer search.
 		tagName: 'div',
 		searchBoxTemplate: _.template($('#customer-search-components').html()),
 		defaultUserBadgeTemplate: _.template($('#default-customer-badge').html()),
@@ -28,6 +27,7 @@ jQuery(function($) {
 			this.activeCustomer.set(datum);
 		},
 		resolveSearchRPC: function(url, uriEncodedQuery) {
+			//Preprocess URL: Strip forward slashes to make compatible with Drupal GET arg syntax, Decouple later via POST. 
       		var newurl = url + '/' + encodeURIComponent(this.$searchbox.val().replace(/\//g, ''));
       		return newurl;
     	},
@@ -53,8 +53,11 @@ jQuery(function($) {
 		    });
 		},
 		demolish: function() {
+			/*Demolish cannot be called before a render has been called,
+			and a render shouldn't be called twice before calling a demolish.*/
+
 			//Destroy Typeaheadjs Box
-			this.$('.item-search input.search').typeahead('destroy');
+			this.$searchbox.typeahead('destroy');
 			this.$customer_search.empty();
 		}
 	});
