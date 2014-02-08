@@ -32,10 +32,12 @@ jQuery(function($) {
       		return newurl;
     	},
 		render: function() {
-			this.$customer_search.append(this.searchBoxTemplate());
-			this.$customer_search.append(this.defaultUserBadgeTemplate());
 			this.$customer_search.append(this.defaultCustomerWrapTemplate());
 			this.$('.selected-customer').html(this.defaultCustomerTemplate());
+
+			this.$customer_search.append(this.searchBoxTemplate());
+			this.$customer_search.append(this.defaultUserBadgeTemplate());
+
 			this.$searchbox = this.$('.customer-search input.search');
 
 			//Create TypeaheadJs Box
