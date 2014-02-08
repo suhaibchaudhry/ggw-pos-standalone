@@ -2,8 +2,6 @@ jQuery(function($) {
   var applicationFrame = Backbone.View.extend({
   	tagName: 'div',
   	initialize: function() {
-      this.$ticketContainer = this.$('.ticket-container');
-
       //Employee Session Model
       this.employeeSession = new employeeSession({apiServer: 'http://www.general-goods.com'});
  
@@ -23,7 +21,7 @@ jQuery(function($) {
       });
 
       //Avoided re-initialization
-      this.$ticketContainer.kinetic({
+      this.activeTicketRegion.$ticketContainer.kinetic({
         moved: _.bind(this.activeTicketRegion.panTicket, this.activeTicketRegion),
         stopped: _.bind(this.activeTicketRegion.stopPanTicket, this.activeTicketRegion)
       });
