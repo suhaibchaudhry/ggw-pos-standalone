@@ -3,19 +3,30 @@ jQuery(function($) {
   ticketProduct = Backbone.Model.extend({
   	initialize: function(attributes, options) {
       var activeCustomer = this.get('activeTicketView').activeCustomerView.activeCustomer;
+      this.set('retail', true);
       if(activeCustomer.get('id')) {
-        //Perform role checks.
-        this.set('retail', true);
+        //Perform role checks, and set the smallest price for current user.
         this.set('price', this.getRolePrice());
       } else {
-        this.set('retail', true);
+        //Set products price to default sellprice received from server.
         this.set('price', attributes['sell_price']);
       }
 
-      //listen on active customer for changing customers.
+      //listen on active customer for changing customer ids on customer singleton, so we can update the price.
       this.listenTo(activeCustomer, 'change:id', this.customerChanged);
   	},
+    customerChanged: function(model, customer_id, options) {
+      if(customer_id) {
+        //Perform role checks, listen on active customer for changing roles.
+        this.set('price', this.getRolePrice());
+      } else {
+        //Walk-in User
+        this.set('retail', true);
+        this.set('price', this.get('sell_price'));
+      }
+    },
     customerHasRole: function(rid) {
+      //Check whether a customer has a given role, given a rid.
       var activeCustomer = this.get('activeTicketView').activeCustomerView.activeCustomer;
       var product = this;
       var roleExists = false;
@@ -43,20 +54,13 @@ jQuery(function($) {
       });
 
       if(min_role_price == 0) {
+        //return the default sell price
         this.set('retail', true);
         return this.get('sell_price');
       } else {
+        //Return special role based price
         this.set('retail', false);
         return min_role_price;
-      }
-    },
-    customerChanged: function(model, value, options) {
-      if(value) {
-        //Perform role checks, listen on active customer for changing roles.
-        this.set('price', this.getRolePrice());
-      } else {
-        this.set('retail', true);
-        this.set('price', attributes['sell_price']);
       }
     }
   });
