@@ -64,7 +64,7 @@ jQuery(function($) {
         this.$('#line-item-'+product.id+' .price').html('<span class="orig">'+accounting.formatMoney(product.get('sell_price'))+'</span>'+'<span class="special">'+accounting.formatMoney(product.get('price'))+'</span>');
       }
 
-      //Update Total
+      //Update Total with previously added products.
       var total = 0;
       this.ticket.get('productCollection').each(function(product) {
         total += product.get('qty')*product.get('price');

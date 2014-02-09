@@ -11,7 +11,7 @@
 .item-search .tt-query,
 .item-search .tt-hint {
   width: 100%;
-  padding: 8px 12px;
+  padding: 8px 48px 8px 12px;
   font-size: 24px;
   line-height: 30px;
   border: 2px solid #ccc;
@@ -115,6 +115,20 @@
 
 .item-search .tt-suggestion div.result {
   margin: 0;
+}
+
+.item-search a.clear-search {
+  position: absolute;
+  right: 0;
+  z-index: 1;
+  width: 48px;
+  height: 48px;
+  background: url(../images/delete-outline_24.png);
+  text-indent: -9999px;
+}
+
+.item-search a.clear-search:hover {
+  background: url(../images/delete_24.png);
 }
 
 /*Customer Search*/
