@@ -144,11 +144,19 @@ jQuery(function($) {
 
     //Render and demolish logic, and other view methods.
     scanItem: function(barcode) {
+      var qty = 1;
+      var components = barcode.split('+', 2);
+
+      if(components[1]) {
+        qty = parseInt(components[0]);
+        barcode = components[1];
+      }
+
       var scanRequest = JSON.stringify({
         token: this.employeeSession.get("token"),
         barcode: barcode
       });
-      
+
       var ticket = this;
 
       $.ajax({
@@ -158,7 +166,7 @@ jQuery(function($) {
         timeout: 10000,
         success: function(res, status, xhr) {
           if(res.scan) {
-            ticket.addItemToCollection(res.product, 1);
+            ticket.addItemToCollection(res.product, qty);
           } else {
             //Log an error of item not being found, maybe use jgrowl.
           }
