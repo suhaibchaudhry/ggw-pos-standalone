@@ -201,19 +201,20 @@ div.modalOverlay {
 
 /*Ticket*/
 div.mousetrap {
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     z-index: 0;
+    min-width: 1000px;
 }
 div.ticket-container {
     position: absolute;
-    top: 60px;
-    bottom: 0;
-    right: 0;
-    left: 0;
+    top: 160px;
+    bottom: 100px;
+    right: 200px;
+    left: 200px;
     overflow: auto;
 
     border: 1px solid #96B8F0;

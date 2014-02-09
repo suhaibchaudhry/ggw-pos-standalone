@@ -7,6 +7,7 @@ jQuery(function($) {
       "click .line-item .qty a.increase": 'incrementQty',
       "click .line-item .qty a.decrease": 'decreaseQty',
       "click .item-search a.clear-search": 'clearProductSearch',
+      "mouseup .mousetrap": 'mouseTrapRelease',
       "keyup .item-search input.search": 'searchKeyUp',
       "click": 'activateScanFocus'
     },
@@ -132,10 +133,13 @@ jQuery(function($) {
     },
     //Event handlers for kinectic, to stop typeahead box interfering with drag scroll.
     panTicket: function() {
-      this.$mouseTrap.css('z-index', 2);
+      this.$mouseTrap.css('z-index', 50);
     },
     stopPanTicket: function() {
       this.$mouseTrap.css('z-index', 0);
+    },
+    mouseTrapRelease: function(e) {
+      this.activateScanFocus();
     },
     resolveSearchRPC: function(url, uriEncodedQuery) {
       var newurl = url + '/' + encodeURIComponent(this.$searchbox.val().replace(/\//g, ''));
