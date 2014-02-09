@@ -52,23 +52,27 @@ Nodewebkit Icons and branding: https://github.com/rogerwang/node-webkit/wiki/Ico
 
 VirtualBox Notes:
 -----------------
-Packages Reccomended: virtualbox-guest-x11
+Packages Recommended: virtualbox-guest-x11
 
 X11 Icons and Cursors:
 ----------------------
-Copy themes/icons to ~/.icons to do a user wide install
-Copy themes/icons to /usr/share/icons/ for a system wide instal
+User wide install: Copy themes/icons to ~/.icons
+
+System wide install: Copy themes/icons to /usr/share/icons/
 
 Create a symbolic link named "default" pointed to the icon themes directory either in ~/.icons or /usr/share/icons
-more details: https://wiki.archlinux.org/index.php/Cursor_Themes
+
+More details: https://wiki.archlinux.org/index.php/Cursor_Themes
 
 GTK Theme:
 ----------
 Copy themes/gtk-themes to ~/.themes to do a user wide install
+
 Copy themes/gtk-themes to /usr/share/themes for a system wide install
 
 Use gtk-chtheme package to change theme
-more details: http://fluxbox-wiki.org/index.php?title=Using_gtk_themes
+
+More details: http://fluxbox-wiki.org/index.php?title=Using_gtk_themes
 
 Harware:
 --------
@@ -98,6 +102,6 @@ Table Attached Barcode Scanner
 
 Allow Physical Verifone Terminals to conntect via RS232 as Payment Methods
 
-Issues:
--------
+Issues and System Limitations:
+------------------------------
 Multiple successive refreshes crash 'nw' if native context menus are used. Refreshing will be disabled for this application, so refreshing issue isn't that big. Does happen on node <= v0.10.24 and nodewebkit <= 0.8.4
