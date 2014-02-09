@@ -94,7 +94,7 @@ jQuery(function($) {
     itemSelected: function(e, datum) {
       this.$searchbox.typeahead('setQuery', '');
       this.$clearSearch.hide();
-      this.addItemToCollection(datum);
+      this.addItemToCollection(datum, 1);
     },
     removeLineItem: function(e) {
       e.preventDefault();
@@ -105,7 +105,7 @@ jQuery(function($) {
       e.preventDefault();
       //e.stopPropagation();
       var product = this.ticket.get('productCollection').get(e.currentTarget.parentNode.parentNode.dataset.id);
-      this.ticket.incrementQty(product);
+      this.ticket.incrementQty(product, 1);
     },
     decreaseQty: function(e) {
       e.preventDefault();
@@ -148,6 +148,7 @@ jQuery(function($) {
         token: this.employeeSession.get("token"),
         barcode: barcode
       });
+      
       var ticket = this;
 
       $.ajax({
@@ -157,7 +158,7 @@ jQuery(function($) {
         timeout: 10000,
         success: function(res, status, xhr) {
           if(res.scan) {
-            ticket.addItemToCollection(res.product);
+            ticket.addItemToCollection(res.product, 1);
           } else {
             //Log an error of item not being found, maybe use jgrowl.
           }
@@ -167,14 +168,21 @@ jQuery(function($) {
         }
       });
     },
-    addItemToCollection: function(datum) {
+    addItemToCollection: function(datum, qty) {
       var product = this.ticket.get('productCollection').get(datum['id']);
       if(product) {
-        this.ticket.incrementQty(product);
+        this.ticket.incrementQty(product, qty);
       } else {
+        //Add Base Product
         datum['qty'] = 1;
         datum['activeTicketView'] = this;
         this.ticket.addItem(datum);
+
+        if(qty > 1) {
+          //Increment product by remaining value
+          var product = this.ticket.get('productCollection').get(datum['id']);
+          this.ticket.incrementQty(product, qty-1);
+        }
       }
     },
     render: function() {

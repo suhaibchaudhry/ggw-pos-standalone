@@ -19,9 +19,9 @@ jQuery(function($) {
     },
 
     //Product Model Methods
-    incrementQty: function(product) {
-      product.set('qty', product.get('qty')+1);
-      this.set('total', this.get('total')+accounting.unformat(product.get('price')));
+    incrementQty: function(product, increment) {
+      product.set('qty', product.get('qty')+increment);
+      this.set('total', this.get('total')+(accounting.unformat(product.get('price'))*increment));
     },
     decrementQty: function(product) {
       product.set('qty', product.get('qty')-1);
