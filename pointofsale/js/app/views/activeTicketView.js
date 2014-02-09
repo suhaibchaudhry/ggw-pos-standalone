@@ -158,6 +158,8 @@ jQuery(function($) {
         success: function(res, status, xhr) {
           if(res.scan) {
             ticket.addItemToCollection(res.product);
+          } else {
+            //Log an error of item not being found, maybe use jgrowl.
           }
         },
         error: function(xhr, errorType, error) {
@@ -189,6 +191,8 @@ jQuery(function($) {
             replace: _.bind(this.resolveSearchRPC, this)
         },
         limit: 12,
+        hint: false,
+        minLength: 3,
         template: _.template($('#item-search-result').html())
       });
     },
