@@ -33,7 +33,7 @@ body {
      -webkit-user-select: none;
 }
 .app-wrap {
-    min-width: 960px;   
+    min-width: 1000px;   
 }
 
 .viewport-main {
@@ -160,13 +160,13 @@ div.modalOverlay {
     margin: 0;
     box-shadow: 0 0 4px #000;
     background: #7ABCFF;
-    background: -moz-linear-gradient(top, #7abcff 0%, #60abf8 44%, #4096ee 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7ABCFF), color-stop(44%,#60ABF8), color-stop(100%,#4096EE));
-    background: -webkit-linear-gradient(top, #7ABCFF 0%,#60ABF8 44%,#4096EE 100%);
-    background: -o-linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%);
-    background: -ms-linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%);
+    /*background: -moz-linear-gradient(top, #7abcff 0%, #60abf8 44%, #4096ee 100%);*/
+    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7ABCFF), color-stop(44%,#60ABF8), color-stop(100%,#4096EE));
+    background: -webkit-linear-gradient(top, #7ABCFF 0%,#60ABF8 44%,#4096EE 100%);*/
+    /*background: -o-linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%);*/
+    /*background: -ms-linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%);*/
+    /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', endColorstr='#4096ee',GradientType=0 );*/
     background: linear-gradient(to bottom, #7ABCFF 0%,#60ABF8 44%,#4096EE 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', endColorstr='#4096ee',GradientType=0 );
 }
 
 /*Buttons*/
@@ -237,6 +237,34 @@ div.ticket-container .product-table .line-item a.delete-item {
 div.ticket-container .product-table .line-item a.delete-item:hover {
     background-image: url(../images/delete.png);
 }
+div.ticket-container .product-table .line-item .qty span {
+    float: left
+}
+div.ticket-container .product-table .line-item .qty a {
+    display: block;
+    width: 16px;
+    height: 16px;
+    text-indent: -9999px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    float: right;
+}
+
+div.ticket-container .product-table .line-item .qty a.increase {
+    background-image: url(../images/plus-outline.png);
+}
+
+div.ticket-container .product-table .line-item .qty a.decrease {
+    background-image: url(../images/minus-outline.png);
+}
+
+div.ticket-container .product-table .line-item .qty a.increase:hover {
+    background-image: url(../images/plus.png);
+}
+
+div.ticket-container .product-table .line-item .qty a.decrease:hover {
+    background-image: url(../images/minus.png);
+}
 
 div.ticket-container .product-table .line-item-heading {
     background: #E9E9E9;
@@ -260,4 +288,62 @@ div.register-display .subtotal {
 div.register-display span.label {
     color: #68b800;
     text-transform: uppercase;
+}
+.default-customer-badge {
+    font-size: .6em;
+}
+.default-customer-badge p {
+    margin: 0;
+    color: rgb(202, 60, 60);
+    font-weight: bold;
+    padding: 0 0 0 .2em;
+}
+.default-customer-badge ul {
+    margin: .4em 0;
+}
+.search-result span.label {
+    font-weight: bold;
+}
+.price span.orig {
+    text-decoration: line-through;
+}
+.selected-customer {
+    font-size: 11px;
+    background: rgba(255,255,255,.8);
+    float: left;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 6px;
+    border-radius: 10px;
+    margin: 0 0 10px;
+}
+.selected-customer span.value {
+    margin: 0 0 0 4px;
+}
+.selected-customer span.label {
+    font-weight: bold;
+    width: 60px;
+    display: inline-block;
+    text-align: right;
+}
+.selected-customer div {
+    margin: 10px 0;
+}
+.selected-customer .company-address {
+    position: relative;
+    float: left;
+    margin: 0 0 10px;
+}
+.selected-customer .company-address span.label {
+    float: left;
+}
+.selected-customer .company-address span.value {
+    float: left;
+    width: 106px;
+}
+.selected-customer .company-name {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 8px 0;
+    text-decoration: underline;
 }

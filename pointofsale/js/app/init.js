@@ -7,10 +7,23 @@ jQuery(function($) {
  
   		//Regional Views
       this.employeeOperationsRegion = new employeeOperationsView({el: this.$('.employeeOperations').get(0), employeeSession: this.employeeSession});
+
+      this.activeCustomerRegion = new activeCustomerView({
+        el: this.$('.activeCustomer').get(0),
+        employeeSession: this.employeeSession
+      });
+
       this.activeTicketRegion = new activeTicketView({
         el: this.$('.activeTicket').get(0),
         employeeSession: this.employeeSession,
-        registerDisplay: this.$('.register-display')
+        registerDisplay: this.$('.register-display'),
+        activeCustomerView: this.activeCustomerRegion
+      });
+
+      //Avoided re-initialization
+      this.activeTicketRegion.$ticketContainer.kinetic({
+        moved: _.bind(this.activeTicketRegion.panTicket, this.activeTicketRegion),
+        stopped: _.bind(this.activeTicketRegion.stopPanTicket, this.activeTicketRegion)
       });
 
       //Modal View
@@ -27,11 +40,12 @@ jQuery(function($) {
       //Handle window resize
       $(window).on('resize', _.bind(this.heightAdjust, this));
 
-      //Catch mouse releases outside of application window.
+      //Catch mouse releases outside of application window, and release all mousetraps.
       $(window).mouseup(function(){
          $('.mousetrap').css('z-index', 0);
       });
   	},
+    //No demolish is neccesary for this always-on singleton view.
   	render: function(session, login, options) {
       if(login) {
         this.employeeOperationsRegion.render();

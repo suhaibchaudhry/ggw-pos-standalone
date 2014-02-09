@@ -8,6 +8,7 @@
     <link type="text/css" rel="stylesheet" href="css/vendor/forms.css">
     <link type="text/css" rel="stylesheet" href="css/vendor/buttons-core.css">
     <link type="text/css" rel="stylesheet" href="css/vendor/buttons.css">
+    <link type="text/css" rel="stylesheet" href="css/vendor/jquery.jgrowl.min.css">
     <link type="text/css" rel="stylesheet" href="css/typeahead.css">
     <link type="text/css" rel="stylesheet" href="css/app.css">
 
@@ -18,6 +19,7 @@
 	<script type="text/javascript" src="js/vendor/jquery-2.0.3.min.js"></script>
 	<script type="text/javascript" src="js/vendor/typeahead.js"></script>
 	<script type="text/javascript" src="js/vendor/jquery.kinetic.min.js"></script>
+	<script type="text/javascript" src="js/vendor/jquery.jgrowl.min.js"></script>
 
 	<!-- Backbone JS -->
 	<script type="text/javascript" src="js/vendor/underscore-min.js"></script>
@@ -31,10 +33,12 @@
 	<script type="text/javascript" src="js/app/models/employeeSession.js"></script>
 	<script type="text/javascript" src="js/app/models/ticketProduct.js"></script>
 	<script type="text/javascript" src="js/app/models/Ticket.js"></script>
+	<script type="text/javascript" src="js/app/models/activeCustomer.js"></script>
 
 	<!-- Views -->
 	<script type="text/javascript" src="js/app/views/loginView.js"></script>
 	<script type="text/javascript" src="js/app/views/employeeOperationsView.js"></script>
+	<script type="text/javascript" src="js/app/views/activeCustomerView.js"></script>
 	<script type="text/javascript" src="js/app/views/activeTicketView.js"></script>
 	<script type="text/javascript" src="js/app/views/loginModal.js"></script>
 
@@ -65,7 +69,9 @@
 	    			<div class="ticket-container"></div>
 	    		</div>
 	    	</div>
-	    	<div class="left region"></div>
+	    	<div class="left region activeCustomer">
+	    		<div class="customer-search"></div>
+	    	</div>
 	    	<div class="right region"></div>
     	</div>
     	<div class="footer region">
@@ -102,7 +108,12 @@
 	</script>
 
 	<script type="text/template" id="item-search-components">
-		<input class="search typeahead" placeholder="Search Items ..." autocomplete="off" type="text" />
+		<a href="#" class="clear-search">Clear</a>
+		<input class="search typeahead" placeholder="Scan or Search Products ..." autocomplete="off" type="text" />
+	</script>
+
+	<script type="text/template" id="customer-search-components">
+		<input class="search typeahead" placeholder="Search Customers ..." autocomplete="off" type="text" />
 	</script>
 
 	<script type="text/template" id="item-search-result">
@@ -112,6 +123,14 @@
 			<div class="name"><%= name %></div>
 			</div>
 			<div class="image" style="background-image: url(<%= image %>);"></div>
+		</div>
+	</script>
+
+	<script type="text/template" id="customer-search-result">
+		<div class="search-result">
+			<div class="account_id"><span class="label">Account #: </span><%= account_id %></div>
+			<div class="company_name"><span class="label">Company: </span><%= company_name %></div>
+			<div class="company_phone"><span class="label">Phone #: </span><%= company_phone %></div>
 		</div>
 	</script>
 
@@ -135,8 +154,39 @@
 			<div class="name"><%= name %></div>
 			<div class="price"><%= accounting.formatMoney(sell_price) %></div>
 			<div class="image"><img src="<%= thumbnail %>" alt="" width="35" height="35" /></div>
-			<div class="qty"><%= qty %></div>
+			<div class="qty">
+				<span class="value"><%= qty %></span>
+				<a href="#" class="decrease">-</a>
+				<a href="#" class="increase">+</a>
+			</div>
 		</div>
+	</script>
+
+	<script type="text/template" id="default-customer-badge">
+		<div class="default-customer-badge">
+			<p>Search customers by: </p>
+			<ul>
+				<li>Account #</li>
+				<li>Company Name</li>
+				<li>Phone Number</li>
+				<li>Address or Zip code</li>
+			</ul>
+		</div>
+	</script>
+
+	<script type="text/template" id="selected-customer">
+		<div class="company-name"><%= company_name %></div>
+		<div class="account-id"><span class="label">Account #: </span><span class="value"><%= account_id %></span></div>
+		<div class="company-phone"><span class="label">Phone #: </span><span class="value"><%= company_phone %></span></div>
+		<div class="company-address"><span class="label">Address: </span><span class="value"><%= company_address %></span></div>
+	</script>
+
+	<script type="text/template" id="default-customer">
+		<div class="customer"><span class="label">Customer: </span><span class="value">Walk-in Customer</span></div>
+	</script>
+
+	<script type="text/template" id="default-customer-wrap">
+		<div class="selected-customer"></div>
 	</script>
 </body>
 </html>

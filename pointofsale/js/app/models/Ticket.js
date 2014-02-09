@@ -9,11 +9,23 @@ jQuery(function($) {
       this.listenTo(this.get('productCollection'), 'add', this.addToTotals);
       this.listenTo(this.get('productCollection'), 'remove', this.subtractFromTotals);
     },
-    addToTotals: function(model) {
-      this.set('total', this.get('total')+accounting.unformat(model.get('sell_price')));
+    //Product Collection Event Handlers
+    addToTotals: function(product) {
+      this.set('total', this.get('total')+accounting.unformat(product.get('price')));
     },
-    subtractFromTotals: function(model) {
-      this.set('total', this.get('total')-accounting.unformat(model.get('sell_price')));
+    subtractFromTotals: function(product) {
+      var product_total = product.get('qty')*accounting.unformat(product.get('price'));
+      this.set('total', this.get('total')-product_total);
+    },
+
+    //Product Model Methods
+    incrementQty: function(product, increment) {
+      product.set('qty', product.get('qty')+increment);
+      this.set('total', this.get('total')+(accounting.unformat(product.get('price'))*increment));
+    },
+    decrementQty: function(product) {
+      product.set('qty', product.get('qty')-1);
+      this.set('total', this.get('total')-accounting.unformat(product.get('price')));
     },
     addItem: function(productAttributes) {
       this.get('productCollection').add(productAttributes);
@@ -26,6 +38,7 @@ jQuery(function($) {
     clearTicket: function() {
       //Clear ticket on ui
       this.get('productCollection').reset();
+      this.set('total', 0);
     },
     emptyTicket: function() {
       //Empty ticket on server and ui use clearTicket
