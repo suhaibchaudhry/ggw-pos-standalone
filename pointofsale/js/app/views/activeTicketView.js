@@ -94,15 +94,7 @@ jQuery(function($) {
     itemSelected: function(e, datum) {
       this.$searchbox.typeahead('setQuery', '');
       this.$clearSearch.hide();
-
-      var product = this.ticket.get('productCollection').get(datum['id']);
-      if(product) {
-        this.ticket.incrementQty(product);
-      } else {
-        datum['qty'] = 1;
-        datum['activeTicketView'] = this;
-        this.ticket.addItem(datum);
-      }
+      this.addItemToCollection(datum);
     },
     removeLineItem: function(e) {
       e.preventDefault();
@@ -129,6 +121,14 @@ jQuery(function($) {
       } else {
         this.$clearSearch.show();
       }
+
+      //Process barcode scan
+      if(e.keyCode == 13) {
+        this.scanItem(e.target.value);
+
+        this.$searchbox.typeahead('setQuery', '');
+        this.$clearSearch.hide();
+      }
     },
     //Event handlers for kinectic, to stop typeahead box interfering with drag scroll.
     panTicket: function() {
@@ -142,7 +142,39 @@ jQuery(function($) {
       return newurl;
     },
 
-    //Render and demolish logic
+    //Render and demolish logic, and other view methods.
+    scanItem: function(barcode) {
+      var scanRequest = JSON.stringify({
+        token: this.employeeSession.get("token"),
+        barcode: barcode
+      });
+      var ticket = this;
+
+      $.ajax({
+        type: 'POST',
+        url: this.employeeSession.get('apiServer')+'/pos-api/product-scan',
+        data: {request: scanRequest},
+        timeout: 10000,
+        success: function(res, status, xhr) {
+          if(res.scan) {
+            ticket.addItemToCollection(res.product);
+          }
+        },
+        error: function(xhr, errorType, error) {
+          
+        }
+      });
+    },
+    addItemToCollection: function(datum) {
+      var product = this.ticket.get('productCollection').get(datum['id']);
+      if(product) {
+        this.ticket.incrementQty(product);
+      } else {
+        datum['qty'] = 1;
+        datum['activeTicketView'] = this;
+        this.ticket.addItem(datum);
+      }
+    },
     render: function() {
       this.activeCustomerView.render();
       this.$('.item-search').append(this.searchBoxTemplate());
