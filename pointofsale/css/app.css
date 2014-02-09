@@ -322,7 +322,7 @@ div.register-display span.label {
 }
 .selected-customer span.label {
     font-weight: bold;
-    width: 60px;
+    width: 70px;
     display: inline-block;
     text-align: right;
 }
@@ -339,7 +339,7 @@ div.register-display span.label {
 }
 .selected-customer .company-address span.value {
     float: left;
-    width: 106px;
+    width: 96px;
 }
 .selected-customer .company-name {
     font-size: 14px;
