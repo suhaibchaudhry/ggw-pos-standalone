@@ -125,6 +125,7 @@
   height: 48px;
   background: url(../images/delete-outline_24.png);
   text-indent: -9999px;
+  display: none;
 }
 
 .item-search a.clear-search:hover {

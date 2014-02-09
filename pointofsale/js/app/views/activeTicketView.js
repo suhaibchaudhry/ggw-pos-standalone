@@ -6,6 +6,8 @@ jQuery(function($) {
       "click .line-item a.delete-item": 'removeLineItem',
       "click .line-item .qty a.increase": 'incrementQty',
       "click .line-item .qty a.decrease": 'decreaseQty',
+      "click .item-search a.clear-search": 'clearProductSearch',
+      "keyup .item-search input.search": 'searchKeyUp',
       "click": 'activateScanFocus'
     },
     //Ticket Templates
@@ -84,9 +86,16 @@ jQuery(function($) {
     activateScanFocus: function(e) {
       this.$searchbox.focus();
     },
-    itemSelected: function(e, datum) {
-      var product = this.ticket.get('productCollection').get(datum['id']);
+    clearProductSearch: function(e) {
+      e.preventDefault();
       this.$searchbox.typeahead('setQuery', '');
+      this.$clearSearch.hide();
+    },
+    itemSelected: function(e, datum) {
+      this.$searchbox.typeahead('setQuery', '');
+      this.$clearSearch.hide();
+
+      var product = this.ticket.get('productCollection').get(datum['id']);
       if(product) {
         this.ticket.incrementQty(product);
       } else {
@@ -114,6 +123,13 @@ jQuery(function($) {
         this.ticket.decrementQty(product);
       }
     },
+    searchKeyUp: function(e) {
+      if(e.target.value == '') {
+        this.$clearSearch.hide();
+      } else {
+        this.$clearSearch.show();
+      }
+    },
     //Event handlers for kinectic, to stop typeahead box interfering with drag scroll.
     panTicket: function() {
       this.$mouseTrap.css('z-index', 2);
@@ -131,7 +147,8 @@ jQuery(function($) {
       this.activeCustomerView.render();
       this.$('.item-search').append(this.searchBoxTemplate());
       this.$searchbox = this.$('.item-search input.search');
-      
+      this.$clearSearch = this.$('.item-search a.clear-search');
+
       this.$searchbox.typeahead({
         valueKey: 'id',
         name: 'search-items',
