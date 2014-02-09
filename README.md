@@ -56,9 +56,9 @@ Packages Recommended: virtualbox-guest-x11
 
 X11 Icons and Cursors:
 ----------------------
-User wide install: Copy themes/icons to ~/.icons
+**User wide install:** Copy themes/icons to ~/.icons
 
-System wide install: Copy themes/icons to /usr/share/icons/
+**System wide install:** Copy themes/icons to /usr/share/icons/
 
 Create a symbolic link named "default" pointed to the icon themes directory either in ~/.icons or /usr/share/icons
 
@@ -66,9 +66,9 @@ More details: https://wiki.archlinux.org/index.php/Cursor_Themes
 
 GTK Theme:
 ----------
-Copy themes/gtk-themes to ~/.themes to do a user wide install
+**User wide install:** Copy themes/gtk-themes to ~/.themes
 
-Copy themes/gtk-themes to /usr/share/themes for a system wide install
+**System wide install:** Copy themes/gtk-themes to /usr/share/themes
 
 Use gtk-chtheme package to change theme
 
