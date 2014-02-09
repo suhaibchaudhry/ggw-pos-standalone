@@ -168,7 +168,7 @@ jQuery(function($) {
           if(res.scan) {
             ticket.addItemToCollection(res.product, qty);
           } else {
-            //Log an error of item not being found, maybe use jgrowl.
+            $.jGrowl("Could not find item with barcode: <strong>"+barcode+"</strong>");
           }
         },
         error: function(xhr, errorType, error) {
