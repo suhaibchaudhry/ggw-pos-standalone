@@ -66,7 +66,7 @@ jQuery(function($) {
 
 			//Destroy Typeaheadjs Box
 			this.$('.customer-search input.search').typeahead('destroy');
-			this.$customer_search.empty();
+			this.$('.customer-search').empty();
 		}
 	});
 });
