@@ -142,9 +142,10 @@
 		<div class="line-item-heading">
 			<div class="sku">Barcode</div>
 			<div class="name">Product</div>
+			<div class="packaging">Pckg.</div>
 			<div class="price">Price</div>
 			<div class="image"></div>
-			<div class="qty">Qty</div>
+			<div class="qty">Qty.</div>
 		</div>
 	</script>
 
@@ -152,6 +153,7 @@
 		<div id="line-item-<%= id %>" data-id="<%= id %>" class="line-item">
 			<div class="sku"><a href="#" class="delete-item">Delete Product</a> <%= sku %></div>
 			<div class="name"><%= name %></div>
+			<div class="packaging"><%= packaging %></div>
 			<div class="price"><%= accounting.formatMoney(sell_price) %></div>
 			<div class="image"><img src="<%= thumbnail %>" alt="" width="35" height="35" /></div>
 			<div class="qty">
