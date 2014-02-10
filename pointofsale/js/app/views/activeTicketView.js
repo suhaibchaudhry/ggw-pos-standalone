@@ -19,6 +19,7 @@ jQuery(function($) {
       this.employeeSession = attributes['employeeSession'];
       this.$registerDisplay = attributes['registerDisplay'];
       this.activeCustomerView = attributes['activeCustomerView'];
+      this.searchTicketView = attributes['searchTicketView'];
 
       this.ticket = new Ticket();
       this.ticketRegionClicked = false;
@@ -200,7 +201,10 @@ jQuery(function($) {
       }
     },
     render: function() {
+      //Render Cascaded Views
       this.activeCustomerView.render();
+      this.searchTicketView.render();
+
       this.$('.item-search').append(this.searchBoxTemplate());
       this.$searchbox = this.$('.item-search input.search');
       this.$clearSearch = this.$('.item-search a.clear-search');
@@ -219,7 +223,10 @@ jQuery(function($) {
       });
     },
     demolish: function() {
+       //Demolish Cascaded view
        this.activeCustomerView.demolish();
+       this.searchTicketView.demolish();
+
        this.$('.item-search input.search').typeahead('destroy');
        this.$('.item-search').empty();
        this.ticket.clearTicket();
