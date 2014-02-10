@@ -289,16 +289,16 @@ div.register-display span.label {
     color: #68b800;
     text-transform: uppercase;
 }
-.default-customer-badge {
+.search-tips {
     font-size: .6em;
 }
-.default-customer-badge p {
+.search-tips p {
     margin: 0;
     color: rgb(202, 60, 60);
     font-weight: bold;
     padding: 0 0 0 .2em;
 }
-.default-customer-badge ul {
+.search-tips ul {
     margin: .4em 0;
 }
 .search-result span.label {

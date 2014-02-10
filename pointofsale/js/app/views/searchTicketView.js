@@ -8,6 +8,7 @@ jQuery(function($) {
 		*/
 		tagName: 'div',
 		searchBoxTemplate: _.template($('#ticket-search-components').html()),
+		ticketSearchBadge: _.template($('#ticket-search-badge').html()),
 		initialize: function(attributes, options) {
 			this.employeeSession = attributes['employeeSession'];
 		},
@@ -24,7 +25,7 @@ jQuery(function($) {
 		render: function() {
 			this.$ticket_search = this.$('.ticket-search');	
 			this.$ticket_search.append(this.searchBoxTemplate());
-
+			this.$ticket_search.append(this.ticketSearchBadge());
 			//this.$searchbox = this.$('.customer-search input.search');
 
 			/*
