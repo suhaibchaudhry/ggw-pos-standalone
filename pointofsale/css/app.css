@@ -347,3 +347,18 @@ div.register-display span.label {
     margin: 8px 0;
     text-decoration: underline;
 }
+.customer-search a.clear-customer {
+    width: 20px;
+    height: 20px;
+    background: url(../images/delete-outline.png) no-repeat;
+    text-indent: -999px;
+    background-size: cover;
+    display: block;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+}
+
+.customer-search a.clear-customer:hover {
+    background-image: url(../images/delete.png);
+}

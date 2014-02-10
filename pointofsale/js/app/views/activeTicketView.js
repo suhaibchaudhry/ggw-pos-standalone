@@ -125,10 +125,12 @@ jQuery(function($) {
 
       //Process barcode scan
       if(e.keyCode == 13) {
-        this.scanItem(e.target.value);
+        if(e.target.value != '') {
+          this.scanItem(e.target.value);
 
-        this.$searchbox.typeahead('setQuery', '');
-        this.$clearSearch.hide();
+          this.$searchbox.typeahead('setQuery', '');
+          this.$clearSearch.hide();
+        }
       }
     },
     //Event handlers for kinectic, to stop typeahead box interfering with drag scroll.

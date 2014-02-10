@@ -1,7 +1,8 @@
 jQuery(function($) {
 	activeCustomerView = Backbone.View.extend({
 		events: {
-			"typeahead:selected .customer-search": 'itemSelected'
+			"typeahead:selected .customer-search": 'itemSelected',
+			"click .customer-search a.clear-customer": 'clearCustomer'
 		},
 		tagName: 'div',
 		searchBoxTemplate: _.template($('#customer-search-components').html()),
@@ -11,15 +12,20 @@ jQuery(function($) {
 		defaultCustomerWrapTemplate: _.template($('#default-customer-wrap').html()),
 		initialize: function(attributes, options) {
 			this.employeeSession = attributes['employeeSession'];
-			this.$customer_search = this.$('.customer-search');
 			this.activeCustomer = new activeCustomer();
 			this.listenTo(this.activeCustomer, 'change:id', this.customerChanged);
+		},
+		clearCustomer: function(e) {
+			e.preventDefault();
+			this.activeCustomer.set('id', false);
 		},
 		customerChanged: function(model, value, options) {
 			if(value) {
 				this.$('.selected-customer').html(this.selectedCustomerTemplate(model.attributes));
+				this.$customer_search.find('a.clear-customer').show();
 			} else {
 				this.$('.selected-customer').html(this.defaultCustomerTemplate());
+				this.$customer_search.find('a.clear-customer').hide();
 			}
 		},
 		itemSelected: function(e, datum) {
@@ -32,8 +38,10 @@ jQuery(function($) {
       		return newurl;
     	},
 		render: function() {
+			this.$customer_search = this.$('.customer-search');
 			this.$customer_search.append(this.defaultCustomerWrapTemplate());
 			this.$('.selected-customer').html(this.defaultCustomerTemplate());
+			this.$customer_search.find('a.clear-customer').hide();			
 
 			this.$customer_search.append(this.searchBoxTemplate());
 			this.$customer_search.append(this.defaultUserBadgeTemplate());
