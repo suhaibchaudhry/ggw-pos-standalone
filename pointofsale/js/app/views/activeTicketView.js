@@ -21,7 +21,10 @@ jQuery(function($) {
       this.activeCustomerView = attributes['activeCustomerView'];
       this.searchTicketView = attributes['searchTicketView'];
 
-      this.ticket = new Ticket();
+      this.ticket = new Ticket({
+        employeeSession: attributes['employeeSession']
+      });
+
       this.ticketRegionClicked = false;
       this.ticketRegionClickY = 0;
       this.$ticketContainer = this.$('.ticket-container');

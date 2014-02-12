@@ -1,6 +1,8 @@
 jQuery(function($) {
   Ticket = Backbone.Model.extend({
-    initialize: function() {
+    initialize: function(attributes) {
+      this.employeeSession = attributes['employeeSession'];
+
       this.set({
         total: 0,
         productCollection: new ticketProductCollection()
@@ -8,6 +10,34 @@ jQuery(function($) {
 
       this.listenTo(this.get('productCollection'), 'add', this.addToTotals);
       this.listenTo(this.get('productCollection'), 'remove', this.subtractFromTotals);
+
+      //Load ticket stasuses
+      this.listenTo(this.employeeSession, 'change:login', this.fetchTicketStasuses);
+    },
+    fetchTicketStasuses: function(session, login, options) {
+      var ticket = this;
+      if(login) {
+        var getStasuses = JSON.stringify({token: sessionStorage.token});
+
+        $.ajax({
+          type: 'POST',
+          url: this.employeeSession.get('apiServer')+'/pos-api/ticket-statuses',
+          data: {request: getStasuses},
+          timeout: 15000,
+          success: function(res, status, xhr) {
+            if(res.status) {
+              ticket.set('ticketStasuses', res.stasuses);
+            } else {
+              ticket.employeeSession.set('login', false);
+            }
+          },
+          error: function(xhr, errorType, error) {
+            ticket.employeeSession.set('login', false);
+          }
+        });
+      } else {
+        ticket.set('ticketStasuses', res.stasuses);
+      }
     },
     //Product Collection Event Handlers
     addToTotals: function(product) {
