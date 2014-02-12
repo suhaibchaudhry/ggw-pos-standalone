@@ -36,7 +36,7 @@ jQuery(function($) {
           }
         });
       } else {
-        ticket.set('ticketStasuses', res.stasuses);
+        ticket.set('ticketStasuses', {});
       }
     },
     //Product Collection Event Handlers
