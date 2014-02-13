@@ -13,6 +13,8 @@ jQuery(function($) {
 
       //Load ticket stasuses
       this.listenTo(this.employeeSession, 'change:login', this.fetchTicketStasuses);
+      //Create a new ticket on server on login
+      this.listenTo(this.employeeSession, 'change:login', this.generateNewTicketId);
     },
     fetchTicketStasuses: function(session, login, options) {
       var ticket = this;
@@ -37,6 +39,32 @@ jQuery(function($) {
         });
       } else {
         ticket.set('ticketStasuses', {});
+      }
+    },
+    generateNewTicketId: function(session, login, options) {
+      var ticket = this;
+      if(login) {
+        var generateNewTicket = JSON.stringify({token: sessionStorage.token});
+
+        $.ajax({
+          type: 'POST',
+          url: this.employeeSession.get('apiServer')+'/pos-api/new-ticket',
+          data: {request: generateNewTicket},
+          timeout: 15000,
+          success: function(res, status, xhr) {
+            if(res.status) {
+              ticket.set('status', res.ticketStatus);
+              ticket.set('ticketId', res.ticketId);
+            } else {
+              ticket.employeeSession.set('login', false);
+            }
+          },
+          error: function(xhr, errorType, error) {
+            ticket.employeeSession.set('login', false);
+          }
+        });
+      } else {
+        ticket.set('ticketId', 0);
       }
     },
     //Product Collection Event Handlers
