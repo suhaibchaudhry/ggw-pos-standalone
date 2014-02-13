@@ -54,13 +54,16 @@ jQuery(function($) {
           success: function(res, status, xhr) {
             if(res.status) {
               var stasuses = ticket.get('ticketStasuses');
-              ticket.set('status', res.ticketStatus);
-              ticket.set('status_en', stasuses[res.ticketStatus]);
-              ticket.set('ticketId', res.ticketId);
+              //Change without silent to populate active customer and ticket products (Empty on create ticket command).
+              ticket.set({
+                status: res.ticketStatus,
+                status_en: stasuses[res.ticketStatus],
+                ticketId: res.ticketId,
+                customerUid: res.customerUid
+              });
             } else {
               ticket.employeeSession.set('login', false);
             }
-            console.log(ticket.get('ticketId'));
           },
           error: function(xhr, errorType, error) {
             ticket.employeeSession.set('login', false);

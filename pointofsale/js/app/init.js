@@ -26,6 +26,8 @@ jQuery(function($) {
         searchTicketView: this.searchTicketRegion
       });
 
+      this.activeCustomerRegion.activeCustomer.setActiveTicketViewSingleton(this.activeTicketRegion);
+
       //Avoided re-initialization
       this.activeTicketRegion.$ticketContainer.kinetic({
         moved: _.bind(this.activeTicketRegion.panTicket, this.activeTicketRegion),
