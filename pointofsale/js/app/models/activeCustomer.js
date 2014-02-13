@@ -30,6 +30,27 @@ jQuery(function($) {
       		} else {
       			this.set('id', uid);
       		}
+      	},
+      	updateTicketCustomerUidOnServer: function(uid) {
+      		var ticket = this.ticket;
+      		this.ticket.set('customerUid', uid, {silent: true});
+      		var updateTicketCustomerId = JSON.stringify({token: sessionStorage.token, customerUid: uid, ticketId: ticket.get('ticketId')});
+
+      		//Update Ticket Customer id on Server
+      		$.ajax({
+	          type: 'POST',
+	          url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/update-customer',
+	          data: {request: updateTicketCustomerId},
+	          timeout: 15000,
+	          success: function(res, status, xhr) {
+	            if(!res.status) {
+	              ticket.employeeSession.set('login', false);
+	            }
+	          },
+	          error: function(xhr, errorType, error) {
+	            ticket.employeeSession.set('login', false);
+	          }
+	        });
       	}
 	});
 });

@@ -18,6 +18,7 @@ jQuery(function($) {
 		clearCustomer: function(e) {
 			e.preventDefault();
 			this.activeCustomer.set('id', false);
+			this.activeCustomer.updateTicketCustomerUidOnServer(0);
 		},
 		customerChanged: function(model, value, options) {
 			if(value) {
@@ -31,6 +32,7 @@ jQuery(function($) {
 		itemSelected: function(e, datum) {
 			this.$searchbox.typeahead('setQuery', '');
 			this.activeCustomer.set(datum);
+			this.activeCustomer.updateTicketCustomerUidOnServer(datum['id']);
 		},
 		resolveSearchRPC: function(url, uriEncodedQuery) {
 			//Preprocess URL: Strip forward slashes to make compatible with Drupal GET arg syntax, Decouple later via POST. 
