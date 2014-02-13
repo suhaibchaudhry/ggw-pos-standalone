@@ -7,11 +7,20 @@ jQuery(function($) {
 		},
 		*/
 		tagName: 'div',
+		selectedTicketWrapTemplate: _.template($('#selected-ticket-wrap').html()),
+    	selectedTicketTemplate: _.template($('#selected-ticket').html()),
 		searchBoxTemplate: _.template($('#ticket-search-components').html()),
 		ticketSearchBadge: _.template($('#ticket-search-badge').html()),
 		initialize: function(attributes, options) {
 			this.employeeSession = attributes['employeeSession'];
 		},
+		changeTicket: function(ticket, ticketId, options) {
+			if(ticketId) {
+				this.$('.selected-ticket').html(this.selectedTicketTemplate(ticket.attributes));
+			} else {
+				this.$('.selected-ticket').empty();
+			}
+    	},
 		/*
 		itemSelected: function(e, datum) {
 			this.$searchbox.typeahead('setQuery', '');
@@ -23,7 +32,8 @@ jQuery(function($) {
       		return newurl;
     	},*/
 		render: function() {
-			this.$ticket_search = this.$('.ticket-search');	
+			this.$ticket_search = this.$('.ticket-search');
+			this.$ticket_search.append(this.selectedTicketWrapTemplate());
 			this.$ticket_search.append(this.searchBoxTemplate());
 			this.$ticket_search.append(this.ticketSearchBadge());
 			//this.$searchbox = this.$('.customer-search input.search');

@@ -15,6 +15,7 @@ jQuery(function($) {
     searchBoxTemplate: _.template($('#item-search-components').html()),
     lineItemTemplate: _.template($('#ticket-line-item').html()),
     labelizeTemplate: _.template($('#labelize-data').html()),
+
     initialize: function(attributes, options) {
       this.employeeSession = attributes['employeeSession'];
       this.$registerDisplay = attributes['registerDisplay'];
@@ -42,6 +43,7 @@ jQuery(function($) {
       this.listenTo(this.ticket.get('productCollection'), 'change:price', this.priceUpdate);
 
       this.listenTo(this.ticket, 'change:total', this.updateTotal);
+      this.listenTo(this.ticket, 'change:ticketId', _.bind(this.searchTicketView.changeTicket, this.searchTicketView));
     },
 
     //Backbone Event Handlers
@@ -86,7 +88,6 @@ jQuery(function($) {
         value: accounting.formatMoney(value)
       }));
     },
-
     //DOM Event Controllers
     activateScanFocus: function(e) {
       this.$searchbox.focus();

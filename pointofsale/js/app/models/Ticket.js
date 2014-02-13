@@ -14,7 +14,7 @@ jQuery(function($) {
       //Load ticket stasuses
       this.listenTo(this.employeeSession, 'change:login', this.fetchTicketStasuses);
       //Create a new ticket on server on login
-      this.listenTo(this.employeeSession, 'change:login', this.generateNewTicketId);
+      this.listenTo(this.employeeSession, 'change:login', this.createTicketOnServer);
     },
     fetchTicketStasuses: function(session, login, options) {
       var ticket = this;
@@ -41,7 +41,7 @@ jQuery(function($) {
         ticket.set('ticketStasuses', {});
       }
     },
-    generateNewTicketId: function(session, login, options) {
+    createTicketOnServer: function(session, login, options) {
       var ticket = this;
       if(login) {
         var generateNewTicket = JSON.stringify({token: sessionStorage.token});
@@ -53,11 +53,14 @@ jQuery(function($) {
           timeout: 15000,
           success: function(res, status, xhr) {
             if(res.status) {
+              var stasuses = ticket.get('ticketStasuses');
               ticket.set('status', res.ticketStatus);
+              ticket.set('status_en', stasuses[res.ticketStatus]);
               ticket.set('ticketId', res.ticketId);
             } else {
               ticket.employeeSession.set('login', false);
             }
+            console.log(ticket.get('ticketId'));
           },
           error: function(xhr, errorType, error) {
             ticket.employeeSession.set('login', false);

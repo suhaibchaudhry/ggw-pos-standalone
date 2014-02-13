@@ -307,7 +307,7 @@ div.register-display span.label {
 .price span.orig {
     text-decoration: line-through;
 }
-.selected-customer {
+.selected-customer, .badge-attr-wrap {
     font-size: 11px;
     background: rgba(255,255,255,.8);
     float: left;
@@ -317,16 +317,16 @@ div.register-display span.label {
     border-radius: 10px;
     margin: 0 0 10px;
 }
-.selected-customer span.value {
+.selected-customer span.value, .badge-attr-wrap span.value {
     margin: 0 0 0 4px;
 }
-.selected-customer span.label {
+.selected-customer span.label, .badge-attr-wrap span.label {
     font-weight: bold;
     width: 70px;
     display: inline-block;
     text-align: right;
 }
-.selected-customer div {
+.selected-customer div, .badge-attr-wrap div {
     margin: 10px 0;
 }
 .selected-customer .company-address {
