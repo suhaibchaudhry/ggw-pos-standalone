@@ -289,16 +289,16 @@ div.register-display span.label {
     color: #68b800;
     text-transform: uppercase;
 }
-.default-customer-badge {
+.search-tips {
     font-size: .6em;
 }
-.default-customer-badge p {
+.search-tips p {
     margin: 0;
     color: rgb(202, 60, 60);
     font-weight: bold;
     padding: 0 0 0 .2em;
 }
-.default-customer-badge ul {
+.search-tips ul {
     margin: .4em 0;
 }
 .search-result span.label {
@@ -307,7 +307,7 @@ div.register-display span.label {
 .price span.orig {
     text-decoration: line-through;
 }
-.selected-customer {
+.selected-customer, .badge-attr-wrap {
     font-size: 11px;
     background: rgba(255,255,255,.8);
     float: left;
@@ -317,16 +317,16 @@ div.register-display span.label {
     border-radius: 10px;
     margin: 0 0 10px;
 }
-.selected-customer span.value {
+.selected-customer span.value, .badge-attr-wrap span.value {
     margin: 0 0 0 4px;
 }
-.selected-customer span.label {
+.selected-customer span.label, .badge-attr-wrap span.label {
     font-weight: bold;
     width: 70px;
     display: inline-block;
     text-align: right;
 }
-.selected-customer div {
+.selected-customer div, .badge-attr-wrap div {
     margin: 10px 0;
 }
 .selected-customer .company-address {
@@ -346,4 +346,19 @@ div.register-display span.label {
     font-weight: bold;
     margin: 8px 0;
     text-decoration: underline;
+}
+.customer-search a.clear-customer {
+    width: 20px;
+    height: 20px;
+    background: url(../images/delete-outline.png) no-repeat;
+    text-indent: -999px;
+    background-size: cover;
+    display: block;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+}
+
+.customer-search a.clear-customer:hover {
+    background-image: url(../images/delete.png);
 }

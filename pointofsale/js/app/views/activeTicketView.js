@@ -15,12 +15,17 @@ jQuery(function($) {
     searchBoxTemplate: _.template($('#item-search-components').html()),
     lineItemTemplate: _.template($('#ticket-line-item').html()),
     labelizeTemplate: _.template($('#labelize-data').html()),
+
     initialize: function(attributes, options) {
       this.employeeSession = attributes['employeeSession'];
       this.$registerDisplay = attributes['registerDisplay'];
       this.activeCustomerView = attributes['activeCustomerView'];
+      this.searchTicketView = attributes['searchTicketView'];
 
-      this.ticket = new Ticket();
+      this.ticket = new Ticket({
+        employeeSession: attributes['employeeSession']
+      });
+
       this.ticketRegionClicked = false;
       this.ticketRegionClickY = 0;
       this.$ticketContainer = this.$('.ticket-container');
@@ -38,6 +43,7 @@ jQuery(function($) {
       this.listenTo(this.ticket.get('productCollection'), 'change:price', this.priceUpdate);
 
       this.listenTo(this.ticket, 'change:total', this.updateTotal);
+      this.listenTo(this.ticket, 'change:ticketId', _.bind(this.searchTicketView.changeTicket, this.searchTicketView));
     },
 
     //Backbone Event Handlers
@@ -82,7 +88,6 @@ jQuery(function($) {
         value: accounting.formatMoney(value)
       }));
     },
-
     //DOM Event Controllers
     activateScanFocus: function(e) {
       this.$searchbox.focus();
@@ -125,10 +130,12 @@ jQuery(function($) {
 
       //Process barcode scan
       if(e.keyCode == 13) {
-        this.scanItem(e.target.value);
+        if(e.target.value != '') {
+          this.scanItem(e.target.value);
 
-        this.$searchbox.typeahead('setQuery', '');
-        this.$clearSearch.hide();
+          this.$searchbox.typeahead('setQuery', '');
+          this.$clearSearch.hide();
+        }
       }
     },
     //Event handlers for kinectic, to stop typeahead box interfering with drag scroll.
@@ -198,7 +205,10 @@ jQuery(function($) {
       }
     },
     render: function() {
+      //Render Cascaded Views
       this.activeCustomerView.render();
+      this.searchTicketView.render();
+
       this.$('.item-search').append(this.searchBoxTemplate());
       this.$searchbox = this.$('.item-search input.search');
       this.$clearSearch = this.$('.item-search a.clear-search');
@@ -217,7 +227,10 @@ jQuery(function($) {
       });
     },
     demolish: function() {
+       //Demolish Cascaded view
        this.activeCustomerView.demolish();
+       this.searchTicketView.demolish();
+
        this.$('.item-search input.search').typeahead('destroy');
        this.$('.item-search').empty();
        this.ticket.clearTicket();

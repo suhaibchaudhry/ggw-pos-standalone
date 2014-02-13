@@ -8,6 +8,11 @@ jQuery(function($) {
   		//Regional Views
       this.employeeOperationsRegion = new employeeOperationsView({el: this.$('.employeeOperations').get(0), employeeSession: this.employeeSession});
 
+      this.searchTicketRegion = new searchTicketView({
+        el: this.$('.ticketSearch').get(0),
+        employeeSession: this.employeeSession
+      });
+
       this.activeCustomerRegion = new activeCustomerView({
         el: this.$('.activeCustomer').get(0),
         employeeSession: this.employeeSession
@@ -17,8 +22,11 @@ jQuery(function($) {
         el: this.$('.activeTicket').get(0),
         employeeSession: this.employeeSession,
         registerDisplay: this.$('.register-display'),
-        activeCustomerView: this.activeCustomerRegion
+        activeCustomerView: this.activeCustomerRegion,
+        searchTicketView: this.searchTicketRegion
       });
+
+      this.activeCustomerRegion.activeCustomer.setActiveTicketViewSingleton(this.activeTicketRegion);
 
       //Avoided re-initialization
       this.activeTicketRegion.$ticketContainer.kinetic({

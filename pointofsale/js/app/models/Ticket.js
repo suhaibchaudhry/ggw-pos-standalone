@@ -1,6 +1,8 @@
 jQuery(function($) {
   Ticket = Backbone.Model.extend({
-    initialize: function() {
+    initialize: function(attributes) {
+      this.employeeSession = attributes['employeeSession'];
+
       this.set({
         total: 0,
         productCollection: new ticketProductCollection()
@@ -8,6 +10,68 @@ jQuery(function($) {
 
       this.listenTo(this.get('productCollection'), 'add', this.addToTotals);
       this.listenTo(this.get('productCollection'), 'remove', this.subtractFromTotals);
+
+      //Load ticket stasuses
+      this.listenTo(this.employeeSession, 'change:login', this.fetchTicketStasuses);
+      //Create a new ticket on server on login
+      this.listenTo(this.employeeSession, 'change:login', this.createTicketOnServer);
+    },
+    fetchTicketStasuses: function(session, login, options) {
+      var ticket = this;
+      if(login) {
+        var getStasuses = JSON.stringify({token: sessionStorage.token});
+
+        $.ajax({
+          type: 'POST',
+          url: this.employeeSession.get('apiServer')+'/pos-api/ticket-statuses',
+          data: {request: getStasuses},
+          timeout: 15000,
+          success: function(res, status, xhr) {
+            if(res.status) {
+              ticket.set('ticketStasuses', res.stasuses);
+            } else {
+              ticket.employeeSession.set('login', false);
+            }
+          },
+          error: function(xhr, errorType, error) {
+            ticket.employeeSession.set('login', false);
+          }
+        });
+      } else {
+        ticket.set('ticketStasuses', {});
+      }
+    },
+    createTicketOnServer: function(session, login, options) {
+      var ticket = this;
+      if(login) {
+        var generateNewTicket = JSON.stringify({token: sessionStorage.token});
+
+        $.ajax({
+          type: 'POST',
+          url: this.employeeSession.get('apiServer')+'/pos-api/new-ticket',
+          data: {request: generateNewTicket},
+          timeout: 15000,
+          success: function(res, status, xhr) {
+            if(res.status) {
+              var stasuses = ticket.get('ticketStasuses');
+              //Change without silent to populate active customer and ticket products (Empty on create ticket command).
+              ticket.set({
+                status: res.ticketStatus,
+                status_en: stasuses[res.ticketStatus],
+                ticketId: res.ticketId,
+                customerUid: res.customerUid
+              });
+            } else {
+              ticket.employeeSession.set('login', false);
+            }
+          },
+          error: function(xhr, errorType, error) {
+            ticket.employeeSession.set('login', false);
+          }
+        });
+      } else {
+        ticket.set('ticketId', 0);
+      }
     },
     //Product Collection Event Handlers
     addToTotals: function(product) {

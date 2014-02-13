@@ -39,6 +39,7 @@
 	<script type="text/javascript" src="js/app/views/loginView.js"></script>
 	<script type="text/javascript" src="js/app/views/employeeOperationsView.js"></script>
 	<script type="text/javascript" src="js/app/views/activeCustomerView.js"></script>
+	<script type="text/javascript" src="js/app/views/searchTicketView.js"></script>
 	<script type="text/javascript" src="js/app/views/activeTicketView.js"></script>
 	<script type="text/javascript" src="js/app/views/loginModal.js"></script>
 
@@ -72,7 +73,9 @@
 	    	<div class="left region activeCustomer">
 	    		<div class="customer-search"></div>
 	    	</div>
-	    	<div class="right region"></div>
+	    	<div class="right region ticketSearch">
+	    		<div class="ticket-search"></div>
+	    	</div>
     	</div>
     	<div class="footer region">
     		<div class="viewport-main register-display">
@@ -116,6 +119,10 @@
 		<input class="search typeahead" placeholder="Search Customers ..." autocomplete="off" type="text" />
 	</script>
 
+	<script type="text/template" id="ticket-search-components">
+		<input class="search typeahead" placeholder="Search Tickets ..." autocomplete="off" type="text" />
+	</script>
+
 	<script type="text/template" id="item-search-result">
 		<div class="search-result">
 			<div class="info">
@@ -142,9 +149,10 @@
 		<div class="line-item-heading">
 			<div class="sku">Barcode</div>
 			<div class="name">Product</div>
+			<div class="packaging">Pckg.</div>
 			<div class="price">Price</div>
 			<div class="image"></div>
-			<div class="qty">Qty</div>
+			<div class="qty">Qty.</div>
 		</div>
 	</script>
 
@@ -152,6 +160,7 @@
 		<div id="line-item-<%= id %>" data-id="<%= id %>" class="line-item">
 			<div class="sku"><a href="#" class="delete-item">Delete Product</a> <%= sku %></div>
 			<div class="name"><%= name %></div>
+			<div class="packaging"><%= packaging %></div>
 			<div class="price"><%= accounting.formatMoney(sell_price) %></div>
 			<div class="image"><img src="<%= thumbnail %>" alt="" width="35" height="35" /></div>
 			<div class="qty">
@@ -163,9 +172,22 @@
 	</script>
 
 	<script type="text/template" id="default-customer-badge">
-		<div class="default-customer-badge">
+		<div class="default-customer-badge search-tips">
 			<p>Search customers by: </p>
 			<ul>
+				<li>Account #</li>
+				<li>Company Name</li>
+				<li>Phone Number</li>
+				<li>Address or Zip code</li>
+			</ul>
+		</div>
+	</script>
+
+	<script type="text/template" id="ticket-search-badge">
+		<div class="ticket-search-badge search-tips">
+			<p>Search tickets by: </p>
+			<ul>
+				<li>Ticket #</li>
 				<li>Account #</li>
 				<li>Company Name</li>
 				<li>Phone Number</li>
@@ -186,7 +208,19 @@
 	</script>
 
 	<script type="text/template" id="default-customer-wrap">
+		<a href="#" class="clear-customer">Clear</a>
 		<div class="selected-customer"></div>
+	</script>
+
+	<script type="text/template" id="selected-ticket-wrap">
+		<div class="selected-ticket"></div>
+	</script>
+
+	<script type="text/template" id="selected-ticket">
+		<div class="badge-attr-wrap">
+			<div class="ticket-id"><span class="label">Ticket #: </span><span class="value"><%= ticketId %></span></div>
+			<div class="ticket-status"><span class="label">Status: </span><span class="value"><%= status_en %></span></div>
+		</div>
 	</script>
 </body>
 </html>
