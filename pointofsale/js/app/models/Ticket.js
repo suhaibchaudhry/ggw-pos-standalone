@@ -13,6 +13,9 @@ jQuery(function($) {
 
       //Load ticket stasuses
       this.listenTo(this.employeeSession, 'change:login', this.fetchTicketStasuses);
+
+      //Listen ticket change to load new products.
+      this.listenTo(this, 'change:ticketId', this.changeTicketProducts);
     },
     fetchTicketStasuses: function(session, login, options) {
       var ticket = this;
@@ -84,6 +87,12 @@ jQuery(function($) {
     },
 
     //Product Model Methods
+    changeTicketProducts: function(ticket, ticketId, options) {
+      if(ticketId) {
+        //Only removing current ticket products at the moment. Need to still load new ones.
+        this.get('productCollection').reset();
+      }
+    },
     incrementQty: function(product, increment) {
       product.set('qty', product.get('qty')+increment);
       this.set('total', this.get('total')+(accounting.unformat(product.get('price'))*increment));
