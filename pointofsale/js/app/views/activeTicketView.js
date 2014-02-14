@@ -21,6 +21,7 @@ jQuery(function($) {
       this.$registerDisplay = attributes['registerDisplay'];
       this.activeCustomerView = attributes['activeCustomerView'];
       this.searchTicketView = attributes['searchTicketView'];
+      this.appFrame = attributes['appFrame'];
 
       this.ticket = new Ticket({
         employeeSession: attributes['employeeSession']
@@ -44,6 +45,7 @@ jQuery(function($) {
 
       this.listenTo(this.ticket, 'change:total', this.updateTotal);
       this.listenTo(this.ticket, 'change:ticketId', _.bind(this.searchTicketView.changeTicket, this.searchTicketView));
+      this.listenTo(this.ticket, 'ticket:preloader', _.bind(this.appFrame.ticketPreloader, this.appFrame))
     },
 
     //Backbone Event Handlers

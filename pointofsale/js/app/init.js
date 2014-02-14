@@ -23,7 +23,8 @@ jQuery(function($) {
         employeeSession: this.employeeSession,
         registerDisplay: this.$('.register-display'),
         activeCustomerView: this.activeCustomerRegion,
-        searchTicketView: this.searchTicketRegion
+        searchTicketView: this.searchTicketRegion,
+        appFrame: this
       });
 
       this.activeCustomerRegion.activeCustomer.setActiveTicketViewSingleton(this.activeTicketRegion);
@@ -48,7 +49,7 @@ jQuery(function($) {
       //Handle window resize
       $(window).on('resize', _.bind(this.heightAdjust, this));
 
-      //Catch mouse releases outside of application window, and release all mousetraps.
+      //Catch mouse releases outside of application frame, and release all mousetraps.
       $(window).mouseup(function(){
          $('.mousetrap').css('z-index', 0);
       });
@@ -69,6 +70,13 @@ jQuery(function($) {
         height(
           $(window).height() - this.$('.header').height() - this.$('.footer').height()
         );
+    },
+    ticketPreloader: function(preloader) {
+      if(preloader) {
+        $('.loaderOverlay').show();
+      } else {
+        $('.loaderOverlay').hide();
+      }
     }
   });
 
