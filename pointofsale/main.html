@@ -142,6 +142,13 @@
 		</div>
 	</script>
 
+	<script type="text/template" id="ticket-search-result">
+		<div class="search-result">
+			<div class="ticket-id"><span class="label">Ticket #: </span><%= ticketId %></div>
+			<div class="ticket-status"><span class="label">Status: </span><%= ticketStatus_en %></div>
+		</div>
+	</script>
+
 	<script type="text/template" id="labelize-data">
 		<span class="label"><%= label %>: </span><span class="value"><%= value %></span>
 	</script>
@@ -192,7 +199,6 @@
 				<li>Account #</li>
 				<li>Company Name</li>
 				<li>Phone Number</li>
-				<li>Address or Zip code</li>
 			</ul>
 		</div>
 	</script>

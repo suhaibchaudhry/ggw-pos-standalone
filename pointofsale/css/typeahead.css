@@ -138,14 +138,17 @@
   position: relative;
   z-index: 1;
 }
-.customer-search .twitter-typeahead {
+.customer-search .twitter-typeahead, .ticket-search .twitter-typeahead {
   width: 100%;
   margin: 0 0 10px;
 }
 
 .customer-search .typeahead,
 .customer-search .tt-query,
-.customer-search .tt-hint {
+.customer-search .tt-hint,
+.ticket-search .typeahead,
+.ticket-search .tt-query,
+.ticket-search .tt-hint {
   width: 100%;
   padding: 2px 8px;
   font-size: 15px;
@@ -160,7 +163,7 @@
   box-sizing: border-box;
 }
 
-.customer-search .tt-dropdown-menu {
+.customer-search .tt-dropdown-menu, .ticket-search .tt-dropdown-menu {
   width: 100%;
   margin-top: 2px;
   padding: 5px 0;
@@ -180,13 +183,13 @@
           background-clip: padding-box;
 }
 
-.customer-search .tt-suggestion {
+.customer-search .tt-suggestion, .ticket-search .tt-suggestion {
   display: block;
   padding: 3px 20px;
   font-size: 12px;
 }
 
-.customer-search .tt-suggestion.tt-is-under-cursor {
+.customer-search .tt-suggestion.tt-is-under-cursor, .ticket-search .tt-suggestion.tt-is-under-cursor {
   color: #fff;
   background-color: #0081c2;
   background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
@@ -198,10 +201,10 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0)
 }
 
-.customer-search .tt-suggestion.tt-is-under-cursor a {
+.customer-search .tt-suggestion.tt-is-under-cursor a, .ticket-search .tt-suggestion.tt-is-under-cursor a  {
   color: #fff;
 }
 
-.customer-search .tt-suggestion p {
+.customer-search .tt-suggestion p, .ticket-search .tt-suggestion p {
   margin: 0;
 }

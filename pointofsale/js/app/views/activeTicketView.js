@@ -27,6 +27,8 @@ jQuery(function($) {
         employeeSession: attributes['employeeSession']
       });
 
+      this.searchTicketView.ticket = this.ticket;
+
       this.ticketRegionClicked = false;
       this.ticketRegionClickY = 0;
       this.$ticketContainer = this.$('.ticket-container');
@@ -45,7 +47,7 @@ jQuery(function($) {
 
       this.listenTo(this.ticket, 'change:total', this.updateTotal);
       this.listenTo(this.ticket, 'change:ticketId', _.bind(this.searchTicketView.changeTicket, this.searchTicketView));
-      this.listenTo(this.ticket, 'ticket:preloader', _.bind(this.appFrame.ticketPreloader, this.appFrame))
+      this.listenTo(this.ticket, 'ticket:preloader', _.bind(this.appFrame.ticketPreloader, this.appFrame));
     },
 
     //Backbone Event Handlers
