@@ -54,6 +54,7 @@ jQuery(function($) {
           success: function(res, status, xhr) {
             if(res.status) {
               var stasuses = ticket.get('ticketStasuses');
+              ticket.trigger('ticket:preloader', false);
               //Change without silent to populate active customer and ticket products (Empty on create ticket command).
               ticket.set({
                 status: res.ticketStatus,
@@ -61,7 +62,6 @@ jQuery(function($) {
                 ticketId: res.ticketId,
                 customerUid: res.customerUid
               });
-              ticket.trigger('ticket:preloader', false);
             } else {
               ticket.employeeSession.set('login', false);
             }

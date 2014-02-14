@@ -48,12 +48,17 @@ jQuery(function($) {
       //Global Window level event catching and handling
       //Handle window resize
       $(window).on('resize', _.bind(this.heightAdjust, this));
+      $('.loaderOverlay a.refresh').on('click', _.bind(this.reload, this));
 
       //Catch mouse releases outside of application frame, and release all mousetraps.
       $(window).mouseup(function(){
          $('.mousetrap').css('z-index', 0);
       });
   	},
+    reload: function(e) {
+      e.preventDefault();
+      location.reload();
+    },
     //No demolish is neccesary for this always-on singleton view.
   	render: function(session, login, options) {
       if(login) {

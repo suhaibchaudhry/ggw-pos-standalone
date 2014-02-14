@@ -132,6 +132,19 @@ div.loaderOverlay {
     -webkit-transition: background-color 0.3s;
 }
 
+div.loaderOverlay a.refresh {
+    display: block;
+    width: 48px;
+    height: 48px;
+    background: url(../images/refresh.png) no-repeat;
+    position: absolute;
+    right: 0;
+}
+
+div.loaderOverlay a.refresh:hover {
+    background: url(../images/refresh-outline.png) no-repeat;
+}
+
 .bbm-wrapper {
     overflow: auto;
 }
