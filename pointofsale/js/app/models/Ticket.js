@@ -13,14 +13,12 @@ jQuery(function($) {
 
       //Load ticket stasuses
       this.listenTo(this.employeeSession, 'change:login', this.fetchTicketStasuses);
-      //Create a new ticket on server on login
-      this.listenTo(this.employeeSession, 'change:login', this.createTicketOnServer);
     },
     fetchTicketStasuses: function(session, login, options) {
       var ticket = this;
       if(login) {
         var getStasuses = JSON.stringify({token: sessionStorage.token});
-
+        this.trigger('ticket:preloader', true);
         $.ajax({
           type: 'POST',
           url: this.employeeSession.get('apiServer')+'/pos-api/ticket-statuses',
@@ -29,6 +27,8 @@ jQuery(function($) {
           success: function(res, status, xhr) {
             if(res.status) {
               ticket.set('ticketStasuses', res.stasuses);
+              //Create a new ticket on server on login
+              ticket.createTicketOnServer(session, login, options);
             } else {
               ticket.employeeSession.set('login', false);
             }
@@ -61,6 +61,7 @@ jQuery(function($) {
                 ticketId: res.ticketId,
                 customerUid: res.customerUid
               });
+              ticket.trigger('ticket:preloader', false);
             } else {
               ticket.employeeSession.set('login', false);
             }

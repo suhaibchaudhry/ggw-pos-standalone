@@ -117,7 +117,7 @@ div.footer.region .viewport-main {
     bottom: 5px;
 }
 
-div.modalOverlay {
+div.modalOverlay, div.loaderOverlay {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -125,6 +125,11 @@ div.modalOverlay {
 	bottom: 0;
 	display: none;
 	z-index: 100;
+}
+
+div.loaderOverlay {
+    background: rgba(0, 0, 0, 0.5) url(../images/preloader_64.gif) no-repeat center center;
+    -webkit-transition: background-color 0.3s;
 }
 
 .bbm-wrapper {
