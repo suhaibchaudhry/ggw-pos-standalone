@@ -94,6 +94,16 @@ jQuery(function($) {
         label: 'Subtotal',
         value: accounting.formatMoney(value)
       }));
+
+      var count = 0;
+      this.ticket.get('productCollection').each(function(product) {
+        count += product.get('qty');
+      });
+
+      this.$registerDisplay.find('.product-count').html(this.labelizeTemplate({
+        label: 'Item Count',
+        value: count
+      }));
     },
     //DOM Event Controllers
     createNewTicket: function(e) {
