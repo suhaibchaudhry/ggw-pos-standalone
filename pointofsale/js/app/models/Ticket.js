@@ -28,7 +28,7 @@ jQuery(function($) {
             if(res.status) {
               ticket.set('ticketStasuses', res.stasuses);
               //Create a new ticket on server on login
-              ticket.createTicketOnServer(session, login, options);
+              ticket.createTicketOnServer(login);
             } else {
               ticket.employeeSession.set('login', false);
             }
@@ -41,7 +41,7 @@ jQuery(function($) {
         ticket.set('ticketStasuses', {});
       }
     },
-    createTicketOnServer: function(session, login, options) {
+    createTicketOnServer: function(login) {
       var ticket = this;
       if(login) {
         var generateNewTicket = JSON.stringify({token: sessionStorage.token});

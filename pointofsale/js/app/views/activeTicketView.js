@@ -48,6 +48,9 @@ jQuery(function($) {
       this.listenTo(this.ticket, 'change:total', this.updateTotal);
       this.listenTo(this.ticket, 'change:ticketId', _.bind(this.searchTicketView.changeTicket, this.searchTicketView));
       this.listenTo(this.ticket, 'ticket:preloader', _.bind(this.appFrame.ticketPreloader, this.appFrame));
+
+      //AppFrame Buttons
+      this.appFrame.$('a.new-ticket-button').on('click', _.bind(this.createNewTicket, this));
     },
 
     //Backbone Event Handlers
@@ -93,6 +96,10 @@ jQuery(function($) {
       }));
     },
     //DOM Event Controllers
+    createNewTicket: function(e) {
+      e.preventDefault();
+      this.ticket.createTicketOnServer(this.employeeSession.get('login'));
+    },
     activateScanFocus: function(e) {
       this.$searchbox.focus();
     },
