@@ -10,6 +10,7 @@ jQuery(function($) {
 
       this.listenTo(this.get('productCollection'), 'add', this.addToTotals);
       this.listenTo(this.get('productCollection'), 'remove', this.subtractFromTotals);
+      this.listenTo(this.get('productCollection'), 'change:price', this.priceUpdate);
 
       //Load ticket stasuses
       this.listenTo(this.employeeSession, 'change:login', this.fetchTicketStasuses);
@@ -93,7 +94,16 @@ jQuery(function($) {
       var product_total = product.get('qty')*accounting.unformat(product.get('price'));
       this.set('total', this.get('total')-product_total);
     },
+    //Backbone Events
+    priceUpdate: function(product, value, options) {
+      //Update Total with previously added products.
+      var total = 0;
+      this.get('productCollection').each(function(product) {
+        total += product.get('qty')*product.get('price');
+      });
 
+      this.set('total', total);
+    },
     //Product Model Methods
     changeTicketProducts: function(ticket, ticketId, options) {
       if(ticketId) {

@@ -35,9 +35,6 @@ jQuery(function($) {
       this.$ticketContainer.get(0).innerHTML = '<div class="product-table">'+$("#ticket-line-item-heading").html()+'</div>';
       this.$mouseTrap = this.$('.mousetrap');
 
-      //Activate search text on click.
-      this.$registerDisplay.on('click', _.bind(this.activateScanFocus, this));
-
       this.listenTo(this.ticket.get('productCollection'), 'add', this.addItem);
       this.listenTo(this.ticket.get('productCollection'), 'remove', this.removeItem);
       this.listenTo(this.ticket.get('productCollection'), 'reset', this.clearTicket);
@@ -51,6 +48,9 @@ jQuery(function($) {
 
       //AppFrame Buttons
       this.appFrame.$('a.new-ticket-button').on('click', _.bind(this.createNewTicket, this));
+
+      //Focus on product scan on click to register display (outside of this view dom scope).
+      this.$registerDisplay.on('click', _.bind(this.activateScanFocus, this));
     },
 
     //Backbone Event Handlers
@@ -73,20 +73,12 @@ jQuery(function($) {
       this.$('#line-item-'+product.id+' .qty span.value').text(qty);
     },
     priceUpdate: function(product, value, options) {
-      //Update physical view price of item.
+      //Update physical view price of an item when price changes on product model.
       if(product.get('retail')) {
         this.$('#line-item-'+product.id+' .price').html(accounting.formatMoney(product.get('price')));
       } else {
         this.$('#line-item-'+product.id+' .price').html('<span class="orig">'+accounting.formatMoney(product.get('sell_price'))+'</span>'+'<span class="special">'+accounting.formatMoney(product.get('price'))+'</span>');
       }
-
-      //Update Total with previously added products.
-      var total = 0;
-      this.ticket.get('productCollection').each(function(product) {
-        total += product.get('qty')*product.get('price');
-      });
-
-      this.ticket.set('total', total);
     },
     updateTotal: function(model, value, options) {
       //Update other totals here
