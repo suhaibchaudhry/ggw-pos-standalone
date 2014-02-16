@@ -21,6 +21,7 @@ jQuery(function($) {
       var ticket = this;
       if(login) {
         var getStasuses = JSON.stringify({token: sessionStorage.token});
+        //Start preloader
         this.trigger('ticket:preloader', true);
         $.ajax({
           type: 'POST',
@@ -28,6 +29,8 @@ jQuery(function($) {
           data: {request: getStasuses},
           timeout: 15000,
           success: function(res, status, xhr) {
+            //stop preloader
+            ticket.trigger('ticket:preloader', false);
             if(res.status) {
               ticket.set('ticketStasuses', res.stasuses);
               //Create a new ticket on server on login
@@ -37,6 +40,8 @@ jQuery(function($) {
             }
           },
           error: function(xhr, errorType, error) {
+            //stop pre loader and logout user.
+            ticket.trigger('ticket:preloader', false);
             ticket.employeeSession.set('login', false);
           }
         });
@@ -48,16 +53,17 @@ jQuery(function($) {
       var ticket = this;
       if(login) {
         var generateNewTicket = JSON.stringify({token: sessionStorage.token});
-
+        //Start preloader
+        this.trigger('ticket:preloader', true);
         $.ajax({
           type: 'POST',
           url: this.employeeSession.get('apiServer')+'/pos-api/new-ticket',
           data: {request: generateNewTicket},
           timeout: 15000,
           success: function(res, status, xhr) {
+            ticket.trigger('ticket:preloader', false);
             if(res.status) {
               var stasuses = ticket.get('ticketStasuses');
-              ticket.trigger('ticket:preloader', false);
               //Change without silent to populate active customer and ticket products (Empty on create ticket command).
               ticket.set({
                 status: res.ticketStatus,
@@ -70,6 +76,8 @@ jQuery(function($) {
             }
           },
           error: function(xhr, errorType, error) {
+            //stop pre loader and logout user.
+            ticket.trigger('ticket:preloader', false);
             ticket.employeeSession.set('login', false);
           }
         });
