@@ -364,6 +364,8 @@ div.register-display span.label {
     font-weight: bold;
     margin: 8px 0;
     text-decoration: underline;
+    padding: 0 15px 0 0;
+    word-break: break-all;
 }
 .customer-search a.clear-customer {
     width: 20px;
