@@ -99,18 +99,15 @@ jQuery(function($) {
     },
     //Backbone Events
     priceUpdate: function(product, value, options) {
-      //Update Total with previously added products in case price of a product change, due to customer role change.
-      var total = 0;
-      this.get('productCollection').each(function(product) {
-        total += product.get('qty')*product.get('price');
-      });
-
+      var total = this.get('total');
+      total = total - accounting.unformat(product.get('last_price'))*product.get('qty');
+      total = total + accounting.unformat(product.get('price'))*product.get('qty');
       this.set('total', total);
     },
     //Product Model Methods
     changeTicketProducts: function(ticket, ticketId, options) {
       if(ticketId) {
-        //Only removing current ticket products at the moment. Need to still load new ones.
+        //Only removing current ticket products at the moment. Need to still load new ones, and sync current ticket.
         this.get('productCollection').reset();
       }
     },
