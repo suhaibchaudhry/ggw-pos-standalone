@@ -43,6 +43,7 @@ jQuery(function($) {
       this.listenTo(this.ticket.get('productCollection'), 'change:price', this.priceUpdate);
 
       this.listenTo(this.ticket, 'change:total', this.updateTotal);
+      this.listenTo(this.ticket, 'change:productCount', this.updateProductCount);
       this.listenTo(this.ticket, 'change:ticketId', _.bind(this.searchTicketView.changeTicket, this.searchTicketView));
       this.listenTo(this.ticket, 'ticket:preloader', _.bind(this.appFrame.ticketPreloader, this.appFrame));
 
@@ -80,21 +81,17 @@ jQuery(function($) {
         this.$('#line-item-'+product.id+' .price').html('<span class="orig">'+accounting.formatMoney(product.get('sell_price'))+'</span>'+'<span class="special">'+accounting.formatMoney(product.get('price'))+'</span>');
       }
     },
+    updateProductCount: function(model, value, options) {
+      this.$registerDisplay.find('.product-count').html(this.labelizeTemplate({
+        label: 'Item Count',
+        value: value
+      }));
+    },
     updateTotal: function(model, value, options) {
       //Update other totals here
       this.$registerDisplay.find('.subtotal').html(this.labelizeTemplate({
         label: 'Subtotal',
         value: accounting.formatMoney(value)
-      }));
-
-      var count = 0;
-      this.ticket.get('productCollection').each(function(product) {
-        count += product.get('qty');
-      });
-
-      this.$registerDisplay.find('.product-count').html(this.labelizeTemplate({
-        label: 'Item Count',
-        value: count
       }));
     },
     //DOM Event Controllers

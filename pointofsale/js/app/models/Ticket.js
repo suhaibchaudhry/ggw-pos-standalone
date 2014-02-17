@@ -5,6 +5,7 @@ jQuery(function($) {
 
       this.set({
         total: 0,
+        productCount: 0,
         productCollection: new ticketProductCollection()
       });
 
@@ -89,14 +90,16 @@ jQuery(function($) {
     //Product Collection Event Handlers
     addToTotals: function(product) {
       this.set('total', this.get('total')+accounting.unformat(product.get('price')));
+      this.set('productCount', this.get('productCount')+1);
     },
     subtractFromTotals: function(product) {
       var product_total = product.get('qty')*accounting.unformat(product.get('price'));
       this.set('total', this.get('total')-product_total);
+      this.set('productCount', this.get('productCount')-product.get('qty'));
     },
     //Backbone Events
     priceUpdate: function(product, value, options) {
-      //Update Total with previously added products.
+      //Update Total with previously added products in case price of a product change, due to customer role change.
       var total = 0;
       this.get('productCollection').each(function(product) {
         total += product.get('qty')*product.get('price');
@@ -114,10 +117,12 @@ jQuery(function($) {
     incrementQty: function(product, increment) {
       product.set('qty', product.get('qty')+increment);
       this.set('total', this.get('total')+(accounting.unformat(product.get('price'))*increment));
+      this.set('productCount', this.get('productCount')+increment);
     },
     decrementQty: function(product) {
       product.set('qty', product.get('qty')-1);
       this.set('total', this.get('total')-accounting.unformat(product.get('price')));
+      this.set('productCount', this.get('productCount')-1);
     },
     addItem: function(productAttributes) {
       this.get('productCollection').add(productAttributes);
