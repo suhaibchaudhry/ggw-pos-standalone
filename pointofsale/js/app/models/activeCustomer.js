@@ -36,6 +36,9 @@ jQuery(function($) {
       		this.ticket.set('customerUid', uid, {silent: true});
       		var updateTicketCustomerId = JSON.stringify({token: sessionStorage.token, customerUid: uid, ticketId: ticket.get('ticketId')});
 
+      		//Cache selection because typahead js will not reload object from server.
+      		ticket.get('cache').add({id: ticket.get('ticketId'), uid: uid});
+
       		//Update Ticket Customer id on Server
       		$.ajax({
 	          type: 'POST',
@@ -51,9 +54,6 @@ jQuery(function($) {
 	            ticket.employeeSession.set('login', false);
 	          }
 	        });
-
-	        //Update UID in typeahead js cache
-	        console.log(localStorage);
       	}
 	});
 });

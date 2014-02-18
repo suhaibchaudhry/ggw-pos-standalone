@@ -7,7 +7,8 @@ jQuery(function($) {
         total: 0,
         productCount: 0,
         productCollection: new ticketProductCollection([],
-          {activeCustomer: attributes['activeCustomer']})
+          {activeCustomer: attributes['activeCustomer']}),
+        cache: new Backbone.Collection()
       });
 
       this.listenTo(this.get('productCollection'), 'add', this.addToTotals);
@@ -124,6 +125,7 @@ jQuery(function($) {
       this.set('productCount', this.get('productCount')-1);
     },
     addItem: function(productAttributes) {
+      var ticket = this;
       var product = this.get('productCollection').add(productAttributes);
       //Add Item to database
       var addItemToTicketRequest = JSON.stringify({
@@ -176,7 +178,7 @@ jQuery(function($) {
                                 token: sessionStorage.token,
                                 ticketId: ticketId,
                               });
-
+      this.trigger('ticket:preloader', true);
       $.ajax({
           type: 'POST',
           url: this.employeeSession.get('apiServer')+'/pos-api/load-ticket',
@@ -191,8 +193,10 @@ jQuery(function($) {
               //User token is rejected by server server.
               ticket.employeeSession.set('login', false);
             }
+            ticket.trigger('ticket:preloader', false);
           },
           error: function(xhr, errorType, error) {
+            ticket.trigger('ticket:preloader', false);
             //Something is wrong log user out.
             ticket.employeeSession.set('login', false);
           }

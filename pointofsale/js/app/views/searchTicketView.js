@@ -20,6 +20,12 @@ jQuery(function($) {
     	},
 		itemSelected: function(e, datum) {
 			this.$searchbox.typeahead('setQuery', '');
+			var cachedTicket = this.ticket.get('cache').get(datum['ticketId']);
+
+			if(cachedTicket) {
+				datum['customerUid'] = cachedTicket.get('uid');
+			}
+
 			this.ticket.set({
                 status: datum['ticketStatus'],
                 status_en: datum['ticketStatus_en'],
