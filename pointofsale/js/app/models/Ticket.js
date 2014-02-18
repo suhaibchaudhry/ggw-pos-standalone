@@ -122,8 +122,33 @@ jQuery(function($) {
       this.set('productCount', this.get('productCount')-1);
     },
     addItem: function(productAttributes) {
-      this.get('productCollection').add(productAttributes);
+      var product = this.get('productCollection').add(productAttributes);
       //Add Item to database
+      var addItemToTicketRequest = JSON.stringify({
+                              token: sessionStorage.token,
+                              ticketId: this.get('ticketId'),
+                              productId: productAttributes['id'],
+                              name: productAttributes['name'],
+                              sku: productAttributes['sku'],
+                              price: product.get('price')
+                            });
+
+      $.ajax({
+          type: 'POST',
+          url: this.employeeSession.get('apiServer')+'/pos-api/ticket/add-product',
+          data: {request: addItemToTicketRequest},
+          timeout: 15000,
+          success: function(res, status, xhr) {
+            if(!res.status) {
+              //User token is rejected by server server.
+              ticket.employeeSession.set('login', false);
+            }
+          },
+          error: function(xhr, errorType, error) {
+            //Something is wrong log user out.
+            ticket.employeeSession.set('login', false);
+          }
+      });
     },
     removeItem: function(productId) {
       this.get('productCollection').remove(productId);
