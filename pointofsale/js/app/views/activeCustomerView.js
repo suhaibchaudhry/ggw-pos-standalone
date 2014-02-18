@@ -12,7 +12,7 @@ jQuery(function($) {
 		defaultCustomerWrapTemplate: _.template($('#default-customer-wrap').html()),
 		initialize: function(attributes, options) {
 			this.employeeSession = attributes['employeeSession'];
-			this.activeCustomer = new activeCustomer();
+			this.activeCustomer = attributes['activeCustomer'];
 			this.listenTo(this.activeCustomer, 'change:id', this.customerChanged);
 		},
 		clearCustomer: function(e) {

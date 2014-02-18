@@ -52,6 +52,7 @@ jQuery(function($) {
 		    });
 		},
 		demolish: function() {
+			this.$('.ticket-search input.search').typeahead('destroy');
 			this.$('.ticket-search').empty();
 		}
 	});

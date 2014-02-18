@@ -20,11 +20,13 @@ jQuery(function($) {
       this.employeeSession = attributes['employeeSession'];
       this.$registerDisplay = attributes['registerDisplay'];
       this.activeCustomerView = attributes['activeCustomerView'];
+      this.activeCustomer = this.activeCustomerView.activeCustomer;
       this.searchTicketView = attributes['searchTicketView'];
       this.appFrame = attributes['appFrame'];
 
       this.ticket = new Ticket({
-        employeeSession: attributes['employeeSession']
+        employeeSession: attributes['employeeSession'],
+        activeCustomer: this.activeCustomerView.activeCustomer
       });
 
       this.searchTicketView.ticket = this.ticket;

@@ -4,7 +4,8 @@ jQuery(function($) {
   	initialize: function() {
       //Employee Session Model
       this.employeeSession = new employeeSession({apiServer: 'http://www.general-goods.com'});
- 
+      this.activeCustomer = new activeCustomer();
+
   		//Regional Views
       this.employeeOperationsRegion = new employeeOperationsView({el: this.$('.employeeOperations').get(0), employeeSession: this.employeeSession});
 
@@ -15,7 +16,8 @@ jQuery(function($) {
 
       this.activeCustomerRegion = new activeCustomerView({
         el: this.$('.activeCustomer').get(0),
-        employeeSession: this.employeeSession
+        employeeSession: this.employeeSession,
+        activeCustomer: this.activeCustomer
       });
 
       this.activeTicketRegion = new activeTicketView({

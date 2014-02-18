@@ -6,7 +6,8 @@ jQuery(function($) {
       this.set({
         total: 0,
         productCount: 0,
-        productCollection: new ticketProductCollection()
+        productCollection: new ticketProductCollection([],
+          {activeCustomer: attributes['activeCustomer']})
       });
 
       this.listenTo(this.get('productCollection'), 'add', this.addToTotals);
@@ -109,6 +110,7 @@ jQuery(function($) {
       if(ticketId) {
         //Only removing current ticket products at the moment. Need to still load new ones, and sync current ticket.
         this.get('productCollection').reset();
+        this.loadTicket(ticketId);
       }
     },
     incrementQty: function(product, increment) {
@@ -167,8 +169,36 @@ jQuery(function($) {
       //Delete ticket and clear on ui
 
     },
-    loadTicket: function() {
+    loadTicket: function(ticketId) {
       //Load another Ticket from database
+      var ticket = this;
+      var loadTicketProductsRequest = JSON.stringify({
+                                token: sessionStorage.token,
+                                ticketId: ticketId,
+                              });
+
+      $.ajax({
+          type: 'POST',
+          url: this.employeeSession.get('apiServer')+'/pos-api/load-ticket',
+          data: {request: loadTicketProductsRequest},
+          timeout: 15000,
+          success: function(res, status, xhr) {
+            if(res.status) {
+              _.each(res.products, function(product) {
+                ticket.get('productCollection').add(product);
+              });
+            } else {
+              //User token is rejected by server server.
+              ticket.employeeSession.set('login', false);
+            }
+          },
+          error: function(xhr, errorType, error) {
+            //Something is wrong log user out.
+            ticket.employeeSession.set('login', false);
+          }
+      });
+
+
     },
     unloadTicket: function() {
       //Unload current ticket from client

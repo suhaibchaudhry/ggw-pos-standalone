@@ -51,6 +51,9 @@ jQuery(function($) {
 	            ticket.employeeSession.set('login', false);
 	          }
 	        });
+
+	        //Update UID in typeahead js cache
+	        console.log(localStorage);
       	}
 	});
 });
