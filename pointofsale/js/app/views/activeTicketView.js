@@ -142,8 +142,9 @@ jQuery(function($) {
 
       //Process barcode scan
       if(e.keyCode == 13) {
-        if(e.target.value != '') {
-          this.scanItem(e.target.value);
+        var value = e.target.value.trim();
+        if(value != '') {
+          this.scanItem(value);
 
           this.$searchbox.typeahead('setQuery', '');
           this.$clearSearch.hide();
