@@ -183,6 +183,29 @@ jQuery(function($) {
     removeItem: function(productId) {
       this.get('productCollection').remove(productId);
       //Remove Item from database
+      var ticket = this;
+      var removeTicketItemRequest = JSON.stringify({
+                              token: sessionStorage.token,
+                              ticketId: this.get('ticketId'),
+                              productId: productId
+                            });
+
+      $.ajax({
+          type: 'POST',
+          url: this.employeeSession.get('apiServer')+'/pos-api/ticket/remove-product',
+          data: {request: removeTicketItemRequest},
+          timeout: 15000,
+          success: function(res, status, xhr) {
+            if(!res.status) {
+              //User token is rejected by server server.
+              ticket.employeeSession.set('login', false);
+            }
+          },
+          error: function(xhr, errorType, error) {
+            //Something is wrong log user out.
+            ticket.employeeSession.set('login', false);
+          }
+      });
     },
     clearTicket: function() {
       //Clear ticket on ui
