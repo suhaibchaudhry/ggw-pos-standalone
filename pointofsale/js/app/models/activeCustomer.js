@@ -12,7 +12,7 @@ jQuery(function($) {
       			var ticket = this.ticket;
       			var customer = this;
       			var loadCustomer = JSON.stringify({token: sessionStorage.token, customerUid: uid});
-
+      			ticket.trigger('ticket:preloader', true);
       			$.ajax({
 		          type: 'POST',
 		          url: ticket.employeeSession.get('apiServer')+'/pos-api/customer',
@@ -22,9 +22,11 @@ jQuery(function($) {
 		            if(res.status) {
 		              customer.set(res.customer);
 		            }
+		            ticket.trigger('ticket:preloader', false);
 		          },
 		          error: function(xhr, errorType, error) {
 		            ticket.employeeSession.set('login', false);
+		            ticket.trigger('ticket:preloader', false);
 		          }
 		        });
       		} else {
