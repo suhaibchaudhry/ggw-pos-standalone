@@ -5,6 +5,7 @@ jQuery(function($) {
       //Employee Session Model
       this.employeeSession = new employeeSession({apiServer: 'http://www.general-goods.com'});
       this.activeCustomer = new activeCustomer();
+      this.preloaderSemaphore = 0;
 
   		//Regional Views
       this.employeeOperationsRegion = new employeeOperationsView({el: this.$('.employeeOperations').get(0), employeeSession: this.employeeSession});
@@ -80,6 +81,12 @@ jQuery(function($) {
     },
     ticketPreloader: function(preloader) {
       if(preloader) {
+        this.preloaderSemaphore = this.preloaderSemaphore+1;
+      } else {
+        this.preloaderSemaphore = this.preloaderSemaphore-1;
+      }
+
+      if(this.preloaderSemaphore > 0) {
         $('.loaderOverlay').show();
       } else {
         $('.loaderOverlay').hide();
