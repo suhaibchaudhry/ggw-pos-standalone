@@ -7,8 +7,7 @@ jQuery(function($) {
         total: 0,
         productCount: 0,
         productCollection: new ticketProductCollection([],
-          {activeCustomer: attributes['activeCustomer']}),
-        cache: new Backbone.Collection()
+          {activeCustomer: attributes['activeCustomer']})
       });
 
       this.listenTo(this.get('productCollection'), 'add', this.addToTotals);
@@ -111,6 +110,8 @@ jQuery(function($) {
       if(ticketId) {
         //Only removing current ticket products at the moment. Need to still load new ones, and sync current ticket.
         this.get('productCollection').reset();
+        this.set('total', 0);
+        this.set('productCount', 0);
         this.loadTicket(ticketId);
       }
     },
@@ -201,8 +202,6 @@ jQuery(function($) {
             ticket.employeeSession.set('login', false);
           }
       });
-
-
     },
     unloadTicket: function() {
       //Unload current ticket from client

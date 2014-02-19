@@ -19,19 +19,37 @@ jQuery(function($) {
 			}
     	},
 		itemSelected: function(e, datum) {
+			var ticket = this.ticket;
 			this.$searchbox.typeahead('setQuery', '');
-			var cachedTicket = this.ticket.get('cache').get(datum['ticketId']);
-
-			if(cachedTicket) {
-				datum['customerUid'] = cachedTicket.get('uid');
-			}
-
-			this.ticket.set({
+			/*
+			ticket.set({
                 status: datum['ticketStatus'],
                 status_en: datum['ticketStatus_en'],
                 ticketId: datum['ticketId'],
                 customerUid: datum['customerUid']
-            });
+            });*/
+
+			ticket.trigger('ticket:preloader', true);
+            //Get Latest Customer UID on ticket, incase cache is dirty.
+            var currentTicketRequest = JSON.stringify({token: sessionStorage.token, ticketId: datum['ticketId']});
+            $.ajax({
+	          type: 'POST',
+	          url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/get-current',
+	          data: {request: currentTicketRequest},
+	          timeout: 15000,
+	          success: function(res, status, xhr) {
+	            if(res.status) {
+	              ticket.set(res.ticket);
+	            } else {
+	              ticket.employeeSession.set('login', false);
+	            }
+	            this.trigger('ticket:preloader', false);
+	          },
+	          error: function(xhr, errorType, error) {
+	          	this.trigger('ticket:preloader', false);
+	            ticket.employeeSession.set('login', false);
+	          }
+	        });
 		},
 		resolveSearchRPC: function(url, uriEncodedQuery) {
 			//Preprocess URL: Strip forward slashes to make compatible with Drupal GET arg syntax, Decouple later via POST. 
