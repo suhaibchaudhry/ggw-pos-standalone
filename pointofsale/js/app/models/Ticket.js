@@ -13,8 +13,13 @@ jQuery(function($) {
       this.listenTo(this.get('productCollection'), 'add', this.addToTotals);
       this.listenTo(this.get('productCollection'), 'remove', this.subtractFromTotals);
       this.listenTo(this.get('productCollection'), 'change:price', this.priceUpdate);
+
       //Make sure to send new quantity to server it has stabalized for a few ms.
       this.listenTo(this.get('productCollection'), 'change:qty', _.debounce(this.changeProductQuanty, 500));
+
+      //Listen for changes in total and product count and update on server
+      this.listenTo(this, 'change:total', _.debounce(this.updateTotal, 500));
+
       //Load ticket stasuses
       this.listenTo(this.employeeSession, 'change:login', this.fetchTicketStasuses);
 
@@ -88,6 +93,30 @@ jQuery(function($) {
       } else {
         ticket.set('ticketId', 0);
       }
+    },
+    //Detect debounced Updates on ticket totals and product counts on server.
+    updateTotal: function(ticket, total, options) {
+      var ticket = this;
+      var updateTotalRequest = JSON.stringify({token: sessionStorage.token, total: total, ticketId: ticket.get('ticketId'), productCount: ticket.get('productCount')});
+      //Start preloader
+      //this.trigger('ticket:preloader', true);
+      $.ajax({
+        type: 'POST',
+        url: this.employeeSession.get('apiServer')+'/pos-api/ticket/update-total',
+        data: {request: updateTotalRequest},
+        timeout: 15000,
+        success: function(res, status, xhr) {
+          if(!res.status) {
+            ticket.employeeSession.set('login', false);
+          }
+          //ticket.trigger('ticket:preloader', false);
+        },
+        error: function(xhr, errorType, error) {
+          //stop pre loader and logout user.
+          //ticket.trigger('ticket:preloader', false);
+          ticket.employeeSession.set('login', false);
+        }
+      });
     },
     //Product Collection Event Handlers
     addToTotals: function(product) {
