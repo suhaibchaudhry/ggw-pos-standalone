@@ -1,15 +1,15 @@
 jQuery(function($) {
 	activeCustomer = Backbone.Model.extend({
 		setActiveTicketViewSingleton: function(ticketView) {
-			this.ticket = ticketView.ticket;
+			this.set('ticket', ticketView.ticket);
 			//Listen for customer id changes on ticket.
-      		this.listenTo(this.ticket, 'change:customerUid', this.changeTicketCustomerUid);
+      		this.listenTo(this.get('ticket'), 'change:customerUid', this.changeTicketCustomerUid);
       	},
       	changeTicketCustomerUid: function(ticket, uid) {
       		//Load entire customer object from server and set it to as default
       		//When user is changed by gui change customerUid with silent flag, and update customer Uid on server.
       		if(uid) {
-      			var ticket = this.ticket;
+      			var ticket = this.get('ticket');
       			var customer = this;
       			var loadCustomer = JSON.stringify({token: sessionStorage.token, customerUid: uid});
       			ticket.trigger('ticket:preloader', true);
@@ -34,8 +34,8 @@ jQuery(function($) {
       		}
       	},
       	updateTicketCustomerUidOnServer: function(uid) {
-      		var ticket = this.ticket;
-      		this.ticket.set('customerUid', uid, {silent: true});
+      		var ticket = this.get('ticket');
+      		ticket.set('customerUid', uid, {silent: true});
       		var updateTicketCustomerId = JSON.stringify({token: sessionStorage.token, customerUid: uid, ticketId: ticket.get('ticketId')});
 
       		//Update Ticket Customer id on Server
@@ -56,6 +56,9 @@ jQuery(function($) {
 	            ticket.trigger('ticket:preloader', false);
 	          }
 	        });
+      	},
+      	promptTicketStatusChange: function() {
+      		
       	}
 	});
 });
