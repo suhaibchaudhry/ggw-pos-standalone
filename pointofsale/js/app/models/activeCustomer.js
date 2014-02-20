@@ -39,6 +39,7 @@ jQuery(function($) {
       		var updateTicketCustomerId = JSON.stringify({token: sessionStorage.token, customerUid: uid, ticketId: ticket.get('ticketId')});
 
       		//Update Ticket Customer id on Server
+      		ticket.trigger('ticket:preloader', true);
       		$.ajax({
 	          type: 'POST',
 	          url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/update-customer',
@@ -48,9 +49,11 @@ jQuery(function($) {
 	            if(!res.status) {
 	              ticket.employeeSession.set('login', false);
 	            }
+	            ticket.trigger('ticket:preloader', false);
 	          },
 	          error: function(xhr, errorType, error) {
 	            ticket.employeeSession.set('login', false);
+	            ticket.trigger('ticket:preloader', false);
 	          }
 	        });
       	}

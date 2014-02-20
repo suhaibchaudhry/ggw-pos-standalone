@@ -18,7 +18,7 @@ jQuery(function($) {
       this.listenTo(this.get('productCollection'), 'change:qty', _.debounce(this.changeProductQuanty, 500));
 
       //Listen for changes in total and product count and update on server
-      this.listenTo(this, 'change:total', _.debounce(this.updateTotal, 500));
+      this.listenTo(this, 'change:total', _.debounce(this.updateTotal, 1000));
 
       //Load ticket stasuses
       this.listenTo(this.employeeSession, 'change:login', this.fetchTicketStasuses);
