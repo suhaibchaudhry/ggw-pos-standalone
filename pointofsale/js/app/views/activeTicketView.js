@@ -30,6 +30,7 @@ jQuery(function($) {
       });
 
       this.searchTicketView.ticket = this.ticket;
+      this.searchTicketView.listenTo(this.ticket, 'change:status', _.bind(this.searchTicketView.changeTicketStatus, this.searchTicketView));
 
       this.ticketRegionClicked = false;
       this.ticketRegionClickY = 0;

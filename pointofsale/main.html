@@ -39,10 +39,12 @@
 	<!-- Views -->
 	<script type="text/javascript" src="js/app/views/loginView.js"></script>
 	<script type="text/javascript" src="js/app/views/employeeOperationsView.js"></script>
+	<script type="text/javascript" src="js/app/views/ticketStatusDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/activeCustomerView.js"></script>
 	<script type="text/javascript" src="js/app/views/searchTicketView.js"></script>
 	<script type="text/javascript" src="js/app/views/activeTicketView.js"></script>
 	<script type="text/javascript" src="js/app/views/loginModal.js"></script>
+	<script type="text/javascript" src="js/app/views/ticketStatusDialogModal.js"></script>
 
 	<!-- Bootstrap App -->
 	<script type="text/javascript" src="js/app/init.js"></script>
@@ -51,6 +53,7 @@
 </head>
 <body>
 	<div class="modalOverlay"></div>
+	<div class="statusOverlay"></div>
 	<div class="loaderOverlay"><a href="#" class="refresh"></a></div>
 
 	<div class="app-wrap">
@@ -108,6 +111,21 @@
 			<div class="bbm-modal__bottombar login-modal-bottombar">
 				<div class="preloader"></div>
 				<button id="login-button" type="submit" class="pure-button pure-button-success">Login</button>
+			</div>
+		</form>
+	</script>
+
+	<script type="text/template" id="ticket-status-modal">
+		<div class="bbm-modal__topbar">
+			<h3 class="bbm-modal__title test">Ticket Status</h3>
+		</div>
+		<form name="login-form" method="post" class="pure-form pure-form-stacked login-form">
+			<div class="bbm-modal__section">
+				<p>Would you like to turn this ticket in to an open ticket?</p>
+			    <a href="#" class="pure-button pure-button-success status-open-ticket">Yes, Open Ticket</a>
+			    <a href="#" class="pure-button pure-button-warning status-quote-ticket">No, Keep as Quote Ticket</a>
+			</div>
+			<div class="bbm-modal__bottombar">
 			</div>
 		</form>
 	</script>

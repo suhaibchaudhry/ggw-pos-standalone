@@ -1,5 +1,5 @@
 .bbm-wrapper {
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.50);
   -webkit-transition: background-color 0.3s; }
 
 .bbm-modal {
@@ -51,8 +51,9 @@
     .bbm-modal__section p:last-child {
       padding: 0;
       margin-bottom: 0; }
+      /*
   .bbm-modal__section a {
-    color: #ff643c; }
+    color: #ff643c; }*/
   .bbm-modal__section h3 {
     margin: 0;
     font-size: 20px;

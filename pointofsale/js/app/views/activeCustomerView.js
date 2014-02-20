@@ -14,6 +14,10 @@ jQuery(function($) {
 			this.employeeSession = attributes['employeeSession'];
 			this.activeCustomer = attributes['activeCustomer'];
 			this.listenTo(this.activeCustomer, 'change:id', this.customerChanged);
+
+			this.ticketStatusDialogModal = new ticketStatusDialogModal({
+				activeCustomer: attributes['activeCustomer']
+			});
 		},
 		clearCustomer: function(e) {
 			e.preventDefault();
@@ -24,6 +28,7 @@ jQuery(function($) {
 			if(value) {
 				this.$('.selected-customer').html(this.selectedCustomerTemplate(model.attributes));
 				this.$customer_search.find('a.clear-customer').show();
+				this.ticketStatusDialogModal.switch(true);
 			} else {
 				this.$('.selected-customer').html(this.defaultCustomerTemplate());
 				this.$customer_search.find('a.clear-customer').hide();

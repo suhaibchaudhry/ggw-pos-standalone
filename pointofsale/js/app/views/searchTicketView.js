@@ -19,6 +19,9 @@ jQuery(function($) {
 			}
 			this.$('.progress').hide();
     	},
+    	changeTicketStatus: function(ticket, ticketStatus, options) {
+    		$('.ticket-status span.value').text(ticket.get('status_en'));
+    	},
     	mouseTrapCatch: function(e) {
     		var ticket = this.ticket;
       		this.$('.progress').show();

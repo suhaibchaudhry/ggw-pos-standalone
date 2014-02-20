@@ -117,7 +117,7 @@ div.footer.region .viewport-main {
     bottom: 5px;
 }
 
-div.modalOverlay, div.loaderOverlay {
+div.modalOverlay, div.loaderOverlay, div.statusOverlay {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -129,7 +129,6 @@ div.modalOverlay, div.loaderOverlay {
 
 div.loaderOverlay {
     background: rgba(0, 0, 0, 0.5) url(../images/preloader_64.gif) no-repeat center center;
-    -webkit-transition: background-color 0.3s;
 }
 
 div.loaderOverlay a.refresh {
@@ -415,4 +414,8 @@ div.register-display span.label {
     bottom: 0;
     right: 0;
     display: none;
+}
+.statusOverlay a.pure-button {
+    width: 243px;
+    padding: 27px 0;
 }

@@ -18,7 +18,10 @@ jQuery(function($) {
       this.listenTo(this.get('productCollection'), 'change:qty', _.debounce(this.changeProductQuanty, 500));
 
       //Listen for changes in total and product count and update on server
-      this.listenTo(this, 'change:total', _.debounce(this.updateTotal, 1000));
+      this.listenTo(this, 'change:total', _.debounce(this.updateTotal, 500));
+
+      //Listen for changing ticket status update on server
+      this.listenTo(this, 'change:status', this.updateTicketStatus);
 
       //Load ticket stasuses
       this.listenTo(this.employeeSession, 'change:login', this.fetchTicketStasuses);
@@ -169,6 +172,25 @@ jQuery(function($) {
         }
       });
     },
+    updateTicketStatus: function(ticket, ticketStatus, options) {
+      var ticket = this;
+      var updateStatusRequest = JSON.stringify({token: sessionStorage.token, ticketId: this.get('ticketId'), ticketStatus: this.get('status')});
+
+      $.ajax({
+        type: 'POST',
+        url: this.employeeSession.get('apiServer')+'/pos-api/ticket/update-status',
+        data: {request: updateStatusRequest},
+        timeout: 15000,
+        success: function(res, status, xhr) {
+          if(!res.status) {
+            ticket.employeeSession.set('login', false);
+          }
+        },
+        error: function(xhr, errorType, error) {
+          ticket.employeeSession.set('login', false);
+        }
+      });
+    },
     incrementQty: function(product, increment) {
       product.set('qty', product.get('qty')+increment);
       this.set('total', this.get('total')+(accounting.unformat(product.get('price'))*increment));
@@ -275,13 +297,6 @@ jQuery(function($) {
             ticket.employeeSession.set('login', false);
           }
       });
-    }/*,
-    deleteTicket: function() {
-      //Delete ticket and clear on ui
-
-    },
-    unloadTicket: function() {
-      //Unload current ticket from client
-    }*/
+    }
   });
 });

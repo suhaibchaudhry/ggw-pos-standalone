@@ -57,8 +57,11 @@ jQuery(function($) {
 	          }
 	        });
       	},
-      	promptTicketStatusChange: function() {
-      		
+      	changeTicketStatusToOpen: function() {
+      		var status = 'pos_in_progress';
+      		var ticket = this.get('ticket');
+      		var stasuses = ticket.get('ticketStasuses');
+      		ticket.set({status: status, status_en: stasuses[status]});
       	}
 	});
 });
