@@ -407,3 +407,12 @@ div.register-display span.label {
     color: #000;
     background: #fff;
 }
+.ticketSearch .progress {
+    width: 48px;
+    height: 48px;
+    background: url(../images/cancel.png);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: none;
+}

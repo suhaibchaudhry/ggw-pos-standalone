@@ -17,6 +17,27 @@ jQuery(function($) {
 			} else {
 				this.$('.selected-ticket').empty();
 			}
+			this.$('.progress').hide();
+    	},
+    	mouseTrapCatch: function(e) {
+    		var ticket = this.ticket;
+      		this.$('.progress').show();
+
+			var updateZoneRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId')});
+            $.ajax({
+	          type: 'POST',
+	          url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/delivery',
+	          data: {request: updateZoneRequest},
+	          timeout: 15000,
+	          success: function(res, status, xhr) {
+	            if(!res.status) {
+	              ticket.employeeSession.set('login', false);
+	            }
+	          },
+	          error: function(xhr, errorType, error) {
+	            ticket.employeeSession.set('login', false);
+	          }
+	        });
     	},
 		itemSelected: function(e, datum) {
 			var ticket = this.ticket;
@@ -74,8 +95,11 @@ jQuery(function($) {
 		      limit: 8,
 		      template: _.template($('#ticket-search-result').html())
 		    });
+
+		    Mousetrap.bind('shift+d p', _.bind(this.mouseTrapCatch, this));
 		},
 		demolish: function() {
+			Mousetrap.unbind('shift+d p');
 			this.$('.ticket-search input.search').typeahead('destroy');
 			this.$('.ticket-search').empty();
 		}
