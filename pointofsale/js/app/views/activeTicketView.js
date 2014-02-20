@@ -32,6 +32,11 @@ jQuery(function($) {
       this.searchTicketView.ticket = this.ticket;
       this.searchTicketView.listenTo(this.ticket, 'change:status', _.bind(this.searchTicketView.changeTicketStatus, this.searchTicketView));
 
+      //Update product category breakdown synchronously. Change to asynchronous or debounce later.
+      var updateCategoryBreakdown = _.debounce(_.bind(this.searchTicketView.updateCategoryBreakdown, this.searchTicketView), 300);
+      this.searchTicketView.listenTo(this.ticket.get('productCollection'), 'add', updateCategoryBreakdown);
+      this.searchTicketView.listenTo(this.ticket.get('productCollection'), 'change:qty', updateCategoryBreakdown);
+
       this.ticketRegionClicked = false;
       this.ticketRegionClickY = 0;
       this.$ticketContainer = this.$('.ticket-container');
