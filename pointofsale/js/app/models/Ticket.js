@@ -245,10 +245,6 @@ jQuery(function($) {
       //Empty ticket on server and ui use clearTicket
       this.clearTicket();
     },
-    deleteTicket: function() {
-      //Delete ticket and clear on ui
-
-    },
     loadTicket: function(ticketId) {
       //Load another Ticket from database
       var ticket = this;
@@ -279,9 +275,13 @@ jQuery(function($) {
             ticket.employeeSession.set('login', false);
           }
       });
+    }/*,
+    deleteTicket: function() {
+      //Delete ticket and clear on ui
+
     },
     unloadTicket: function() {
       //Unload current ticket from client
-    }
+    }*/
   });
 });
