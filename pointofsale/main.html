@@ -40,11 +40,13 @@
 	<script type="text/javascript" src="js/app/views/loginView.js"></script>
 	<script type="text/javascript" src="js/app/views/employeeOperationsView.js"></script>
 	<script type="text/javascript" src="js/app/views/ticketStatusDialogView.js"></script>
+	<script type="text/javascript" src="js/app/views/checkoutDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/activeCustomerView.js"></script>
 	<script type="text/javascript" src="js/app/views/searchTicketView.js"></script>
 	<script type="text/javascript" src="js/app/views/activeTicketView.js"></script>
 	<script type="text/javascript" src="js/app/views/loginModal.js"></script>
 	<script type="text/javascript" src="js/app/views/ticketStatusDialogModal.js"></script>
+	<script type="text/javascript" src="js/app/views/checkoutDialogModal.js"></script>
 
 	<!-- Bootstrap App -->
 	<script type="text/javascript" src="js/app/init.js"></script>
@@ -52,9 +54,10 @@
 	<title>Point of Sale</title>
 </head>
 <body>
-	<div class="modalOverlay"></div>
-	<div class="statusOverlay"></div>
-	<div class="loaderOverlay"><a href="#" class="refresh"></a></div>
+	<div class="modalOverlay dialogOverlay"></div>
+	<div class="statusOverlay dialogOverlay"></div>
+	<div class="checkoutOverlay dialogOverlay"></div>
+	<div class="loaderOverlay dialogOverlay"><a href="#" class="refresh"></a></div>
 
 	<div class="app-wrap">
     	<div class="header region gradient">
@@ -83,6 +86,7 @@
 	    		<div class="customer-search"></div>
 	    	</div>
 	    	<div class="right region ticketSearch">
+	    		<div class="checkout"></div>
 	    		<div class="ticket-search"></div>
 	    		<div class="category-breakdown"></div>
 	    		<div class="progress"></div>
@@ -120,7 +124,6 @@
 		<div class="bbm-modal__topbar">
 			<h3 class="bbm-modal__title test">Ticket Status</h3>
 		</div>
-		<form name="login-form" method="post" class="pure-form pure-form-stacked login-form">
 			<div class="bbm-modal__section">
 				<p>Would you like to turn this ticket in to an open ticket?</p>
 			    <a href="#" class="pure-button pure-button-success status-open-ticket">Yes, Open Ticket</a>
@@ -128,7 +131,18 @@
 			</div>
 			<div class="bbm-modal__bottombar">
 			</div>
-		</form>
+	</script>
+
+	<script type="text/template" id="ticket-checkout-modal">
+		<div class="bbm-modal__topbar">
+			<h3 class="bbm-modal__title test">Ticket Checkout</h3>
+		</div>
+			<div class="bbm-modal__section">
+			    <a href="#" class="pure-button pure-button-success ticket-checkout-continue">Checkout</a>
+			    <a href="#" class="pure-button pure-button-error ticket-checkout-cancel">Cancel</a>
+			</div>
+			<div class="bbm-modal__bottombar">
+			</div>
 	</script>
 
 	<script type="text/template" id="employee-operations-buttons">
@@ -148,6 +162,10 @@
 
 	<script type="text/template" id="ticket-search-components">
 		<input class="search typeahead" placeholder="Search Tickets ..." autocomplete="off" type="text" />
+	</script>
+
+	<script type="text/template" id="checkout-buttons">
+		<a href="#" class="pure-button pure-button-error checkout-button">Checkout</a>
 	</script>
 
 	<script type="text/template" id="item-search-result">

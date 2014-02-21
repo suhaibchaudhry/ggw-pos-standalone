@@ -29,8 +29,12 @@ jQuery(function($) {
         activeCustomer: this.activeCustomerView.activeCustomer
       });
 
-      //Set ticket singleton on searchTicket View.
+      //Initialize Checkout Dialog
+      this.checkoutDialogModal = new checkoutDialogModal({activeCustomer: this.activeCustomer, ticket: this.ticket});
+
+      //Set ticket and CheckoutModal singleton on searchTicket View.
       this.searchTicketView.ticket = this.ticket;
+      this.searchTicketView.checkoutDialogModal = this.checkoutDialogModal;
 
       //Notify Search Ticket view to update the status
       this.searchTicketView.listenTo(this.ticket, 'change:status', _.bind(this.searchTicketView.changeTicketStatus, this.searchTicketView));

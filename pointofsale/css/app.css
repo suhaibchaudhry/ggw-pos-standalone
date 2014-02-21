@@ -117,7 +117,7 @@ div.footer.region .viewport-main {
     bottom: 5px;
 }
 
-div.modalOverlay, div.loaderOverlay, div.statusOverlay {
+div.dialogOverlay {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -419,7 +419,15 @@ div.register-display span.label {
     width: 243px;
     padding: 27px 0;
 }
-
+.ticketSearch .checkout {
+    padding: 0 10px;
+    display: none;
+}
+.checkout a.checkout-button {
+    margin: 10px 0;
+    width: 100%;
+    box-sizing: border-box;
+}
 .category-breakdown {
     margin: 20px 5px;
     font-size: 14px;

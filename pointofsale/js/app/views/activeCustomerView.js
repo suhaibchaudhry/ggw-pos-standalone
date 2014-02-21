@@ -15,6 +15,7 @@ jQuery(function($) {
 			this.activeCustomer = attributes['activeCustomer'];
 			this.listenTo(this.activeCustomer, 'change:id', this.customerChanged);
 
+			//Modal Dialogs
 			this.ticketStatusDialogModal = new ticketStatusDialogModal({
 				activeCustomer: attributes['activeCustomer']
 			});

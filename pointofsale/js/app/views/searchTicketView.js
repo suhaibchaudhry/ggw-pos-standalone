@@ -1,15 +1,21 @@
 jQuery(function($) {
 	searchTicketView = Backbone.View.extend({
 		events: {
-			"typeahead:selected .ticket-search": 'itemSelected'
+			"typeahead:selected .ticket-search": 'itemSelected',
+			"click .checkout a.checkout-button": 'checkout'
 		},
 		tagName: 'div',
 		selectedTicketWrapTemplate: _.template($('#selected-ticket-wrap').html()),
     	selectedTicketTemplate: _.template($('#selected-ticket').html()),
 		searchBoxTemplate: _.template($('#ticket-search-components').html()),
 		ticketSearchBadge: _.template($('#ticket-search-badge').html()),
+		checkoutButtons: _.template($('#checkout-buttons').html()),
 		initialize: function(attributes, options) {
 			this.employeeSession = attributes['employeeSession'];
+		},
+		checkout: function(e) {
+			e.preventDefault();
+			this.checkoutDialogModal.display(true);
 		},
 		changeTicket: function(ticket, ticketId, options) {
 			if(ticketId) {
@@ -17,10 +23,18 @@ jQuery(function($) {
 			} else {
 				this.$('.selected-ticket').empty();
 			}
+
 			this.$('.progress').hide();
     	},
     	changeTicketStatus: function(ticket, ticketStatus, options) {
     		$('.ticket-status span.value').text(ticket.get('status_en'));
+
+    		//Enable Disable Checkout Button
+    		if(ticketStatus == 'pos_in_progress') {
+    			this.$('.checkout').show();
+    		} else {
+    			this.$('.checkout').hide();
+    		}
     	},
     	mouseTrapCatch: function(e) {
     		var ticket = this.ticket;
@@ -109,6 +123,9 @@ jQuery(function($) {
 			this.$ticket_search.append(this.ticketSearchBadge());
 			this.$searchbox = this.$('.ticket-search input.search');
 
+			this.$checkoutButtons = this.$('.checkout');
+			this.$checkoutButtons.append(this.checkoutButtons());
+
 			//Create TypeaheadJs Box
 			this.$searchbox.typeahead({
 		      valueKey: 'ticketId',
@@ -128,6 +145,7 @@ jQuery(function($) {
 			this.$('.ticket-search input.search').typeahead('destroy');
 			this.$('.ticket-search').empty();
 			this.$('.category-breakdown').empty();
+			this.$('.checkout').empty();
 		}
 	});
 });

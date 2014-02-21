@@ -11,14 +11,6 @@ jQuery(function($) {
       this.activeCustomer = attributes['activeCustomer'];
       this.modal = attributes['modal'];
     },
-    loginSubmit: function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      var uname = this.$('input#login-uname').val();
-      var pass = this.$('input#login-password').val();
-      
-      this.employeeSession.login(uname, pass);
-    },
     template: _.template($('#ticket-status-modal').html()),
     render: function() {
       return this;
