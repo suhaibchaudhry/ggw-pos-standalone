@@ -29,20 +29,28 @@ jQuery(function($) {
         activeCustomer: this.activeCustomerView.activeCustomer
       });
 
+      //Set ticket singleton on searchTicket View.
       this.searchTicketView.ticket = this.ticket;
+
+      //Notify Search Ticket view to update the status
       this.searchTicketView.listenTo(this.ticket, 'change:status', _.bind(this.searchTicketView.changeTicketStatus, this.searchTicketView));
 
-      //Update product category breakdown synchronously. Change to asynchronous or debounce later.
+      //Update product category breakdown synchronously with debouncing. Change to asynchronous later.
       var updateCategoryBreakdown = _.debounce(_.bind(this.searchTicketView.updateCategoryBreakdown, this.searchTicketView), 300);
       this.searchTicketView.listenTo(this.ticket.get('productCollection'), 'add', updateCategoryBreakdown);
       this.searchTicketView.listenTo(this.ticket.get('productCollection'), 'change:qty', updateCategoryBreakdown);
 
+      //Notify Search Ticket view to update the ticket id.
+      this.listenTo(this.ticket, 'change:ticketId', _.bind(this.searchTicketView.changeTicket, this.searchTicketView));
+
+      //Create ticket product table on UI, and activate mousetrap.
       this.ticketRegionClicked = false;
       this.ticketRegionClickY = 0;
       this.$ticketContainer = this.$('.ticket-container');
       this.$ticketContainer.get(0).innerHTML = '<div class="product-table">'+$("#ticket-line-item-heading").html()+'</div>';
       this.$mouseTrap = this.$('.mousetrap');
 
+      //Handle events when products are added and removed from ticket product collection, and ticket attrs are changed.
       this.listenTo(this.ticket.get('productCollection'), 'add', this.addItem);
       this.listenTo(this.ticket.get('productCollection'), 'remove', this.removeItem);
       this.listenTo(this.ticket.get('productCollection'), 'reset', this.clearTicket);
@@ -50,9 +58,9 @@ jQuery(function($) {
       this.listenTo(this.ticket.get('productCollection'), 'change:qty', this.changeQuantyDisplay);
       this.listenTo(this.ticket.get('productCollection'), 'change:price', this.priceUpdate);
 
+      //Update the ticket values on View when model is changed.
       this.listenTo(this.ticket, 'change:total', this.updateTotal);
       this.listenTo(this.ticket, 'change:productCount', this.updateProductCount);
-      this.listenTo(this.ticket, 'change:ticketId', _.bind(this.searchTicketView.changeTicket, this.searchTicketView));
       this.listenTo(this.ticket, 'ticket:preloader', _.bind(this.appFrame.ticketPreloader, this.appFrame));
 
       //AppFrame Buttons
