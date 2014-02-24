@@ -5,4 +5,5 @@ if [ "$SCREEN_COUNT" == "2" ]; then
 	xsetroot -display :0.1 -cursor_name left_ptr -bg black
 	$HOME/ggw-pos-standalone/init_cv.sh
 	nodewebkit $HOME/ggw-pos-standalone/customerview
+	xsetroot -display :0.0 -cursor_name left_ptr -bg black
 fi
