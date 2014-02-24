@@ -16,9 +16,11 @@ jQuery(function($) {
     },
     display: function(session, login, options) {
       if(login) {
-        $('.modalOverlay').fadeOut();
+        $('.modalOverlay').stop().fadeOut(function() {
+          $(this).empty();
+        });
       } else {
-        $('.modalOverlay').show().html(this.render().el);
+        $('.modalOverlay').stop().show().html(this.render().el);
       }
     },
     messagePrompt: function(session, message, options) {

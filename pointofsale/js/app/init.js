@@ -4,7 +4,9 @@ jQuery(function($) {
   	initialize: function() {
       //Employee Session Model
       this.employeeSession = new employeeSession({apiServer: 'http://www.general-goods.com'});
- 
+      this.activeCustomer = new activeCustomer();
+      this.preloaderSemaphore = 0;
+
   		//Regional Views
       this.employeeOperationsRegion = new employeeOperationsView({el: this.$('.employeeOperations').get(0), employeeSession: this.employeeSession});
 
@@ -15,7 +17,8 @@ jQuery(function($) {
 
       this.activeCustomerRegion = new activeCustomerView({
         el: this.$('.activeCustomer').get(0),
-        employeeSession: this.employeeSession
+        employeeSession: this.employeeSession,
+        activeCustomer: this.activeCustomer
       });
 
       this.activeTicketRegion = new activeTicketView({
@@ -48,12 +51,17 @@ jQuery(function($) {
       //Global Window level event catching and handling
       //Handle window resize
       $(window).on('resize', _.bind(this.heightAdjust, this));
+      $('.loaderOverlay a.refresh').on('click', _.bind(this.reload, this));
 
       //Catch mouse releases outside of application frame, and release all mousetraps.
       $(window).mouseup(function(){
          $('.mousetrap').css('z-index', 0);
       });
   	},
+    reload: function(e) {
+      e.preventDefault();
+      location.reload();
+    },
     //No demolish is neccesary for this always-on singleton view.
   	render: function(session, login, options) {
       if(login) {
@@ -73,6 +81,12 @@ jQuery(function($) {
     },
     ticketPreloader: function(preloader) {
       if(preloader) {
+        this.preloaderSemaphore = this.preloaderSemaphore+1;
+      } else {
+        this.preloaderSemaphore = this.preloaderSemaphore-1;
+      }
+
+      if(this.preloaderSemaphore > 0) {
         $('.loaderOverlay').show();
       } else {
         $('.loaderOverlay').hide();

@@ -117,7 +117,7 @@ div.footer.region .viewport-main {
     bottom: 5px;
 }
 
-div.modalOverlay, div.loaderOverlay {
+div.dialogOverlay {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -129,7 +129,19 @@ div.modalOverlay, div.loaderOverlay {
 
 div.loaderOverlay {
     background: rgba(0, 0, 0, 0.5) url(../images/preloader_64.gif) no-repeat center center;
-    -webkit-transition: background-color 0.3s;
+}
+
+div.loaderOverlay a.refresh {
+    display: block;
+    width: 48px;
+    height: 48px;
+    background: url(../images/refresh.png) no-repeat;
+    position: absolute;
+    right: 0;
+}
+
+div.loaderOverlay a.refresh:hover {
+    background: url(../images/refresh-outline.png) no-repeat;
 }
 
 .bbm-wrapper {
@@ -351,6 +363,8 @@ div.register-display span.label {
     font-weight: bold;
     margin: 8px 0;
     text-decoration: underline;
+    padding: 0 15px 0 0;
+    word-break: break-all;
 }
 .customer-search a.clear-customer {
     width: 20px;
@@ -366,4 +380,63 @@ div.register-display span.label {
 
 .customer-search a.clear-customer:hover {
     background-image: url(../images/delete.png);
+}
+.header ul.menu {
+    list-style: none outside none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    bottom: 8px;
+    display: inline-block;
+    right: 0;
+}
+.header ul.menu li {
+    display: inline-block;
+}
+
+.header ul.menu li a {
+    color: #fff;
+    text-decoration: none;
+    background: #000;
+    padding: 10px 20px;
+    margin: 0 0 0 4px;
+    border-radius: 10px 10px 0 0;
+}
+.header ul.menu li a:hover {
+    color: #000;
+    background: #fff;
+}
+.ticketSearch .progress {
+    width: 48px;
+    height: 48px;
+    background: url(../images/cancel.png);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: none;
+}
+.statusOverlay a.pure-button {
+    width: 243px;
+    padding: 27px 0;
+}
+.ticketSearch .checkout {
+    padding: 0 10px;
+    display: none;
+}
+.checkout a.checkout-button {
+    margin: 10px 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+.category-breakdown {
+    margin: 20px 5px;
+    font-size: 14px;
+}
+
+.category-breakdown .category {
+    margin: 10px 0 0;
+}
+
+.category-breakdown .category span.label {
+    font-weight: bold;
 }

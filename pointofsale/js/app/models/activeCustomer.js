@@ -1,18 +1,18 @@
 jQuery(function($) {
 	activeCustomer = Backbone.Model.extend({
 		setActiveTicketViewSingleton: function(ticketView) {
-			this.ticket = ticketView.ticket;
+			this.set('ticket', ticketView.ticket);
 			//Listen for customer id changes on ticket.
-      		this.listenTo(this.ticket, 'change:customerUid', this.changeTicketCustomerUid);
+      		this.listenTo(this.get('ticket'), 'change:customerUid', this.changeTicketCustomerUid);
       	},
       	changeTicketCustomerUid: function(ticket, uid) {
       		//Load entire customer object from server and set it to as default
       		//When user is changed by gui change customerUid with silent flag, and update customer Uid on server.
       		if(uid) {
-      			var ticket = this.ticket;
+      			var ticket = this.get('ticket');
       			var customer = this;
       			var loadCustomer = JSON.stringify({token: sessionStorage.token, customerUid: uid});
-
+      			ticket.trigger('ticket:preloader', true);
       			$.ajax({
 		          type: 'POST',
 		          url: ticket.employeeSession.get('apiServer')+'/pos-api/customer',
@@ -22,9 +22,11 @@ jQuery(function($) {
 		            if(res.status) {
 		              customer.set(res.customer);
 		            }
+		            ticket.trigger('ticket:preloader', false);
 		          },
 		          error: function(xhr, errorType, error) {
 		            ticket.employeeSession.set('login', false);
+		            ticket.trigger('ticket:preloader', false);
 		          }
 		        });
       		} else {
@@ -32,11 +34,12 @@ jQuery(function($) {
       		}
       	},
       	updateTicketCustomerUidOnServer: function(uid) {
-      		var ticket = this.ticket;
-      		this.ticket.set('customerUid', uid, {silent: true});
+      		var ticket = this.get('ticket');
+      		ticket.set('customerUid', uid, {silent: true});
       		var updateTicketCustomerId = JSON.stringify({token: sessionStorage.token, customerUid: uid, ticketId: ticket.get('ticketId')});
 
       		//Update Ticket Customer id on Server
+      		ticket.trigger('ticket:preloader', true);
       		$.ajax({
 	          type: 'POST',
 	          url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/update-customer',
@@ -46,11 +49,19 @@ jQuery(function($) {
 	            if(!res.status) {
 	              ticket.employeeSession.set('login', false);
 	            }
+	            ticket.trigger('ticket:preloader', false);
 	          },
 	          error: function(xhr, errorType, error) {
 	            ticket.employeeSession.set('login', false);
+	            ticket.trigger('ticket:preloader', false);
 	          }
 	        });
+      	},
+      	changeTicketStatusToOpen: function() {
+      		var status = 'pos_in_progress';
+      		var ticket = this.get('ticket');
+      		var stasuses = ticket.get('ticketStasuses');
+      		ticket.set({status: status, status_en: stasuses[status]});
       	}
 	});
 });

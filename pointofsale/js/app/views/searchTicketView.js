@@ -1,18 +1,21 @@
 jQuery(function($) {
 	searchTicketView = Backbone.View.extend({
-		/*
 		events: {
-			"typeahead:selected .customer-search": 'itemSelected',
-			"click .customer-search a.clear-customer": 'clearCustomer'
+			"typeahead:selected .ticket-search": 'itemSelected',
+			"click .checkout a.checkout-button": 'checkout'
 		},
-		*/
 		tagName: 'div',
 		selectedTicketWrapTemplate: _.template($('#selected-ticket-wrap').html()),
     	selectedTicketTemplate: _.template($('#selected-ticket').html()),
 		searchBoxTemplate: _.template($('#ticket-search-components').html()),
 		ticketSearchBadge: _.template($('#ticket-search-badge').html()),
+		checkoutButtons: _.template($('#checkout-buttons').html()),
 		initialize: function(attributes, options) {
 			this.employeeSession = attributes['employeeSession'];
+		},
+		checkout: function(e) {
+			e.preventDefault();
+			this.checkoutDialogModal.display(true);
 		},
 		changeTicket: function(ticket, ticketId, options) {
 			if(ticketId) {
@@ -20,39 +23,129 @@ jQuery(function($) {
 			} else {
 				this.$('.selected-ticket').empty();
 			}
+
+			this.$('.progress').hide();
     	},
-		/*
+    	changeTicketStatus: function(ticket, ticketStatus, options) {
+    		$('.ticket-status span.value').text(ticket.get('status_en'));
+
+    		//Enable Disable Checkout Button
+    		if(ticketStatus == 'pos_in_progress') {
+    			this.$('.checkout').show();
+    		} else {
+    			this.$('.checkout').hide();
+    		}
+    	},
+    	mouseTrapCatch: function(e) {
+    		var ticket = this.ticket;
+      		this.$('.progress').show();
+
+			var updateZoneRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId')});
+            $.ajax({
+	          type: 'POST',
+	          url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/delivery',
+	          data: {request: updateZoneRequest},
+	          timeout: 15000,
+	          success: function(res, status, xhr) {
+	            if(!res.status) {
+	              ticket.employeeSession.set('login', false);
+	            }
+	          },
+	          error: function(xhr, errorType, error) {
+	            ticket.employeeSession.set('login', false);
+	          }
+	        });
+    	},
 		itemSelected: function(e, datum) {
+			var ticket = this.ticket;
 			this.$searchbox.typeahead('setQuery', '');
-			this.activeCustomer.set(datum);
+			/*
+			ticket.set({
+                status: datum['ticketStatus'],
+                status_en: datum['ticketStatus_en'],
+                ticketId: datum['ticketId'],
+                customerUid: datum['customerUid']
+            });*/
+
+			ticket.trigger('ticket:preloader', true);
+            //Get Latest Customer UID on ticket, incase cache is dirty.
+            var currentTicketRequest = JSON.stringify({token: sessionStorage.token, ticketId: datum['ticketId']});
+            $.ajax({
+	          type: 'POST',
+	          url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/get-current',
+	          data: {request: currentTicketRequest},
+	          timeout: 15000,
+	          success: function(res, status, xhr) {
+	            if(res.status) {
+	              ticket.set(res.ticket);
+	            } else {
+	              ticket.employeeSession.set('login', false);
+	            }
+	            ticket.trigger('ticket:preloader', false);
+	          },
+	          error: function(xhr, errorType, error) {
+	          	this.trigger('ticket:preloader', false);
+	            ticket.employeeSession.set('login', false);
+	          }
+	        });
+		},
+		updateCategoryBreakdown: function(product) {
+			var ticket = this.ticket;
+			var categories = new Array();
+			ticket.get('productCollection').each(function(product) {
+				//var categories = ticket.get('categories');
+				var category = product.get('category');
+				if(typeof category != 'undefined') {
+					if(categories[category]) {
+						categories[category] = categories[category] + product.get('qty');
+					}  else {
+						categories[category] = product.get('qty');
+					}
+
+					var str = '';
+					for(cat in categories) {
+						str += '<div class="category"><span class="label">'+cat+': </span><span class="value">'+categories[cat]+'</span></div>';
+					}
+
+					this.$('.category-breakdown').html(str);
+				}
+			});
 		},
 		resolveSearchRPC: function(url, uriEncodedQuery) {
 			//Preprocess URL: Strip forward slashes to make compatible with Drupal GET arg syntax, Decouple later via POST. 
       		var newurl = url + '/' + encodeURIComponent(this.$searchbox.val().replace(/\//g, ''));
       		return newurl;
-    	},*/
+    	},
 		render: function() {
 			this.$ticket_search = this.$('.ticket-search');
 			this.$ticket_search.append(this.selectedTicketWrapTemplate());
 			this.$ticket_search.append(this.searchBoxTemplate());
 			this.$ticket_search.append(this.ticketSearchBadge());
-			//this.$searchbox = this.$('.customer-search input.search');
+			this.$searchbox = this.$('.ticket-search input.search');
 
-			/*
+			this.$checkoutButtons = this.$('.checkout');
+			this.$checkoutButtons.append(this.checkoutButtons());
+
 			//Create TypeaheadJs Box
 			this.$searchbox.typeahead({
-		      valueKey: 'id',
-		      name: 'search-customers',
+		      valueKey: 'ticketId',
+		      name: 'search-tickets',
 		      remote: {
-		         url: this.employeeSession.get('apiServer')+'/pos-api/customers/'+this.employeeSession.get("token"),
+		         url: this.employeeSession.get('apiServer')+'/pos-api/tickets/'+this.employeeSession.get("token"),
 		         replace: _.bind(this.resolveSearchRPC, this)
 		      },
 		      limit: 8,
-		      template: _.template($('#customer-search-result').html())
-		    });*/
+		      template: _.template($('#ticket-search-result').html())
+		    });
+
+		    Mousetrap.bind('shift+d p', _.bind(this.mouseTrapCatch, this));
 		},
 		demolish: function() {
+			Mousetrap.unbind('shift+d p');
+			this.$('.ticket-search input.search').typeahead('destroy');
 			this.$('.ticket-search').empty();
+			this.$('.category-breakdown').empty();
+			this.$('.checkout').empty();
 		}
 	});
 });

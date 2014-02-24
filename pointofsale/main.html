@@ -14,6 +14,7 @@
 
     <!-- JS Libraries -->
     <script type="text/javascript" src="js/vendor/accounting.js"></script>
+    <script type="text/javascript" src="js/vendor/mousetrap.min.js"></script>
 
     <!-- JQuery -->
 	<script type="text/javascript" src="js/vendor/jquery-2.0.3.min.js"></script>
@@ -38,10 +39,14 @@
 	<!-- Views -->
 	<script type="text/javascript" src="js/app/views/loginView.js"></script>
 	<script type="text/javascript" src="js/app/views/employeeOperationsView.js"></script>
+	<script type="text/javascript" src="js/app/views/ticketStatusDialogView.js"></script>
+	<script type="text/javascript" src="js/app/views/checkoutDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/activeCustomerView.js"></script>
 	<script type="text/javascript" src="js/app/views/searchTicketView.js"></script>
 	<script type="text/javascript" src="js/app/views/activeTicketView.js"></script>
 	<script type="text/javascript" src="js/app/views/loginModal.js"></script>
+	<script type="text/javascript" src="js/app/views/ticketStatusDialogModal.js"></script>
+	<script type="text/javascript" src="js/app/views/checkoutDialogModal.js"></script>
 
 	<!-- Bootstrap App -->
 	<script type="text/javascript" src="js/app/init.js"></script>
@@ -49,12 +54,18 @@
 	<title>Point of Sale</title>
 </head>
 <body>
-	<div class="modalOverlay"></div>
-	<div class="loaderOverlay"></div>
+	<div class="modalOverlay dialogOverlay"></div>
+	<div class="statusOverlay dialogOverlay"></div>
+	<div class="checkoutOverlay dialogOverlay"></div>
+	<div class="loaderOverlay dialogOverlay"><a href="#" class="refresh"></a></div>
 
 	<div class="app-wrap">
     	<div class="header region gradient">
-	    	<div class="viewport-main"></div>
+	    	<div class="viewport-main">
+	    		<ul class="menu">
+	    			<li><a href="#" class="new-ticket-button">New Ticket</a></li>
+	    		</ul>
+	    	</div>
 	    	<div class="left region logo"></div>
 	    	<div class="right region employeeOperations">
 	    		<div class="wrapper">
@@ -75,12 +86,16 @@
 	    		<div class="customer-search"></div>
 	    	</div>
 	    	<div class="right region ticketSearch">
+	    		<div class="checkout"></div>
 	    		<div class="ticket-search"></div>
+	    		<div class="category-breakdown"></div>
+	    		<div class="progress"></div>
 	    	</div>
     	</div>
     	<div class="footer region">
     		<div class="viewport-main register-display">
     			<div class="subtotal calculation"></div>
+    			<div class="product-count calculation"></div>
     		</div>
     	</div>
 	</div>
@@ -105,6 +120,31 @@
 		</form>
 	</script>
 
+	<script type="text/template" id="ticket-status-modal">
+		<div class="bbm-modal__topbar">
+			<h3 class="bbm-modal__title test">Ticket Status</h3>
+		</div>
+			<div class="bbm-modal__section">
+				<p>Would you like to turn this ticket in to an open ticket?</p>
+			    <a href="#" class="pure-button pure-button-success status-open-ticket">Yes, Open Ticket</a>
+			    <a href="#" class="pure-button pure-button-warning status-quote-ticket">No, Keep as Quote Ticket</a>
+			</div>
+			<div class="bbm-modal__bottombar">
+			</div>
+	</script>
+
+	<script type="text/template" id="ticket-checkout-modal">
+		<div class="bbm-modal__topbar">
+			<h3 class="bbm-modal__title test">Ticket Checkout</h3>
+		</div>
+			<div class="bbm-modal__section">
+			    <a href="#" class="pure-button pure-button-success ticket-checkout-continue">Checkout</a>
+			    <a href="#" class="pure-button pure-button-error ticket-checkout-cancel">Cancel</a>
+			</div>
+			<div class="bbm-modal__bottombar">
+			</div>
+	</script>
+
 	<script type="text/template" id="employee-operations-buttons">
 		<a class="pure-button pure-button-success clock-in" href="#">Clock In</a>
 		<a class="pure-button pure-button-success lunch-in" href="#">Lunch In</a>
@@ -124,6 +164,10 @@
 		<input class="search typeahead" placeholder="Search Tickets ..." autocomplete="off" type="text" />
 	</script>
 
+	<script type="text/template" id="checkout-buttons">
+		<a href="#" class="pure-button pure-button-error checkout-button">Checkout</a>
+	</script>
+
 	<script type="text/template" id="item-search-result">
 		<div class="search-result">
 			<div class="info">
@@ -139,6 +183,13 @@
 			<div class="account_id"><span class="label">Account #: </span><%= account_id %></div>
 			<div class="company_name"><span class="label">Company: </span><%= company_name %></div>
 			<div class="company_phone"><span class="label">Phone #: </span><%= company_phone %></div>
+		</div>
+	</script>
+
+	<script type="text/template" id="ticket-search-result">
+		<div class="search-result">
+			<div class="ticket-id"><span class="label">Ticket #: </span><%= ticketId %></div>
+			<div class="ticket-status"><span class="label">Status: </span><%= ticketStatus_en %></div>
 		</div>
 	</script>
 
@@ -192,7 +243,6 @@
 				<li>Account #</li>
 				<li>Company Name</li>
 				<li>Phone Number</li>
-				<li>Address or Zip code</li>
 			</ul>
 		</div>
 	</script>
