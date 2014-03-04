@@ -1,0 +1,32 @@
+.profile-content #content-profile-view {
+	display: none;
+}
+
+h3.content-profile-title {
+	display: none;
+}
+
+.profile-content .field-label {
+	font-weight: bold;
+	display: inline-block;
+}
+
+.profile-content .field-items {
+	display: inline-block;
+}
+
+.profile-content .field-type-postal .field-label {
+	position: absolute;
+}
+
+.profile > p, .profile > br {
+	display: none;
+}
+
+.profile h2 {
+	margin: 0 0 10px;
+}
+
+.profile .field {
+	margin: 0 0 5px;
+}
