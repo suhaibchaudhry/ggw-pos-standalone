@@ -96,6 +96,7 @@
     		<div class="viewport-main register-display">
     			<div class="subtotal calculation"></div>
     			<div class="product-count calculation"></div>
+    			<div class="category-breakdown"></div>
     		</div>
     	</div>
 	</div>
@@ -272,6 +273,16 @@
 			<div class="ticket-id"><span class="label">Ticket #: </span><span class="value"><%= ticketId %></span></div>
 			<div class="ticket-status"><span class="label">Status: </span><span class="value"><%= status_en %></span></div>
 		</div>
+	</script>
+
+	<script type="text/template" id="category-breakdown-template">
+		<ul class="category-breakdown-list">
+		<% _.each(categories, function(total, category) { %> 
+			<li>
+			<span class="label"><%= category %>:</span> <span class="value"><%= total %></span>
+			</li>
+		<% }); %>
+		</ul>
 	</script>
 </body>
 </html>

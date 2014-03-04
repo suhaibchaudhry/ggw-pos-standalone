@@ -4,8 +4,6 @@ jQuery(function($) {
       this.employeeSession = attributes['employeeSession'];
 
       this.set({
-        total: 0,
-        productCount: 0,
         productCollection: new ticketProductCollection([],
           {activeCustomer: attributes['activeCustomer']})
       });
@@ -17,17 +15,58 @@ jQuery(function($) {
       //Make sure to send new quantity to server it has stabalized for a few ms.
       this.listenTo(this.get('productCollection'), 'change:qty', _.debounce(this.changeProductQuanty, 500));
 
+      //Update Category breakdown
+      this.listenTo(this.get('productCollection'), 'change:qty', this.updateCategoryBreakdown);
+      this.listenTo(this.get('productCollection'), 'add', this.addToCategoryBreakdown);
+      this.listenTo(this.get('productCollection'), 'remove', this.removeFromCategoryBreakdown);
+
       //Listen for changes in total and product count and update on server
       this.listenTo(this, 'change:total', _.debounce(this.updateTotal, 500));
 
-      //Listen for changing ticket status update on server
+      //Listen for changing ticket status on ui to update on server
       this.listenTo(this, 'change:status', this.updateTicketStatus);
 
-      //Load ticket stasuses
+      //Load ticket stasuses and product categories on login.
       this.listenTo(this.employeeSession, 'change:login', this.fetchTicketStasuses);
 
-      //Listen ticket change to load new products.
+      //Listen for ticket change to load new products.
       this.listenTo(this, 'change:ticketId', this.changeTicketProducts);
+    },
+    updateCategoryBreakdown: function(product, qty, options) {
+      var last_qty = product.previous("qty");
+
+      var categories = this.get('categories');
+      var cat = product.get('category');
+      if(cat) {
+        var count = categories[cat];
+        count += qty - last_qty;
+        categories[cat] = count;
+
+        this.set('categories', null);
+        this.set('categories', categories);
+      }
+    },
+    addToCategoryBreakdown: function(product) {
+      var qty = product.get('qty');
+      var categories = this.get('categories');
+      var cat = product.get('category');
+      if(cat) {
+        categories[cat] += qty;
+
+        this.set('categories', null);
+        this.set('categories', categories);
+      }
+    },
+    removeFromCategoryBreakdown: function() {
+      var qty = product.get('qty');
+      var categories = this.get('categories');
+      var cat = product.get('category');
+      if(cat) {
+        categories[cat] -= qty;
+
+        this.set('categories', null);
+        this.set('categories', categories);
+      }
     },
     fetchTicketStasuses: function(session, login, options) {
       var ticket = this;
@@ -45,6 +84,9 @@ jQuery(function($) {
             ticket.trigger('ticket:preloader', false);
             if(res.status) {
               ticket.set('ticketStasuses', res.stasuses);
+              ticket.set('categories', res.categories);
+              ticket.set('productCount', 0);
+              ticket.set('total', 0);
               //Create a new ticket on server on login
               ticket.createTicketOnServer(login);
             } else {

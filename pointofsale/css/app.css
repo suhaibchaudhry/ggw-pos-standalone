@@ -437,14 +437,27 @@ div.register-display span.label {
     box-sizing: border-box;
 }
 .category-breakdown {
-    margin: 20px 5px;
-    font-size: 14px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+.category-breakdown ul.category-breakdown-list {
+    float: right;
+    width: 500px;
+    list-style: none outside none;
+    margin: 11px 0 10px;
+    padding: 0;
 }
 
-.category-breakdown .category {
-    margin: 10px 0 0;
+.category-breakdown ul.category-breakdown-list li {
+    width: 50%;
+    float: left;
+    margin: 2px 0;
+    position: relative;
 }
 
-.category-breakdown .category span.label {
-    font-weight: bold;
+.category-breakdown ul.category-breakdown-list li span.value {
+    position: absolute;
+    right: 20px;
 }
