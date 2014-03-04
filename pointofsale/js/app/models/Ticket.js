@@ -57,7 +57,7 @@ jQuery(function($) {
         this.set('categories', categories);
       }
     },
-    removeFromCategoryBreakdown: function() {
+    removeFromCategoryBreakdown: function(product) {
       var qty = product.get('qty');
       var categories = this.get('categories');
       var cat = product.get('category');
