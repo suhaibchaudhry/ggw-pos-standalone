@@ -10,7 +10,7 @@ jQuery(function($) {
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
       this.modal = attributes['modal'];
-      this.ticket = attributes['ticket']
+      this.ticket = attributes['ticket'];
     },
     template: _.template($('#ticket-checkout-modal').html()),
     render: function() {

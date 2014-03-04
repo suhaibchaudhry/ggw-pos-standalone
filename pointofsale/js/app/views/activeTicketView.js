@@ -15,6 +15,7 @@ jQuery(function($) {
     searchBoxTemplate: _.template($('#item-search-components').html()),
     lineItemTemplate: _.template($('#ticket-line-item').html()),
     labelizeTemplate: _.template($('#labelize-data').html()),
+    categoryBreakdownTemplate: _.template($('#category-breakdown-template').html()),
 
     initialize: function(attributes, options) {
       this.employeeSession = attributes['employeeSession'];
@@ -32,6 +33,10 @@ jQuery(function($) {
       //Initialize Checkout Dialog
       this.checkoutDialogModal = new checkoutDialogModal({activeCustomer: this.activeCustomer, ticket: this.ticket});
 
+      //Initialize Customer Info Dialog
+      this.customerInfoDialogModal = new customerInfoDialogModal({activeCustomer: this.activeCustomer, employeeSession: this.employeeSession});
+      this.activeCustomerView.customerInfoDialogModal = this.customerInfoDialogModal;
+
       //Set ticket and CheckoutModal singleton on searchTicket View.
       this.searchTicketView.ticket = this.ticket;
       this.searchTicketView.checkoutDialogModal = this.checkoutDialogModal;
@@ -39,10 +44,8 @@ jQuery(function($) {
       //Notify Search Ticket view to update the status
       this.searchTicketView.listenTo(this.ticket, 'change:status', _.bind(this.searchTicketView.changeTicketStatus, this.searchTicketView));
 
-      //Update product category breakdown synchronously with debouncing. Change to asynchronous later.
-      var updateCategoryBreakdown = _.debounce(_.bind(this.searchTicketView.updateCategoryBreakdown, this.searchTicketView), 300);
-      this.searchTicketView.listenTo(this.ticket.get('productCollection'), 'add', updateCategoryBreakdown);
-      this.searchTicketView.listenTo(this.ticket.get('productCollection'), 'change:qty', updateCategoryBreakdown);
+      //Update product category count asynchronously.
+      this.listenTo(this.ticket, 'change:categories', this.categoryBreakdownDraw);
 
       //Notify Search Ticket view to update the ticket id.
       this.listenTo(this.ticket, 'change:ticketId', _.bind(this.searchTicketView.changeTicket, this.searchTicketView));
@@ -73,7 +76,9 @@ jQuery(function($) {
       //Focus on product scan on click to register display (outside of this view dom scope).
       this.$registerDisplay.on('click', _.bind(this.activateScanFocus, this));
     },
-
+    categoryBreakdownDraw: function(ticket, categories, options) {
+      this.$registerDisplay.find('.category-breakdown').html(this.categoryBreakdownTemplate({categories: categories}));
+    },
     //Backbone Event Handlers
     addItem: function(product) {
       this.$ticketContainer.find('.product-table').append(this.lineItemTemplate(product.attributes));
@@ -88,7 +93,7 @@ jQuery(function($) {
     },
     clearTicket: function() {
       this.$ticketContainer.get(0).innerHTML = '<div class="product-table">'+$("#ticket-line-item-heading").html()+'</div>';
-      this.$registerDisplay.find('.calculation').empty();
+      //this.$registerDisplay.find('.calculation').empty();
     },
     changeQuantyDisplay: function(product, qty, options) {
       this.$('#line-item-'+product.id+' .qty span.value').text(qty);
