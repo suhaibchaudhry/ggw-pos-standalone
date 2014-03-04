@@ -4,8 +4,7 @@ jQuery(function($) {
     tagName: 'div',
     className: 'customerInfoOverlay',
     events: {
-      "click a.ticket-checkout-continue": 'closeCheckoutDialog',
-      "click a.ticket-checkout-cancel": 'closeCheckoutDialog'
+      "click a.customer-info-continue": 'closeCheckoutDialog'
     },
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
