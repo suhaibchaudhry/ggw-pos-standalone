@@ -118,11 +118,15 @@ div.footer.region .viewport-main.register-display {
 }
 
 div.footer.region .viewport-main.register-display .subtotal {
-    margin: 17px 0 0 14px;
+    margin: 17px 0 0 1%;
+    width: 29%;
+    position: relative;
 }
 
 div.footer.region .viewport-main.register-display .product-count {
-    margin: 12px 0 0 14px;
+    margin: 12px 0 0 1%;
+    width: 29%;
+    position: relative;
 }
 
 div.dialogOverlay {
@@ -310,8 +314,15 @@ div.register-display {
 div.register-display .subtotal {
     font-size: 1.2em;
 }
+div.register-display .subtotal span.value, div.register-display .product-count span.value {
+    position: absolute;
+    right: 0;
+}
+div.register-display span.value {
+    background: #000;
+}
 div.register-display span.label {
-    color: #68b800;
+    color: #38ED00;
     text-transform: uppercase;
 }
 .search-tips {
@@ -441,13 +452,14 @@ div.register-display span.label {
     right: 0;
     top: 0;
     bottom: 0;
+    width: 70%;
 }
 .category-breakdown ul.category-breakdown-list {
     float: right;
-    width: 500px;
     list-style: none outside none;
     margin: 11px 0 10px;
     padding: 0;
+    width: 97%;
 }
 
 .category-breakdown ul.category-breakdown-list li {
@@ -460,4 +472,8 @@ div.register-display span.label {
 .category-breakdown ul.category-breakdown-list li span.value {
     position: absolute;
     right: 20px;
+}
+
+div.register-display .category-breakdown span.label {
+    color: #F3FF00;
 }
