@@ -10,10 +10,12 @@
 
 .pure-button-success {
     background: rgb(28, 184, 65); /* this is a green */
+    border: 1px solid #fff;
 }
 
 .pure-button-error {
     background: rgb(202, 60, 60); /* this is a maroon */
+    border: 1px solid #fff;
 }
 
 .pure-button-warning {
@@ -263,6 +265,9 @@ div.ticket-container .product-table .line-item a.delete-item {
     background: url(../images/delete-outline.png) no-repeat;
     text-indent: -999px;
     background-size: cover;
+}
+div.ticket-container .product-table .line-item:hover {
+    background: #DDF4FE;
 }
 div.ticket-container .product-table .line-item a.delete-item:hover {
     background-image: url(../images/delete.png);
