@@ -115,6 +115,7 @@ div.footer.region .viewport-main.register-display {
     right: 10px;
     left: 10px;
     bottom: 5px;
+    cursor: default;
 }
 
 div.footer.region .viewport-main.register-display .subtotal {
