@@ -2,7 +2,8 @@ jQuery(function($) {
 	activeCustomerView = Backbone.View.extend({
 		events: {
 			"typeahead:selected .customer-search": 'itemSelected',
-			"click .customer-search a.clear-customer": 'clearCustomer'
+			"click .customer-search a.clear-customer": 'clearCustomer',
+			"click .customer-search .selected-customer": 'customerInfo'
 		},
 		tagName: 'div',
 		searchBoxTemplate: _.template($('#customer-search-components').html()),
@@ -25,13 +26,18 @@ jQuery(function($) {
 			this.activeCustomer.set('id', false);
 			this.activeCustomer.updateTicketCustomerUidOnServer(0);
 		},
+		customerInfo: function(e) {
+			if(this.activeCustomer.get('id')) {
+				this.customerInfoDialogModal.display(true);
+			}
+		},
 		customerChanged: function(model, value, options) {
 			if(value) {
-				this.$('.selected-customer').html(this.selectedCustomerTemplate(model.attributes));
+				this.$('.selected-customer').html(this.selectedCustomerTemplate(model.attributes)).css({cursor: 'pointer'});
 				this.$customer_search.find('a.clear-customer').show();
 				this.ticketStatusDialogModal.switch(true);
 			} else {
-				this.$('.selected-customer').html(this.defaultCustomerTemplate());
+				this.$('.selected-customer').html(this.defaultCustomerTemplate()).css({cursor: 'default'});
 				this.$customer_search.find('a.clear-customer').hide();
 			}
 		},

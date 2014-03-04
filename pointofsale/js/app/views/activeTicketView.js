@@ -33,6 +33,10 @@ jQuery(function($) {
       //Initialize Checkout Dialog
       this.checkoutDialogModal = new checkoutDialogModal({activeCustomer: this.activeCustomer, ticket: this.ticket});
 
+      //Initialize Customer Info Dialog
+      this.customerInfoDialogModal = new customerInfoDialogModal({activeCustomer: this.activeCustomer});
+      this.activeCustomerView.customerInfoDialogModal = this.customerInfoDialogModal;
+
       //Set ticket and CheckoutModal singleton on searchTicket View.
       this.searchTicketView.ticket = this.ticket;
       this.searchTicketView.checkoutDialogModal = this.checkoutDialogModal;
