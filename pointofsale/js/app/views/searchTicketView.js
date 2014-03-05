@@ -35,6 +35,15 @@ jQuery(function($) {
     		} else {
     			this.$('.checkout').hide();
     		}
+
+    		//Lock unlock ticket if closed using Global Selectors.
+    		if(ticketStatus == 'pos_completed') {
+    			$('a.clear-customer').addClass('forceHide');
+    			$('input.tt-query').attr('disabled', true);
+    		} else {
+    			$('a.clear-customer').removeClass('forceHide');
+    			$('input.tt-query').attr('disabled', false);
+    		}
     	},
     	mouseTrapCatch: function(e) {
     		var ticket = this.ticket;

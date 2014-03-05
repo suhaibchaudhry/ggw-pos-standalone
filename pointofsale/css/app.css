@@ -483,3 +483,7 @@ div.register-display span.label {
 div.register-display .category-breakdown span.label {
     color: #F3FF00;
 }
+
+a.forceHide {
+    display: none !important;
+}
