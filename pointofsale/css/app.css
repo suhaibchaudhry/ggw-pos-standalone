@@ -37,6 +37,9 @@ body {
 .app-wrap {
     min-width: 1000px;   
 }
+.app-wrap .tt-query:disabled {
+    border-color: rgb(236, 116, 116);
+}
 
 .viewport-main {
     margin: 0px 200px;
