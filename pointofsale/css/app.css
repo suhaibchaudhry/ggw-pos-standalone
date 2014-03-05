@@ -10,10 +10,12 @@
 
 .pure-button-success {
     background: rgb(28, 184, 65); /* this is a green */
+    border: 1px solid #fff;
 }
 
 .pure-button-error {
     background: rgb(202, 60, 60); /* this is a maroon */
+    border: 1px solid #fff;
 }
 
 .pure-button-warning {
@@ -34,6 +36,9 @@ body {
 }
 .app-wrap {
     min-width: 1000px;   
+}
+.app-wrap .tt-query:disabled {
+    border-color: rgb(236, 116, 116);
 }
 
 .viewport-main {
@@ -109,12 +114,25 @@ div.footer.region {
     position: relative;
 }
 
-div.footer.region .viewport-main {
+div.footer.region .viewport-main.register-display {
     background: #000;
     border: 4px solid #96B8F0;
     right: 10px;
     left: 10px;
     bottom: 5px;
+    cursor: default;
+}
+
+div.footer.region .viewport-main.register-display .subtotal {
+    margin: 17px 0 0 1%;
+    width: 29%;
+    position: relative;
+}
+
+div.footer.region .viewport-main.register-display .product-count {
+    margin: 12px 0 0 1%;
+    width: 29%;
+    position: relative;
 }
 
 div.dialogOverlay {
@@ -251,6 +269,9 @@ div.ticket-container .product-table .line-item a.delete-item {
     text-indent: -999px;
     background-size: cover;
 }
+div.ticket-container .product-table .line-item:hover {
+    background: #DDF4FE;
+}
 div.ticket-container .product-table .line-item a.delete-item:hover {
     background-image: url(../images/delete.png);
 }
@@ -302,8 +323,15 @@ div.register-display {
 div.register-display .subtotal {
     font-size: 1.2em;
 }
+div.register-display .subtotal span.value, div.register-display .product-count span.value {
+    position: absolute;
+    right: 0;
+}
+div.register-display span.value {
+    background: #000;
+}
 div.register-display span.label {
-    color: #68b800;
+    color: #38ED00;
     text-transform: uppercase;
 }
 .search-tips {
@@ -429,14 +457,36 @@ div.register-display span.label {
     box-sizing: border-box;
 }
 .category-breakdown {
-    margin: 20px 5px;
-    font-size: 14px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 70%;
+}
+.category-breakdown ul.category-breakdown-list {
+    float: right;
+    list-style: none outside none;
+    margin: 11px 0 10px;
+    padding: 0;
+    width: 97%;
 }
 
-.category-breakdown .category {
-    margin: 10px 0 0;
+.category-breakdown ul.category-breakdown-list li {
+    width: 50%;
+    float: left;
+    margin: 2px 0;
+    position: relative;
 }
 
-.category-breakdown .category span.label {
-    font-weight: bold;
+.category-breakdown ul.category-breakdown-list li span.value {
+    position: absolute;
+    right: 20px;
+}
+
+div.register-display .category-breakdown span.label {
+    color: #F3FF00;
+}
+
+a.forceHide {
+    display: none !important;
 }

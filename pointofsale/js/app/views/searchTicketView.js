@@ -35,6 +35,15 @@ jQuery(function($) {
     		} else {
     			this.$('.checkout').hide();
     		}
+
+    		//Lock unlock ticket if closed using Global Selectors.
+    		if(ticketStatus == 'pos_completed') {
+    			$('a.clear-customer').addClass('forceHide');
+    			$('input.tt-query').attr('disabled', true);
+    		} else {
+    			$('a.clear-customer').removeClass('forceHide');
+    			$('input.tt-query').attr('disabled', false);
+    		}
     	},
     	mouseTrapCatch: function(e) {
     		var ticket = this.ticket;
@@ -88,28 +97,6 @@ jQuery(function($) {
 	            ticket.employeeSession.set('login', false);
 	          }
 	        });
-		},
-		updateCategoryBreakdown: function(product) {
-			var ticket = this.ticket;
-			var categories = new Array();
-			ticket.get('productCollection').each(function(product) {
-				//var categories = ticket.get('categories');
-				var category = product.get('category');
-				if(typeof category != 'undefined') {
-					if(categories[category]) {
-						categories[category] = categories[category] + product.get('qty');
-					}  else {
-						categories[category] = product.get('qty');
-					}
-
-					var str = '';
-					for(cat in categories) {
-						str += '<div class="category"><span class="label">'+cat+': </span><span class="value">'+categories[cat]+'</span></div>';
-					}
-
-					this.$('.category-breakdown').html(str);
-				}
-			});
 		},
 		resolveSearchRPC: function(url, uriEncodedQuery) {
 			//Preprocess URL: Strip forward slashes to make compatible with Drupal GET arg syntax, Decouple later via POST. 

@@ -8,8 +8,11 @@
     <link type="text/css" rel="stylesheet" href="css/vendor/forms.css">
     <link type="text/css" rel="stylesheet" href="css/vendor/buttons-core.css">
     <link type="text/css" rel="stylesheet" href="css/vendor/buttons.css">
+    <link type="text/css" rel="stylesheet" href="css/vendor/menus.css">
+    <link type="text/css" rel="stylesheet" href="css/vendor/tables.css">
     <link type="text/css" rel="stylesheet" href="css/vendor/jquery.jgrowl.min.css">
     <link type="text/css" rel="stylesheet" href="css/typeahead.css">
+    <link type="text/css" rel="stylesheet" href="css/user_profile.css">
     <link type="text/css" rel="stylesheet" href="css/app.css">
 
     <!-- JS Libraries -->
@@ -42,11 +45,14 @@
 	<script type="text/javascript" src="js/app/views/ticketStatusDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/checkoutDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/activeCustomerView.js"></script>
+	<script type="text/javascript" src="js/app/views/customerInfoDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/searchTicketView.js"></script>
 	<script type="text/javascript" src="js/app/views/activeTicketView.js"></script>
 	<script type="text/javascript" src="js/app/views/loginModal.js"></script>
 	<script type="text/javascript" src="js/app/views/ticketStatusDialogModal.js"></script>
 	<script type="text/javascript" src="js/app/views/checkoutDialogModal.js"></script>
+	<script type="text/javascript" src="js/app/views/customerInfoDialogModal.js"></script>
+
 
 	<!-- Bootstrap App -->
 	<script type="text/javascript" src="js/app/init.js"></script>
@@ -57,6 +63,7 @@
 	<div class="modalOverlay dialogOverlay"></div>
 	<div class="statusOverlay dialogOverlay"></div>
 	<div class="checkoutOverlay dialogOverlay"></div>
+	<div class="customerInfoOverlay dialogOverlay"></div>
 	<div class="loaderOverlay dialogOverlay"><a href="#" class="refresh"></a></div>
 
 	<div class="app-wrap">
@@ -88,7 +95,6 @@
 	    	<div class="right region ticketSearch">
 	    		<div class="checkout"></div>
 	    		<div class="ticket-search"></div>
-	    		<div class="category-breakdown"></div>
 	    		<div class="progress"></div>
 	    	</div>
     	</div>
@@ -96,6 +102,7 @@
     		<div class="viewport-main register-display">
     			<div class="subtotal calculation"></div>
     			<div class="product-count calculation"></div>
+    			<div class="category-breakdown"></div>
     		</div>
     	</div>
 	</div>
@@ -142,6 +149,30 @@
 			    <a href="#" class="pure-button pure-button-error ticket-checkout-cancel">Cancel</a>
 			</div>
 			<div class="bbm-modal__bottombar">
+			</div>
+	</script>
+
+	<script type="text/template" id="customer-info-modal">
+		<div class="bbm-modal__topbar">
+			<h3 class="bbm-modal__title test">Loading Customer Info ...</h3>
+		</div>
+			<div class="bbm-modal__section">
+				<div class="loader"></div>
+				<div class="tabs">
+					<div class="info-menu-tabs pure-menu pure-menu-open pure-menu-horizontal">
+					    <ul>
+					        <li class="pure-menu-selected"><a href="#">Customer Info</a></li>
+					        <li><a href="#">Invoice History</a></li>
+					        <li><a href="#">Payment History</a></li>
+					    </ul>
+					</div>
+					<div class="profile-content tab"></div>
+					<div class="invoice-history tab"></div>
+					<div class="payment-history tab"></div>
+				</div>
+			</div>
+			<div class="bbm-modal__bottombar">
+				<a href="#" class="pure-button pure-button-success customer-info-continue">Continue</a>
 			</div>
 	</script>
 
@@ -272,6 +303,16 @@
 			<div class="ticket-id"><span class="label">Ticket #: </span><span class="value"><%= ticketId %></span></div>
 			<div class="ticket-status"><span class="label">Status: </span><span class="value"><%= status_en %></span></div>
 		</div>
+	</script>
+
+	<script type="text/template" id="category-breakdown-template">
+		<ul class="category-breakdown-list">
+		<% _.each(categories, function(total, category) { %> 
+			<li>
+			<span class="label"><%= category %>:</span> <span class="value"><%= total %></span>
+			</li>
+		<% }); %>
+		</ul>
 	</script>
 </body>
 </html>
