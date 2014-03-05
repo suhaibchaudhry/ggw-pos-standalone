@@ -317,6 +317,7 @@ jQuery(function($) {
       this.get('productCollection').reset();
       this.resetCategoryBreakdown();
       this.set('total', 0);
+      this.set('productCount', 0);
     },
     emptyTicket: function() {
       //Empty ticket on server and ui use clearTicket
