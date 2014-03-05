@@ -40,8 +40,11 @@ jQuery(function($) {
             that.$('.bbm-modal__title').text(company);
             that.$('.profile-content fieldset legend').append('<span></span>');
 
-            //invoices
+            //Invoices
             that.populateInvoices(that.$('.invoice-history'), res.invoices);
+
+            //Payments
+            that.$('.payment-history').html(res.payments);
 
             that.adjustBlockHeights();
           } else {
