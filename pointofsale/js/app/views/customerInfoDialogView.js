@@ -26,9 +26,13 @@ jQuery(function($) {
         data: {request: customerInfoRequest},
         timeout: 15000,
         success: function(res, status, xhr) {
-          console.log(res);
           if(res.status) {
+            //Customer Info Tab
             that.$('.profile-content').html(res.content);
+            var company = that.$('h2').remove().text();
+            that.$('.bbm-modal__title').text(company);
+            that.$('.profile-content fieldset legend').append('<span></span>');
+            that.adjustBlockHeights();
           } else {
             that.employeeSession.set('login', false);
           }
@@ -40,6 +44,18 @@ jQuery(function($) {
           that.employeeSession.set('login', false);
         }
       });
+    },
+    adjustBlockHeights: function() {
+      var fieldsets = this.$('.profile-content fieldset');
+      var height = 0;
+      var current_height = 0;
+      fieldsets.each(function() {
+        current_height = $(this).height();
+        if(current_height > height) {
+          height = current_height;
+        }
+      });
+      fieldsets.height(height);
     },
     render: function() {
       return this;

@@ -8,6 +8,7 @@
     <link type="text/css" rel="stylesheet" href="css/vendor/forms.css">
     <link type="text/css" rel="stylesheet" href="css/vendor/buttons-core.css">
     <link type="text/css" rel="stylesheet" href="css/vendor/buttons.css">
+    <link type="text/css" rel="stylesheet" href="css/vendor/menus.css">
     <link type="text/css" rel="stylesheet" href="css/vendor/jquery.jgrowl.min.css">
     <link type="text/css" rel="stylesheet" href="css/typeahead.css">
     <link type="text/css" rel="stylesheet" href="css/user_profile.css">
@@ -152,13 +153,24 @@
 
 	<script type="text/template" id="customer-info-modal">
 		<div class="bbm-modal__topbar">
-			<h3 class="bbm-modal__title test">Customer Info</h3>
+			<h3 class="bbm-modal__title test">Loading Customer Info ...</h3>
 		</div>
 			<div class="bbm-modal__section">
-				<div class="profile-content"></div>
-			    <a href="#" class="pure-button pure-button-success customer-info-continue">Continue</a>
+				<div class="tabs">
+					<div class="tabs pure-menu pure-menu-open pure-menu-horizontal">
+					    <ul>
+					        <li class="pure-menu-selected"><a href="#">Customer Info</a></li>
+					        <li><a href="#">Invoice History</a></li>
+					        <li><a href="#">Payment History</a></li>
+					    </ul>
+					</div>
+					<div class="profile-content tab"></div>
+					<div class="invoice-history tab"></div>
+					<div class="payment-history tab"></div>
+				</div>
 			</div>
 			<div class="bbm-modal__bottombar">
+				<a href="#" class="pure-button pure-button-success customer-info-continue">Continue</a>
 			</div>
 	</script>
 

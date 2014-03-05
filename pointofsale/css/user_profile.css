@@ -1,3 +1,53 @@
+.customerInfoOverlay .bbm-modal__topbar {
+	margin-bottom: 10px;
+}
+.customerInfoOverlay .tabs {
+	margin: 0 0 10px;
+}
+.customerInfoOverlay .bbm-modal {
+	max-width: 960px;
+}
+.customerInfoOverlay .bbm-modal__bottombar {
+	clear: both;
+}
+
+.profile-content fieldset {
+	float: left;
+	width: 48%;
+	margin: 0 2% 30px 0;
+	border: 4px solid rgba(0, 0, 0, 0.44);
+	padding: 10px 20px;
+}
+
+.profile-content fieldset:nth-child(2n) {
+	margin: 0 0 30px 2%;
+}
+
+.profile-content fieldset legend {
+	margin: 0 auto;
+	padding: 0.3em 13px;
+	position: relative;
+	font-size: 20px;
+	color: #333;
+	background: #fff;
+	border: none;
+	width: auto;
+	text-transform: uppercase;
+	text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.21);
+	letter-spacing: 1px;
+}
+
+.profile-content fieldset legend span {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 2px;
+	border: 4px solid rgba(0, 0, 0, 0.44);
+	border-top: none;
+	display: block;
+	height: 50%;
+}
+
 .profile-content #content-profile-view {
 	display: none;
 }
@@ -9,10 +59,12 @@ h3.content-profile-title {
 .profile-content .field-label {
 	font-weight: bold;
 	display: inline-block;
+	color: #3691F7;
 }
 
 .profile-content .field-items {
 	display: inline-block;
+	font-size: 14px;
 }
 
 .profile-content .field-type-postal .field-label {
