@@ -41,9 +41,7 @@ jQuery(function($) {
         var count = categories[cat];
         count += qty - last_qty;
         categories[cat] = count;
-
-        this.set('categories', null);
-        this.set('categories', categories);
+        this.triggerCategoryBreakdown(categories);
       }
     },
     addToCategoryBreakdown: function(product) {
@@ -52,9 +50,7 @@ jQuery(function($) {
       var cat = product.get('category');
       if(cat) {
         categories[cat] += qty;
-
-        this.set('categories', null);
-        this.set('categories', categories);
+        this.triggerCategoryBreakdown(categories);
       }
     },
     removeFromCategoryBreakdown: function(product) {
@@ -63,10 +59,22 @@ jQuery(function($) {
       var cat = product.get('category');
       if(cat) {
         categories[cat] -= qty;
-
-        this.set('categories', null);
-        this.set('categories', categories);
+        this.triggerCategoryBreakdown(categories);
       }
+    },
+    triggerCategoryBreakdown: function(categories) {
+      this.set('categories', null);
+      this.set('categories', categories);
+    },
+    resetCategoryBreakdown: function() {
+      var categories = this.get('categories');
+      for(cat in categories) {
+        if(cat) {
+          categories[cat] = 0;
+        }
+      }
+
+      this.triggerCategoryBreakdown(categories);
     },
     fetchTicketStasuses: function(session, login, options) {
       var ticket = this;
@@ -185,9 +193,13 @@ jQuery(function($) {
       if(ticketId) {
         //Only removing current ticket products at the moment. Need to still load new ones, and sync current ticket.
         this.get('productCollection').reset();
+        this.resetCategoryBreakdown();
         this.set('total', 0);
         this.set('productCount', 0);
         this.loadTicket(ticketId);
+
+        //Reset Category breakdown count
+
       }
     },
     changeProductQuanty: function(product, qty, options) {
@@ -303,6 +315,7 @@ jQuery(function($) {
     clearTicket: function() {
       //Clear ticket on ui
       this.get('productCollection').reset();
+      this.resetCategoryBreakdown();
       this.set('total', 0);
     },
     emptyTicket: function() {

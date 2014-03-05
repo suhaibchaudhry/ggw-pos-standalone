@@ -3,12 +3,26 @@
 }
 .customerInfoOverlay .tabs {
 	margin: 0 0 10px;
+	display: none;
+}
+.customerInfoOverlay .tabs .tab {
+	display: none;
+}
+.customerInfoOverlay .tabs .profile-content {
+	display: block;
 }
 .customerInfoOverlay .bbm-modal {
 	max-width: 960px;
 }
 .customerInfoOverlay .bbm-modal__bottombar {
 	clear: both;
+}
+
+.customerInfoOverlay .loader {
+	background: url('../images/preloader.gif');
+	width: 30px;
+	height: 30px;
+	margin: 30px auto 0;
 }
 
 .profile-content fieldset {
@@ -81,4 +95,53 @@ h3.content-profile-title {
 
 .profile .field {
 	margin: 0 0 5px;
+}
+
+.invoice-history table.pure-table {
+	margin: 10px 0 0;
+	width: 100%;
+}
+
+.tab ul.pager {
+	list-style: none outside none;
+	padding: 0;
+	margin: 20px 0;
+	float: right;
+}
+
+.tab ul.pager li {
+	display: inline-block;
+}
+
+.tab ul.pager li a, .tab ul.pager li.pager-current {
+	margin: 0 3px;
+	text-decoration: none;
+	display: block;
+	padding: 3px 10px;
+	background: #ccc;
+	margin: 0;
+	color: #000;
+}
+
+.tab ul.pager li.pager-current {
+	display: inline-block;
+	background: #737373;
+	color: #fff;
+}
+
+.tab ul.pager li a:hover {
+	background: #737373;
+	color: #fff;
+}
+.tab .pure-table th a {
+	text-decoration: none;
+	color: #000;
+}
+.tab .pure-table tr.even {
+	background: #F5F5F5;
+}
+
+.tab .pure-table tbody tr:hover {
+	background: #DDF4FE;
+	cursor: pointer;
 }
