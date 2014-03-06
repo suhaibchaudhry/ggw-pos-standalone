@@ -42,7 +42,7 @@ body {
 }
 
 .viewport-main {
-    margin: 0px 200px;
+    margin: 0px 200px 0 250px;
  
     position: absolute;
     top: 0;
@@ -69,7 +69,7 @@ div.content.region {
 }
 
 div.left.region {
-    width: 200px;
+    width: 250px;
 
     position: absolute;
     bottom: 0;
@@ -240,7 +240,7 @@ div.mousetrap {
     top: -100px;
     right: -200px;
     bottom: -100px;
-    left: -200px;
+    left: -250px;
     z-index: 0;
 }
 div.ticket-container {
@@ -248,7 +248,7 @@ div.ticket-container {
     top: 160px;
     bottom: 100px;
     right: 200px;
-    left: 200px;
+    left: 250px;
     overflow: auto;
 
     border: 1px solid #96B8F0;
@@ -446,6 +446,12 @@ div.register-display span.label {
 .statusOverlay a.pure-button {
     width: 243px;
     padding: 27px 0;
+}
+.statusOverlay .bbm-modal {
+    max-width: 600px;
+}
+.statusOverlay a.status-quote-ticket {
+    float: right;
 }
 .ticketSearch .checkout {
     padding: 0 10px;
