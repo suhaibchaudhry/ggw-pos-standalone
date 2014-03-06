@@ -56,10 +56,13 @@ jQuery(function($) {
     		$('.lock-indicator').show();
     	},
     	unlockTicket: function() {
-    		$('a.clear-customer').removeClass('forceHide');
-    		$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', false);
-    		$('.activeTicket').removeClass('lockedTicket');
-    		$('.lock-indicator').hide();
+    		console.log(this.employeeSession);
+    		if(this.employeeSession.get('privileged')) {
+	    		$('a.clear-customer').removeClass('forceHide');
+	    		$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', false);
+	    		$('.activeTicket').removeClass('lockedTicket');
+	    		$('.lock-indicator').hide();
+    		}
     	},
     	mouseTrapCatch: function(e) {
     		var ticket = this.ticket;
