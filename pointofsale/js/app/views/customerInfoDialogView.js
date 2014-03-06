@@ -103,9 +103,10 @@ jQuery(function($) {
           //ticket.trigger('ticket:preloader', false);
         },
         error: function(xhr, errorType, error) {
+          //Seems to be a forgivabale error, perhaps no need to logout.
           //stop pre loader and logout user.
           //ticket.trigger('ticket:preloader', false);
-          that.employeeSession.set('login', false);
+          //that.employeeSession.set('login', false);
         }
       });
 

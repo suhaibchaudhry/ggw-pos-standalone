@@ -197,9 +197,7 @@ jQuery(function($) {
         this.set('total', 0);
         this.set('productCount', 0);
         this.loadTicket(ticketId);
-
         //Reset Category breakdown count
-
       }
     },
     changeProductQuanty: function(product, qty, options) {
