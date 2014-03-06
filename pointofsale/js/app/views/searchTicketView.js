@@ -47,7 +47,7 @@ jQuery(function($) {
     	},
     	mouseTrapCatch: function(e) {
     		var ticket = this.ticket;
-      		this.$('.progress').show();
+      		this.$('.progress').toggle();
 
 			var updateZoneRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId')});
             $.ajax({
