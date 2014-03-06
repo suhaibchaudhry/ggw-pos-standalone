@@ -496,3 +496,25 @@ div.register-display .category-breakdown span.label {
 a.forceHide, .lockedTicket a.delete-item, .lockedTicket a.increase, .lockedTicket a.decrease {
     display: none !important;
 }
+.lock-indicator {
+    display: none;
+    position: absolute;
+    bottom: 3px;
+    text-indent: -9999px;
+
+}
+a.lock-toggle {
+    display: block;
+    width: 48px;
+    height: 48px;
+    background: url(../images/lock-closed-outline.png);
+    
+}
+
+a.lock-toggle:hover {
+    background: url(../images/lock-open-outline.png);
+}
+
+a.lock-toggle:active {
+    background: url(../images/lock-open.png);
+}

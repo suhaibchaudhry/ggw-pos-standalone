@@ -2,7 +2,8 @@ jQuery(function($) {
 	searchTicketView = Backbone.View.extend({
 		events: {
 			"typeahead:selected .ticket-search": 'itemSelected',
-			"click .checkout a.checkout-button": 'checkout'
+			"click .checkout a.checkout-button": 'checkout',
+			"click a.lock-toggle": 'managerUnlockClosedTicket'
 		},
 		tagName: 'div',
 		selectedTicketWrapTemplate: _.template($('#selected-ticket-wrap').html()),
@@ -26,6 +27,11 @@ jQuery(function($) {
 
 			this.$('.progress').hide();
     	},
+    	managerUnlockClosedTicket: function(e) {
+    		e.preventDefault();
+    		//Perform permission checks and dialongs here
+    		this.unlockTicket();
+    	},
     	changeTicketStatus: function(ticket, ticketStatus, options) {
     		$('.ticket-status span.value').text(ticket.get('status_en'));
 
@@ -38,14 +44,22 @@ jQuery(function($) {
 
     		//Lock unlock ticket if closed using Global Selectors for now, need to be namespaced.
     		if(ticketStatus == 'pos_completed') {
-    			$('a.clear-customer').addClass('forceHide');
-    			$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', true);
-    			$('.activeTicket').addClass('lockedTicket');
+    			this.lockTicket();
     		} else {
-    			$('a.clear-customer').removeClass('forceHide');
-    			$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', false);
-    			$('.activeTicket').removeClass('lockedTicket');
+    			this.unlockTicket();
     		}
+    	},
+    	lockTicket: function() {
+    		$('a.clear-customer').addClass('forceHide');
+    		$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', true);
+    		$('.activeTicket').addClass('lockedTicket');
+    		$('.lock-indicator').show();
+    	},
+    	unlockTicket: function() {
+    		$('a.clear-customer').removeClass('forceHide');
+    		$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', false);
+    		$('.activeTicket').removeClass('lockedTicket');
+    		$('.lock-indicator').hide();
     	},
     	mouseTrapCatch: function(e) {
     		var ticket = this.ticket;
