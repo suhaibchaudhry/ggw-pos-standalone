@@ -42,7 +42,7 @@ body {
 }
 
 .viewport-main {
-    margin: 0px 200px;
+    margin: 0px 200px 0 250px;
  
     position: absolute;
     top: 0;
@@ -69,11 +69,10 @@ div.content.region {
 }
 
 div.left.region {
-    width: 200px;
-
+    width: 250px;
     position: absolute;
     bottom: 0;
-    top: 0;    
+    top: 0;
 }
 
 div.content.region div.left.region, div.content.region div.right.region {
@@ -240,7 +239,7 @@ div.mousetrap {
     top: -100px;
     right: -200px;
     bottom: -100px;
-    left: -200px;
+    left: -250px;
     z-index: 0;
 }
 div.ticket-container {
@@ -248,7 +247,7 @@ div.ticket-container {
     top: 160px;
     bottom: 100px;
     right: 200px;
-    left: 200px;
+    left: 250px;
     overflow: auto;
 
     border: 1px solid #96B8F0;
@@ -447,6 +446,12 @@ div.register-display span.label {
     width: 243px;
     padding: 27px 0;
 }
+.statusOverlay .bbm-modal {
+    max-width: 600px;
+}
+.statusOverlay a.status-quote-ticket {
+    float: right;
+}
 .ticketSearch .checkout {
     padding: 0 10px;
     display: none;
@@ -487,6 +492,29 @@ div.register-display .category-breakdown span.label {
     color: #F3FF00;
 }
 
-a.forceHide {
+/*Disable all line item editing functionality*/
+a.forceHide, .lockedTicket a.delete-item, .lockedTicket a.increase, .lockedTicket a.decrease {
     display: none !important;
+}
+.lock-indicator {
+    display: none;
+    position: absolute;
+    bottom: 3px;
+    text-indent: -9999px;
+
+}
+a.lock-toggle {
+    display: block;
+    width: 48px;
+    height: 48px;
+    background: url(../images/lock-closed-outline.png);
+    
+}
+
+a.lock-toggle:hover {
+    background: url(../images/lock-open-outline.png);
+}
+
+a.lock-toggle:active {
+    background: url(../images/lock-open.png);
 }

@@ -105,3 +105,7 @@ Allow Physical Verifone Terminals to conntect via RS232 as Payment Methods
 Issues and System Limitations:
 ------------------------------
 Multiple successive refreshes crash 'nw' if native context menus are used. Refreshing will be disabled for this application, so refreshing issue isn't that big. Does happen on node <= v0.10.24 and nodewebkit <= 0.8.4
+
+Debugged Use Cases:
+-------------------
+.Xauthority is set to root permission, maybe because of startx command being run, at that point desktop cannot log in. Need to further test and contain issue.
