@@ -70,10 +70,9 @@ div.content.region {
 
 div.left.region {
     width: 250px;
-
     position: absolute;
     bottom: 0;
-    top: 0;    
+    top: 0;
 }
 
 div.content.region div.left.region, div.content.region div.right.region {
@@ -493,6 +492,7 @@ div.register-display .category-breakdown span.label {
     color: #F3FF00;
 }
 
-a.forceHide {
+/*Disable all line item editing functionality*/
+a.forceHide, .lockedTicket a.delete-item, .lockedTicket a.increase, .lockedTicket a.decrease {
     display: none !important;
 }

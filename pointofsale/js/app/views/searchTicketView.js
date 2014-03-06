@@ -36,13 +36,15 @@ jQuery(function($) {
     			this.$('.checkout').hide();
     		}
 
-    		//Lock unlock ticket if closed using Global Selectors.
+    		//Lock unlock ticket if closed using Global Selectors for now, need to be namespaced.
     		if(ticketStatus == 'pos_completed') {
     			$('a.clear-customer').addClass('forceHide');
     			$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', true);
+    			$('.activeTicket').addClass('lockedTicket');
     		} else {
     			$('a.clear-customer').removeClass('forceHide');
     			$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', false);
+    			$('.activeTicket').removeClass('lockedTicket');
     		}
     	},
     	mouseTrapCatch: function(e) {
