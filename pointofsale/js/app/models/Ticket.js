@@ -37,30 +37,36 @@ jQuery(function($) {
 
       var categories = this.get('categories');
       var cat = product.get('category');
-      if(cat) {
-        var count = categories[cat];
-        count += qty - last_qty;
-        categories[cat] = count;
-        this.triggerCategoryBreakdown(categories);
+
+      if(!cat) {
+        cat = 'Misc';
       }
+
+      var count = categories[cat];
+      count += qty - last_qty;
+      categories[cat] = count;
+      this.triggerCategoryBreakdown(categories);
     },
     addToCategoryBreakdown: function(product) {
       var qty = product.get('qty');
       var categories = this.get('categories');
       var cat = product.get('category');
-      if(cat) {
-        categories[cat] += qty;
-        this.triggerCategoryBreakdown(categories);
+       if(!cat) {
+        cat = 'Misc';
       }
+
+      categories[cat] += qty;
+      this.triggerCategoryBreakdown(categories);
     },
     removeFromCategoryBreakdown: function(product) {
       var qty = product.get('qty');
       var categories = this.get('categories');
       var cat = product.get('category');
-      if(cat) {
-        categories[cat] -= qty;
-        this.triggerCategoryBreakdown(categories);
+      if(!cat) {
+        cat = 'Misc';
       }
+      categories[cat] -= qty;
+      this.triggerCategoryBreakdown(categories);
     },
     triggerCategoryBreakdown: function(categories) {
       this.set('categories', null);
@@ -109,6 +115,8 @@ jQuery(function($) {
         });
       } else {
         ticket.set('ticketStasuses', {});
+        ticket.set('productCount', 0);
+        ticket.set('total', 0);
       }
     },
     createTicketOnServer: function(login) {
