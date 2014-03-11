@@ -2,7 +2,10 @@ jQuery(function($) {
   var applicationFrame = Backbone.View.extend({
   	tagName: 'div',
     events: {
-      "click a.recent-tickets-button": 'loadRecentTickets'
+      "click a.recent-tickets-button": 'loadRecentTickets',
+      "click a.quote-tickets-button": 'loadQuoteTickets',
+      "click a.open-tickets-button": 'loadOpenTickets',
+      "click a.closed-tickets-button": 'loadCloseTickets'
     },
   	initialize: function() {
       //Employee Session Model
@@ -101,6 +104,18 @@ jQuery(function($) {
     loadRecentTickets: function(e) {
       this.invoiceDialog.display(true);
       this.invoiceDialog.invoiceDialogView.loadRecentInvoices(e);
+    },
+    loadQuoteTickets: function(e) {
+      this.invoiceDialog.display(true);
+      this.invoiceDialog.invoiceDialogView.loadQuoteInvoices(e);
+    },
+    loadOpenTickets: function(e) {
+      this.invoiceDialog.display(true);
+      this.invoiceDialog.invoiceDialogView.loadOpenInvoices(e);
+    },
+    loadCloseTickets: function(e) {
+      this.invoiceDialog.display(true);
+      this.invoiceDialog.invoiceDialogView.loadClosedInvoices(e);
     }
   });
 

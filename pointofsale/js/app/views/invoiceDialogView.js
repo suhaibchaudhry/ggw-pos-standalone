@@ -5,7 +5,10 @@ jQuery(function($) {
     className: 'invoiceDialogOverlay',
     events: {
       "click a.customer-info-continue": 'closeInvoiceDialog',
-      "click .invoice-list-content a": 'loadRecentInvoices',
+      "click .invoice-recent-history a": 'loadRecentInvoices',
+      "click .invoice-quote-history a": 'loadQuoteInvoices',
+      "click .invoice-open-history a": 'loadOpenInvoices',
+      "click .invoice-closed-history a": 'loadClosedInvoices',
       "click .invoice-history table.uc-order-history tbody tr": 'selectInvoice'
     },
     initialize: function(attributes, options) {
@@ -37,7 +40,85 @@ jQuery(function($) {
         timeout: 15000,
         success: function(res, status, xhr) {
           if(res.status) {
-            that.$('.invoice-list-content').html(res.content);
+            that.$('.invoice-recent-history').html(res.content);
+          } else {
+            that.employeeSession.set('login', false);
+          }
+        },
+        error: function(xhr, errorType, error) {
+          that.employeeSession.set('login', false);
+        }
+      });
+    },
+    loadClosedInvoices: function(e) {
+      e.preventDefault();
+
+      var recentInvoicesRequest = JSON.stringify({token: sessionStorage.token});
+      var that = this;
+      var query = this.removeURLParameter(e.currentTarget.search, 'request');
+
+      this.$('.title').text('Closed Invoices');
+
+      $.ajax({
+        type: 'POST',
+        url: this.employeeSession.get('apiServer')+'/pos-api/ticket/closed'+query,
+        data: {request: recentInvoicesRequest},
+        timeout: 15000,
+        success: function(res, status, xhr) {
+          if(res.status) {
+            that.$('.invoice-closed-history').html(res.content);
+          } else {
+            that.employeeSession.set('login', false);
+          }
+        },
+        error: function(xhr, errorType, error) {
+          that.employeeSession.set('login', false);
+        }
+      });
+    },
+    loadQuoteInvoices: function(e) {
+      e.preventDefault();
+
+      var recentInvoicesRequest = JSON.stringify({token: sessionStorage.token});
+      var that = this;
+      var query = this.removeURLParameter(e.currentTarget.search, 'request');
+
+      this.$('.title').text('Quote Invoices');
+
+      $.ajax({
+        type: 'POST',
+        url: this.employeeSession.get('apiServer')+'/pos-api/ticket/quote'+query,
+        data: {request: recentInvoicesRequest},
+        timeout: 15000,
+        success: function(res, status, xhr) {
+          if(res.status) {
+            that.$('.invoice-quote-history').html(res.content);
+          } else {
+            that.employeeSession.set('login', false);
+          }
+        },
+        error: function(xhr, errorType, error) {
+          that.employeeSession.set('login', false);
+        }
+      });
+    },
+    loadOpenInvoices: function(e) {
+      e.preventDefault();
+
+      var recentInvoicesRequest = JSON.stringify({token: sessionStorage.token});
+      var that = this;
+      var query = this.removeURLParameter(e.currentTarget.search, 'request');
+
+      this.$('.title').text('Open Invoices');
+
+      $.ajax({
+        type: 'POST',
+        url: this.employeeSession.get('apiServer')+'/pos-api/ticket/open'+query,
+        data: {request: recentInvoicesRequest},
+        timeout: 15000,
+        success: function(res, status, xhr) {
+          if(res.status) {
+            that.$('.invoice-open-history').html(res.content);
           } else {
             that.employeeSession.set('login', false);
           }
