@@ -31,6 +31,7 @@ jQuery(function($) {
 			this.activeCustomer.updateTicketCustomerUidOnServer(0);
 		},
 		customerInfo: function(e) {
+			e.preventDefault();
 			if(this.activeCustomer.get('id')) {
 				this.customerInfoDialogModal.display(true);
 			}
