@@ -124,8 +124,14 @@ jQuery(function($) {
     },
     //DOM Event Controllers
     createNewTicket: function(e) {
-      e.preventDefault();
-      this.ticket.createTicketOnServer(this.employeeSession.get('login'));
+      var status = this.ticket.get('status');
+      var total = this.ticket.get('total');
+      var customer = this.activeCustomer.get('id');
+
+      if(status != 'pos_quote' || total != 0 || customer != 0) {
+        e.preventDefault();
+        this.ticket.createTicketOnServer(this.employeeSession.get('login'));
+      }
     },
     activateScanFocus: function(e) {
       this.$searchbox.focus();
