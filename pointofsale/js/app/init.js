@@ -1,6 +1,9 @@
 jQuery(function($) {
   var applicationFrame = Backbone.View.extend({
   	tagName: 'div',
+    events: {
+      "click a.recent-tickets-button": 'loadRecentTickets'
+    },
   	initialize: function() {
       //Employee Session Model
       this.employeeSession = new employeeSession({apiServer: 'http://www.general-goods.com'});
@@ -18,7 +21,8 @@ jQuery(function($) {
       this.activeCustomerRegion = new activeCustomerView({
         el: this.$('.activeCustomer').get(0),
         employeeSession: this.employeeSession,
-        activeCustomer: this.activeCustomer
+        activeCustomer: this.activeCustomer,
+        menuItems: this.$('.header ul.menu')
       });
 
       this.activeTicketRegion = new activeTicketView({
@@ -29,6 +33,8 @@ jQuery(function($) {
         searchTicketView: this.searchTicketRegion,
         appFrame: this
       });
+
+      this.invoiceDialog = this.activeTicketRegion.invoiceDialog;
 
       this.activeCustomerRegion.activeCustomer.setActiveTicketViewSingleton(this.activeTicketRegion);
 
@@ -91,6 +97,10 @@ jQuery(function($) {
       } else {
         $('.loaderOverlay').hide();
       }
+    },
+    loadRecentTickets: function(e) {
+      this.invoiceDialog.display(true);
+      this.invoiceDialog.invoiceDialogView.loadRecentInvoices(e);
     }
   });
 
