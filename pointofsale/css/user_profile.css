@@ -5,13 +5,13 @@
 	margin: 0 0 10px;
 	display: none;
 }
-.customerInfoOverlay .tabs .tab {
+.customerInfoOverlay .tabs .tab, .checkoutOverlay .tabs .tab {
 	display: none;
 }
-.customerInfoOverlay .tabs .profile-content {
+.customerInfoOverlay .tabs .profile-content, .checkoutOverlay .tabs .cash-checkout {
 	display: block;
 }
-.customerInfoOverlay .bbm-modal, .invoiceDialogOverlay .bbm-modal {
+.customerInfoOverlay .bbm-modal, .invoiceDialogOverlay .bbm-modal, .checkoutOverlay .bbm-modal {
 	max-width: 960px;
 }
 .customerInfoOverlay .bbm-modal__bottombar, .invoiceDialogOverlay .bbm-modal__bottombar {

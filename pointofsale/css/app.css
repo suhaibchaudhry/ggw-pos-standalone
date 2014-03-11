@@ -525,3 +525,23 @@ a.lock-toggle:active {
 .header ul.menu li a.new-ticket-button {
     margin: 0 0 0 8px;
 }
+.tabs .change-due-value {
+    font-size: 30px;
+    color: #D40000;
+    display: inline-block;
+}
+.tabs input.cash-paid {
+    font-size: 50px;
+    width: 100%;
+    padding: 7px 12px;
+}
+
+.tabs label.cash-paid-label, .tabs .change-remaining-label {
+    display: inline-block;
+    margin: 20px 0 10px;
+    color: #079E00;
+    font-size: 25px;
+}
+.tabs label.cash-paid-label {
+    display: block;
+}
