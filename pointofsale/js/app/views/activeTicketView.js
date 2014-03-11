@@ -37,6 +37,9 @@ jQuery(function($) {
       this.customerInfoDialogModal = new customerInfoDialogModal({activeCustomer: this.activeCustomer, employeeSession: this.employeeSession, ticket: this.ticket});
       this.activeCustomerView.customerInfoDialogModal = this.customerInfoDialogModal;
 
+      //Initialize Invoices List dialog
+      this.invoiceDialog = new invoiceDialogModal({employeeSession: this.employeeSession, ticket: this.ticket});
+
       //Set ticket and CheckoutModal singleton on searchTicket View.
       this.searchTicketView.ticket = this.ticket;
       this.searchTicketView.checkoutDialogModal = this.checkoutDialogModal;

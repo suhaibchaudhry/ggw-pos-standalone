@@ -11,10 +11,10 @@
 .customerInfoOverlay .tabs .profile-content {
 	display: block;
 }
-.customerInfoOverlay .bbm-modal {
+.customerInfoOverlay .bbm-modal, .invoiceDialogOverlay .bbm-modal {
 	max-width: 960px;
 }
-.customerInfoOverlay .bbm-modal__bottombar {
+.customerInfoOverlay .bbm-modal__bottombar, .invoiceDialogOverlay .bbm-modal__bottombar {
 	clear: both;
 }
 
