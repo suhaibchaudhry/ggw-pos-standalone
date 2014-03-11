@@ -201,11 +201,11 @@ jQuery(function($) {
       if(ticketId) {
         //Only removing current ticket products at the moment. Need to still load new ones, and sync current ticket.
         this.get('productCollection').reset();
+        //Reset Category breakdown count
         this.resetCategoryBreakdown();
         this.set('total', 0);
         this.set('productCount', 0);
         this.loadTicket(ticketId);
-        //Reset Category breakdown count
       }
     },
     changeProductQuanty: function(product, qty, options) {

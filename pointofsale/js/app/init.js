@@ -18,7 +18,8 @@ jQuery(function($) {
       this.activeCustomerRegion = new activeCustomerView({
         el: this.$('.activeCustomer').get(0),
         employeeSession: this.employeeSession,
-        activeCustomer: this.activeCustomer
+        activeCustomer: this.activeCustomer,
+        menuItems: this.$('.header ul.menu')
       });
 
       this.activeTicketRegion = new activeTicketView({

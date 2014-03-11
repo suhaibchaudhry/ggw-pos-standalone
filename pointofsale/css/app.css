@@ -433,6 +433,9 @@ div.register-display span.label {
     color: #000;
     background: #fff;
 }
+.header ul.menu li.hiddenItem {
+    display: none;
+}
 .ticketSearch .progress {
     width: 48px;
     height: 48px;
@@ -492,7 +495,7 @@ div.register-display .category-breakdown span.label {
     color: #F3FF00;
 }
 
-/*Disable all line item editing functionality*/
+/*Ticket Locking: Disable all line item editing functionality*/
 a.forceHide, .lockedTicket a.delete-item, .lockedTicket a.increase, .lockedTicket a.decrease {
     display: none !important;
 }

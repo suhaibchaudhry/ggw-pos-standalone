@@ -56,7 +56,6 @@ jQuery(function($) {
     		$('.lock-indicator').show();
     	},
     	unlockTicket: function() {
-    		console.log(this.employeeSession);
     		if(this.employeeSession.get('privileged')) {
 	    		$('a.clear-customer').removeClass('forceHide');
 	    		$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', false);

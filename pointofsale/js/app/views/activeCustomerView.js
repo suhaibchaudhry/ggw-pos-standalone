@@ -14,12 +14,16 @@ jQuery(function($) {
 		initialize: function(attributes, options) {
 			this.employeeSession = attributes['employeeSession'];
 			this.activeCustomer = attributes['activeCustomer'];
+
 			this.listenTo(this.activeCustomer, 'change:id', this.customerChanged);
 
 			//Modal Dialogs
 			this.ticketStatusDialogModal = new ticketStatusDialogModal({
 				activeCustomer: attributes['activeCustomer']
 			});
+
+			this.$menuItems = attributes['menuItems'];
+			this.$menuItems.find('a.customer-info-button').on('click', _.bind(this.customerInfo, this));
 		},
 		clearCustomer: function(e) {
 			e.preventDefault();
@@ -36,9 +40,11 @@ jQuery(function($) {
 				this.$('.selected-customer').html(this.selectedCustomerTemplate(model.attributes)).css({cursor: 'pointer'});
 				this.$customer_search.find('a.clear-customer').show();
 				this.ticketStatusDialogModal.switch(true);
+				this.$menuItems.find('.customer-info-item').removeClass('hiddenItem');
 			} else {
 				this.$('.selected-customer').html(this.defaultCustomerTemplate()).css({cursor: 'default'});
 				this.$customer_search.find('a.clear-customer').hide();
+				this.$menuItems.find('.customer-info-item').addClass('hiddenItem');
 			}
 		},
 		itemSelected: function(e, datum) {
