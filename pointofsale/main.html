@@ -55,7 +55,6 @@
 	<script type="text/javascript" src="js/app/views/invoiceDialogModal.js"></script>
 	<script type="text/javascript" src="js/app/views/customerInfoDialogModal.js"></script>
 
-
 	<!-- Bootstrap App -->
 	<script type="text/javascript" src="js/app/init.js"></script>
 
@@ -163,12 +162,25 @@
 			</div>
 			<div class="tabs">
 				<div class="tab cash-checkout pure-form">
+				    <div>
 					<div class="change-remaining-label">Amount Due:</div>
 					<div class="change-due-value"></div>
-					<label class="cash-paid-label" for="cash-paid">Cash Paid:</label>
-					<input id="cash-paid" type="text" class="cash-paid" value="0.00" />
+					</div>
+
+					<div>
+					<div class="change-remaining-label">Amount Remaining:</div>
+					<div class="change-left-value"></div>
+					</div>
+
+					<div>
 					<div class="change-remaining-label">Change:</div>
 					<div class="change-value"></div>
+					</div>
+
+					<div>
+					<label class="cash-paid-label" for="cash-paid">Cash Paid:</label>
+					<input id="cash-paid" type="text" class="cash-paid" value="0.00" />
+					</div>
 				</div>
 				<div class="tab credit-card-checkout">Credit Card Checkout</div>
 				<div class="tab term-credit-checkout">Term Credits Checkout</div>

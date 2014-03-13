@@ -546,10 +546,11 @@ a.lock-toggle:active {
     background: url(../images/lock-open.png);
 }
 
-.tabs .change-due-value, .tabs .change-value {
-    font-size: 30px;
-    color: #D40000;
+.tabs .change-due-value, .tabs .change-value, .tabs .change-left-value {
+    font-size: 25px;
+    color: #CF7809;
     display: inline-block;
+    font-weight: bold;
 }
 .tabs input.cash-paid {
     font-size: 50px;
@@ -560,8 +561,9 @@ a.lock-toggle:active {
 .tabs label.cash-paid-label, .tabs .change-remaining-label {
     display: inline-block;
     margin: 20px 0 10px;
-    color: #079E00;
-    font-size: 25px;
+    color: #5980BB;
+    font-size: 22px;
+    width: 232px;
 }
 .tabs label.cash-paid-label {
     display: block;

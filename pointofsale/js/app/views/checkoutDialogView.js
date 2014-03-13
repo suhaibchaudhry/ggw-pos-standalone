@@ -41,7 +41,8 @@ jQuery(function($) {
     },
     focusCash: function() {
       this.$('.cash-paid').focus();
-      this.$('.change-due-value').html(accounting.formatMoney(this.ticket.get('total')));
+      this.$('.change-due-value, .change-left-value').html(accounting.formatMoney(this.ticket.get('total')));
+      this.$('.change-value').html(accounting.formatMoney(0));
     },
     closeCheckoutDialog: function(e) {
       e.preventDefault();
@@ -71,7 +72,7 @@ jQuery(function($) {
         change = -change;
       }
 
-      this.$('.change-due-value').html(accounting.formatMoney(total));
+      this.$('.change-left-value').html(accounting.formatMoney(total));
       this.$('.change-value').html(accounting.formatMoney(change));
     }
   });
