@@ -7,7 +7,8 @@ jQuery(function($) {
       "click a.ticket-checkout-continue": 'checkoutProcess',
       "click a.ticket-checkout-cancel": 'closeCheckoutDialog',
       "click .info-menu-tabs a": 'changeTab',
-      "keypress .cash-checkout input.cash-paid": 'cashInputValidate'
+      "keypress .cash-checkout input.cash-paid": 'cashInputValidate',
+      "keyup .cash-checkout input.cash-paid": 'calculateCashChange'
     },
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
@@ -40,7 +41,8 @@ jQuery(function($) {
     },
     focusCash: function() {
       this.$('.cash-paid').focus();
-      this.$('.change-due-value').html(accounting.formatMoney(this.ticket.get('total')));
+      this.$('.change-due-value, .change-left-value').html(accounting.formatMoney(this.ticket.get('total')));
+      this.$('.change-value').html(accounting.formatMoney(0));
     },
     closeCheckoutDialog: function(e) {
       e.preventDefault();
@@ -53,24 +55,25 @@ jQuery(function($) {
 
       if((e.keyCode < 48 || e.keyCode > 57) && e.keyCode != 46 && e.keyCode != 8 && e.keyCode != 190) {
         e.preventDefault();
-      } else {
-        var cash_paid = this.$('input.cash-paid');
-        var total = this.ticket.get('total');
-
-        var paid = parseFloat(e.currentTarget.value);
-
-        var change = total - paid;
-
-        if(change < 0) {
-           total = -change;
-          change = 0;
-        } else {
-          total = 0;
-        }
-
-        this.$('.change-due-value').html(accounting.formatMoney(total));
-        this.$('.change-value').html(accounting.formatMoney(change));
       }
+    },
+    calculateCashChange: function(e) {
+      var total = this.ticket.get('total');
+
+      var paid = parseFloat(e.currentTarget.value);
+
+      var change = total - paid;
+
+      if(change > 0) {
+        total = change;
+        change = 0;
+      } else if(change < 0) {
+        total = 0;
+        change = -change;
+      }
+
+      this.$('.change-left-value').html(accounting.formatMoney(total));
+      this.$('.change-value').html(accounting.formatMoney(change));
     }
   });
 });
