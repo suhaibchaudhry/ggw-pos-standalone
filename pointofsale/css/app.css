@@ -546,7 +546,7 @@ a.lock-toggle:active {
     background: url(../images/lock-open.png);
 }
 
-.tabs .change-due-value {
+.tabs .change-due-value, .tabs .change-value {
     font-size: 30px;
     color: #D40000;
     display: inline-block;
