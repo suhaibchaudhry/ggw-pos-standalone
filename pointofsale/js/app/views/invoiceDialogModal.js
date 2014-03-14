@@ -4,7 +4,7 @@ jQuery(function($) {
       return this.invoiceDialogView.template();
     },
     initialize: function(attributes, options) {
-      this.invoiceDialogView = new invoiceDialogView({el: $('.invoiceDialogOverlay').get(0), modal: this, employeeSession: attributes['employeeSession'], ticket: attributes['ticket']});
+      this.invoiceDialogView = new invoiceDialogView({el: $('.invoiceDialogOverlay').get(0), modal: this, employeeSession: attributes['employeeSession'], ticket: attributes['ticket'], activeCustomerView: attributes['activeCustomerView']});
     },
     beforeCancel: function() {
       return false;

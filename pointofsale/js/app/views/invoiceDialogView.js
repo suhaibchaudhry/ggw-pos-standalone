@@ -4,6 +4,7 @@ jQuery(function($) {
     tagName: 'div',
     className: 'invoiceDialogOverlay',
     events: {
+      "click a.ticket-customer-link": 'customerInfoDialog',
       "click a.customer-info-continue": 'closeInvoiceDialog',
       "click .invoice-recent-history a": 'loadRecentInvoices',
       "click .invoice-quote-history a": 'loadQuoteInvoices',
@@ -15,6 +16,7 @@ jQuery(function($) {
       this.modal = attributes['modal'];
       this.employeeSession = attributes['employeeSession'];
       this.ticket = attributes['ticket'];
+      this.activeCustomerView = attributes['activeCustomerView'];
     },
     template: _.template($('#invoice-list-modal').html()),
     render: function() {
@@ -127,6 +129,13 @@ jQuery(function($) {
           that.employeeSession.set('login', false);
         }
       });
+    },
+    customerInfoDialog: function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      var customer_uid = e.currentTarget.dataset.uid;
+      this.activeCustomerView.customerInfoDialogModal.display(true, customer_uid);
     },
     removeURLParameter: function(url, parameter) {
         //prefer to use l.search if you have a location/link object

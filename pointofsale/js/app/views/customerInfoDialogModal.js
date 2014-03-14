@@ -10,10 +10,14 @@ jQuery(function($) {
     beforeCancel: function() {
       return false;
     },
-    display: function(state) {
+    display: function(state, uid) {
       if(state) {
         $('.customerInfoOverlay').stop().show().html(this.render().el);
-        this.customerInfoDialogView.loadUserProfile();
+        if(uid) {
+          this.customerInfoDialogView.loadUserProfile(uid);
+        } else {
+          this.customerInfoDialogView.loadUserProfile();
+        }
       } else {
         $('.customerInfoOverlay').stop().fadeOut(function() {
           $(this).empty();
