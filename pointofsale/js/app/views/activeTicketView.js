@@ -38,7 +38,7 @@ jQuery(function($) {
       this.activeCustomerView.customerInfoDialogModal = this.customerInfoDialogModal;
 
       //Initialize Invoices List dialog
-      this.invoiceDialog = new invoiceDialogModal({employeeSession: this.employeeSession, ticket: this.ticket});
+      this.invoiceDialog = new invoiceDialogModal({employeeSession: this.employeeSession, ticket: this.ticket, activeCustomerView: this.activeCustomerView});
 
       //Set ticket and CheckoutModal singleton on searchTicket View.
       this.searchTicketView.ticket = this.ticket;
@@ -124,12 +124,12 @@ jQuery(function($) {
     },
     //DOM Event Controllers
     createNewTicket: function(e) {
+      e.preventDefault();
       var status = this.ticket.get('status');
       var total = this.ticket.get('total');
       var customer = this.activeCustomer.get('id');
 
       if(status != 'pos_quote' || total != 0 || customer != 0) {
-        e.preventDefault();
         this.ticket.createTicketOnServer(this.employeeSession.get('login'));
       }
     },

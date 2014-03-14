@@ -568,3 +568,12 @@ a.lock-toggle:active {
 .tabs label.cash-paid-label {
     display: block;
 }
+
+a.ticket-customer-link {
+    text-decoration: none;
+    color: #4568D1;
+}
+
+a.ticket-customer-link:hover {
+    text-decoration: underline;
+}

@@ -16,10 +16,16 @@ jQuery(function($) {
       this.ticket = attributes['ticket'];
     },
     template: _.template($('#customer-info-modal').html()),
-    loadUserProfile: function() {
+    loadUserProfile: function(uid) {
       var that = this;
-      var activeCustomer = this.activeCustomer;
-      var customer_uid = activeCustomer.get('id');
+      if(uid) {
+        var customer_uid = uid;
+      } else {
+        var activeCustomer = this.activeCustomer;
+        var customer_uid = activeCustomer.get('id');
+      }
+
+      this.customer_uid = customer_uid;
 
       var customerInfoRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid});
       //Start preloader
@@ -81,8 +87,9 @@ jQuery(function($) {
       var query = this.removeURLParameter(e.currentTarget.search, 'request');
 
       var that = this;
-      var activeCustomer = this.activeCustomer;
-      var customer_uid = activeCustomer.get('id');
+      //var activeCustomer = this.activeCustomer;
+      //var customer_uid = activeCustomer.get('id');
+      var customer_uid = this.customer_uid;
 
       var customerInvoicesRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid});
       $.ajax({
