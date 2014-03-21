@@ -187,6 +187,11 @@
   display: block;
   padding: 3px 20px;
   font-size: 12px;
+  border-bottom: 1px solid #CCC;
+}
+
+.customer-search .tt-suggestion:last-child, .ticket-search .tt-suggestion:last-child {
+  border: none;
 }
 
 .customer-search .tt-suggestion.tt-is-under-cursor, .ticket-search .tt-suggestion.tt-is-under-cursor {

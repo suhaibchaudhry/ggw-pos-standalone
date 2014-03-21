@@ -38,6 +38,7 @@
 	<script type="text/javascript" src="js/app/models/ticketProduct.js"></script>
 	<script type="text/javascript" src="js/app/models/Ticket.js"></script>
 	<script type="text/javascript" src="js/app/models/activeCustomer.js"></script>
+	<script type="text/javascript" src="js/app/models/rmaItemsCollection.js"></script>
 
 	<!-- Views -->
 	<script type="text/javascript" src="js/app/views/loginView.js"></script>
@@ -45,6 +46,7 @@
 	<script type="text/javascript" src="js/app/views/ticketStatusDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/checkoutDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/invoiceDialogView.js"></script>
+	<script type="text/javascript" src="js/app/views/rmaDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/activeCustomerView.js"></script>
 	<script type="text/javascript" src="js/app/views/customerInfoDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/searchTicketView.js"></script>
@@ -53,6 +55,7 @@
 	<script type="text/javascript" src="js/app/views/ticketStatusDialogModal.js"></script>
 	<script type="text/javascript" src="js/app/views/checkoutDialogModal.js"></script>
 	<script type="text/javascript" src="js/app/views/invoiceDialogModal.js"></script>
+	<script type="text/javascript" src="js/app/views/rmaDialogModal.js"></script>
 	<script type="text/javascript" src="js/app/views/customerInfoDialogModal.js"></script>
 
 	<!-- Bootstrap App -->
@@ -66,6 +69,7 @@
 	<div class="checkoutOverlay dialogOverlay"></div>
 	<div class="invoiceDialogOverlay dialogOverlay"></div>
 	<div class="customerInfoOverlay dialogOverlay"></div>
+	<div class="rmaItemSelectOverlay dialogOverlay"></div>
 	<div class="loaderOverlay dialogOverlay"><a href="#" class="refresh"></a></div>
 
 	<div class="app-wrap">
@@ -192,6 +196,80 @@
 			</div>
 	</script>
 
+	<script type="text/template" id="process-rma-modal">
+		<div class="bbm-modal__topbar">
+			<h3 class="bbm-modal__title title">Select Purchase</h3>
+		</div>
+			<div class="bbm-modal__section">
+				<div class="returning-items-select">
+					<div class="product-table">
+						<div class="line-item-heading">
+							<div class="date">Purchase Date</div>
+							<div class="sku">Barcode</div>
+							<div class="name">Product</div>
+							<div class="packaging">Pckg.</div>
+							<div class="price">Price</div>
+							<div class="purchase-qty">Purchased Qty</div>
+							<div class="image"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="bbm-modal__bottombar">
+			    <a href="#" class="pure-button pure-button-error ticket-checkout-cancel">Cancel</a>
+			</div>
+	</script>
+
+	<script type="text/template" id="rma-select-line-item">
+		<div id="line-item-<%= id %>" data-id="<%= id %>" class="line-item">
+			<div class="date"><%= date %></div>
+			<div class="sku"><%= sku %></div>
+			<div class="name"><%= name %></div>
+			<div class="packaging"><%= packaging %></div>
+			<div class="price"><%= accounting.formatMoney(sell_price) %></div>
+			<div class="qty">
+				<span class="value"><%= qty %></span>
+			</div>
+			<div class="image"><img src="<%= thumbnail %>" alt="" width="35" height="35" /></div>
+		</div>
+	</script>
+
+	<script type="text/template" id="process-rma-form">
+		<input class="rma-scan" placeholder="Scan Items to Return ..." autocomplete="off" type="text" />
+
+		<div class="returning-items">
+			<div class="product-table">
+				<div class="line-item-heading">
+					<div class="date">Purchase Date</div>
+					<div class="sku">Barcode</div>
+					<div class="name">Product</div>
+					<div class="packaging">Pckg.</div>
+					<div class="price">Price</div>
+					<div class="return-qty">Return Qty</div>
+					<div class="image"></div>
+				</div>
+			</div>
+		</div>
+	</script>
+
+
+	<script type="text/template" id="rma-final-line-item">
+		<div id="line-item-<%= id %>" data-id="<%= id %>" class="line-item">
+			<div class="date"><%= date %></div>
+			<div class="sku"><a href="#" class="delete-item">Delete Product</a> <%= sku %></div>
+			<div class="name"><%= name %></div>
+			<div class="packaging"><%= packaging %></div>
+			<div class="price"><%= accounting.formatMoney(sell_price) %></div>
+			<div class="qty">
+				<span class="value">1 of <%= qty %></span>
+				<a href="#" class="decrease">-</a>
+				<a href="#" class="increase">+</a>
+			</div>
+			<div class="image"><img src="<%= thumbnail %>" alt="" width="35" height="35" /></div>
+		</div>
+	</script>
+
+
 	<script type="text/template" id="customer-info-modal">
 		<div class="bbm-modal__topbar">
 			<h3 class="bbm-modal__title title">Loading Customer Info ...</h3>
@@ -204,11 +282,13 @@
 					        <li class="pure-menu-selected"><a href="#">Customer Info</a></li>
 					        <li><a href="#">Invoice History</a></li>
 					        <li><a href="#">Payment History</a></li>
+					        <li class="rma"><a href="#">Return Merchandise Authorization</a></li>
 					    </ul>
 					</div>
 					<div class="profile-content tab"></div>
 					<div class="invoice-history tab"></div>
 					<div class="payment-history tab"></div>
+					<div class="rma-form tab"></div>
 				</div>
 			</div>
 			<div class="bbm-modal__bottombar">
@@ -255,6 +335,10 @@
 
 	<script type="text/template" id="checkout-buttons">
 		<a href="#" class="pure-button pure-button-error checkout-button">Checkout</a>
+	</script>
+
+	<script type="text/template" id="rma-buttons">
+		<a href="#" class="pure-button pure-button-warning checkout-button">Process RMA</a>
 	</script>
 
 	<script type="text/template" id="item-search-result">
