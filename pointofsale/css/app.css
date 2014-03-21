@@ -267,6 +267,7 @@ div.ticket-container {
     background: url(../images/delete-outline.png) no-repeat;
     text-indent: -999px;
     background-size: cover;
+    vertical-align: middle;
 }
 .product-table .line-item:hover {
     background: #DDF4FE;
@@ -606,4 +607,7 @@ a.ticket-customer-link:hover {
 
 .rmaItemSelectOverlay .returning-items-select .line-item {
     cursor: pointer;
+}
+.rmaItemSelectOverlay .returning-items img {
+    vertical-align: middle;
 }

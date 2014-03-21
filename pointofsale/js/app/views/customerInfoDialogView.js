@@ -17,9 +17,13 @@ jQuery(function($) {
       this.employeeSession = attributes['employeeSession'];
       this.ticket = attributes['ticket'];
       this.rmaDialogModal = attributes['rmaDialogModal'];
+      this.rmaItemsCollection = new rmaItemsCollection();
+      this.rmaItemsCollectionFinal = new rmaItemsCollection();
+      this.listenTo(this.rmaItemsCollectionFinal, 'add', this.addItemToRMA);
     },
     template: _.template($('#customer-info-modal').html()),
     RMAFormTemplate: _.template($('#process-rma-form').html()),
+    RMAFinalTemplate: _.template($('#rma-final-line-item').html()),
     loadUserProfile: function(uid) {
       var that = this;
       if(uid) {
@@ -158,6 +162,7 @@ jQuery(function($) {
     },
     render: function() {
       this.$('.rma-form').html(this.RMAFormTemplate());
+      this.rmaItemsCollectionFinal.reset();
       return this;
     },
     closeCheckoutDialog: function(e) {
@@ -224,9 +229,9 @@ jQuery(function($) {
         timeout: 15000,
         success: function(res, status, xhr) {
           if(res.status) {
+            dialog.rmaItemsCollection.reset();
             dialog.rmaDialogModal.display(true);
-            dialog.rmaDialogModal.populateSelections(res.products);
-            console.log(res);
+            dialog.rmaDialogModal.populateSelections(res.products, dialog);
           } else {
             $.jGrowl(res.error);
           }
@@ -235,6 +240,14 @@ jQuery(function($) {
           ticket.employeeSession.set('login', false);
         }
       });
+    },
+    rmaItemSelected: function(product) {
+      this.rmaDialogModal.display(false);
+      this.rmaItemsCollectionFinal.add(product);
+    },
+    addItemToRMA: function(model, collection, options) {
+      console.log(model);
+      this.$('.returning-items .product-table').append(this.RMAFinalTemplate(model.attributes));
     }
   });
 });

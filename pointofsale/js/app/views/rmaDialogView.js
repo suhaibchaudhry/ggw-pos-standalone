@@ -4,7 +4,8 @@ jQuery(function($) {
     tagName: 'div',
     className: 'rmaItemSelectOverlay',
     events: {
-      "click a.ticket-checkout-cancel": 'closeDialog'
+      "click a.ticket-checkout-cancel": 'closeDialog',
+      "click .line-item" : 'lineItemSelected'
     },
     rmaLineItemsSelectTemplate: _.template($('#rma-select-line-item').html()),
     initialize: function(attributes, options) {
@@ -14,10 +15,12 @@ jQuery(function($) {
     render: function() {
       return this;
     },
-    populateSelections: function(products) {
+    populateSelections: function(products, customerInfoDialog) {
+      this.customerInfoDialog = customerInfoDialog;
       var template = this.rmaLineItemsSelectTemplate;
       _.each(products, function(product) {
         this.$('.returning-items-select .product-table').append(template(product));
+        customerInfoDialog.rmaItemsCollection.add(product);
       });
     },
     closeDialog: function(e) {
@@ -27,6 +30,11 @@ jQuery(function($) {
     closeRMADialog: function(e) {
       this.modal.display(false);
       $('input.rma-scan').focus();
+    },
+    lineItemSelected: function(e) {
+      var id = e.currentTarget.dataset.id;
+      var product = this.customerInfoDialog.rmaItemsCollection.get(id);
+      this.customerInfoDialog.rmaItemSelected(product);
     }
   });
 });
