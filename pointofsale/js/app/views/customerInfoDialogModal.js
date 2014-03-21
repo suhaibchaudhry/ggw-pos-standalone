@@ -18,10 +18,13 @@ jQuery(function($) {
         } else {
           this.customerInfoDialogView.loadUserProfile();
         }
+        this.customerInfoDialogView.render();
       } else {
         $('.customerInfoOverlay').stop().fadeOut(function() {
-          $(this).empty();
+             $(this).empty();
         });
+
+        $('.item-search input.search').focus();
       }
     }
   });

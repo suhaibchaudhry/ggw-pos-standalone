@@ -7,7 +7,9 @@ jQuery(function($) {
       "click a.customer-info-continue": 'closeCheckoutDialog',
       "click .info-menu-tabs a": 'changeTab',
       "click .invoice-history a": 'invoiceDataRefresh',
-      "click .invoice-history table.uc-order-history tbody tr": 'selectInvoice'
+      "click .invoice-history table.uc-order-history tbody tr": 'selectInvoice',
+      "click": 'focusScanner',
+      "keyup input.rma-scan": 'searchKeyUp'
     },
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
@@ -16,6 +18,7 @@ jQuery(function($) {
       this.ticket = attributes['ticket'];
     },
     template: _.template($('#customer-info-modal').html()),
+    RMAFormTemplate: _.template($('#process-rma-form').html()),
     loadUserProfile: function(uid) {
       var that = this;
       if(uid) {
@@ -74,7 +77,7 @@ jQuery(function($) {
       //Detect index of selected tab
       this.$('li.pure-menu-selected').removeClass('pure-menu-selected');
       var list_element = e.currentTarget.parentNode;
-      list_element.className = 'pure-menu-selected';
+      list_element.className += ' pure-menu-selected';
       var index = this.$('.info-menu-tabs ul li').index(list_element);
       
       //Activate corrosponding tab
@@ -153,10 +156,12 @@ jQuery(function($) {
       fieldsets.height(height);
     },
     render: function() {
+      this.$('.rma-form').html(this.RMAFormTemplate());
       return this;
     },
     closeCheckoutDialog: function(e) {
       e.preventDefault();
+      e.stopPropagation(); //Stop bubbling click to focus on the secondary rma scanner, so focus can goes to primary scanner
       this.modal.display(false);
     },
     selectInvoice: function(e) {
@@ -173,23 +178,59 @@ jQuery(function($) {
         //Get Latest Customer UID on ticket, incase cache is dirty.
         var currentTicketRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticketId});
         $.ajax({
+          type: 'POST',
+          url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/get-current',
+          data: {request: currentTicketRequest},
+          timeout: 15000,
+          success: function(res, status, xhr) {
+            if(res.status) {
+              ticket.set(res.ticket);
+            } else {
+              ticket.employeeSession.set('login', false);
+            }
+            ticket.trigger('ticket:preloader', false);
+          },
+          error: function(xhr, errorType, error) {
+            this.trigger('ticket:preloader', false);
+            ticket.employeeSession.set('login', false);
+          }
+      });
+    },
+    focusScanner: function(e) {
+      if(this.$('li.pure-menu-selected').hasClass('rma')){
+        this.$('.rma-scan').focus();
+      }
+    },
+    searchKeyUp: function(e) {
+      //Process barcode scan
+      if(e.keyCode == 13) {
+        var value = e.target.value.trim();
+        if(value != '') {
+          e.target.value = '';
+          this.scanItem(value);
+        }
+      }
+    },
+    scanItem: function(value) {
+      var customer_uid = this.customer_uid;
+      var rmaRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, item_barcode: value});
+
+      $.ajax({
         type: 'POST',
-        url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/get-current',
-        data: {request: currentTicketRequest},
+        url: this.employeeSession.get('apiServer')+'/pos-api/ticket/rma',
+        data: {request: rmaRequest},
         timeout: 15000,
         success: function(res, status, xhr) {
           if(res.status) {
-            ticket.set(res.ticket);
+            console.log(res);
           } else {
-            ticket.employeeSession.set('login', false);
+            $.jGrowl(res.error);
           }
-          ticket.trigger('ticket:preloader', false);
         },
         error: function(xhr, errorType, error) {
-          this.trigger('ticket:preloader', false);
           ticket.employeeSession.set('login', false);
         }
-    });
+      });
     }
   });
 });
