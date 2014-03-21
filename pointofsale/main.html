@@ -68,6 +68,7 @@
 	<div class="checkoutOverlay dialogOverlay"></div>
 	<div class="invoiceDialogOverlay dialogOverlay"></div>
 	<div class="customerInfoOverlay dialogOverlay"></div>
+	<div class="rmaItemSelectOverlay dialogOverlay"></div>
 	<div class="loaderOverlay dialogOverlay"><a href="#" class="refresh"></a></div>
 
 	<div class="app-wrap">
@@ -196,27 +197,40 @@
 
 	<script type="text/template" id="process-rma-modal">
 		<div class="bbm-modal__topbar">
-			<h3 class="bbm-modal__title title">Process Returns</h3>
+			<h3 class="bbm-modal__title title">Select Purchase</h3>
 		</div>
 			<div class="bbm-modal__section">
-				<input class="rma-scan" placeholder="Scan Items to Return ..." autocomplete="off" type="text" />
-
-				<div class="returning-items">
+				<div class="returning-items-select">
 					<div class="product-table">
 						<div class="line-item-heading">
+							<div class="date">Purchase Date</div>
 							<div class="sku">Barcode</div>
 							<div class="name">Product</div>
 							<div class="packaging">Pckg.</div>
 							<div class="price">Price</div>
+							<div class="purchase-qty">Purchased Qty</div>
 							<div class="image"></div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="bbm-modal__bottombar">
-			<a href="#" class="pure-button pure-button-success ticket-checkout-continue">Process</a>
 			    <a href="#" class="pure-button pure-button-error ticket-checkout-cancel">Cancel</a>
 			</div>
+	</script>
+
+	<script type="text/template" id="rma-select-line-item">
+		<div id="line-item-<%= id %>" data-id="<%= id %>" class="line-item">
+			<div class="date"><%= date %></div>
+			<div class="sku"><%= sku %></div>
+			<div class="name"><%= name %></div>
+			<div class="packaging"><%= packaging %></div>
+			<div class="price"><%= accounting.formatMoney(sell_price) %></div>
+			<div class="qty">
+				<span class="value"><%= qty %></span>
+			</div>
+			<div class="image"><img src="<%= thumbnail %>" alt="" width="35" height="35" /></div>
+		</div>
 	</script>
 
 	<script type="text/template" id="process-rma-form">
@@ -229,6 +243,7 @@
 					<div class="name">Product</div>
 					<div class="packaging">Pckg.</div>
 					<div class="price">Price</div>
+					<div class="return-qty">Return Qty</div>
 					<div class="image"></div>
 				</div>
 			</div>

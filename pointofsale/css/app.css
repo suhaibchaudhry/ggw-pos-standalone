@@ -599,3 +599,11 @@ a.ticket-customer-link:hover {
 .rma-form input.rma-scan:focus {
     border-color: #0097cf;
 }
+
+.rmaItemSelectOverlay .bbm-modal {
+    max-width: 900px;
+}
+
+.rmaItemSelectOverlay .returning-items-select .line-item {
+    cursor: pointer;
+}

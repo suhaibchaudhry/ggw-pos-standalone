@@ -4,8 +4,10 @@ jQuery(function($) {
       return this.customerInfoDialogView.template();
     },
     initialize: function(attributes, options) {
+      //Initialize RMA Choose dialog
+      this.rmaDialogModal = new rmaDialogModal({employeeSession: this.employeeSession});
       this.activeCustomer = attributes['activeCustomer'];
-      this.customerInfoDialogView = new customerInfoDialogView({el: $('.customerInfoOverlay').get(0), activeCustomer: attributes['activeCustomer'], modal: this, employeeSession: attributes['employeeSession'], ticket: attributes['ticket']});
+      this.customerInfoDialogView = new customerInfoDialogView({el: $('.customerInfoOverlay').get(0), activeCustomer: attributes['activeCustomer'], modal: this, employeeSession: attributes['employeeSession'], ticket: attributes['ticket'], rmaDialogModal: this.rmaDialogModal});
     },
     beforeCancel: function() {
       return false;

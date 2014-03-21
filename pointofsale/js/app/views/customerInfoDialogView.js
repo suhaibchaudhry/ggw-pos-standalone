@@ -16,6 +16,7 @@ jQuery(function($) {
       this.modal = attributes['modal'];
       this.employeeSession = attributes['employeeSession'];
       this.ticket = attributes['ticket'];
+      this.rmaDialogModal = attributes['rmaDialogModal'];
     },
     template: _.template($('#customer-info-modal').html()),
     RMAFormTemplate: _.template($('#process-rma-form').html()),
@@ -212,6 +213,7 @@ jQuery(function($) {
       }
     },
     scanItem: function(value) {
+      var dialog = this;
       var customer_uid = this.customer_uid;
       var rmaRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, item_barcode: value});
 
@@ -222,6 +224,8 @@ jQuery(function($) {
         timeout: 15000,
         success: function(res, status, xhr) {
           if(res.status) {
+            dialog.rmaDialogModal.display(true);
+            dialog.rmaDialogModal.populateSelections(res.products);
             console.log(res);
           } else {
             $.jGrowl(res.error);
