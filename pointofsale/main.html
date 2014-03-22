@@ -261,9 +261,11 @@
 			<div class="packaging"><%= packaging %></div>
 			<div class="price"><%= accounting.formatMoney(sell_price) %></div>
 			<div class="qty">
-				<span class="value">1 of <%= qty %></span>
-				<a href="#" class="decrease">-</a>
-				<a href="#" class="increase">+</a>
+				<span class="value"><span class="return-value"><%= returning_qty %></span> of <%= qty %></span>
+				<span class="modifiers">
+					<a href="#" class="decrease">-</a>
+					<a href="#" class="increase">+</a>
+				</span>
 			</div>
 			<div class="image"><img src="<%= thumbnail %>" alt="" width="35" height="35" /></div>
 		</div>

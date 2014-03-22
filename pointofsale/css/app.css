@@ -275,8 +275,12 @@ div.ticket-container {
 .product-table .line-item a.delete-item:hover {
     background-image: url(../images/delete.png);
 }
+/*
 .product-table .line-item .qty span {
     float: left
+}*/
+.product-table img {
+    vertical-align: middle;
 }
 .product-table .line-item .qty a {
     display: block;

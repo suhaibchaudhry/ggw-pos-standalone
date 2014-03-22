@@ -9,6 +9,9 @@ jQuery(function($) {
       "click .invoice-history a": 'invoiceDataRefresh',
       "click .invoice-history table.uc-order-history tbody tr": 'selectInvoice',
       "click": 'focusScanner',
+      "click .returning-items a.delete-item": 'rmaDeleteItem',
+      "click .returning-items a.decrease": 'rmaDecrease',
+      "click .returning-items a.increase": 'rmaIncrease',
       "keyup input.rma-scan": 'searchKeyUp'
     },
     initialize: function(attributes, options) {
@@ -20,6 +23,8 @@ jQuery(function($) {
       this.rmaItemsCollection = new rmaItemsCollection();
       this.rmaItemsCollectionFinal = new rmaItemsCollection();
       this.listenTo(this.rmaItemsCollectionFinal, 'add', this.addItemToRMA);
+      this.listenTo(this.rmaItemsCollectionFinal, 'remove', this.removeItemFromRMA);
+      this.listenTo(this.rmaItemsCollectionFinal, 'change', this.changeReturnQty);
     },
     template: _.template($('#customer-info-modal').html()),
     RMAFormTemplate: _.template($('#process-rma-form').html()),
@@ -246,8 +251,43 @@ jQuery(function($) {
       this.rmaItemsCollectionFinal.add(product);
     },
     addItemToRMA: function(model, collection, options) {
-      console.log(model);
+      model.set('returning_qty', 1, {silent: true});
       this.$('.returning-items .product-table').append(this.RMAFinalTemplate(model.attributes));
+    },
+    removeItemFromRMA: function(model) {
+      var itemId = model.get('id');
+      this.$('.returning-items #line-item-'+itemId).remove();
+    },
+    rmaDeleteItem: function(e) {
+      e.preventDefault();
+      var itemId = e.target.parentElement.parentElement.dataset.id;
+      this.rmaItemsCollectionFinal.remove(itemId);
+    },
+    rmaDecrease: function(e) {
+      var itemId = e.target.parentElement.parentElement.parentElement.dataset.id;
+      var product = this.rmaItemsCollectionFinal.get(itemId);
+      var quantity = product.get('qty');
+      var returning_qty = product.get('returning_qty');
+      returning_qty--;
+      this.setReturnQty(product, quantity, returning_qty)
+    },
+    rmaIncrease: function(e) {
+      var itemId = e.target.parentElement.parentElement.parentElement.dataset.id;
+      var product = this.rmaItemsCollectionFinal.get(itemId);
+      var quantity = product.get('qty');
+      var returning_qty = product.get('returning_qty');
+      returning_qty++
+      this.setReturnQty(product, quantity, returning_qty)
+    },
+    setReturnQty: function(product, qty, returning_qty) {
+      if(0 < returning_qty && returning_qty <= qty) {
+        product.set('returning_qty', returning_qty);
+      }
+    },
+    changeReturnQty: function(product) {
+      var id = product.get('id');
+      var qty = product.get('returning_qty');
+      this.$('.returning-items #line-item-'+id+' .qty span.return-value').text(qty);
     }
   });
 });
