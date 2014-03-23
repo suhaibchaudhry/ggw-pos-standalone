@@ -223,16 +223,19 @@ jQuery(function($) {
       }
     },
     scanItem: function(value) {
+      var ticket = this.ticket;
       var dialog = this;
       var customer_uid = this.customer_uid;
       var rmaRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, item_barcode: value});
 
+      ticket.trigger('ticket:preloader', true);
       $.ajax({
         type: 'POST',
         url: this.employeeSession.get('apiServer')+'/pos-api/ticket/rma',
         data: {request: rmaRequest},
         timeout: 15000,
         success: function(res, status, xhr) {
+          ticket.trigger('ticket:preloader', false);
           if(res.status) {
             dialog.rmaItemsCollection.reset();
             dialog.rmaDialogModal.display(true);
@@ -243,6 +246,7 @@ jQuery(function($) {
         },
         error: function(xhr, errorType, error) {
           ticket.employeeSession.set('login', false);
+          ticket.trigger('ticket:preloader', false);
         }
       });
     },
