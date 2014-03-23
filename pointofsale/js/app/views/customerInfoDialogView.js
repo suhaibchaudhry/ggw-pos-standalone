@@ -268,6 +268,7 @@ jQuery(function($) {
       this.rmaItemsCollectionFinal.remove(itemId);
     },
     rmaDecrease: function(e) {
+      e.preventDefault();
       var itemId = e.target.parentElement.parentElement.parentElement.dataset.id;
       var product = this.rmaItemsCollectionFinal.get(itemId);
       var quantity = product.get('qty');
@@ -276,6 +277,7 @@ jQuery(function($) {
       this.setReturnQty(product, quantity, returning_qty)
     },
     rmaIncrease: function(e) {
+      e.preventDefault();
       var itemId = e.target.parentElement.parentElement.parentElement.dataset.id;
       var product = this.rmaItemsCollectionFinal.get(itemId);
       var quantity = product.get('qty');
