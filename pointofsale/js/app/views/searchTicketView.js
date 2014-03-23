@@ -38,6 +38,7 @@ jQuery(function($) {
     		//Enable Disable Checkout Button
     		if(ticketStatus == 'pos_in_progress') {
     			this.$('.checkout').show();
+    			$('.item-search input.search').focus();
     		} else {
     			this.$('.checkout').hide();
     		}
@@ -47,6 +48,7 @@ jQuery(function($) {
     			this.lockTicket();
     		} else {
     			this.unlockTicket();
+    			$('.item-search input.search').focus();
     		}
     	},
     	lockTicket: function() {

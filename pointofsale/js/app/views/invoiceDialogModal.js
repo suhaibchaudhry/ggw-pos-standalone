@@ -16,6 +16,8 @@ jQuery(function($) {
         $('.invoiceDialogOverlay').stop().fadeOut(function() {
           $(this).empty();
         });
+
+        $('.item-search input.search').focus();
       }
     }
   });

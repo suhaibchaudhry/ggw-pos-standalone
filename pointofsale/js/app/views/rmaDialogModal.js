@@ -20,6 +20,8 @@ jQuery(function($) {
         $('.rmaItemSelectOverlay').stop().fadeOut(function() {
           $(this).empty();
         });
+
+        $('input.rma-scan').focus();
       }
     }
   });

@@ -76,6 +76,7 @@ jQuery(function($) {
       if(login) {
         this.employeeOperationsRegion.render();
         this.activeTicketRegion.render();
+        $('.item-search input.search').focus();
       } else {
         this.employeeOperationsRegion.demolish();
         this.activeTicketRegion.demolish();
