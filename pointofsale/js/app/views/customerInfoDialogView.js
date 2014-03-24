@@ -22,6 +22,7 @@ jQuery(function($) {
       this.rmaDialogModal = attributes['rmaDialogModal'];
       this.rmaItemsCollection = new rmaItemsCollection();
       this.rmaItemsCollectionFinal = new rmaItemsCollection();
+      this.rmaTicket = new rmaTicket({rmaItemsCollection: this.rmaItemsCollectionFinal, total: 0, dialog: this});
       this.listenTo(this.rmaItemsCollectionFinal, 'add', this.addItemToRMA);
       this.listenTo(this.rmaItemsCollectionFinal, 'remove', this.removeItemFromRMA);
       this.listenTo(this.rmaItemsCollectionFinal, 'change', this.changeReturnQty);
@@ -255,11 +256,19 @@ jQuery(function($) {
       this.rmaItemsCollectionFinal.add(product);
     },
     addItemToRMA: function(model, collection, options) {
+      var total = this.rmaTicket.get("total");
+      var sell_price = accounting.unformat(model.attributes.sell_price);
+      model.set("sell_price", sell_price);
+      total += sell_price;
+      this.rmaTicket.set("total", total);
+
       model.set('returning_qty', 1, {silent: true});
       this.$('.returning-items .product-table').append(this.RMAFinalTemplate(model.attributes));
     },
     removeItemFromRMA: function(model) {
       var itemId = model.get('id');
+      var total = this.rmaTicket.get("total");
+      this.rmaTicket.set("total", total - (model.get("sell_price")*model.get('returning_qty')));
       this.$('.returning-items #line-item-'+itemId).remove();
     },
     rmaDeleteItem: function(e) {
@@ -291,6 +300,13 @@ jQuery(function($) {
       }
     },
     changeReturnQty: function(product) {
+      var previous_qty = product.previous("returning_qty");
+      var qty = product.get("returning_qty");
+      var price = product.get("sell_price");
+      var total = this.rmaTicket.get('total');
+      this.rmaTicket.set("total", (total-(price*previous_qty)+(price*qty)));
+
+      //update qty in dom
       var id = product.get('id');
       var qty = product.get('returning_qty');
       this.$('.returning-items #line-item-'+id+' .qty span.return-value').text(qty);

@@ -551,7 +551,7 @@ a.lock-toggle:active {
     background: url(../images/lock-open.png);
 }
 
-.tabs .change-due-value, .tabs .change-value, .tabs .change-left-value {
+.tabs .change-due-value, .tabs .change-value, .tabs .change-left-value, .return-summary span.value {
     font-size: 25px;
     color: #CF7809;
     display: inline-block;
@@ -563,7 +563,7 @@ a.lock-toggle:active {
     padding: 7px 12px;
 }
 
-.tabs label.cash-paid-label, .tabs .change-remaining-label {
+.tabs label.cash-paid-label, .tabs .change-remaining-label, .return-summary span.label {
     display: inline-block;
     margin: 20px 0 10px;
     color: #5980BB;
