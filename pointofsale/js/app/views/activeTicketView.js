@@ -286,6 +286,11 @@ jQuery(function($) {
        this.$('.item-search input.search').typeahead('destroy');
        this.$('.item-search').empty();
        this.ticket.clearTicket();
-    }
+    },
+    printTicket: function() {
+      var ticketId = this.ticket.get('ticketId');
+      //Print Ticket
+      window.open('http://general-goods.com/admin/store/orders/'+ticketId+'/invoice/print');
+    },
   });
 });

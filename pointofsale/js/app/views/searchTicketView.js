@@ -3,7 +3,8 @@ jQuery(function($) {
 		events: {
 			"typeahead:selected .ticket-search": 'itemSelected',
 			"click .checkout a.checkout-button": 'checkout',
-			"click a.lock-toggle": 'managerUnlockClosedTicket'
+			"click a.lock-toggle": 'managerUnlockClosedTicket',
+			"click ": 'printTicket'
 		},
 		tagName: 'div',
 		selectedTicketWrapTemplate: _.template($('#selected-ticket-wrap').html()),
@@ -13,6 +14,7 @@ jQuery(function($) {
 		checkoutButtons: _.template($('#checkout-buttons').html()),
 		initialize: function(attributes, options) {
 			this.employeeSession = attributes['employeeSession'];
+			this.activeTicketView = attributes['activeTicketView'];
 		},
 		checkout: function(e) {
 			e.preventDefault();
@@ -32,6 +34,7 @@ jQuery(function($) {
     		//Perform permission checks and dialongs here
     		this.unlockTicket();
     	},
+
     	changeTicketStatus: function(ticket, ticketStatus, options) {
     		$('.ticket-status span.value').text(ticket.get('status_en'));
 
