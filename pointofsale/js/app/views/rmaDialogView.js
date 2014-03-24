@@ -29,7 +29,6 @@ jQuery(function($) {
     },
     closeRMADialog: function(e) {
       this.modal.display(false);
-      $('input.rma-scan').focus();
     },
     lineItemSelected: function(e) {
       var id = e.currentTarget.dataset.id;

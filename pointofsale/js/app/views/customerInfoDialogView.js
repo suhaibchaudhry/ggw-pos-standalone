@@ -9,6 +9,9 @@ jQuery(function($) {
       "click .invoice-history a": 'invoiceDataRefresh',
       "click .invoice-history table.uc-order-history tbody tr": 'selectInvoice',
       "click": 'focusScanner',
+      "click .returning-items a.delete-item": 'rmaDeleteItem',
+      "click .returning-items a.decrease": 'rmaDecrease',
+      "click .returning-items a.increase": 'rmaIncrease',
       "keyup input.rma-scan": 'searchKeyUp'
     },
     initialize: function(attributes, options) {
@@ -19,7 +22,10 @@ jQuery(function($) {
       this.rmaDialogModal = attributes['rmaDialogModal'];
       this.rmaItemsCollection = new rmaItemsCollection();
       this.rmaItemsCollectionFinal = new rmaItemsCollection();
+      this.rmaTicket = new rmaTicket({rmaItemsCollection: this.rmaItemsCollectionFinal, total: 0, dialog: this});
       this.listenTo(this.rmaItemsCollectionFinal, 'add', this.addItemToRMA);
+      this.listenTo(this.rmaItemsCollectionFinal, 'remove', this.removeItemFromRMA);
+      this.listenTo(this.rmaItemsCollectionFinal, 'change', this.changeReturnQty);
     },
     template: _.template($('#customer-info-modal').html()),
     RMAFormTemplate: _.template($('#process-rma-form').html()),
@@ -218,16 +224,19 @@ jQuery(function($) {
       }
     },
     scanItem: function(value) {
+      var ticket = this.ticket;
       var dialog = this;
       var customer_uid = this.customer_uid;
       var rmaRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, item_barcode: value});
 
+      ticket.trigger('ticket:preloader', true);
       $.ajax({
         type: 'POST',
         url: this.employeeSession.get('apiServer')+'/pos-api/ticket/rma',
         data: {request: rmaRequest},
         timeout: 15000,
         success: function(res, status, xhr) {
+          ticket.trigger('ticket:preloader', false);
           if(res.status) {
             dialog.rmaItemsCollection.reset();
             dialog.rmaDialogModal.display(true);
@@ -238,6 +247,7 @@ jQuery(function($) {
         },
         error: function(xhr, errorType, error) {
           ticket.employeeSession.set('login', false);
+          ticket.trigger('ticket:preloader', false);
         }
       });
     },
@@ -246,8 +256,60 @@ jQuery(function($) {
       this.rmaItemsCollectionFinal.add(product);
     },
     addItemToRMA: function(model, collection, options) {
-      console.log(model);
+      var total = this.rmaTicket.get("total");
+      var sell_price = accounting.unformat(model.attributes.sell_price);
+      model.set("sell_price", sell_price);
+      total += sell_price;
+      this.rmaTicket.set("total", total);
+
+      model.set('returning_qty', 1, {silent: true});
       this.$('.returning-items .product-table').append(this.RMAFinalTemplate(model.attributes));
+    },
+    removeItemFromRMA: function(model) {
+      var itemId = model.get('id');
+      var total = this.rmaTicket.get("total");
+      this.rmaTicket.set("total", total - (model.get("sell_price")*model.get('returning_qty')));
+      this.$('.returning-items #line-item-'+itemId).remove();
+    },
+    rmaDeleteItem: function(e) {
+      e.preventDefault();
+      var itemId = e.target.parentElement.parentElement.dataset.id;
+      this.rmaItemsCollectionFinal.remove(itemId);
+    },
+    rmaDecrease: function(e) {
+      e.preventDefault();
+      var itemId = e.target.parentElement.parentElement.parentElement.dataset.id;
+      var product = this.rmaItemsCollectionFinal.get(itemId);
+      var quantity = product.get('qty');
+      var returning_qty = product.get('returning_qty');
+      returning_qty--;
+      this.setReturnQty(product, quantity, returning_qty)
+    },
+    rmaIncrease: function(e) {
+      e.preventDefault();
+      var itemId = e.target.parentElement.parentElement.parentElement.dataset.id;
+      var product = this.rmaItemsCollectionFinal.get(itemId);
+      var quantity = product.get('qty');
+      var returning_qty = product.get('returning_qty');
+      returning_qty++
+      this.setReturnQty(product, quantity, returning_qty)
+    },
+    setReturnQty: function(product, qty, returning_qty) {
+      if(0 < returning_qty && returning_qty <= qty) {
+        product.set('returning_qty', returning_qty);
+      }
+    },
+    changeReturnQty: function(product) {
+      var previous_qty = product.previous("returning_qty");
+      var qty = product.get("returning_qty");
+      var price = product.get("sell_price");
+      var total = this.rmaTicket.get('total');
+      this.rmaTicket.set("total", (total-(price*previous_qty)+(price*qty)));
+
+      //update qty in dom
+      var id = product.get('id');
+      var qty = product.get('returning_qty');
+      this.$('.returning-items #line-item-'+id+' .qty span.return-value').text(qty);
     }
   });
 });

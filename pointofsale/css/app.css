@@ -275,8 +275,12 @@ div.ticket-container {
 .product-table .line-item a.delete-item:hover {
     background-image: url(../images/delete.png);
 }
+/*
 .product-table .line-item .qty span {
     float: left
+}*/
+.product-table img {
+    vertical-align: middle;
 }
 .product-table .line-item .qty a {
     display: block;
@@ -529,14 +533,17 @@ a.forceHide, .lockedTicket a.delete-item, .lockedTicket a.increase, .lockedTicke
     position: absolute;
     bottom: 3px;
     text-indent: -9999px;
-
+    width: 100%;
 }
-a.lock-toggle {
+a.lock-toggle, a.print-ticket {
     display: block;
     width: 48px;
     height: 48px;
-    background: url(../images/lock-closed-outline.png);
-    
+}
+
+a.lock-toggle{
+     float: left;
+     background: url(../images/lock-closed-outline.png);
 }
 
 a.lock-toggle:hover {
@@ -547,7 +554,16 @@ a.lock-toggle:active {
     background: url(../images/lock-open.png);
 }
 
-.tabs .change-due-value, .tabs .change-value, .tabs .change-left-value {
+a.print-ticket {
+    float: right;
+    background: url(../images/printer.png);
+}
+
+a.print-ticket:hover {
+    opacity: .5;
+}
+
+.tabs .change-due-value, .tabs .change-value, .tabs .change-left-value, .return-summary span.value {
     font-size: 25px;
     color: #CF7809;
     display: inline-block;
@@ -559,7 +575,7 @@ a.lock-toggle:active {
     padding: 7px 12px;
 }
 
-.tabs label.cash-paid-label, .tabs .change-remaining-label {
+.tabs label.cash-paid-label, .tabs .change-remaining-label, .return-summary span.label {
     display: inline-block;
     margin: 20px 0 10px;
     color: #5980BB;

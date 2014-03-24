@@ -5,7 +5,8 @@ jQuery(function($) {
       "click a.recent-tickets-button": 'loadRecentTickets',
       "click a.quote-tickets-button": 'loadQuoteTickets',
       "click a.open-tickets-button": 'loadOpenTickets',
-      "click a.closed-tickets-button": 'loadCloseTickets'
+      "click a.closed-tickets-button": 'loadCloseTickets',
+      "click a.print-ticket": 'printTicket'
     },
   	initialize: function() {
       //Employee Session Model
@@ -76,6 +77,7 @@ jQuery(function($) {
       if(login) {
         this.employeeOperationsRegion.render();
         this.activeTicketRegion.render();
+        $('.item-search input.search').focus();
       } else {
         this.employeeOperationsRegion.demolish();
         this.activeTicketRegion.demolish();
@@ -100,6 +102,10 @@ jQuery(function($) {
       } else {
         $('.loaderOverlay').hide();
       }
+    },
+    printTicket: function(e) {
+      e.preventDefault();
+      this.activeTicketRegion.printTicket();
     },
     loadRecentTickets: function(e) {
       this.invoiceDialog.display(true);

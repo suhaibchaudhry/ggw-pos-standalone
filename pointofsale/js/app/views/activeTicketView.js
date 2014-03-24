@@ -194,8 +194,15 @@ jQuery(function($) {
       this.activateScanFocus();
     },
     resolveSearchRPC: function(url, uriEncodedQuery) {
-      var newurl = url + '/' + encodeURIComponent(this.$searchbox.val().replace(/\//g, ''));
-      return newurl;
+      var keyword = this.$searchbox.val().replace(/\//g, '');
+      var barcode = new RegExp('^[0-9]+$');
+
+      if(barcode.test(keyword)) {
+        return false;
+      } else {
+        var newurl = url + '/' + encodeURIComponent(keyword);
+        return newurl;
+      }
     },
 
     //Render and demolish logic, and other view methods.
@@ -279,6 +286,11 @@ jQuery(function($) {
        this.$('.item-search input.search').typeahead('destroy');
        this.$('.item-search').empty();
        this.ticket.clearTicket();
-    }
+    },
+    printTicket: function() {
+      var ticketId = this.ticket.get('ticketId');
+      //Print Ticket
+      window.open('http://general-goods.com/admin/store/orders/'+ticketId+'/invoice/print');
+    },
   });
 });

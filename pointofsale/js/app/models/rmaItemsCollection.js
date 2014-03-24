@@ -1,4 +1,6 @@
 jQuery(function($) {
   //Product Collection
-  rmaItemsCollection = Backbone.Collection.extend({});
+  rmaItemsCollection = Backbone.Collection.extend({
+  	
+  });
 });

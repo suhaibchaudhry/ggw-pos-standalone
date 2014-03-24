@@ -17,6 +17,8 @@ jQuery(function($) {
         $('.statusOverlay').stop().fadeOut(function() {
           $(this).empty();
         });
+
+        
       }
     }
   });
