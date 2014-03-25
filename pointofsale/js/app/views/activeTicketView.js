@@ -233,11 +233,14 @@ jQuery(function($) {
           if(res.scan) {
             ticket.addItemToCollection(res.product, qty);
           } else {
-            $.jGrowl("Could not find item with barcode: <strong>"+barcode+"</strong>");
+            //$.jGrowl("Could not find item with barcode: <strong>"+barcode+"</strong>");
+            alert("Could not find item with barcode: "+barcode);
           }
         },
         error: function(xhr, errorType, error) {
-          $.jGrowl("Could not find item with barcode: <strong>"+barcode+"</strong>");
+          //$.jGrowl("Could not find item with barcode: <strong>"+barcode+"</strong>");
+          alert("Could not find item with barcode: "+barcode);
+
         }
       });
     },
