@@ -20,10 +20,47 @@ jQuery(function($) {
       return this;
     },
     checkoutProcess: function(e) {
-      this.closeCheckoutDialog(e);
-      //Close ticket
-      this.ticket.set('status_en', 'Closed Ticket');
-      this.ticket.set('status', 'pos_completed');
+      e.preventDefault();
+      var that = this;
+
+      if(!_.isUndefined(this.change_left) && !_.isUndefined(this.change_value) && !_.isUndefined(this.cash_paid)) {
+        if(this.change_left > 0) {
+          alert("Customer still owes amount: "+accounting.formatMoney(this.change_left));
+        } else {
+          var ticket = this.ticket;
+          var cuid = this.activeCustomer.get('id');
+          var cashCheckoutRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId'), total: ticket.get('total'), cash: this.cash_paid, change: this.change_value, customer: cuid});
+
+          ticket.trigger('ticket:preloader', true);
+          $.ajax({
+            type: 'POST',
+            url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/cash-checkout',
+            data: {request: cashCheckoutRequest},
+            timeout: 15000,
+            success: function(res, status, xhr) {
+              //stop preloader
+              ticket.trigger('ticket:preloader', false);
+              if(res.status) {
+                alert("Checkout Complete. Please make change for amount: "+accounting.formatMoney(that.change_value));
+                //Close ticket
+                ticket.set('status_en', 'Closed Ticket');
+                ticket.set('status', 'pos_completed');         
+              } else {
+                alert(res.message);
+              }
+
+              that.closeCheckoutDialog(e);
+            },
+            error: function(xhr, errorType, error) {
+              //stop pre loader and logout user.
+              ticket.trigger('ticket:preloader', false);
+              ticket.employeeSession.set('login', false);
+            }
+          });
+        }
+      } else {
+        alert("Please insert cash amount before checkout");
+      }
     },
     changeTab: function(e) {
       e.preventDefault();
@@ -59,7 +96,6 @@ jQuery(function($) {
     },
     calculateCashChange: function(e) {
       var total = this.ticket.get('total');
-
       var paid = parseFloat(e.currentTarget.value);
 
       var change = total - paid;
@@ -71,6 +107,10 @@ jQuery(function($) {
         total = 0;
         change = -change;
       }
+
+      this.change_left = total;
+      this.change_value = change;
+      this.cash_paid = paid;
 
       this.$('.change-left-value').html(accounting.formatMoney(total));
       this.$('.change-value').html(accounting.formatMoney(change));
