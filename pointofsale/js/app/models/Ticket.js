@@ -158,26 +158,29 @@ jQuery(function($) {
     //Detect debounced Updates on ticket totals and product counts on server.
     updateTotal: function(ticket, total, options) {
       var ticket = this;
-      var updateTotalRequest = JSON.stringify({token: sessionStorage.token, total: total, ticketId: ticket.get('ticketId'), productCount: ticket.get('productCount')});
-      //Start preloader
-      //this.trigger('ticket:preloader', true);
-      $.ajax({
-        type: 'POST',
-        url: this.employeeSession.get('apiServer')+'/pos-api/ticket/update-total',
-        data: {request: updateTotalRequest},
-        timeout: 15000,
-        success: function(res, status, xhr) {
-          if(!res.status) {
+      var status = ticket.get('status');
+      if(status != 'pos_completed') {
+        var updateTotalRequest = JSON.stringify({token: sessionStorage.token, total: total, ticketId: ticket.get('ticketId'), productCount: ticket.get('productCount')});
+        //Start preloader
+        //this.trigger('ticket:preloader', true);
+        $.ajax({
+          type: 'POST',
+          url: this.employeeSession.get('apiServer')+'/pos-api/ticket/update-total',
+          data: {request: updateTotalRequest},
+          timeout: 15000,
+          success: function(res, status, xhr) {
+            if(!res.status) {
+              ticket.employeeSession.set('login', false);
+            }
+            //ticket.trigger('ticket:preloader', false);
+          },
+          error: function(xhr, errorType, error) {
+            //stop pre loader and logout user.
+            //ticket.trigger('ticket:preloader', false);
             ticket.employeeSession.set('login', false);
           }
-          //ticket.trigger('ticket:preloader', false);
-        },
-        error: function(xhr, errorType, error) {
-          //stop pre loader and logout user.
-          //ticket.trigger('ticket:preloader', false);
-          ticket.employeeSession.set('login', false);
-        }
-      });
+        });
+      }
     },
     //Product Collection Event Handlers
     addToTotals: function(product) {
