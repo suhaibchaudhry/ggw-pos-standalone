@@ -238,9 +238,7 @@ jQuery(function($) {
           }
         },
         error: function(xhr, errorType, error) {
-          //$.jGrowl("Could not find item with barcode: <strong>"+barcode+"</strong>");
-          alert("Could not find item with barcode: "+barcode);
-
+          $.jGrowl("Could not find item with barcode: <strong>"+barcode+"</strong>");
         }
       });
     },

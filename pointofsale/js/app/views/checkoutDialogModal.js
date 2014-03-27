@@ -14,6 +14,7 @@ jQuery(function($) {
     display: function(state) {
       if(state) {
         $('.checkoutOverlay').stop().show().html(this.render().el);
+        this.checkoutDialogView.render();
         this.checkoutDialogView.focusCash();
       } else {
         $('.checkoutOverlay').stop().fadeOut(function() {

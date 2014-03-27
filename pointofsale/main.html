@@ -163,9 +163,9 @@
 			<div class="bbm-modal__section">
 			<div class="info-menu-tabs pure-menu pure-menu-open pure-menu-horizontal">
 			    <ul>
-			        <li class="pure-menu-selected"><a href="#">Cash Checkout</a></li>
-			        <li><a href="#">Credit / Debit Card Checkout</a></li>
-			        <li><a href="#">Term Credits Checkout</a></li>
+			        <li class="pure-menu-selected cash-checkout"><a href="#">Cash Checkout</a></li>
+			        <li class="card-checkout"><a href="#">Credit / Debit Card Checkout</a></li>
+			        <li class="term-checkout"><a href="#">Term Credits Checkout</a></li>
 			    </ul>
 			</div>
 			<div class="tabs">
@@ -190,8 +190,8 @@
 					<input id="cash-paid" type="text" class="cash-paid" value="0.00" />
 					</div>
 				</div>
-				<div class="tab credit-card-checkout">Credit Card Checkout</div>
-				<div class="tab term-credit-checkout">Term Credits Checkout</div>
+				<div class="tab credit-card-checkout"></div>
+				<div class="tab term-credit-checkout"></div>
 			</div>
 			</div>
 			<div class="bbm-modal__bottombar">
@@ -463,6 +463,20 @@
 			</li>
 		<% }); %>
 		</ul>
+	</script>
+
+	<script type="text/template" id="credit-summary-template">
+		<div class="credit-summary">
+			<div class="available-credit">
+				<span class="label">Available Credit: </span><span class="value"><%= available_credit_view %></span>
+			</div>
+			<div class="credit-limit">
+				<span class="label">Credit Limit: </span><span class="value"><%= credit_limit_view %></span>
+			</div>
+			<div class="pending-payments">
+				<span class="label">Pending Payments: </span><span class="value"><%= pending_payments_view %></span>
+			</div>
+		</div>
 	</script>
 </body>
 </html>
