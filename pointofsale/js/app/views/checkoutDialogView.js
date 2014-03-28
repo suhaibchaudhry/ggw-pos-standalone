@@ -122,7 +122,24 @@ jQuery(function($) {
         } else {
           var ticket = this.ticket;
           var cuid = this.activeCustomer.get('id');
-          var cashCheckoutRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId'), total: ticket.get('total'), cash: this.cash_paid, change: this.change_value, customer: cuid});
+          var cashCheckoutRequest = JSON.stringify({token: sessionStorage.token,
+                                                    ticketId: ticket.get('ticketId'),
+                                                    total: ticket.get('total'),
+                                                    cash: this.cash_paid,
+                                                    change: this.change_value,
+                                                    customer: cuid,
+                                                    cash_val: this.$('input.cash-paid').val(),
+                                                    check: this.$('input#check-payment').is(':checked'),
+                                                    check_val: this.$('input.check-amount').val(),
+                                                    check_post_dated: this.$('input#post-dated').is(':checked'),
+                                                    check_date: this.$('input#cash-date').val(),
+                                                    mo: this.$('input#mo-payment').is(':checked'),
+                                                    mo_val: this.$('input.mo-amount').val(),
+                                                    mo_ref: this.$('input.mo-ref').val(),
+                                                    credit: this.$('input#cc-payment').is(':checked'),
+                                                    credit_val: this.$('input.charge-amount').val(),
+                                                    transac_id: this.$('input#transaction-id').val()
+                                                  });
 
           ticket.trigger('ticket:preloader', true);
           $.ajax({
@@ -191,7 +208,12 @@ jQuery(function($) {
     calculateCashChange: function(e) {
       var total = this.ticket.get('total');
       var val = this.$('input.cash-paid').val();
-      var paid = parseFloat(val);
+      var paid;
+      if(val == '') {
+        paid = 0;
+      } else {
+        paid = parseFloat(val);
+      }
 
       var check = this.$('input#check-payment');
       val = this.$('input.check-amount').val();
