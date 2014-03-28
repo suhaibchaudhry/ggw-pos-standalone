@@ -627,3 +627,26 @@ a.ticket-customer-link:hover {
 .rmaItemSelectOverlay .returning-items img {
     vertical-align: middle;
 }
+.toggle-payment {
+    margin: 10px 0;
+}
+.toggle-payment label {
+    font-size: 25px;
+}
+.toggle-payment input {
+    zoom: 2;
+}
+.toggle-payment .payment-input {
+    background: #E6E6E6;
+    padding: 10px;
+    border: 1px solid #5980BB;
+}
+
+.toggle-payment .hidden-child {
+    display: none;
+}
+
+.toggle-payment .payment-input label {
+    display: inline-block;
+    width: 25%;
+}

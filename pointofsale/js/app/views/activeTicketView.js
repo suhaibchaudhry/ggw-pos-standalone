@@ -293,7 +293,7 @@ jQuery(function($) {
     printTicket: function() {
       var ticketId = this.ticket.get('ticketId');
       //Print Ticket
-      window.open('http://general-goods.com/admin/store/orders/'+ticketId+'/invoice/print');
+      window.open(this.employeeSession.get('apiServer')+'/admin/invoice/print/'+ticketId+'?token='+this.employeeSession.get("token"));
     },
   });
 });
