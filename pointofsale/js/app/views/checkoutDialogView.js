@@ -8,7 +8,14 @@ jQuery(function($) {
       "click a.ticket-checkout-cancel": 'closeCheckoutDialog',
       "click .info-menu-tabs a": 'changeTab',
       "keypress .cash-checkout input.cash-paid": 'cashInputValidate',
-      "keyup .cash-checkout input.cash-paid": 'calculateCashChange'
+      "keypress .toggle-payment input.check-amount": 'cashInputValidate',
+      "keypress .toggle-payment input.mo-amount": 'cashInputValidate',
+      "keypress .toggle-payment input.charge-amount": 'cashInputValidate',
+      "keyup .cash-checkout input.cash-paid": 'calculateCashChange',
+      "keyup .toggle-payment input.check-amount": 'calculateCashChange',
+      "keyup .toggle-payment input.mo-amount": 'calculateCashChange',
+      "keyup .toggle-payment input.charge-amount": 'calculateCashChange',
+      'click .toggle-payment input[type="checkbox"]': 'checkboxToggle'
     },
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
@@ -183,7 +190,27 @@ jQuery(function($) {
     },
     calculateCashChange: function(e) {
       var total = this.ticket.get('total');
-      var paid = parseFloat(e.currentTarget.value);
+      var val = this.$('input.cash-paid').val();
+      var paid = parseFloat(val);
+
+      var check = this.$('input#check-payment');
+      val = this.$('input.check-amount').val();
+      if(check.is(':checked') && val != '') {
+        paid += parseFloat(val);
+      }
+
+      check = this.$('input#mo-payment');
+      val = this.$('input.mo-amount').val();
+      if(check.is(':checked') && val != '') {
+        paid += parseFloat(val);
+      }
+
+      check = this.$('input#cc-payment');
+      val = this.$('input.charge-amount').val();
+
+      if(check.is(':checked') && val != '') {
+        paid += parseFloat(val);
+      }
 
       var change = total - paid;
 
@@ -201,6 +228,15 @@ jQuery(function($) {
 
       this.$('.change-left-value').html(accounting.formatMoney(total));
       this.$('.change-value').html(accounting.formatMoney(change));
+    },
+    checkboxToggle: function(e) {
+      if(e.currentTarget.checked) {
+        this.$(e.currentTarget).parent().children('.hidden-child').show();
+      } else {
+        this.$(e.currentTarget).parent().children('.hidden-child').hide();
+      }
+
+      this.$('input.cash-paid').trigger('keyup');
     }
   });
 });
