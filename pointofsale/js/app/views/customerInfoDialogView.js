@@ -317,6 +317,7 @@ jQuery(function($) {
       var ticket = this.ticket;
       var customer_uid = this.customer_uid;
       var total = this.rmaTicket.get('total');
+      var that = this;
 
       e.preventDefault();
 
@@ -343,14 +344,14 @@ jQuery(function($) {
             } else {
               that.employeeSession.set('login', false);
             }
-            this.closeCheckoutDialog(e);
+            that.closeCheckoutDialog(e);
             ticket.trigger('ticket:preloader', false);
           },
           error: function(xhr, errorType, error) {
             //stop pre loader and logout user.
             ticket.trigger('ticket:preloader', false);
             that.employeeSession.set('login', false);
-            closeCheckoutDialog(e);
+            that.closeCheckoutDialog(e);
           }
         });
       } else {
