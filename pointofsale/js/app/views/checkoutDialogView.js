@@ -24,6 +24,7 @@ jQuery(function($) {
     },
     template: _.template($('#ticket-checkout-modal').html()),
     creditSummaryTemplate: _.template($('#credit-summary-template').html()),
+    fetchRegisterID: _.template($('#register-id').html()),
     render: function() {
       this.currentTab = 0;
       this.change_left = undefined; 
@@ -83,7 +84,7 @@ jQuery(function($) {
         this.closeCheckoutDialog(e);
       } else {
         var cuid = this.activeCustomer.get('id');
-        var creditCheckoutRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId'), total: total, customer: cuid, term_limit: this.term_limit});
+        var creditCheckoutRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId'), total: total, customer: cuid, term_limit: this.term_limit, register_id: this.fetchRegisterID()});
 
         ticket.trigger('ticket:preloader', true);
         $.ajax({
@@ -138,7 +139,8 @@ jQuery(function($) {
                                                     mo_ref: this.$('input.mo-ref').val(),
                                                     credit: this.$('input#cc-payment').is(':checked'),
                                                     credit_val: this.$('input.charge-amount').val(),
-                                                    transac_id: this.$('input#transaction-id').val()
+                                                    transac_id: this.$('input#transaction-id').val(),
+                                                    register_id: this.fetchRegisterID(),
                                                   });
 
           ticket.trigger('ticket:preloader', true);
