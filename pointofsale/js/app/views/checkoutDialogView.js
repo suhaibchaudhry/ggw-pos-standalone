@@ -140,7 +140,7 @@ jQuery(function($) {
                                                     credit: this.$('input#cc-payment').is(':checked'),
                                                     credit_val: this.$('input.charge-amount').val(),
                                                     transac_id: this.$('input#transaction-id').val(),
-                                                    register_id: this.fetchRegisterID(),
+                                                    register_id: this.fetchRegisterID()
                                                   });
 
           ticket.trigger('ticket:preloader', true);
