@@ -650,3 +650,7 @@ a.ticket-customer-link:hover {
     display: inline-block;
     width: 25%;
 }
+
+a.ticket-rma-return {
+     margin-top: 10px;
+}
