@@ -316,38 +316,46 @@ jQuery(function($) {
     ticket_rma_return: function(e) {
       var ticket = this.ticket;
       var customer_uid = this.customer_uid;
+      var total = this.rmaTicket.get('total');
 
       e.preventDefault();
-      var products = new Array();
-      this.rmaItemsCollectionFinal.each(function(product) {
-        products.push({
-          order_product_id: product.get('id'),
-          qty_returned: product.get('returning_qty'),
-          price: product.get('sell_price')
+
+      if(total > 0) {
+        var products = new Array();
+        this.rmaItemsCollectionFinal.each(function(product) {
+          products.push({
+            order_product_id: product.get('id'),
+            qty_returned: product.get('returning_qty'),
+            price: product.get('sell_price')
+          });
         });
-      });
-      
-      var rmaRecordRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, total: this.rmaTicket.get('total'), products: products, register_id: this.fetchRegisterID()});
-      ticket.trigger('ticket:preloader', true);
-      $.ajax({
-        type: 'POST',
-        url: this.employeeSession.get('apiServer')+'/pos-api/ticket/rma-checkout',
-        data: {request: rmaRecordRequest},
-        timeout: 15000,
-        success: function(res, status, xhr) {
-          if(res.status) {
-            alert(res.message);
-          } else {
+        
+        var rmaRecordRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, total: total, products: products, register_id: this.fetchRegisterID()});
+        ticket.trigger('ticket:preloader', true);
+        $.ajax({
+          type: 'POST',
+          url: this.employeeSession.get('apiServer')+'/pos-api/ticket/rma-checkout',
+          data: {request: rmaRecordRequest},
+          timeout: 15000,
+          success: function(res, status, xhr) {
+            if(res.status) {
+              alert(res.message);
+            } else {
+              that.employeeSession.set('login', false);
+            }
+            this.closeCheckoutDialog(e);
+            ticket.trigger('ticket:preloader', false);
+          },
+          error: function(xhr, errorType, error) {
+            //stop pre loader and logout user.
+            ticket.trigger('ticket:preloader', false);
             that.employeeSession.set('login', false);
+            closeCheckoutDialog(e);
           }
-          ticket.trigger('ticket:preloader', false);
-        },
-        error: function(xhr, errorType, error) {
-          //stop pre loader and logout user.
-          ticket.trigger('ticket:preloader', false);
-          that.employeeSession.set('login', false);
-        }
-      });
+        });
+      } else {
+        alert('No refund amount on RMA.');
+      }
     }
   });
 });
