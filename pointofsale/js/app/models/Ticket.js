@@ -162,7 +162,7 @@ jQuery(function($) {
       var ticket = this;
       var status = ticket.get('status');
       if(status != 'pos_completed') {
-        var updateTotalRequest = JSON.stringify({token: sessionStorage.token, total: total, ticketId: ticket.get('ticketId'), productCount: ticket.get('productCount')});
+        var updateTotalRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId'), productCount: ticket.get('productCount')});
         //Start preloader
         //this.trigger('ticket:preloader', true);
         $.ajax({
