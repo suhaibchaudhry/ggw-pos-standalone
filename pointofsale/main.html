@@ -281,6 +281,14 @@
 		</div>
 	</script>
 
+	<script type="text/template" id="return-line-item-list-heading">
+		<div class="line-item-heading"><div class="returned-item">Returned Items:</div></div>
+	</script>
+
+	<script type="text/template" id="return-line-item-total">
+		<div class="line-item-heading"><div class="returned-item">Refund Amount: <%= accounting.formatMoney(total) %></div></div>
+	</script>
+
 	<script type="text/template" id="process-rma-form">
 		<input class="rma-scan" placeholder="Scan Items to Return ..." autocomplete="off" type="text" />
 

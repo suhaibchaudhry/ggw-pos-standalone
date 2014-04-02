@@ -15,6 +15,8 @@ jQuery(function($) {
     searchBoxTemplate: _.template($('#item-search-components').html()),
     lineItemTemplate: _.template($('#ticket-line-item').html()),
     labelizeTemplate: _.template($('#labelize-data').html()),
+    rmaListHeading: _.template($('#return-line-item-list-heading').html()),
+    rmaListTotal: _.template($('#return-line-item-total').html()),
     categoryBreakdownTemplate: _.template($('#category-breakdown-template').html()),
 
     initialize: function(attributes, options) {
@@ -305,7 +307,7 @@ jQuery(function($) {
                                 ticketId: ticket.get('ticketId'),
                               });
       //To be moved to the view.
-      var product_table = $('.lockedTicket .product-table');
+      var product_table = this.$('.product-table');
 
       this.trigger('ticket:preloader', true);
       $.ajax({
@@ -315,12 +317,12 @@ jQuery(function($) {
           timeout: 15000,
           success: function(res, status, xhr) {
             if(res.status) {
-              product_table.append('<div class="line-item-heading"><div class="returned-item">Returned Items:</div></div>');
+              product_table.append(that.rmaListHeading());
              _.each(res.products, function(product) {
                 product_table.append(that.lineItemTemplate(product));
               });
 
-              product_table.append('<div class="line-item-heading"><div class="returned-item">Refund Amount: '+accounting.formatMoney(res.total)+'</div></div>');
+              product_table.append(that.rmaListTotal(res));
             } else {
               //User token is rejected by server server.
               ticket.employeeSession.set('login', false);
