@@ -1,7 +1,5 @@
 jQuery(function($) {
   Ticket = Backbone.Model.extend({
-    //To be moved to view
-    lineItemTemplate: _.template($('#ticket-line-item').html()),
     initialize: function(attributes) {
       this.employeeSession = attributes['employeeSession'];
 
@@ -9,6 +7,8 @@ jQuery(function($) {
         productCollection: new ticketProductCollection([],
           {activeCustomer: attributes['activeCustomer']})
       });
+
+      this.set('activeTicketView', attributes['activeTicketView']);
 
       this.listenTo(this.get('productCollection'), 'add', this.addToTotals);
       this.listenTo(this.get('productCollection'), 'remove', this.subtractFromTotals);
@@ -353,45 +353,8 @@ jQuery(function($) {
                 ticket.get('productCollection').add(product);
               });
               if(ticket.get('status') == 'pos_completed') {
-                ticket.populateReturnItems();
+                ticket.get('activeTicketView').populateReturnItems();
               }
-            } else {
-              //User token is rejected by server server.
-              ticket.employeeSession.set('login', false);
-            }
-            ticket.trigger('ticket:preloader', false);
-          },
-          error: function(xhr, errorType, error) {
-            ticket.trigger('ticket:preloader', false);
-            //Something is wrong log user out.
-            ticket.employeeSession.set('login', false);
-          }
-      });
-    },
-    populateReturnItems: function() {
-      //Load another Ticket from database
-      var ticket = this;
-      var loadRMAProductsRequest = JSON.stringify({
-                                token: sessionStorage.token,
-                                ticketId: this.get('ticketId'),
-                              });
-      //To be moved to the view.
-      var product_table = $('.lockedTicket .product-table');
-
-      this.trigger('ticket:preloader', true);
-      $.ajax({
-          type: 'POST',
-          url: this.employeeSession.get('apiServer')+'/pos-api/ticket/rma-products',
-          data: {request: loadRMAProductsRequest},
-          timeout: 15000,
-          success: function(res, status, xhr) {
-            if(res.status) {
-              product_table.append('<div class="line-item-heading"><div class="returned-item">Returned Items:</div></div>');
-             _.each(res.products, function(product) {
-                product_table.append(ticket.lineItemTemplate(product));
-              });
-
-              product_table.append('<div class="line-item-heading"><div class="returned-item">Refund Amount: '+accounting.formatMoney(res.total)+'</div></div>');
             } else {
               //User token is rejected by server server.
               ticket.employeeSession.set('login', false);

@@ -27,7 +27,8 @@ jQuery(function($) {
 
       this.ticket = new Ticket({
         employeeSession: attributes['employeeSession'],
-        activeCustomer: this.activeCustomerView.activeCustomer
+        activeCustomer: this.activeCustomerView.activeCustomer,
+        activeTicketView: this
       });
 
       //Initialize Checkout Dialog
@@ -295,5 +296,43 @@ jQuery(function($) {
       //Print Ticket
       window.open(this.employeeSession.get('apiServer')+'/admin/invoice/print/'+ticketId+'?token='+this.employeeSession.get("token"));
     },
+    populateReturnItems: function() {
+      //Load another Ticket from database
+      var that = this;
+      var ticket = this.ticket;
+      var loadRMAProductsRequest = JSON.stringify({
+                                token: sessionStorage.token,
+                                ticketId: ticket.get('ticketId'),
+                              });
+      //To be moved to the view.
+      var product_table = $('.lockedTicket .product-table');
+
+      this.trigger('ticket:preloader', true);
+      $.ajax({
+          type: 'POST',
+          url: that.employeeSession.get('apiServer')+'/pos-api/ticket/rma-products',
+          data: {request: loadRMAProductsRequest},
+          timeout: 15000,
+          success: function(res, status, xhr) {
+            if(res.status) {
+              product_table.append('<div class="line-item-heading"><div class="returned-item">Returned Items:</div></div>');
+             _.each(res.products, function(product) {
+                product_table.append(that.lineItemTemplate(product));
+              });
+
+              product_table.append('<div class="line-item-heading"><div class="returned-item">Refund Amount: '+accounting.formatMoney(res.total)+'</div></div>');
+            } else {
+              //User token is rejected by server server.
+              ticket.employeeSession.set('login', false);
+            }
+            ticket.trigger('ticket:preloader', false);
+          },
+          error: function(xhr, errorType, error) {
+            ticket.trigger('ticket:preloader', false);
+            //Something is wrong log user out.
+            that.employeeSession.set('login', false);
+          }
+      });
+    }
   });
 });
