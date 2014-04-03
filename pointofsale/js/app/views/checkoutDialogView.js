@@ -38,7 +38,6 @@ jQuery(function($) {
         timeout: 15000,
         success: function(res, status, xhr) {
           //stop preloader
-          ticket.trigger('ticket:preloader', false);
           if(res.status) {
               that.ticketTotal = accounting.unformat(res.total);
               that.ticketTax = accounting.unformat(res.taxes);
@@ -46,6 +45,7 @@ jQuery(function($) {
           } else {
             ticket.employeeSession.set('login', false);
           }
+          ticket.trigger('ticket:preloader', false);
         },
         error: function(xhr, errorType, error) {
           //stop pre loader and logout user.
