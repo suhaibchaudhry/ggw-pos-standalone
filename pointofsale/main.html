@@ -65,12 +65,12 @@
 	<title>Point of Sale</title>
 </head>
 <body>
-	<div class="modalOverlay dialogOverlay"></div>
 	<div class="statusOverlay dialogOverlay"></div>
 	<div class="checkoutOverlay dialogOverlay"></div>
 	<div class="invoiceDialogOverlay dialogOverlay"></div>
 	<div class="customerInfoOverlay dialogOverlay"></div>
 	<div class="rmaItemSelectOverlay dialogOverlay"></div>
+	<div class="modalOverlay dialogOverlay"></div>
 	<div class="loaderOverlay dialogOverlay"><a href="#" class="refresh"></a></div>
 
 	<div class="app-wrap">
@@ -173,6 +173,11 @@
 				    <div>
 					<div class="change-remaining-label">Amount Due:</div>
 					<div class="change-due-value"></div>
+					</div>
+
+					<div>
+					<div class="change-remaining-label">Tax Due:</div>
+					<div class="tax-due-value"></div>
 					</div>
 
 					<div>
@@ -281,6 +286,14 @@
 		</div>
 	</script>
 
+	<script type="text/template" id="return-line-item-list-heading">
+		<div class="line-item-heading"><div class="returned-item">Returned Items:</div></div>
+	</script>
+
+	<script type="text/template" id="return-line-item-total">
+		<div class="line-item-heading"><div class="returned-item">Refund Amount: <%= accounting.formatMoney(total) %></div></div>
+	</script>
+
 	<script type="text/template" id="process-rma-form">
 		<input class="rma-scan" placeholder="Scan Items to Return ..." autocomplete="off" type="text" />
 
@@ -299,6 +312,8 @@
 		</div>
 
 		<div class="return-summary"></div>
+
+		<a href="#" class="pure-button pure-button-error ticket-rma-return">Confirm Return</a>
 	</script>
 
 
@@ -510,6 +525,15 @@
 
 	<script type="text/template" id="credit-summary-template">
 		<div class="credit-summary">
+			<div class="credit-total-due credit-amount">
+				<span class="label">Amount Due: </span><span class="value"></span>
+			</div>
+			<div class="credit-total-due credit-tax">
+				<span class="label">Tax Due: </span><span class="value"></span>
+			</div>
+			<div class="credit-total-due credit-total">
+				<span class="label">Total: </span><span class="value"></span>
+			</div>
 			<div class="available-credit">
 				<span class="label">Available Credit: </span><span class="value"><%= available_credit_view %></span>
 			</div>
@@ -521,5 +545,7 @@
 			</div>
 		</div>
 	</script>
+
+	<script type="text/template" id="register-id">A</script>
 </body>
 </html>

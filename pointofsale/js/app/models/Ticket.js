@@ -8,6 +8,8 @@ jQuery(function($) {
           {activeCustomer: attributes['activeCustomer']})
       });
 
+      this.set('activeTicketView', attributes['activeTicketView']);
+
       this.listenTo(this.get('productCollection'), 'add', this.addToTotals);
       this.listenTo(this.get('productCollection'), 'remove', this.subtractFromTotals);
       this.listenTo(this.get('productCollection'), 'change:price', this.priceUpdate);
@@ -160,7 +162,7 @@ jQuery(function($) {
       var ticket = this;
       var status = ticket.get('status');
       if(status != 'pos_completed') {
-        var updateTotalRequest = JSON.stringify({token: sessionStorage.token, total: total, ticketId: ticket.get('ticketId'), productCount: ticket.get('productCount')});
+        var updateTotalRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId'), productCount: ticket.get('productCount')});
         //Start preloader
         //this.trigger('ticket:preloader', true);
         $.ajax({
@@ -350,6 +352,9 @@ jQuery(function($) {
               _.each(res.products, function(product) {
                 ticket.get('productCollection').add(product);
               });
+              if(ticket.get('status') == 'pos_completed') {
+                ticket.get('activeTicketView').populateReturnItems();
+              }
             } else {
               //User token is rejected by server server.
               ticket.employeeSession.set('login', false);
