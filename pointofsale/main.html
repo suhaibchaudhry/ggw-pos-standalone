@@ -176,6 +176,11 @@
 					</div>
 
 					<div>
+					<div class="change-remaining-label">Tax Due:</div>
+					<div class="tax-due-value"></div>
+					</div>
+
+					<div>
 					<div class="change-remaining-label">Amount Remaining:</div>
 					<div class="change-left-value"></div>
 					</div>
@@ -520,6 +525,15 @@
 
 	<script type="text/template" id="credit-summary-template">
 		<div class="credit-summary">
+			<div class="credit-total-due credit-amount">
+				<span class="label">Amount Due: </span><span class="value"></span>
+			</div>
+			<div class="credit-total-due credit-tax">
+				<span class="label">Tax Due: </span><span class="value"></span>
+			</div>
+			<div class="credit-total-due credit-total">
+				<span class="label">Total: </span><span class="value"></span>
+			</div>
 			<div class="available-credit">
 				<span class="label">Available Credit: </span><span class="value"><%= available_credit_view %></span>
 			</div>

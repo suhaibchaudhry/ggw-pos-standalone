@@ -15,7 +15,7 @@ jQuery(function($) {
       if(state) {
         $('.checkoutOverlay').stop().show().html(this.render().el);
         this.checkoutDialogView.render();
-        this.checkoutDialogView.focusCash();
+        //that.focusCash(); - This is done when total is echoed from the server now.
       } else {
         $('.checkoutOverlay').stop().fadeOut(function() {
           $(this).empty();
