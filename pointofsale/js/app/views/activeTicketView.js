@@ -151,7 +151,8 @@ jQuery(function($) {
     },
     removeLineItem: function(e) {
       e.preventDefault();
-      e.stopPropagation(); //Stop Propagation to avoid dialog behind bug.
+      //e.stopPropagation(); //Allow propagation to select text box.
+      this.activateScanFocus();
       this.ticket.removeItem(e.currentTarget.parentNode.parentNode.dataset.id);
     },
     incrementQty: function(e) {
