@@ -151,8 +151,7 @@ jQuery(function($) {
     },
     removeLineItem: function(e) {
       e.preventDefault();
-      //e.stopPropagation(); //Allow propagation to select text box.
-      this.activateScanFocus();
+      e.stopPropagation(); //Allow propagation to select text box.
       this.ticket.removeItem(e.currentTarget.parentNode.parentNode.dataset.id);
     },
     incrementQty: function(e) {
@@ -191,7 +190,12 @@ jQuery(function($) {
     },
     //Event handlers for kinectic, to stop typeahead box interfering with drag scroll.
     panTicket: function() {
-      this.$mouseTrap.css('z-index', 50);
+      if(this.$searchbox.val() == '') {
+        this.$mouseTrap.css('z-index', 50);
+      } else {
+        this.stopPanTicket();
+        this.activateScanFocus();
+      }
     },
     stopPanTicket: function() {
       this.$mouseTrap.css('z-index', 0);
