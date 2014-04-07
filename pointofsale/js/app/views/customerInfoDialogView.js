@@ -325,12 +325,13 @@ jQuery(function($) {
         var products = new Array();
         this.rmaItemsCollectionFinal.each(function(product) {
           products.push({
+            nid: product.get('nid'),
             order_product_id: product.get('id'),
             qty_returned: product.get('returning_qty'),
             price: product.get('sell_price')
           });
         });
-        
+
         var rmaRecordRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, total: total, products: products, register_id: this.fetchRegisterID()});
         ticket.trigger('ticket:preloader', true);
         $.ajax({
