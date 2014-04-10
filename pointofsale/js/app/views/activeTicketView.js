@@ -246,7 +246,9 @@ jQuery(function($) {
           }
         },
         error: function(xhr, errorType, error) {
-          $.jGrowl("Could not find item with barcode: <strong>"+barcode+"</strong>");
+          $.jGrowl("Could not connect to the network. Please check connection.");
+          //Something is wrong log user out.
+          that.employeeSession.set('login', false);
         }
       });
     },
