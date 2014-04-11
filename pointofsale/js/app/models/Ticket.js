@@ -197,7 +197,7 @@ jQuery(function($) {
     //Backbone Events
     priceUpdate: function(product, value, options) {
       var total = this.get('total');
-      total = total - accounting.unformat(product.get('last_price'))*product.get('qty');
+      total = total - accounting.unformat(product.previous('price'))*product.get('qty');
       total = total + accounting.unformat(product.get('price'))*product.get('qty');
       this.set('total', total);
     },

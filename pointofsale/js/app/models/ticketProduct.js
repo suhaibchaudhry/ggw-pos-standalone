@@ -7,7 +7,7 @@ jQuery(function($) {
 
       this.set('retail', true);
       //Set last price before triggering price change to subtract from totals.
-      this.set('last_price', this.get('price'));
+      //this.set('last_price', this.get('price'));
       if(activeCustomer.get('id')) {
         //Perform role checks, and set the smallest price for current user.
         this.set('price', this.getRolePrice());
@@ -20,7 +20,7 @@ jQuery(function($) {
       this.listenTo(activeCustomer, 'change:id', this.customerChanged);
   	},
     customerChanged: function(model, customer_id, options) {
-      this.set('last_price', this.get('price'));
+      //this.set('last_price', this.get('price'));
       if(customer_id) {
         //Perform role checks, listen on active customer for changing roles.
         this.set('price', this.getRolePrice());
