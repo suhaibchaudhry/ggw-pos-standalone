@@ -10,7 +10,7 @@ jQuery(function($) {
     },
   	initialize: function() {
       //Employee Session Model
-      this.employeeSession = new employeeSession({apiServer: 'http://www.general-goods.com'});
+      this.employeeSession = new employeeSession({apiServer: 'http://test.general-goods.com'});
       this.activeCustomer = new activeCustomer();
       this.preloaderSemaphore = 0;
 

@@ -277,6 +277,9 @@ jQuery(function($) {
       } else if(change < 0) {
         total = 0;
         change = -change;
+      } else {
+        total = 0;
+        change = 0;
       }
 
       this.change_left = total;
