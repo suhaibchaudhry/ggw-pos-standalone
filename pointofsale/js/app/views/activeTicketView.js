@@ -99,6 +99,7 @@ jQuery(function($) {
       } else {
         this.$('#line-item-'+product.id+' .price').html('<span class="orig">'+accounting.formatMoney(product.get('sell_price'))+'</span>'+'<span class="special">'+accounting.formatMoney(product.get('price'))+'</span>');
       }
+      this.$ticketContainer.scrollTop(this.$ticketContainer.get(0).scrollHeight);
     },
     removeItem: function(model) {
       this.$ticketContainer.find('#line-item-'+model.get('id')).remove();
@@ -225,6 +226,7 @@ jQuery(function($) {
     scanItem: function(barcode) {
       var qty = 1;
       var components = barcode.split('+', 2);
+      var that = this;
 
       if(components[1]) {
         qty = parseInt(components[0]);
