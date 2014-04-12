@@ -320,6 +320,10 @@ div.ticket-container {
     padding: 5px;
     font-weight: bold;
 }
+.product-table .line-item .price:hover {
+    background: #FF0A0A;
+    color: #fff;
+}
 
 div.register-display {
     color: #fff;
