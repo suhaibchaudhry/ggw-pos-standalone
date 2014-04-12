@@ -6,6 +6,7 @@ jQuery(function($) {
       "click .line-item a.delete-item": 'removeLineItem',
       "click .line-item .qty a.increase": 'incrementQty',
       "click .line-item .qty a.decrease": 'decreaseQty',
+      "click .line-item .price": 'managerPriceOverride',
       "click .item-search a.clear-search": 'clearProductSearch',
       "mouseup .mousetrap": 'mouseTrapRelease',
       "keyup .item-search input.search": 'searchKeyUp',
@@ -35,6 +36,11 @@ jQuery(function($) {
 
       //Initialize Checkout Dialog
       this.checkoutDialogModal = new checkoutDialogModal({activeCustomer: this.activeCustomer, ticket: this.ticket});
+
+      //Initialize Manager Price Override Dialog
+      this.managerPriceDialog = new managerPriceDialog({
+        employeeSession: attributes['employeeSession']
+      });
 
       //Initialize Customer Info Dialog
       this.customerInfoDialogModal = new customerInfoDialogModal({activeCustomer: this.activeCustomer, employeeSession: this.employeeSession, ticket: this.ticket});
@@ -304,6 +310,9 @@ jQuery(function($) {
       var ticketId = this.ticket.get('ticketId');
       //Print Ticket
       window.open(this.employeeSession.get('apiServer')+'/admin/invoice/print/'+ticketId+'?token='+this.employeeSession.get("token"));
+    },
+    managerPriceOverride: function(e) {
+      this.managerPriceDialog.openDialog();
     },
     populateReturnItems: function() {
       //Load another Ticket from database

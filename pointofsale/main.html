@@ -46,6 +46,7 @@
 	<script type="text/javascript" src="js/app/views/employeeOperationsView.js"></script>
 	<script type="text/javascript" src="js/app/views/ticketStatusDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/checkoutDialogView.js"></script>
+	<script type="text/javascript" src="js/app/views/managerPriceView.js"></script>
 	<script type="text/javascript" src="js/app/views/invoiceDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/rmaDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/activeCustomerView.js"></script>
@@ -55,6 +56,7 @@
 	<script type="text/javascript" src="js/app/views/loginModal.js"></script>
 	<script type="text/javascript" src="js/app/views/ticketStatusDialogModal.js"></script>
 	<script type="text/javascript" src="js/app/views/checkoutDialogModal.js"></script>
+	<script type="text/javascript" src="js/app/views/managerPriceDialog.js"></script>
 	<script type="text/javascript" src="js/app/views/invoiceDialogModal.js"></script>
 	<script type="text/javascript" src="js/app/views/rmaDialogModal.js"></script>
 	<script type="text/javascript" src="js/app/views/customerInfoDialogModal.js"></script>
@@ -70,6 +72,7 @@
 	<div class="invoiceDialogOverlay dialogOverlay"></div>
 	<div class="customerInfoOverlay dialogOverlay"></div>
 	<div class="rmaItemSelectOverlay dialogOverlay"></div>
+	<div class="managerPrice dialogOverlay"></div>
 	<div class="modalOverlay dialogOverlay"></div>
 	<div class="loaderOverlay dialogOverlay"><a href="#" class="refresh"></a></div>
 
@@ -141,6 +144,19 @@
 				<button id="login-button" type="submit" class="pure-button pure-button-success">Login</button>
 			</div>
 		</form>
+	</script>
+
+	<script type="text/template" id="manager-price-modal">
+		<div class="bbm-modal__topbar">
+			<h3 class="bbm-modal__title title">Price Override</h3>
+		</div>
+		<div class="bbm-modal__section">
+			<p>Override Item Price.</p>
+		</div>
+		<div class="bbm-modal__bottombar login-modal-bottombar">
+		<a href="#" class="pure-button pure-button-success price-override-continue">Change Price</a>
+		<a href="#" class="pure-button pure-button-error price-override-cancel">Cancel</a>
+		</div>
 	</script>
 
 	<script type="text/template" id="ticket-status-modal">
