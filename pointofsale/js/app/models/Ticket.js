@@ -15,7 +15,7 @@ jQuery(function($) {
       this.listenTo(this.get('productCollection'), 'change:price', this.priceUpdate);
 
       //Make sure to send new quantity to server it has stabalized for a few ms.
-      this.listenTo(this.get('productCollection'), 'change:qty', _.debounce(this.changeProductQuanty, 500));
+      this.listenTo(this.get('productCollection'), 'change:qty', _.debounce(this.changeProductQuanty, 5000));
 
       //Update Category breakdown
       this.listenTo(this.get('productCollection'), 'change:qty', this.updateCategoryBreakdown);
@@ -23,7 +23,7 @@ jQuery(function($) {
       this.listenTo(this.get('productCollection'), 'remove', this.removeFromCategoryBreakdown);
 
       //Listen for changes in total and product count and update on server
-      this.listenTo(this, 'change:total', _.debounce(this.updateTotal, 500));
+      this.listenTo(this, 'change:total', _.debounce(this.updateTotal, 5000));
 
       //Listen for changing ticket status on ui to update on server
       this.listenTo(this, 'change:status', this.updateTicketStatus);
