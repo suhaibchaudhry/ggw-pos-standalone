@@ -8,7 +8,7 @@ jQuery(function($) {
       "click .line-item .qty a.decrease": 'decreaseQty',
       "click .line-item .price": 'managerPriceOverride',
       "click .item-search a.clear-search": 'clearProductSearch',
-      "mouseup .mousetrap": 'mouseTrapRelease',
+      //"mouseup .mousetrap": 'mouseTrapRelease',
       "keyup .item-search input.search": 'searchKeyUp',
       "click": 'activateScanFocus'
     },
@@ -67,7 +67,7 @@ jQuery(function($) {
       this.ticketRegionClickY = 0;
       this.$ticketContainer = this.$('.ticket-container');
       this.$ticketContainer.get(0).innerHTML = '<div class="product-table">'+$("#ticket-line-item-heading").html()+'</div>';
-      this.$mouseTrap = this.$('.mousetrap');
+      //this.$mouseTrap = this.$('.mousetrap');
 
       //Handle events when products are added and removed from ticket product collection, and ticket attrs are changed.
       this.listenTo(this.ticket.get('productCollection'), 'add', this.addItem);
@@ -196,20 +196,22 @@ jQuery(function($) {
       }
     },
     //Event handlers for kinectic, to stop typeahead box interfering with drag scroll.
+    /*
     panTicket: function() {
       if(this.$searchbox.val() == '') {
-        this.$mouseTrap.css('z-index', 50);
+        //this.$mouseTrap.css('z-index', 50);
       } else {
         this.stopPanTicket();
         this.activateScanFocus();
       }
     },
-    stopPanTicket: function() {
-      this.$mouseTrap.css('z-index', 0);
-    },
-    mouseTrapRelease: function(e) {
-      this.activateScanFocus();
-    },
+    */
+    //stopPanTicket: function() {
+      //this.$mouseTrap.css('z-index', 0);
+    //},
+    //mouseTrapRelease: function(e) {
+      //this.activateScanFocus();
+    //},
     resolveSearchRPC: function(url, uriEncodedQuery) {
       var keyword = this.$searchbox.val().replace(/\//g, '');
       var barcode = new RegExp('^[0-9]+$');

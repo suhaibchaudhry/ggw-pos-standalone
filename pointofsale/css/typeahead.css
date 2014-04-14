@@ -1,8 +1,6 @@
 /*Main Product Search*/
 .item-search {
   margin: 10px 9px 0;
-  position: relative;
-  z-index: 1;
 }
 .item-search .twitter-typeahead {
   width: 100%;

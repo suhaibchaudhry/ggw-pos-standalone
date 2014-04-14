@@ -234,6 +234,7 @@ div.loaderOverlay a.refresh:hover {
 }
 
 /*Ticket*/
+/*
 div.mousetrap {
     position: absolute;
     top: -100px;
@@ -242,12 +243,13 @@ div.mousetrap {
     left: -250px;
     z-index: 0;
 }
+*/
 div.ticket-container {
     position: absolute;
-    top: 160px;
-    bottom: 100px;
-    right: 200px;
-    left: 250px;
+    top: 60px;
+    bottom: 0;
+    right: 0;
+    left: 0;
     overflow: auto;
 
     border: 1px solid #96B8F0;
