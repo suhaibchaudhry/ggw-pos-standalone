@@ -8,7 +8,8 @@ jQuery(function($) {
       this.managerPriceView = new managerPriceView({
         el: $('.managerPrice').get(0),
         employeeSession: attributes['employeeSession'],
-        modal: this
+        modal: this,
+        ticket: attributes['ticket']
       });
     },
     beforeCancel: function() {
@@ -25,8 +26,8 @@ jQuery(function($) {
         });
       }
     },
-    openDialog: function() {
-      this.managerPriceView.openDialog();
+    openDialog: function(e) {
+      this.managerPriceView.openDialog(e);
     }
   });
 });

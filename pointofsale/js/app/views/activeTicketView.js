@@ -39,7 +39,9 @@ jQuery(function($) {
 
       //Initialize Manager Price Override Dialog
       this.managerPriceDialog = new managerPriceDialog({
-        employeeSession: attributes['employeeSession']
+        employeeSession: attributes['employeeSession'],
+        activeCustomer: this.activeCustomerView.activeCustomer,
+        ticket: this.ticket
       });
 
       //Initialize Customer Info Dialog
@@ -326,7 +328,7 @@ jQuery(function($) {
       window.open(this.employeeSession.get('apiServer')+'/admin/invoice/print/'+ticketId+'?token='+this.employeeSession.get("token"));
     },
     managerPriceOverride: function(e) {
-      this.managerPriceDialog.openDialog();
+      this.managerPriceDialog.openDialog(e);
     },
     populateReturnItems: function() {
       //Load another Ticket from database

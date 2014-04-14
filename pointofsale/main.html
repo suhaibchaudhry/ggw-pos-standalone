@@ -149,11 +149,27 @@
 			<h3 class="bbm-modal__title title">Price Override</h3>
 		</div>
 		<div class="bbm-modal__section">
-			<p>Override Item Price.</p>
+			<div class="price-override-settings"></div>
 		</div>
 		<div class="bbm-modal__bottombar login-modal-bottombar">
 		<a href="#" class="pure-button pure-button-success price-override-continue">Change Price</a>
 		<a href="#" class="pure-button pure-button-error price-override-cancel">Cancel</a>
+		</div>
+	</script>
+
+	<script type="text/template" id="price-override-settings-form">
+		<div class="product-info">
+			<%= labelizeData({
+					label: "Product Name",
+					value: product.name
+				}) %>
+			<%= labelizeData({
+					label: "Customer Sell Price",
+					value: accounting.formatMoney(product.sell_price)
+				}) %>
+		</div>
+		<div class="quantity-split">
+
 		</div>
 	</script>
 
