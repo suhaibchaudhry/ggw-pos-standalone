@@ -268,6 +268,10 @@ jQuery(function($) {
         var item = this.$('.product-table').find('#line-item-'+product.get('id'));
         if(item.length > 0) {
           this.$ticketContainer.scrollTop(item.position().top);
+          item.css('background-color', '#FFEB00');
+          setTimeout(function() {
+            item.css('background-color', '#FFFFFF');
+          }, 1500);
         }
       } else {
         //Add Base Product
