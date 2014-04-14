@@ -99,7 +99,6 @@ jQuery(function($) {
       } else {
         this.$('#line-item-'+product.id+' .price').html('<span class="orig">'+accounting.formatMoney(product.get('sell_price'))+'</span>'+'<span class="special">'+accounting.formatMoney(product.get('price'))+'</span>');
       }
-      this.$ticketContainer.scrollTop(this.$ticketContainer.get(0).scrollHeight);
     },
     removeItem: function(model) {
       this.$ticketContainer.find('#line-item-'+model.get('id')).remove();
@@ -266,6 +265,10 @@ jQuery(function($) {
       var product = this.ticket.get('productCollection').get(datum['id']);
       if(product) {
         this.ticket.incrementQty(product, qty);
+        var item = this.$('.product-table').find('#line-item-'+product.get('id'));
+        if(item.length > 0) {
+          this.$ticketContainer.scrollTop(item.position().top);
+        }
       } else {
         //Add Base Product
         datum['qty'] = 1;
@@ -277,6 +280,9 @@ jQuery(function($) {
           var product = this.ticket.get('productCollection').get(datum['id']);
           this.ticket.incrementQty(product, qty-1);
         }
+
+        //Scroll to bottom
+        this.$ticketContainer.scrollTop(this.$ticketContainer.get(0).scrollHeight);
       }
     },
     render: function() {
