@@ -77,7 +77,18 @@ h3.content-profile-title {
 }
 
 .product-info-item span.label {
-	width: 165px;	
+	width: 165px;
+	float: left;
+}
+
+.product-info-item span.value {
+	float: left;
+	width: 324px;
+}
+
+.qty-split span.value {
+	float: none;
+	width: auto;
 }
 
 .profile-content .field-items {
