@@ -284,7 +284,7 @@ div.ticket-container {
 .product-table img {
     vertical-align: middle;
 }
-.product-table .line-item .qty a {
+.product-table .line-item .qty a, .price-override-settings .qty-split a {
     display: block;
     width: 16px;
     height: 16px;
@@ -294,19 +294,19 @@ div.ticket-container {
     float: right;
 }
 
-.product-table .line-item .qty a.increase {
+.product-table .line-item .qty a.increase, .price-override-settings .qty-split a.incr {
     background-image: url(../images/plus-outline.png);
 }
 
-.product-table .line-item .qty a.decrease {
+.product-table .line-item .qty a.decrease, .price-override-settings .qty-split a.decr {
     background-image: url(../images/minus-outline.png);
 }
 
-.product-table .line-item .qty a.increase:hover {
+.product-table .line-item .qty a.increase:hover, .price-override-settings .qty-split a.incr:hover {
     background-image: url(../images/plus.png);
 }
 
-.product-table .line-item .qty a.decrease:hover {
+.product-table .line-item .qty a.decrease:hover, .price-override-settings .qty-split a.decr:hover {
     background-image: url(../images/minus.png);
 }
 

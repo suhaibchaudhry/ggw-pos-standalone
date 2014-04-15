@@ -70,10 +70,14 @@ h3.content-profile-title {
 	display: none;
 }
 
-.profile-content .field-label {
+.profile-content .field-label, .product-info-item span.label {
 	font-weight: bold;
 	display: inline-block;
 	color: #3691F7;
+}
+
+.product-info-item span.label {
+	width: 165px;	
 }
 
 .profile-content .field-items {

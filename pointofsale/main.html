@@ -159,17 +159,44 @@
 
 	<script type="text/template" id="price-override-settings-form">
 		<div class="product-info">
-			<%= labelizeData({
+			<div class="product-info-item product-barcode"><%= labelizeData({
+					label: "Barcode",
+					value: product.sku
+				}) %></div>
+			<div class="product-info-item product-name"><%= labelizeData({
 					label: "Product Name",
 					value: product.name
-				}) %>
-			<%= labelizeData({
-					label: "Customer Sell Price",
-					value: accounting.formatMoney(product.sell_price)
-				}) %>
-		</div>
-		<div class="quantity-split">
+				}) %></div>
+			<div class="product-info-item packaging-packaging"><%= labelizeData({
+					label: "Packaging",
+					value: product.packaging
+				}) %></div>
+			<% if(product.retail) { %>
+				<div class="product-info-item cust-price"><%= labelizeData({
+					label: "Price",
+					value: accounting.formatMoney(product.price)
+				}) %></div>
+			<% } else { %>
+				<div class="product-info-item orig-price"><%= labelizeData({
+						label: "Original Price",
+						value: accounting.formatMoney(product.sell_price)
+					}) %></div>
 
+				<div class="product-info-item cust-price"><%= labelizeData({
+					label: "Customer's Price",
+					value: accounting.formatMoney(product.price)
+				}) %></div>
+			<% } %>
+
+			<div class="product-info-item new-price"><%= labelizeData({
+					label: "New Price",
+					value: '<input name="overriden-price" class="overriden-price" value="'+accounting.formatNumber(product.price, 2, "", ".")+'" />'
+				}) %></div>
+		</div>
+		<div class="product-info-item qty-split"><%= labelizeData({
+					label: "Quantity Split",
+					value: '<span class="split-value">1</span><a href="#" class="decr">-</a><a href="#" class="incr">+</a>'
+				}) %>
 		</div>
 	</script>
 
