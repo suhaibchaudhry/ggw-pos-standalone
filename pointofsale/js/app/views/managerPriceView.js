@@ -46,7 +46,40 @@ jQuery(function($) {
     },
     continueOverride: function(e) {
       e.preventDefault();
-      this.modal.display(false);
+      var that = this;
+      var ticket = this.ticket;
+
+      var managerOverrideRequest = JSON.stringify({
+        token: this.employeeSession.get("token"),
+        ticketId: ticket.get('ticketId'),
+        productNid: this.product.get('id'),
+        qty_split: this.$('span.split-value').text(),
+        unit_price: this.$('input.overriden-price').val()
+      });
+
+      ticket.trigger('ticket:preloader', true);
+      $.ajax({
+        type: 'POST',
+        url: this.employeeSession.get('apiServer')+'/pos-api/ticket/product/manager-override',
+        data: {request: managerOverrideRequest},
+        timeout: 10000,
+        success: function(res, status, xhr) {
+          if(res.status) {
+            $.jGrowl("Item price was changed.");
+          } else {
+            that.employeeSession.set('login', false);
+          }
+          that.modal.display(false);
+          ticket.trigger('ticket:preloader', false);
+        },
+        error: function(xhr, errorType, error) {
+          $.jGrowl("Could not connect to the network. Please check connection.");
+          //Something is wrong log user out.
+          that.modal.display(false);
+          that.employeeSession.set('login', false);
+          ticket.trigger('ticket:preloader', false);
+        }
+      });
     },
     increaseQtySplit: function(e) {
       e.preventDefault();
