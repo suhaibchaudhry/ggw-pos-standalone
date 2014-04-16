@@ -38,6 +38,12 @@ jQuery(function($) {
           product: product.attributes,
           labelizeData: this.labelizeData
         }));
+
+        if(this.employeeSession.get('privileged')) {
+          this.$('.overriden-price').attr('disabled', false);
+        } else {
+          this.$('.overriden-price').attr('disabled', true);
+        }
       }
     },
     cancelOverride: function(e) {
@@ -48,13 +54,14 @@ jQuery(function($) {
       e.preventDefault();
       var that = this;
       var ticket = this.ticket;
+      var price = accounting.unformat(this.$('input.overriden-price').val());
 
       var managerOverrideRequest = JSON.stringify({
         token: this.employeeSession.get("token"),
         ticketId: ticket.get('ticketId'),
         productNid: this.product.get('id'),
         qty_split: this.$('span.split-value').text(),
-        unit_price: this.$('input.overriden-price').val()
+        unit_price: price
       });
 
       ticket.trigger('ticket:preloader', true);
@@ -66,6 +73,7 @@ jQuery(function($) {
         success: function(res, status, xhr) {
           if(res.status) {
             $.jGrowl("Item price was changed.");
+            that.product.set('price', price);
           } else {
             that.employeeSession.set('login', false);
           }

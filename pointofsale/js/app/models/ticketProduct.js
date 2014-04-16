@@ -16,6 +16,11 @@ jQuery(function($) {
         this.set('price', attributes['sell_price']);
       }
 
+      var price = this.get('manager_price');
+      if(price) {
+        this.set('price', price);
+      }
+
       //listen on active customer for changing customer ids on customer singleton, so we can update the price.
       this.listenTo(activeCustomer, 'change:id', this.customerChanged);
   	},

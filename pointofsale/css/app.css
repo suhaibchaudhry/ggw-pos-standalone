@@ -313,6 +313,9 @@ div.ticket-container {
 .product-table .line-item-heading {
     background: #E9E9E9;
 }
+.product-table .line-item .manager-overriden {
+    background: #FFFA7C;
+}
 .product-table .line-item > div, .product-table .line-item-heading > div {
     display: table-cell;
     vertical-align: middle;
