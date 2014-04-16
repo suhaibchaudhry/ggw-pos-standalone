@@ -116,7 +116,7 @@ jQuery(function($) {
       //this.$registerDisplay.find('.calculation').empty();
     },
     changeQuantyDisplay: function(product, qty, options) {
-      this.$('#line-item-'+product.id+' .qty span.value').text(qty);
+      this.$('#line-item-'+product.get('id')+' .qty span.value').text(qty);
     },
     priceUpdate: function(product, value, options) {
       //Update physical view price of an item when price changes on product model.

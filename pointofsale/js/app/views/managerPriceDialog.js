@@ -5,6 +5,7 @@ jQuery(function($) {
     },
     initialize: function(attributes, options) {
       this.employeeSession = attributes['employeeSession'];
+      this.ticket = attributes['ticket'];
       this.managerPriceView = new managerPriceView({
         el: $('.managerPrice').get(0),
         employeeSession: attributes['employeeSession'],
@@ -27,7 +28,9 @@ jQuery(function($) {
       }
     },
     openDialog: function(e) {
-      this.managerPriceView.openDialog(e);
+      if(this.ticket.get("status") != 'pos_completed') {
+        this.managerPriceView.openDialog(e);
+      }
     }
   });
 });
