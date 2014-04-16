@@ -73,6 +73,7 @@ jQuery(function($) {
         success: function(res, status, xhr) {
           if(res.status) {
             $.jGrowl("Item price was changed.");
+            that.product.set('manager_price', price);
             that.product.set('price', price);
           } else {
             that.employeeSession.set('login', false);
