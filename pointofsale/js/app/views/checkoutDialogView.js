@@ -181,7 +181,11 @@ jQuery(function($) {
               //stop preloader
               ticket.trigger('ticket:preloader', false);
               if(res.status) {
-                alert("Checkout Complete. Please make change for amount: "+accounting.formatMoney(that.change_value));
+                if(this.change_left == 0) {
+                  alert("Checkout Complete. No CHANGE.");
+                } else {
+                  alert("Checkout Complete. Please make change for amount: "+accounting.formatMoney(that.change_value));
+                }
                 //Close ticket
                 ticket.set('status_en', 'Closed Ticket');
                 ticket.set('status', 'pos_completed');         
@@ -277,6 +281,9 @@ jQuery(function($) {
       } else if(change < 0) {
         total = 0;
         change = -change;
+      } else {
+        total = 0;
+        change = 0;
       }
 
       this.change_left = total;

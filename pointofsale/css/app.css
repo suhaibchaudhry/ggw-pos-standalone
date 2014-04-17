@@ -234,6 +234,7 @@ div.loaderOverlay a.refresh:hover {
 }
 
 /*Ticket*/
+/*
 div.mousetrap {
     position: absolute;
     top: -100px;
@@ -242,12 +243,13 @@ div.mousetrap {
     left: -250px;
     z-index: 0;
 }
+*/
 div.ticket-container {
     position: absolute;
-    top: 160px;
-    bottom: 100px;
-    right: 200px;
-    left: 250px;
+    top: 60px;
+    bottom: 0;
+    right: 0;
+    left: 0;
     overflow: auto;
 
     border: 1px solid #96B8F0;
@@ -282,7 +284,7 @@ div.ticket-container {
 .product-table img {
     vertical-align: middle;
 }
-.product-table .line-item .qty a {
+.product-table .line-item .qty a, .price-override-settings .qty-split a {
     display: block;
     width: 16px;
     height: 16px;
@@ -292,24 +294,27 @@ div.ticket-container {
     float: right;
 }
 
-.product-table .line-item .qty a.increase {
+.product-table .line-item .qty a.increase, .price-override-settings .qty-split a.incr {
     background-image: url(../images/plus-outline.png);
 }
 
-.product-table .line-item .qty a.decrease {
+.product-table .line-item .qty a.decrease, .price-override-settings .qty-split a.decr {
     background-image: url(../images/minus-outline.png);
 }
 
-.product-table .line-item .qty a.increase:hover {
+.product-table .line-item .qty a.increase:hover, .price-override-settings .qty-split a.incr:hover {
     background-image: url(../images/plus.png);
 }
 
-.product-table .line-item .qty a.decrease:hover {
+.product-table .line-item .qty a.decrease:hover, .price-override-settings .qty-split a.decr:hover {
     background-image: url(../images/minus.png);
 }
 
 .product-table .line-item-heading {
     background: #E9E9E9;
+}
+.product-table .line-item .manager-overriden {
+    background: #FFFA7C;
 }
 .product-table .line-item > div, .product-table .line-item-heading > div {
     display: table-cell;
@@ -319,6 +324,10 @@ div.ticket-container {
 .product-table .line-item-heading > div {
     padding: 5px;
     font-weight: bold;
+}
+.product-table .line-item .price:hover {
+    background: #FF0A0A;
+    color: #fff;
 }
 
 div.register-display {

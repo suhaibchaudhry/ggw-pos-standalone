@@ -46,6 +46,7 @@
 	<script type="text/javascript" src="js/app/views/employeeOperationsView.js"></script>
 	<script type="text/javascript" src="js/app/views/ticketStatusDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/checkoutDialogView.js"></script>
+	<script type="text/javascript" src="js/app/views/managerPriceView.js"></script>
 	<script type="text/javascript" src="js/app/views/invoiceDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/rmaDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/activeCustomerView.js"></script>
@@ -55,6 +56,7 @@
 	<script type="text/javascript" src="js/app/views/loginModal.js"></script>
 	<script type="text/javascript" src="js/app/views/ticketStatusDialogModal.js"></script>
 	<script type="text/javascript" src="js/app/views/checkoutDialogModal.js"></script>
+	<script type="text/javascript" src="js/app/views/managerPriceDialog.js"></script>
 	<script type="text/javascript" src="js/app/views/invoiceDialogModal.js"></script>
 	<script type="text/javascript" src="js/app/views/rmaDialogModal.js"></script>
 	<script type="text/javascript" src="js/app/views/customerInfoDialogModal.js"></script>
@@ -70,6 +72,7 @@
 	<div class="invoiceDialogOverlay dialogOverlay"></div>
 	<div class="customerInfoOverlay dialogOverlay"></div>
 	<div class="rmaItemSelectOverlay dialogOverlay"></div>
+	<div class="managerPrice dialogOverlay"></div>
 	<div class="modalOverlay dialogOverlay"></div>
 	<div class="loaderOverlay dialogOverlay"><a href="#" class="refresh"></a></div>
 
@@ -97,9 +100,7 @@
     	<div class="content region">
 	    	<div class="viewport-main activeTicket">
 	    		<div class="item-search"></div>
-	    		<div class="mousetrap">
-	    			<div class="ticket-container"></div>
-	    		</div>
+	    		<div class="ticket-container"></div>
 	    	</div>
 	    	<div class="left region activeCustomer">
 	    		<div class="customer-search"></div>
@@ -141,6 +142,62 @@
 				<button id="login-button" type="submit" class="pure-button pure-button-success">Login</button>
 			</div>
 		</form>
+	</script>
+
+	<script type="text/template" id="manager-price-modal">
+		<div class="bbm-modal__topbar">
+			<h3 class="bbm-modal__title title">Price Override</h3>
+		</div>
+		<div class="bbm-modal__section">
+			<div class="price-override-settings"></div>
+		</div>
+		<div class="bbm-modal__bottombar login-modal-bottombar">
+		<a href="#" class="pure-button pure-button-success price-override-continue">Change Price</a>
+		<a href="#" class="pure-button pure-button-error price-override-cancel">Cancel</a>
+		</div>
+	</script>
+
+	<script type="text/template" id="price-override-settings-form">
+		<div class="product-info">
+			<div class="product-info-item product-barcode"><%= labelizeData({
+					label: "Barcode",
+					value: product.sku
+				}) %></div>
+			<div class="product-info-item product-name"><%= labelizeData({
+					label: "Product Name",
+					value: product.name
+				}) %></div>
+			<div class="product-info-item packaging-packaging"><%= labelizeData({
+					label: "Packaging",
+					value: product.packaging
+				}) %></div>
+			<% if(product.retail) { %>
+				<div class="product-info-item cust-price"><%= labelizeData({
+					label: "Price",
+					value: accounting.formatMoney(product.price)
+				}) %></div>
+			<% } else { %>
+				<div class="product-info-item orig-price"><%= labelizeData({
+						label: "Original Price",
+						value: accounting.formatMoney(product.sell_price)
+					}) %></div>
+
+				<div class="product-info-item cust-price"><%= labelizeData({
+					label: "Customer's Price",
+					value: accounting.formatMoney(product.price)
+				}) %></div>
+			<% } %>
+
+			<div class="product-info-item new-price"><%= labelizeData({
+					label: "New Price",
+					value: '<input name="overriden-price" class="overriden-price" value="'+accounting.formatNumber(product.price, 2, "", ".")+'" />'
+				}) %></div>
+		</div>
+		<div class="product-info-item qty-split"><%= labelizeData({
+					label: "Quantity Split",
+					value: '<span class="split-value">1</span><a href="#" class="decr">-</a><a href="#" class="incr">+</a>'
+				}) %>
+		</div>
 	</script>
 
 	<script type="text/template" id="ticket-status-modal">

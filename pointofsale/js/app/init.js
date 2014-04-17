@@ -10,7 +10,7 @@ jQuery(function($) {
     },
   	initialize: function() {
       //Employee Session Model
-      this.employeeSession = new employeeSession({apiServer: 'http://www.general-goods.com'});
+      this.employeeSession = new employeeSession({apiServer: 'http://test.general-goods.com'});
       this.activeCustomer = new activeCustomer();
       this.preloaderSemaphore = 0;
 
@@ -44,8 +44,8 @@ jQuery(function($) {
 
       //Avoided re-initialization
       this.activeTicketRegion.$ticketContainer.kinetic({
-        moved: _.bind(this.activeTicketRegion.panTicket, this.activeTicketRegion),
-        stopped: _.bind(this.activeTicketRegion.stopPanTicket, this.activeTicketRegion)
+        //moved: _.bind(this.activeTicketRegion.panTicket, this.activeTicketRegion),
+        //stopped: _.bind(this.activeTicketRegion.stopPanTicket, this.activeTicketRegion)
       });
 
       //Modal View
@@ -64,9 +64,9 @@ jQuery(function($) {
       $('.loaderOverlay a.refresh').on('click', _.bind(this.reload, this));
 
       //Catch mouse releases outside of application frame, and release all mousetraps.
-      $(window).mouseup(function(){
-         $('.mousetrap').css('z-index', 0);
-      });
+      //$(window).mouseup(function(){
+         //$('.mousetrap').css('z-index', 0);
+      //});
   	},
     reload: function(e) {
       e.preventDefault();

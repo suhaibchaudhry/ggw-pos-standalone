@@ -7,7 +7,7 @@ jQuery(function($) {
 
       this.set('retail', true);
       //Set last price before triggering price change to subtract from totals.
-      this.set('last_price', this.get('price'));
+      //this.set('last_price', this.get('price'));
       if(activeCustomer.get('id')) {
         //Perform role checks, and set the smallest price for current user.
         this.set('price', this.getRolePrice());
@@ -16,11 +16,16 @@ jQuery(function($) {
         this.set('price', attributes['sell_price']);
       }
 
+      var price = this.get('manager_price');
+      if(price) {
+        this.set('price', price);
+      }
+
       //listen on active customer for changing customer ids on customer singleton, so we can update the price.
       this.listenTo(activeCustomer, 'change:id', this.customerChanged);
   	},
     customerChanged: function(model, customer_id, options) {
-      this.set('last_price', this.get('price'));
+      //this.set('last_price', this.get('price'));
       if(customer_id) {
         //Perform role checks, listen on active customer for changing roles.
         this.set('price', this.getRolePrice());

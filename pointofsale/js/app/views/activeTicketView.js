@@ -6,8 +6,9 @@ jQuery(function($) {
       "click .line-item a.delete-item": 'removeLineItem',
       "click .line-item .qty a.increase": 'incrementQty',
       "click .line-item .qty a.decrease": 'decreaseQty',
+      "click .line-item .price": 'managerPriceOverride',
       "click .item-search a.clear-search": 'clearProductSearch',
-      "mouseup .mousetrap": 'mouseTrapRelease',
+      //"mouseup .mousetrap": 'mouseTrapRelease',
       "keyup .item-search input.search": 'searchKeyUp',
       "click": 'activateScanFocus'
     },
@@ -36,6 +37,13 @@ jQuery(function($) {
       //Initialize Checkout Dialog
       this.checkoutDialogModal = new checkoutDialogModal({activeCustomer: this.activeCustomer, ticket: this.ticket});
 
+      //Initialize Manager Price Override Dialog
+      this.managerPriceDialog = new managerPriceDialog({
+        employeeSession: attributes['employeeSession'],
+        activeCustomer: this.activeCustomerView.activeCustomer,
+        ticket: this.ticket
+      });
+
       //Initialize Customer Info Dialog
       this.customerInfoDialogModal = new customerInfoDialogModal({activeCustomer: this.activeCustomer, employeeSession: this.employeeSession, ticket: this.ticket});
       this.activeCustomerView.customerInfoDialogModal = this.customerInfoDialogModal;
@@ -61,7 +69,7 @@ jQuery(function($) {
       this.ticketRegionClickY = 0;
       this.$ticketContainer = this.$('.ticket-container');
       this.$ticketContainer.get(0).innerHTML = '<div class="product-table">'+$("#ticket-line-item-heading").html()+'</div>';
-      this.$mouseTrap = this.$('.mousetrap');
+      //this.$mouseTrap = this.$('.mousetrap');
 
       //Handle events when products are added and removed from ticket product collection, and ticket attrs are changed.
       this.listenTo(this.ticket.get('productCollection'), 'add', this.addItem);
@@ -89,9 +97,15 @@ jQuery(function($) {
     addItem: function(product) {
       this.$ticketContainer.find('.product-table').append(this.lineItemTemplate(product.attributes));
       if(product.get('retail')) {
-        this.$('#line-item-'+product.id+' .price').html(accounting.formatMoney(product.get('price')));
+        this.$('#line-item-'+product.get('id')+' .price').html(accounting.formatMoney(product.get('price')));
       } else {
-        this.$('#line-item-'+product.id+' .price').html('<span class="orig">'+accounting.formatMoney(product.get('sell_price'))+'</span>'+'<span class="special">'+accounting.formatMoney(product.get('price'))+'</span>');
+        this.$('#line-item-'+product.get('id')+' .price').html('<span class="orig">'+accounting.formatMoney(product.get('sell_price'))+'</span>'+'<span class="special">'+accounting.formatMoney(product.get('price'))+'</span>');
+      }
+
+      if(product.get('manager_price')) {
+        this.$('#line-item-'+product.get('id')+' .price').addClass('manager-overriden');
+      } else {
+        this.$('#line-item-'+product.get('id')+' .price').removeClass('manager-overriden');
       }
     },
     removeItem: function(model) {
@@ -102,14 +116,20 @@ jQuery(function($) {
       //this.$registerDisplay.find('.calculation').empty();
     },
     changeQuantyDisplay: function(product, qty, options) {
-      this.$('#line-item-'+product.id+' .qty span.value').text(qty);
+      this.$('#line-item-'+product.get('id')+' .qty span.value').text(qty);
     },
     priceUpdate: function(product, value, options) {
       //Update physical view price of an item when price changes on product model.
       if(product.get('retail')) {
-        this.$('#line-item-'+product.id+' .price').html(accounting.formatMoney(product.get('price')));
+        this.$('#line-item-'+product.get('id')+' .price').html(accounting.formatMoney(product.get('price')));
       } else {
-        this.$('#line-item-'+product.id+' .price').html('<span class="orig">'+accounting.formatMoney(product.get('sell_price'))+'</span>'+'<span class="special">'+accounting.formatMoney(product.get('price'))+'</span>');
+        this.$('#line-item-'+product.get('id')+' .price').html('<span class="orig">'+accounting.formatMoney(product.get('sell_price'))+'</span>'+'<span class="special">'+accounting.formatMoney(product.get('price'))+'</span>');
+      }
+
+      if(product.get('manager_price')) {
+        this.$('#line-item-'+product.get('id')+' .price').addClass('manager-overriden');
+      } else {
+        this.$('#line-item-'+product.get('id')+' .price').removeClass('manager-overriden');
       }
     },
     updateProductCount: function(model, value, options) {
@@ -189,20 +209,22 @@ jQuery(function($) {
       }
     },
     //Event handlers for kinectic, to stop typeahead box interfering with drag scroll.
+    /*
     panTicket: function() {
       if(this.$searchbox.val() == '') {
-        this.$mouseTrap.css('z-index', 50);
+        //this.$mouseTrap.css('z-index', 50);
       } else {
         this.stopPanTicket();
         this.activateScanFocus();
       }
     },
-    stopPanTicket: function() {
-      this.$mouseTrap.css('z-index', 0);
-    },
-    mouseTrapRelease: function(e) {
-      this.activateScanFocus();
-    },
+    */
+    //stopPanTicket: function() {
+      //this.$mouseTrap.css('z-index', 0);
+    //},
+    //mouseTrapRelease: function(e) {
+      //this.activateScanFocus();
+    //},
     resolveSearchRPC: function(url, uriEncodedQuery) {
       var keyword = this.$searchbox.val().replace(/\//g, '');
       var barcode = new RegExp('^[0-9]+$');
@@ -219,6 +241,7 @@ jQuery(function($) {
     scanItem: function(barcode) {
       var qty = 1;
       var components = barcode.split('+', 2);
+      var that = this;
 
       if(components[1]) {
         qty = parseInt(components[0]);
@@ -246,7 +269,9 @@ jQuery(function($) {
           }
         },
         error: function(xhr, errorType, error) {
-          $.jGrowl("Could not find item with barcode: <strong>"+barcode+"</strong>");
+          $.jGrowl("Could not connect to the network. Please check connection.");
+          //Something is wrong log user out.
+          that.employeeSession.set('login', false);
         }
       });
     },
@@ -254,6 +279,14 @@ jQuery(function($) {
       var product = this.ticket.get('productCollection').get(datum['id']);
       if(product) {
         this.ticket.incrementQty(product, qty);
+        var item = this.$('.product-table').find('#line-item-'+product.get('id'));
+        if(item.length > 0) {
+          this.$ticketContainer.scrollTop(item.position().top);
+          item.css('background-color', '#FFEB00');
+          setTimeout(function() {
+            item.css('background-color', '#FFFFFF');
+          }, 1500);
+        }
       } else {
         //Add Base Product
         datum['qty'] = 1;
@@ -265,6 +298,9 @@ jQuery(function($) {
           var product = this.ticket.get('productCollection').get(datum['id']);
           this.ticket.incrementQty(product, qty-1);
         }
+
+        //Scroll to bottom
+        this.$ticketContainer.scrollTop(this.$ticketContainer.get(0).scrollHeight);
       }
     },
     render: function() {
@@ -302,6 +338,9 @@ jQuery(function($) {
       var ticketId = this.ticket.get('ticketId');
       //Print Ticket
       window.open(this.employeeSession.get('apiServer')+'/admin/invoice/print/'+ticketId+'?token='+this.employeeSession.get("token"));
+    },
+    managerPriceOverride: function(e) {
+      this.managerPriceDialog.openDialog(e);
     },
     populateReturnItems: function() {
       //Load another Ticket from database
