@@ -225,6 +225,7 @@ jQuery(function($) {
       this.$('.cash-paid').focus();
       this.$('.change-due-value').html(accounting.formatMoney(this.ticket.get('total')));
       this.$('.tax-due-value').html(accounting.formatMoney(this.ticketTax));
+      this.$('.total-left-value').html(accounting.formatMoney(this.ticketTotal));
       this.$('.change-left-value').html(accounting.formatMoney(this.ticketTotal));
       this.$('.change-value').html(accounting.formatMoney(0));
       this.$('.credit-amount span.value').html(accounting.formatMoney(this.ticket.get('total')));

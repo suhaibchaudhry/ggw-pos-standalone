@@ -572,7 +572,7 @@ a.print-ticket:hover {
     opacity: .5;
 }
 
-.tabs .tax-due-value, .tabs .credit-total-due span.value, .tabs .change-due-value, .tabs .change-value, .tabs .change-left-value, .return-summary span.value, .term-credit-checkout .credit-summary span.value {
+.tabs .tax-due-value, .tabs .credit-total-due span.value, .tabs .change-due-value, .tabs .change-value, .tabs .change-left-value, .return-summary span.value, .term-credit-checkout .credit-summary span.value, .tabs div.total-left-value {
     font-size: 25px;
     color: #CF7809;
     display: inline-block;
@@ -584,7 +584,7 @@ a.print-ticket:hover {
     padding: 7px 12px;
 }
 
-.tabs label.cash-paid-label, .tabs .credit-total-due span.label, .tabs .change-remaining-label, .return-summary span.label, .term-credit-checkout .credit-summary span.label {
+.tabs label.cash-paid-label, .tabs .credit-total-due span.label, .tabs .change-remaining-label, .return-summary span.label, .term-credit-checkout .credit-summary span.label, .tabs div.total-remaining-label {
     display: inline-block;
     margin: 20px 0 10px;
     color: #5980BB;
