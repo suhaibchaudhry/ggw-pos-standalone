@@ -26,7 +26,10 @@ jQuery(function($) {
   	},
     customerChanged: function(model, customer_id, options) {
       //this.set('last_price', this.get('price'));
-      if(customer_id) {
+      var price = this.get('manager_price');
+      if(price) {
+        this.set('price', price);
+      } else if(customer_id) {
         //Perform role checks, listen on active customer for changing roles.
         this.set('price', this.getRolePrice());
       } else {
