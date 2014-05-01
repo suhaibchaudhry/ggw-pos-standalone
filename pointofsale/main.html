@@ -18,12 +18,14 @@
     <!-- JS Libraries -->
     <script type="text/javascript" src="js/vendor/accounting.js"></script>
     <script type="text/javascript" src="js/vendor/mousetrap.min.js"></script>
+    <script type="text/javascript" src="js/vendor/cardparser.js"></script>
 
     <!-- JQuery -->
 	<script type="text/javascript" src="js/vendor/jquery-2.1.0.min.js"></script>
 	<script type="text/javascript" src="js/vendor/typeahead.js"></script>
 	<script type="text/javascript" src="js/vendor/jquery.kinetic.min.js"></script>
 	<script type="text/javascript" src="js/vendor/jquery.jgrowl.min.js"></script>
+	<script type="text/javascript" src="js/vendor/jquery.cardswipe.js"></script>
 
 	<!-- Backbone JS -->
 	<script type="text/javascript" src="js/vendor/underscore-min.js"></script>
@@ -605,6 +607,19 @@
 			<div class="pending-payments">
 				<span class="label">Pending Payments: </span><span class="value"><%= pending_payments_view %></span>
 			</div>
+		</div>
+	</script>
+
+	<script type="text/template" id="credit-card-checkout-template">
+		<div class="status-message">Swipe credit card to continue...</div>
+		<div class="cc-swipe-field cc-total-due cc-amount">
+			<span class="label">Sub Total: </span><span class="value"><%= subtotal %></span>
+		</div>
+		<div class="cc-swipe-field cc-total-due cc-tax">
+				<span class="label">Tax Due: </span><span class="value"><%= tax %></span>
+		</div>
+		<div class="cc-swipe-field cc-total-due full-total">
+			<span class="label">Total: </span><span class="value"><%= total %></span>
 		</div>
 	</script>
 

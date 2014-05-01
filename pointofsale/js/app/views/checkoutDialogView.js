@@ -21,9 +21,18 @@ jQuery(function($) {
       this.activeCustomer = attributes['activeCustomer'];
       this.modal = attributes['modal'];
       this.ticket = attributes['ticket'];
+
+      $.cardswipe({
+        parser: this.creditCardParser,
+        success: this.creditCardScan,
+        error: this.creditCardParser
+      });
+
+      $.cardswipe('disable');
     },
     template: _.template($('#ticket-checkout-modal').html()),
     creditSummaryTemplate: _.template($('#credit-summary-template').html()),
+    ccCheckoutTemplate: _.template($('#credit-card-checkout-template').html()),
     fetchRegisterID: _.template($('#register-id').html()),
     render: function() {
       var ticket = this.ticket;
@@ -42,6 +51,8 @@ jQuery(function($) {
               that.ticketTotal = accounting.unformat(res.total);
               that.ticketTax = accounting.unformat(res.taxes);
               that.focusCash();
+
+              that.creditCardSwiperSetup();
           } else {
             ticket.employeeSession.set('login', false);
           }
@@ -67,7 +78,17 @@ jQuery(function($) {
         this.cashCheckout(e);
       } else if(this.currentTab == 2) {
         this.creditCheckout(e);
+      } else {
+        //Credit card checkout and swipe disable.
+
       }
+    },
+    creditCardSwiperSetup: function() {
+      this.$('.credit-card-checkout').html(this.ccCheckoutTemplate({
+        subtotal: accounting.formatMoney(this.ticket.get('total')),
+        tax: accounting.formatMoney(this.ticketTax),
+        total: accounting.formatMoney(this.ticketTotal)
+      }));
     },
     creditTermCheckoutSetup: function() {
       var cuid = this.activeCustomer.get('id');
@@ -220,6 +241,12 @@ jQuery(function($) {
       tabs.hide();
       tabs.eq(index).show();
       this.currentTab = index;
+
+      if(index == 1) {
+        $.cardswipe('enable');
+      } else {
+        $.cardswipe('disable');
+      }
     },
     focusCash: function() {
       this.$('.cash-paid').focus();
@@ -234,6 +261,7 @@ jQuery(function($) {
     },
     closeCheckoutDialog: function(e) {
       e.preventDefault();
+      $.cardswipe('disable');
       this.modal.display(false);
     },
     cashInputValidate: function(e) {
@@ -302,6 +330,16 @@ jQuery(function($) {
       }
 
       this.$('input.cash-paid').trigger('keyup');
+    },
+    creditCardParser: function(rawData) {
+      var p = new SwipeParserObj(rawData);
+      return p.dump();
+    },
+    creditCardScan: function (cardData) {
+      console.log(cardData);
+    },
+    creditCardScanFail: function() {
+      alert('Card not recognized.');
     }
   });
 });
