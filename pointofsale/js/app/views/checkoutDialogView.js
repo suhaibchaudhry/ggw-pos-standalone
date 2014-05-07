@@ -23,9 +23,9 @@ jQuery(function($) {
       this.ticket = attributes['ticket'];
 
       $.cardswipe({
-        parser: this.creditCardParser,
-        success: this.creditCardScan,
-        error: this.creditCardParser
+        parser: _.bind(this.creditCardParser, this),
+        success: _.bind(this.creditCardScan, this),
+        error: _.bind(this.creditCardScanFail, this)
       });
 
       $.cardswipe('disable');
@@ -336,10 +336,28 @@ jQuery(function($) {
       return p.dump();
     },
     creditCardScan: function (cardData) {
-      console.log(cardData);
+      //Temporary Sample data
+      cardData = {
+          "name": "HASAN/ASAD",
+          "first_name": "ASAD",
+          "last_name": "HASAN",
+          "account": "5108406364897057",
+          "exp_month": "05",
+          "exp_year": "2017",
+          "hasTrack1": true,
+          "hasTrack2": false,
+          "track1": "B5108406364897057^HASAN/ASAD^17051010000000884000000?",
+          "track2": ";5108406364897057=1705111111111111?",
+          "raw": "%B5108406364897057^HASAN/ASAD^17051010000000884000000?"
+      };
+
+      this.$('.status-message').addClass('in-progress');
+
+      
+
     },
     creditCardScanFail: function() {
-      alert('Card not recognized.');
+      alert('We could not scan this card, please try again.');
     }
   });
 });
