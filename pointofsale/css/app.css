@@ -671,3 +671,10 @@ a.ticket-rma-return {
     border: 1px solid #338000;
     font-weight: bold;
 }
+
+.status-message.in-progress {
+    background-image: url(../images/ccprogress.gif);
+    background-position: center;
+    background-repeat: no-repeat;
+    text-indent: -9999px;
+}
