@@ -227,20 +227,20 @@ function SwipeParserObj(strParse)
 
 
 	this.dump = function(){
-		var s = "";
-		var sep = "\r"; // line separator
-		s += "Name: " + this.account_name + sep;
-		s += "Surname: " + this.surname + sep;
-		s += "first name: " + this.firstname + sep;
-		s += "account: " + this.account + sep;
-		s += "exp_month: " + this.exp_month + sep;
-		s += "exp_year: " + this.exp_year + sep;
-		s += "has track1: " + this.hasTrack1 + sep;
-		s += "has track2: " + this.hasTrack2 + sep;
-		s += "TRACK 1: " + this.track1 + sep;
-		s += "TRACK 2: " + this.track2 + sep;
-		s += "Raw Input Str: " + this.input_trackdata_str + sep;
-		
+		var s = {
+      name: this.account_name,
+      first_name: this.firstname,
+      last_name: this.surname,
+      account: this.account,
+      exp_month: this.exp_month,
+      exp_year: this.exp_year,
+      hasTrack1: this.hasTrack1,
+      hasTrack2: this.hasTrack2,
+      track1: this.track1,
+      track2: this.track2,
+      raw: this.input_trackdata_str
+    };
+
 		return s;
 	}
 
