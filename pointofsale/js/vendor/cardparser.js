@@ -235,10 +235,7 @@ function SwipeParserObj(strParse)
       exp_month: this.exp_month,
       exp_year: this.exp_year,
       hasTrack1: this.hasTrack1,
-      hasTrack2: this.hasTrack2,
-      track1: this.track1,
-      track2: this.track2,
-      raw: this.input_trackdata_str
+      hasTrack2: this.hasTrack2
     };
 
 		return s;
