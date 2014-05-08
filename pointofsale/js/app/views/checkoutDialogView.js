@@ -355,14 +355,14 @@ jQuery(function($) {
       var ticket = this.ticket;
       var that = this;
 
-      var swipeCheckoutRequest = {
+      var swipeCheckoutRequest = JSON.stringify({
         token: sessionStorage.token,
         ticketId: ticket.get('ticketId'),
         total: that.ticketTotal,
         register_id: this.fetchRegisterID(),
         customer: this.activeCustomer.get('id'),
         cardData: cardData
-      };
+      });
 
       that.$('.status-message').addClass('in-progress');
       $.cardswipe('disable');
