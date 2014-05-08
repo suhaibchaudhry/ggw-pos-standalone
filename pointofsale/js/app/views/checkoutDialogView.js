@@ -379,6 +379,7 @@ jQuery(function($) {
             //Close ticket
             ticket.set('status_en', 'Closed Ticket');
             ticket.set('status', 'pos_completed');
+            alert(res.message);
             that.closeCheckoutDialog();
           } else {
             that.$('.status-message').removeClass('in-progress');
