@@ -260,7 +260,9 @@ jQuery(function($) {
       this.$('.credit-total span.value').html(accounting.formatMoney(this.ticketTotal));
     },
     closeCheckoutDialog: function(e) {
-      e.preventDefault();
+      if(e) {
+        e.preventDefault();
+      }
       $.cardswipe('disable');
       this.modal.display(false);
     },
@@ -350,14 +352,49 @@ jQuery(function($) {
           "track2": ";5108406364897057=1705111111111111?",
           "raw": "%B5108406364897057^HASAN/ASAD^17051010000000884000000?"
       };
+      var ticket = this.ticket;
+      var that = this;
 
-      this.$('.status-message').addClass('in-progress');
+      var swipeCheckoutRequest = {
+        token: sessionStorage.token,
+        ticketId: ticket.get('ticketId'),
+        total: that.ticketTotal,
+        register_id: this.fetchRegisterID(),
+        customer: this.activeCustomer.get('id'),
+        cardData: cardData
+      };
 
-      
+      that.$('.status-message').addClass('in-progress');
+      $.cardswipe('disable');
 
+      $.ajax({
+        type: 'POST',
+        url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/swipe-checkout',
+        data: {request: swipeCheckoutRequest},
+        timeout: 15000,
+        success: function(res, status, xhr) {
+          that.$('.status-message').removeClass('in-progress');
+
+          if(res.status) {
+            //Close ticket
+            ticket.set('status_en', 'Closed Ticket');
+            ticket.set('status', 'pos_completed');
+            that.closeCheckoutDialog();
+          } else {
+            that.$('.status-message').removeClass('in-progress');
+            $.cardswipe('enable');
+            alert(res.error);
+          }
+        },
+        error: function(xhr, errorType, error) {
+          that.$('.status-message').removeClass('in-progress');
+          that.closeCheckoutDialog();
+          ticket.employeeSession.set('login', false);
+        }
+      });
     },
     creditCardScanFail: function() {
-      alert('We could not scan this card, please try again.');
+      alert('We could not read this card, please try again.');
     }
   });
 });
