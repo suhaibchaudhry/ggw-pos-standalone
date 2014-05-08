@@ -21,9 +21,18 @@ jQuery(function($) {
       this.activeCustomer = attributes['activeCustomer'];
       this.modal = attributes['modal'];
       this.ticket = attributes['ticket'];
+
+      $.cardswipe({
+        parser: _.bind(this.creditCardParser, this),
+        success: _.bind(this.creditCardScan, this),
+        error: _.bind(this.creditCardScanFail, this)
+      });
+
+      $.cardswipe('disable');
     },
     template: _.template($('#ticket-checkout-modal').html()),
     creditSummaryTemplate: _.template($('#credit-summary-template').html()),
+    ccCheckoutTemplate: _.template($('#credit-card-checkout-template').html()),
     fetchRegisterID: _.template($('#register-id').html()),
     render: function() {
       var ticket = this.ticket;
@@ -42,6 +51,8 @@ jQuery(function($) {
               that.ticketTotal = accounting.unformat(res.total);
               that.ticketTax = accounting.unformat(res.taxes);
               that.focusCash();
+
+              that.creditCardSwiperSetup();
           } else {
             ticket.employeeSession.set('login', false);
           }
@@ -67,7 +78,17 @@ jQuery(function($) {
         this.cashCheckout(e);
       } else if(this.currentTab == 2) {
         this.creditCheckout(e);
+      } else {
+        //Credit card checkout and swipe disable.
+
       }
+    },
+    creditCardSwiperSetup: function() {
+      this.$('.credit-card-checkout').html(this.ccCheckoutTemplate({
+        subtotal: accounting.formatMoney(this.ticket.get('total')),
+        tax: accounting.formatMoney(this.ticketTax),
+        total: accounting.formatMoney(this.ticketTotal)
+      }));
     },
     creditTermCheckoutSetup: function() {
       var cuid = this.activeCustomer.get('id');
@@ -220,11 +241,18 @@ jQuery(function($) {
       tabs.hide();
       tabs.eq(index).show();
       this.currentTab = index;
+
+      if(index == 1) {
+        $.cardswipe('enable');
+      } else {
+        $.cardswipe('disable');
+      }
     },
     focusCash: function() {
       this.$('.cash-paid').focus();
       this.$('.change-due-value').html(accounting.formatMoney(this.ticket.get('total')));
       this.$('.tax-due-value').html(accounting.formatMoney(this.ticketTax));
+      this.$('.total-left-value').html(accounting.formatMoney(this.ticketTotal));
       this.$('.change-left-value').html(accounting.formatMoney(this.ticketTotal));
       this.$('.change-value').html(accounting.formatMoney(0));
       this.$('.credit-amount span.value').html(accounting.formatMoney(this.ticket.get('total')));
@@ -232,7 +260,10 @@ jQuery(function($) {
       this.$('.credit-total span.value').html(accounting.formatMoney(this.ticketTotal));
     },
     closeCheckoutDialog: function(e) {
-      e.preventDefault();
+      if(e) {
+        e.preventDefault();
+      }
+      $.cardswipe('disable');
       this.modal.display(false);
     },
     cashInputValidate: function(e) {
@@ -301,6 +332,70 @@ jQuery(function($) {
       }
 
       this.$('input.cash-paid').trigger('keyup');
+    },
+    creditCardParser: function(rawData) {
+      var p = new SwipeParserObj(rawData);
+      return p.dump();
+    },
+    creditCardScan: function (cardData) {
+      //Temporary Sample data
+      cardData = {
+          "name": "HASAN/ASAD",
+          "first_name": "ASAD",
+          "last_name": "HASAN",
+          "account": "5108406364897057",
+          "exp_month": "05",
+          "exp_year": "2017",
+          "hasTrack1": true,
+          "hasTrack2": false,
+          "track1": "B5108406364897057^HASAN/ASAD^17051010000000884000000?",
+          "track2": ";5108406364897057=1705111111111111?",
+          "raw": "%B5108406364897057^HASAN/ASAD^17051010000000884000000?"
+      };
+      var ticket = this.ticket;
+      var that = this;
+
+      var swipeCheckoutRequest = JSON.stringify({
+        token: sessionStorage.token,
+        ticketId: ticket.get('ticketId'),
+        total: that.ticketTotal,
+        register_id: this.fetchRegisterID(),
+        customer: this.activeCustomer.get('id'),
+        cardData: cardData
+      });
+
+      that.$('.status-message').addClass('in-progress');
+      $.cardswipe('disable');
+
+      $.ajax({
+        type: 'POST',
+        url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/swipe-checkout',
+        data: {request: swipeCheckoutRequest},
+        timeout: 15000,
+        success: function(res, status, xhr) {
+          that.$('.status-message').removeClass('in-progress');
+
+          if(res.status) {
+            //Close ticket
+            ticket.set('status_en', 'Closed Ticket');
+            ticket.set('status', 'pos_completed');
+            alert(res.message);
+            that.closeCheckoutDialog();
+          } else {
+            that.$('.status-message').removeClass('in-progress');
+            $.cardswipe('enable');
+            alert(res.error);
+          }
+        },
+        error: function(xhr, errorType, error) {
+          that.$('.status-message').removeClass('in-progress');
+          that.closeCheckoutDialog();
+          ticket.employeeSession.set('login', false);
+        }
+      });
+    },
+    creditCardScanFail: function() {
+      alert('We could not read this card, please try again.');
     }
   });
 });
