@@ -241,17 +241,20 @@ jQuery(function($) {
       var ticket = this;
       var updateStatusRequest = JSON.stringify({token: sessionStorage.token, ticketId: this.get('ticketId'), ticketStatus: this.get('status')});
 
+      ticket.trigger('ticket:preloader', true);
       $.ajax({
         type: 'POST',
         url: this.employeeSession.get('apiServer')+'/pos-api/ticket/update-status',
         data: {request: updateStatusRequest},
         timeout: 15000,
         success: function(res, status, xhr) {
+          ticket.trigger('ticket:preloader', false);
           if(!res.status) {
             ticket.employeeSession.set('login', false);
           }
         },
         error: function(xhr, errorType, error) {
+          ticket.trigger('ticket:preloader', false);
           ticket.employeeSession.set('login', false);
         }
       });
