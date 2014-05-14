@@ -167,7 +167,8 @@ jQuery(function($) {
       var that = this;
 
       if(!_.isUndefined(this.change_left) && !_.isUndefined(this.change_value) && !_.isUndefined(this.cash_paid)) {
-        if(this.change_left > 0) {
+        var formattedChange = accounting.formatNumber(this.change_left, 2, "");
+        if(this.change_left > 0 && formattedChange != "0.00") {
           alert("Customer still owes amount: "+accounting.formatMoney(this.change_left));
         } else {
           var ticket = this.ticket;
