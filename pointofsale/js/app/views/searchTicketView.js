@@ -51,9 +51,7 @@ jQuery(function($) {
     		//Lock unlock ticket if closed using Global Selectors for now, need to be namespaced.
     		if(ticket.get('status') == 'pos_completed') {
     			this.lockTicket();
-    			console.log('Locking Ticket');
     		} else {
-    			console.log('Unlocking Ticket');
     			this.unlockTicket();
     			$('.item-search input.search').focus();
     		}
