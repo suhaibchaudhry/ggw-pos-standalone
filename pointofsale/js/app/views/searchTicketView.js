@@ -32,7 +32,9 @@ jQuery(function($) {
     	managerUnlockClosedTicket: function(e) {
     		e.preventDefault();
     		//Perform permission checks and dialongs here
-    		this.unlockTicket();
+    		if(this.employeeSession.get('privileged')) {
+    			this.unlockTicket();
+    		}
     	},
 
     	changeTicketStatus: function(ticket, ticketStatus, options) {
@@ -49,7 +51,9 @@ jQuery(function($) {
     		//Lock unlock ticket if closed using Global Selectors for now, need to be namespaced.
     		if(ticket.get('status') == 'pos_completed') {
     			this.lockTicket();
+    			console.log('Locking Ticket');
     		} else {
+    			console.log('Unlocking Ticket');
     			this.unlockTicket();
     			$('.item-search input.search').focus();
     		}
@@ -61,12 +65,10 @@ jQuery(function($) {
     		$('.lock-indicator').show();
     	},
     	unlockTicket: function() {
-    		if(this.employeeSession.get('privileged')) {
-	    		$('a.clear-customer').removeClass('forceHide');
-	    		$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', false);
-	    		$('.activeTicket').removeClass('lockedTicket');
-	    		$('.lock-indicator').hide();
-    		}
+	    	$('a.clear-customer').removeClass('forceHide');
+	    	$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', false);
+	    	$('.activeTicket').removeClass('lockedTicket');
+	    	$('.lock-indicator').hide();
     	},
     	mouseTrapCatch: function(e) {
     		var ticket = this.ticket;
