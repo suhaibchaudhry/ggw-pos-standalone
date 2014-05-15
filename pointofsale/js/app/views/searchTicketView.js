@@ -39,7 +39,7 @@ jQuery(function($) {
     		$('.ticket-status span.value').text(ticket.get('status_en'));
 
     		//Enable Disable Checkout Button
-    		if(ticketStatus == 'pos_in_progress') {
+    		if(ticket.get('status') == 'pos_in_progress') {
     			this.$('.checkout').show();
     			$('.item-search input.search').focus();
     		} else {
@@ -47,7 +47,7 @@ jQuery(function($) {
     		}
 
     		//Lock unlock ticket if closed using Global Selectors for now, need to be namespaced.
-    		if(ticketStatus == 'pos_completed') {
+    		if(ticket.get('status') == 'pos_completed') {
     			this.lockTicket();
     		} else {
     			this.unlockTicket();
