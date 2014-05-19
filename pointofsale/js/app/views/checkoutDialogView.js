@@ -340,6 +340,7 @@ jQuery(function($) {
     },
     creditCardScan: function (cardData) {
       //Temporary Sample data
+      /*
       cardData = {
           "name": "HASAN/ASAD",
           "first_name": "ASAD",
@@ -353,6 +354,7 @@ jQuery(function($) {
           "track2": ";5108406364897057=1705111111111111?",
           "raw": "%B5108406364897057^HASAN/ASAD^17051010000000884000000?"
       };
+      */
       var ticket = this.ticket;
       var that = this;
 
