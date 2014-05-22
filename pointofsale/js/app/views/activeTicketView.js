@@ -319,7 +319,7 @@ jQuery(function($) {
             url: this.employeeSession.get('apiServer')+'/pos-api/products/'+this.employeeSession.get("token"),
             replace: _.bind(this.resolveSearchRPC, this)
         },
-        limit: 12,
+        limit: 48,
         hint: false,
         minLength: 3,
         template: _.template($('#item-search-result').html())
