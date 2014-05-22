@@ -93,6 +93,18 @@
   -webkit-box-orient: vertical;
 }
 
+.item-search .tt-suggestion .sell_price {
+  position: absolute;
+  right: 4px;
+  top: 0;
+}
+
+.item-search .tt-suggestion .packaging {
+  position: absolute;
+  right: 4px;
+  bottom: 0;
+}
+
 .item-search .tt-suggestion .image{
   background-size: cover;
   background-position: center center;
