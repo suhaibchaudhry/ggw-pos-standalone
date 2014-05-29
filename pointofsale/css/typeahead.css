@@ -1,9 +1,15 @@
 /*Main Product Search*/
 .item-search {
   margin: 10px 9px 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 .item-search .twitter-typeahead {
   width: 100%;
+  position: static !important;
 }
 .item-search .typeahead,
 .item-search .tt-query,
@@ -46,6 +52,10 @@
 }
 
 .item-search .tt-dropdown-menu {
+  top: 50px !important;
+  right: 0px !important;
+  bottom: 6px;
+  overflow: scroll;
   margin-top: 4px;
   padding: 8px 0;
   background-color: #fff;
