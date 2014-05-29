@@ -3,7 +3,8 @@ jQuery(function($) {
 		events: {
 			"typeahead:selected .customer-search": 'itemSelected',
 			"click .customer-search a.clear-customer": 'clearCustomer',
-			"click .customer-search .selected-customer": 'customerInfo'
+			"click .customer-search .selected-customer": 'customerInfo',
+			"click a.customer_info": 'customerDirectInfo'
 		},
 		tagName: 'div',
 		searchBoxTemplate: _.template($('#customer-search-components').html()),
@@ -46,6 +47,13 @@ jQuery(function($) {
 				this.$('.selected-customer').html(this.defaultCustomerTemplate()).css({cursor: 'default'});
 				this.$customer_search.find('a.clear-customer').hide();
 				this.$menuItems.find('.customer-info-item').addClass('hiddenItem');
+			}
+		},
+		customerDirectInfo: function(e) {
+			e.preventDefault();
+			var id = e.toElement.rel;
+			if(id) {
+				this.customerInfoDialogModal.display(true, id);
 			}
 		},
 		itemSelected: function(e, datum) {
