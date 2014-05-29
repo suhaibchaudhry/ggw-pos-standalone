@@ -233,3 +233,24 @@
 .customer-search .tt-suggestion p, .ticket-search .tt-suggestion p {
   margin: 0;
 }
+.customer-search .tt-suggestion {
+  position: relative;
+}
+.customer-search a.customer_info {
+  background: #0D85D4;
+  padding: 2px 8px;
+  border-radius: 10px;
+  text-decoration: none;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  color: #fff;
+  margin-top: -9px;
+  right: 4px;
+  border: 1px solid #fff;
+}
+
+.customer-search a.customer_info:hover {
+  background: #fff;
+  color: #0D85D4;
+}
