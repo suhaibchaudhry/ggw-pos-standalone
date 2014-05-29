@@ -720,8 +720,10 @@
                 $suggestion.addClass("tt-is-under-cursor");
             },
             _handleSelection: function($e) {
-                var $suggestion = $($e.currentTarget);
-                this.trigger("suggestionSelected", extractSuggestion($suggestion));
+                if($e.toElement.className != "customer_info") {
+                    var $suggestion = $($e.currentTarget);
+                    this.trigger("suggestionSelected", extractSuggestion($suggestion));
+                }
             },
             _show: function() {
                 this.$menu.css("display", "block");
