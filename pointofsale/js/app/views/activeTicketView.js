@@ -31,7 +31,8 @@ jQuery(function($) {
       this.ticket = new Ticket({
         employeeSession: attributes['employeeSession'],
         activeCustomer: this.activeCustomerView.activeCustomer,
-        activeTicketView: this
+        activeTicketView: this,
+        activeCustomerView: this.activeCustomerView
       });
 
       //Initialize Checkout Dialog

@@ -9,6 +9,7 @@ jQuery(function($) {
       });
 
       this.set('activeTicketView', attributes['activeTicketView']);
+      this.set('activeCustomerView', attributes['activeCustomerView']);
 
       this.listenTo(this.get('productCollection'), 'add', this.addToTotals);
       this.listenTo(this.get('productCollection'), 'remove', this.subtractFromTotals);
@@ -338,6 +339,7 @@ jQuery(function($) {
       this.clearTicket();
     },
     loadTicket: function(ticketId) {
+      this.get('activeCustomerView').$searchbox.typeahead('setQuery', '');
       //Load another Ticket from database
       var ticket = this;
       var loadTicketProductsRequest = JSON.stringify({
