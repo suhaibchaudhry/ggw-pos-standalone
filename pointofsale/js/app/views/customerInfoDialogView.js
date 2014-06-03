@@ -171,6 +171,7 @@ jQuery(function($) {
     render: function() {
       this.$('.rma-form').html(this.RMAFormTemplate());
       this.rmaItemsCollectionFinal.reset();
+      this.rmaTicket.set('total', 0);
       return this;
     },
     closeCheckoutDialog: function(e) {
@@ -291,7 +292,7 @@ jQuery(function($) {
       e.preventDefault();
       var itemId = e.target.parentElement.parentElement.parentElement.dataset.id;
       var product = this.rmaItemsCollectionFinal.get(itemId);
-      var quantity = product.get('qty');
+      var quantity = product.get('remaining_qty');
       var returning_qty = product.get('returning_qty');
       returning_qty++
       this.setReturnQty(product, quantity, returning_qty)
