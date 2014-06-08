@@ -277,6 +277,7 @@ jQuery(function($) {
       });
     },
     addItemToCollection: function(datum, qty) {
+      /*
       var product = this.ticket.get('productCollection').get(datum['id']);
       if(product) {
         this.ticket.incrementQty(product, qty);
@@ -289,20 +290,21 @@ jQuery(function($) {
           }, 1500);
         }
       } else {
-        //Add Base Product
-        datum['qty'] = 1;
-        datum['activeTicketView'] = this;
-        this.ticket.addItem(datum);
+      */
+      //Add Base Product
+      datum['qty'] = 1;
+      datum['activeTicketView'] = this;
+      this.ticket.addItem(datum);
 
-        if(qty > 1) {
-          //Increment product by remaining value
-          var product = this.ticket.get('productCollection').get(datum['id']);
-          this.ticket.incrementQty(product, qty-1);
-        }
-
-        //Scroll to bottom
-        this.$ticketContainer.scrollTop(this.$ticketContainer.get(0).scrollHeight);
+      if(qty > 1) {
+        //Increment product by remaining value
+        var product = this.ticket.get('productCollection').get(datum['id']);
+        this.ticket.incrementQty(product, qty-1);
       }
+
+      //Scroll to bottom
+      this.$ticketContainer.scrollTop(this.$ticketContainer.get(0).scrollHeight);
+      //}
     },
     render: function() {
       //Render Cascaded Views
