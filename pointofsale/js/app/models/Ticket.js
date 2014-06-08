@@ -274,7 +274,7 @@ jQuery(function($) {
       this.set('total', this.get('total')-accounting.unformat(product.get('price')));
       this.set('productCount', this.get('productCount')-1);
     },
-    addItem: function(productAttributes) {
+    addItem: function(productAttributes, callback) {
       var ticket = this;
       //Add Item to database
       var addItemToTicketRequest = JSON.stringify({
@@ -293,9 +293,13 @@ jQuery(function($) {
           timeout: 15000,
           success: function(res, status, xhr) {
             if(res.status) {
-              productAttributes['nid'] = productAttributes['id'];
+              var id = productAttributes['id'];
               productAttributes['id'] = res.ticketProductId;
-              ticket.get('productCollection').add(productAttributes);
+              var product = ticket.get('productCollection').add(productAttributes);
+              productAttributes['id'] = id;
+              if(typeof callback == "function") {
+                callback(product);
+              }
             } else {
               //User token is rejected by server server.
               ticket.employeeSession.set('login', false);
@@ -362,6 +366,8 @@ jQuery(function($) {
           success: function(res, status, xhr) {
             if(res.status) {
               _.each(res.products, function(product) {
+                product['nid'] = product['id'];
+                product['id'] = product['order_product_id'];
                 ticket.get('productCollection').add(product);
               });
               if(ticket.get('status') == 'pos_completed') {
