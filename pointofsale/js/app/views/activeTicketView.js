@@ -277,34 +277,19 @@ jQuery(function($) {
       });
     },
     addItemToCollection: function(datum, qty) {
-      /*
-      var product = this.ticket.get('productCollection').get(datum['id']);
-      if(product) {
-        this.ticket.incrementQty(product, qty);
-        var item = this.$('.product-table').find('#line-item-'+product.get('id'));
-        if(item.length > 0) {
-          this.$ticketContainer.scrollTop(item.position().top);
-          item.css('background-color', '#FFEB00');
-          setTimeout(function() {
-            item.css('background-color', '#FFFFFF');
-          }, 1500);
-        }
-      } else {
-      */
       //Add Base Product
+      var that = this;
+      var ticket = this.ticket;
       datum['qty'] = 1;
       datum['activeTicketView'] = this;
-      this.ticket.addItem(datum);
+      ticket.addItem(datum, function(product) {
+        if(qty > 1) {
+          ticket.incrementQty(product, qty-1);
+        }
 
-      if(qty > 1) {
-        //Increment product by remaining value
-        var product = this.ticket.get('productCollection').get(datum['id']);
-        this.ticket.incrementQty(product, qty-1);
-      }
-
-      //Scroll to bottom
-      this.$ticketContainer.scrollTop(this.$ticketContainer.get(0).scrollHeight);
-      //}
+        //Scroll to bottom
+        that.$ticketContainer.scrollTop(that.$ticketContainer.get(0).scrollHeight);
+      });
     },
     render: function() {
       //Render Cascaded Views
