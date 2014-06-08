@@ -273,7 +273,6 @@ jQuery(function($) {
     addItem: function(productAttributes) {
       var ticket = this;
       var product = this.get('productCollection').add(productAttributes);
-      console.log(productAttributes['sell_price']);
       //Add Item to database
       var addItemToTicketRequest = JSON.stringify({
                               token: sessionStorage.token,
