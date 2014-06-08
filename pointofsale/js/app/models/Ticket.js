@@ -24,7 +24,7 @@ jQuery(function($) {
       this.listenTo(this.get('productCollection'), 'remove', this.removeFromCategoryBreakdown);
 
       //Listen for changes in total and product count and update on server
-      this.listenTo(this, 'change:total', _.debounce(this.updateTotal, 2000));
+      this.listenTo(this, 'change:total', _.debounce(this.updateTotal, 3000));
 
       //Listen for changing ticket status on ui to update on server
       this.listenTo(this, 'change:status', this.updateTicketStatus);
