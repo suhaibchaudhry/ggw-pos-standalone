@@ -217,7 +217,11 @@ jQuery(function($) {
     changeProductQuanty: function(product, qty, options) {
       //Debounce and update product quantity on server.
       var ticket = this;
-      var updateQuantityRequest = JSON.stringify({token: sessionStorage.token, qty: qty, ticketId: this.get('ticketId'), productId: product.get('id')});
+      var qtyGraph = this.get('productCollection').map(function(item) {
+        return {productId: item.get('id'), qty: item.get('qty')};
+      });
+
+      var updateQuantityRequest = JSON.stringify({token: sessionStorage.token, qtyGraph: qtyGraph, ticketId: this.get('ticketId')});
       //Start preloader
       //this.trigger('ticket:preloader', true);
       $.ajax({
@@ -272,7 +276,6 @@ jQuery(function($) {
     },
     addItem: function(productAttributes) {
       var ticket = this;
-      var product = this.get('productCollection').add(productAttributes);
       //Add Item to database
       var addItemToTicketRequest = JSON.stringify({
                               token: sessionStorage.token,
@@ -289,7 +292,11 @@ jQuery(function($) {
           data: {request: addItemToTicketRequest},
           timeout: 15000,
           success: function(res, status, xhr) {
-            if(!res.status) {
+            if(res.status) {
+              productAttributes['nid'] = productAttributes['id'];
+              productAttributes['id'] = res.ticketProductId;
+              ticket.get('productCollection').add(productAttributes);
+            } else {
               //User token is rejected by server server.
               ticket.employeeSession.set('login', false);
             }
