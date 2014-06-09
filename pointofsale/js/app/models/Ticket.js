@@ -16,7 +16,7 @@ jQuery(function($) {
       this.listenTo(this.get('productCollection'), 'change:price', this.priceUpdate);
 
       //Make sure to send new quantity to server it has stabalized for a few ms.
-      this.listenTo(this.get('productCollection'), 'change:qty', _.debounce(this.changeProductQuanty, 2500));
+      this.listenTo(this.get('productCollection'), 'change:qty', _.debounce(this.changeProductQuantity, 2500));
 
       //Update Category breakdown
       this.listenTo(this.get('productCollection'), 'change:qty', this.updateCategoryBreakdown);
@@ -214,7 +214,7 @@ jQuery(function($) {
         this.loadTicket(ticketId);
       }
     },
-    changeProductQuanty: function(product, qty, options) {
+    changeProductQuantity: function(product, qty, options) {
       //Debounce and update product quantity on server.
       var ticket = this;
       var updateQuantityRequest = JSON.stringify({token: sessionStorage.token, qty: qty, ticketId: this.get('ticketId'), productId: product.get('id')});
