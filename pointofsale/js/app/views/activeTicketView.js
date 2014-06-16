@@ -133,6 +133,9 @@ jQuery(function($) {
         this.$('#line-item-'+product.get('id')+' .price').removeClass('manager-overriden');
       }
     },
+    updateExtPrice: function(product) {
+      this.$('#line-item-'+product.get('id')+' .extprice').text(accounting.formatMoney(product.get('price')*product.get('qty')));
+    },
     updateProductCount: function(model, value, options) {
       this.$registerDisplay.find('.product-count').html(this.labelizeTemplate({
         label: 'Item Count',

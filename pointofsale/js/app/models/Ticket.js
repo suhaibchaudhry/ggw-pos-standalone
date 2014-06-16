@@ -10,6 +10,7 @@ jQuery(function($) {
 
       this.set('activeTicketView', attributes['activeTicketView']);
       this.set('activeCustomerView', attributes['activeCustomerView']);
+      this.set('updateExtPrice',  _.bind(attributes['activeTicketView'].updateExtPrice, attributes['activeTicketView']));
 
       this.listenTo(this.get('productCollection'), 'add', this.addToTotals);
       this.listenTo(this.get('productCollection'), 'remove', this.subtractFromTotals);
@@ -198,6 +199,8 @@ jQuery(function($) {
     //Backbone Events
     priceUpdate: function(product, value, options) {
       var total = this.get('total');
+      var updateExtPrice = this.get('updateExtPrice');
+      updateExtPrice(product);
       total = total - accounting.unformat(product.previous('price'))*product.get('qty');
       total = total + accounting.unformat(product.get('price'))*product.get('qty');
       this.set('total', total);
@@ -268,11 +271,17 @@ jQuery(function($) {
       product.set('qty', product.get('qty')+increment);
       this.set('total', this.get('total')+(accounting.unformat(product.get('price'))*increment));
       this.set('productCount', this.get('productCount')+increment);
+
+      var updateExtPrice = this.get('updateExtPrice');
+      updateExtPrice(product);
     },
     decrementQty: function(product) {
       product.set('qty', product.get('qty')-1);
       this.set('total', this.get('total')-accounting.unformat(product.get('price')));
       this.set('productCount', this.get('productCount')-1);
+
+      var updateExtPrice = this.get('updateExtPrice');
+      updateExtPrice(product);
     },
     addItem: function(productAttributes, callback) {
       var ticket = this;
