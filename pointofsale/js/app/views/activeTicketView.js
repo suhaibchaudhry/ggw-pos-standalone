@@ -105,6 +105,7 @@ jQuery(function($) {
 
       if(product.get('manager_price')) {
         this.$('#line-item-'+product.get('id')+' .price').addClass('manager-overriden');
+        this.$('#line-item-'+product.get('id')+' .extprice').text(accounting.formatMoney(product.get('price')*product.get('qty')));
       } else {
         this.$('#line-item-'+product.get('id')+' .price').removeClass('manager-overriden');
       }
