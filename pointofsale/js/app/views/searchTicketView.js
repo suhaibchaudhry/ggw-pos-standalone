@@ -3,8 +3,7 @@ jQuery(function($) {
 		events: {
 			"typeahead:selected .ticket-search": 'itemSelected',
 			"click .checkout a.checkout-button": 'checkout',
-			"click a.lock-toggle": 'managerUnlockClosedTicket',
-			"click ": 'printTicket'
+			"click a.lock-toggle": 'managerUnlockClosedTicket'
 		},
 		tagName: 'div',
 		selectedTicketWrapTemplate: _.template($('#selected-ticket-wrap').html()),
