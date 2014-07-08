@@ -23,6 +23,7 @@ jQuery(function($) {
 		changeTicket: function(ticket, ticketId, options) {
 			if(ticketId) {
 				this.$('.selected-ticket').html(this.selectedTicketTemplate(ticket.attributes));
+				this.ticketSpecialButtons(ticket);
 			} else {
 				this.$('.selected-ticket').empty();
 			}
@@ -36,10 +37,11 @@ jQuery(function($) {
     			this.unlockTicket();
     		}
     	},
-
     	changeTicketStatus: function(ticket, ticketStatus, options) {
     		$('.ticket-status span.value').text(ticket.get('status_en'));
-
+    		this.ticketSpecialButtons(ticket);
+    	},
+    	ticketSpecialButtons: function(ticket) {
     		//Enable Disable Checkout Button
     		if(ticket.get('status') == 'pos_in_progress') {
     			this.$('.checkout').show();
@@ -50,8 +52,10 @@ jQuery(function($) {
 
     		//Lock unlock ticket if closed using Global Selectors for now, need to be namespaced.
     		if(ticket.get('status') == 'pos_completed') {
+    			$('.lock-indicator').show();
     			this.lockTicket();
     		} else {
+    			$('.lock-indicator').hide();
     			this.unlockTicket();
     			$('.item-search input.search').focus();
     		}
@@ -60,13 +64,13 @@ jQuery(function($) {
     		$('a.clear-customer').addClass('forceHide');
     		$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', true);
     		$('.activeTicket').addClass('lockedTicket');
-    		$('.lock-indicator').show();
+    		//$('.lock-indicator a.lock-toggle').show();
     	},
     	unlockTicket: function() {
 	    	$('a.clear-customer').removeClass('forceHide');
 	    	$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', false);
 	    	$('.activeTicket').removeClass('lockedTicket');
-	    	$('.lock-indicator').hide();
+	    	//$('.lock-indicator a.lock-toggle').hide();
     	},
     	mouseTrapCatch: function(e) {
     		var ticket = this.ticket;
