@@ -28,7 +28,7 @@ jQuery(function($) {
       }
     },
     openDialog: function(e) {
-      if(this.ticket.get("status") != 'pos_completed') {
+      if(this.ticket.get("status") != 'pos_completed' || !this.ticket.get('locked')) {
         this.managerPriceView.openDialog(e);
       }
     }

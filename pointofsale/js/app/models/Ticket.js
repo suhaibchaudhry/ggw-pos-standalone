@@ -163,7 +163,7 @@ jQuery(function($) {
     updateTotal: function(ticket, total, options) {
       var ticket = this;
       var status = ticket.get('status');
-      if(status != 'pos_completed') {
+      if(status != 'pos_completed' || !ticket.get('locked')) {
         var updateTotalRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId'), productCount: ticket.get('productCount')});
         //Start preloader
         //this.trigger('ticket:preloader', true);
