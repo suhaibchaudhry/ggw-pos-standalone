@@ -65,6 +65,13 @@ jQuery(function($) {
     			this.unlockTicket();
     			$('.item-search input.search').focus();
     		}
+
+    		if(ticket.get('status') == 'pos_quote') {
+    			$('.lock-indicator').show();
+    			$('.lock-indicator a.lock-toggle').hide();
+    		} else {
+    			$('.lock-indicator a.lock-toggle').show();
+    		}
     	},
     	lockTicket: function() {
     		$('a.clear-customer').addClass('forceHide');
