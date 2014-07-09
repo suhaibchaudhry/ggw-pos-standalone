@@ -38,6 +38,8 @@ jQuery(function($) {
         appFrame: this
       });
 
+      this.searchTicketRegion.setActiveTicket(this.activeTicketRegion);
+
       this.invoiceDialog = this.activeTicketRegion.invoiceDialog;
 
       this.activeCustomerRegion.activeCustomer.setActiveTicketViewSingleton(this.activeTicketRegion);
