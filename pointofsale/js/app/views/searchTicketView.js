@@ -13,7 +13,9 @@ jQuery(function($) {
 		checkoutButtons: _.template($('#checkout-buttons').html()),
 		initialize: function(attributes, options) {
 			this.employeeSession = attributes['employeeSession'];
-			this.activeTicketView = attributes['activeTicketView'];
+		},
+		setActiveTicket: function(activeTicketView) {
+			this.activeTicketView = activeTicketView;
 		},
 		checkout: function(e) {
 			e.preventDefault();
@@ -33,7 +35,12 @@ jQuery(function($) {
     		e.preventDefault();
     		//Perform permission checks and dialongs here
     		if(this.employeeSession.get('privileged')) {
-    			this.unlockTicket();
+    			var locked = this.activeTicketView.ticket.get('locked');
+    			if(locked) {
+    				this.unlockTicket();
+    			} else {
+    				this.lockTicket();
+    			}
     		}
     	},
     	changeTicketStatus: function(ticket, ticketStatus, options) {
@@ -63,12 +70,14 @@ jQuery(function($) {
     		$('a.clear-customer').addClass('forceHide');
     		$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', true);
     		$('.activeTicket').addClass('lockedTicket');
+    		this.activeTicketView.ticket.set('locked', true);
     		//$('.lock-indicator a.lock-toggle').show();
     	},
     	unlockTicket: function() {
 	    	$('a.clear-customer').removeClass('forceHide');
 	    	$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', false);
 	    	$('.activeTicket').removeClass('lockedTicket');
+	    	this.activeTicketView.ticket.set('locked', false);
 	    	//$('.lock-indicator a.lock-toggle').hide();
     	},
     	mouseTrapCatch: function(e) {

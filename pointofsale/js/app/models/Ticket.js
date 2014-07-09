@@ -295,6 +295,8 @@ jQuery(function($) {
                               price: productAttributes['sell_price']
                             });
 
+      productAttributes['locked'] = false;
+
       $.ajax({
           type: 'POST',
           url: this.employeeSession.get('apiServer')+'/pos-api/ticket/add-product',
