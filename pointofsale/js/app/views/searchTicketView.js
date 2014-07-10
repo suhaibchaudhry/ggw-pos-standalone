@@ -74,15 +74,17 @@ jQuery(function($) {
     		}
     	},
     	lockTicket: function() {
-    		$('a.clear-customer').addClass('forceHide');
-    		$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', true);
+    		//$('a.clear-customer').addClass('forceHide');
+    		//$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', true);
+    		$('.item-search input.tt-query').attr('disabled', true);
     		$('.activeTicket').addClass('lockedTicket');
     		this.activeTicketView.ticket.set('locked', true);
     		//$('.lock-indicator a.lock-toggle').show();
     	},
     	unlockTicket: function() {
-	    	$('a.clear-customer').removeClass('forceHide');
-	    	$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', false);
+	    	//$('a.clear-customer').removeClass('forceHide');
+	    	//$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', false);
+	    	$('.item-search input.tt-query').attr('disabled', false);
 	    	$('.activeTicket').removeClass('lockedTicket');
 	    	this.activeTicketView.ticket.set('locked', false);
 	    	//$('.lock-indicator a.lock-toggle').hide();

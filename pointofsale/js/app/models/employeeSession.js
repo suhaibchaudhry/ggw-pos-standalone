@@ -20,7 +20,7 @@ jQuery(function($) {
           data: {request: clockStateReq},
           timeout: 15000,
           success: function(res, status, xhr) {
-            session.set({clock: res.clock, lunch: res.lunch, privileged: res.privileged});
+            session.set({clock: res.clock, lunch: res.lunch, privileged: res.privileged, admin: res.admin});
           },
           error: function(xhr, errorType, error) {
             session.set({clock: false, lunch: false});
@@ -49,7 +49,7 @@ jQuery(function($) {
     			if(res.login) {
     				sessionStorage.token = res.token;
             sessionStorage.account = uname;
-    				session.set({token: res.token, login: true, clock: res.clock, lunch: res.lunch, privileged: res.privileged});
+    				session.set({token: res.token, login: true, clock: res.clock, lunch: res.lunch, privileged: res.privileged, admin: res.admin});
     			} else {
             sessionStorage.account = '';
     				session.set({token: '', login: false, message: 'Provided employee login/password were invalid.'});

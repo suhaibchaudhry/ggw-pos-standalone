@@ -10,6 +10,13 @@ jQuery(function($) {
       		//When user is changed by gui change customerUid with silent flag, and update customer Uid on server.
       		if(uid) {
       			var ticket = this.get('ticket');
+
+      			if(ticket.employeeSession.get('admin')) {
+      				this.unlockTicketCustomer();
+      			} else {
+      				this.lockTicketCustomer();
+      			}
+
       			var customer = this;
       			var loadCustomer = JSON.stringify({token: sessionStorage.token, customerUid: uid});
       			ticket.trigger('ticket:preloader', true);
@@ -30,11 +37,29 @@ jQuery(function($) {
 		          }
 		        });
       		} else {
+      			this.unlockTicketCustomer();
       			this.set('id', uid);
       		}
       	},
+      	lockTicketCustomer: function() {
+      		$('a.clear-customer').addClass('forceHide');
+    		$('.customer-search input.tt-query').attr('disabled', true);
+      	},
+      	unlockTicketCustomer: function() {
+      		$('a.clear-customer').removeClass('forceHide');
+	    	$('.customer-search input.tt-query').attr('disabled', false);
+      	},
       	updateTicketCustomerUidOnServer: function(uid) {
       		var ticket = this.get('ticket');
+      		if(ticket.employeeSession.get('admin')) {
+  				this.unlockTicketCustomer();
+  			} else {
+  				if(uid) {
+  					this.lockTicketCustomer();
+  				} else {
+  					this.unlockTicketCustomer();
+  				}
+  			}
       		ticket.set('customerUid', uid, {silent: true});
       		var updateTicketCustomerId = JSON.stringify({token: sessionStorage.token, customerUid: uid, ticketId: ticket.get('ticketId')});
 
