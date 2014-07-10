@@ -124,11 +124,14 @@ jQuery(function($) {
     fetchCurrentTime: function() {
       var date = new Date();
       var time = {
+        day: date.getDate(),
+        month: date.getMonth()+1,
+        year: date.getFullYear(),
         hours: date.getHours(),
         minutes: date.getMinutes()
       }
 
-      return this.formatHour(time.hours)+":"+this.formatTwoDigit(time.minutes)+" "+this.computeAMPM(time.hours);
+      return time.month+"/"+time.day+"/"+time.year+" "+this.formatHour(time.hours)+":"+this.formatTwoDigit(time.minutes)+" "+this.computeAMPM(time.hours);
     },
 
     render: function() {
