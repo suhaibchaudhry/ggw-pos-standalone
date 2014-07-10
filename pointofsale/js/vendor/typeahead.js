@@ -1,42 +1,59 @@
-/*!
- * typeahead.js 0.9.3
+﻿/*
+ * typeahead.js 0.9.4  Svakinn: perhaps the many changes here deserve a new version number - of course few comments need to be removed before this code is released
+ * Bugfixes: IE11 detection, blur/focus flicker on dropdown click, local suggestions now handle values with spaces
+ * Remote handler functionality (handling function option instead of ajax) still allowing for throttling and cache, supports JQuery and Q promises
+ * Remote cashing control: user can skip caching, define caching key and even caching key function 
+ * Optional handling for restricting selection to the set of Datums provided (restrictInputToDatum)
+ * Introduction of name/key values: data key may differ from the display name
+ * Introducing the concept of selected datum, updated on autocomplete or selection
+ * New typeahead interface methods: getDatum, getQuery, setDatum, clearCache, openDropdown and closeDropdown
+ * New event noSelect: when user leaves field without selecting valid datum.
+ * Option to set minLength as 0 to get all suggestion (to the limit) for empty text in input
+ * Improved suggestion triggering, eliminating the need to initialize values with the setQuery method
+ * Busy indication with the new typeahead:busyUpdate event
+ * Accompanying this update is a Knockout binding handler that greatly simplifies the work of initialization, auto-Datum creation and two-way databinding to selected Datum
+ * See updated Readme.md and the new Handler.md and Knockout.md for details.
+ * Credits for this update:  nathankoop and bowser project for the IE11 detection, zhigang1992 for the restrictInputToDatum option, cusspvz for the handler name, adanaltamira for minLength documentation, and last but not least
+ * ryanpitts for the idea and implementation of the nameKey option.
  * https://github.com/twitter/typeahead
  * Copyright 2013 Twitter, Inc. and other contributors; Licensed MIT
  */
-
-(function($) {
-    var VERSION = "0.9.3";
+(function ($) {
+    var VERSION = "0.9.4";
     var utils = {
-        isMsie: function() {
-            var match = /(msie) ([\w.]+)/i.exec(navigator.userAgent);
-            return match ? parseInt(match[2], 10) : false;
+        isMsie: function () {
+            //Improved IE11 detection (borrowed from the bowser Github project: https://github.com/ded/bowser)
+            return /(msie|trident)/i.test(navigator.userAgent) ? navigator.userAgent.match(/(msie |rv:)(\d+(.\d+)?)/i)[2] : false;
         },
-        isBlankString: function(str) {
+        isBlankString: function (str) {
             return !str || /^\s*$/.test(str);
         },
-        escapeRegExChars: function(str) {
+        escapeRegExChars: function (str) {
             return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
         },
-        isString: function(obj) {
+        isString: function (obj) {
             return typeof obj === "string";
         },
-        isNumber: function(obj) {
+        isNumber: function (obj) {
             return typeof obj === "number";
         },
         isArray: $.isArray,
         isFunction: $.isFunction,
         isObject: $.isPlainObject,
-        isUndefined: function(obj) {
+        isUndefined: function (obj) {
             return typeof obj === "undefined";
         },
+        isEmpty: function (str) {
+            return (typeof str === "undefined" || str === null || str === '');
+        },
         bind: $.proxy,
-        bindAll: function(obj) {
+        bindAll: function (obj) {
             var val;
             for (var key in obj) {
                 $.isFunction(val = obj[key]) && (obj[key] = $.proxy(val, obj));
             }
         },
-        indexOf: function(haystack, needle) {
+        indexOf: function (haystack, needle) {
             for (var i = 0; i < haystack.length; i++) {
                 if (haystack[i] === needle) {
                     return i;
@@ -47,24 +64,24 @@
         each: $.each,
         map: $.map,
         filter: $.grep,
-        every: function(obj, test) {
+        every: function (obj, test) {
             var result = true;
             if (!obj) {
                 return result;
             }
-            $.each(obj, function(key, val) {
+            $.each(obj, function (key, val) {
                 if (!(result = test.call(null, val, key, obj))) {
                     return false;
                 }
             });
             return !!result;
         },
-        some: function(obj, test) {
+        some: function (obj, test) {
             var result = false;
             if (!obj) {
                 return result;
             }
-            $.each(obj, function(key, val) {
+            $.each(obj, function (key, val) {
                 if (result = test.call(null, val, key, obj)) {
                     return false;
                 }
@@ -72,20 +89,20 @@
             return !!result;
         },
         mixin: $.extend,
-        getUniqueId: function() {
-            var counter = 0;
-            return function() {
+        getUniqueId: function () {
+            var counter = 1;    //0 as value cuases problems with conditional checks, mabe this should be converted to string as well?
+            return function () {
                 return counter++;
             };
         }(),
-        defer: function(fn) {
+        defer: function (fn) {
             setTimeout(fn, 0);
         },
-        debounce: function(func, wait, immediate) {
+        debounce: function (func, wait, immediate) {
             var timeout, result;
-            return function() {
+            return function () {
                 var context = this, args = arguments, later, callNow;
-                later = function() {
+                later = function () {
                     timeout = null;
                     if (!immediate) {
                         result = func.apply(context, args);
@@ -100,15 +117,15 @@
                 return result;
             };
         },
-        throttle: function(func, wait) {
+        throttle: function (func, wait) {
             var context, args, timeout, result, previous, later;
             previous = 0;
-            later = function() {
+            later = function () {
                 previous = new Date();
                 timeout = null;
                 result = func.apply(context, args);
             };
-            return function() {
+            return function () {
                 var now = new Date(), remaining = wait - (now - previous);
                 context = this;
                 args = arguments;
@@ -123,21 +140,34 @@
                 return result;
             };
         },
-        tokenizeQuery: function(str) {
+        tokenizeQuery: function (str) {
             return $.trim(str).toLowerCase().split(/[\s]+/);
         },
-        tokenizeText: function(str) {
+        tokenizeText: function (str) {
             return $.trim(str).toLowerCase().split(/[\s\-_]+/);
         },
-        getProtocol: function() {
+        getProtocol: function () {
             return location.protocol;
         },
-        noop: function() {}
+        noop: function () { },
+        moveToNextField: function (element) {
+            var fields = $($('body')
+                    .find('a[href], button, input, select, textarea')
+                    .filter(':visible').filter(':enabled')
+                    .toArray()
+                    .sort(function (a, b) {
+                        return ((a.tabIndex > 0) ? a.tabIndex : 1000) - ((b.tabIndex > 0) ? b.tabIndex : 1000);
+                    }));
+            var idx = fields.index(element) + 1;
+            if (idx >= fields.length)
+                idx = 0;
+            fields.eq(idx).focus();
+        }
     };
-    var EventTarget = function() {
+    var EventTarget = function () {
         var eventSplitter = /\s+/;
         return {
-            on: function(events, callback) {
+            on: function (events, callback) {
                 var event;
                 if (!callback) {
                     return this;
@@ -150,7 +180,7 @@
                 }
                 return this;
             },
-            trigger: function(events, data) {
+            trigger: function (events, data) {
                 var event, callbacks;
                 if (!this._callbacks) {
                     return this;
@@ -170,7 +200,7 @@
             }
         };
     }();
-    var EventBus = function() {
+    var EventBus = function () {
         var namespace = "typeahead:";
         function EventBus(o) {
             if (!o || !o.el) {
@@ -179,14 +209,14 @@
             this.$el = $(o.el);
         }
         utils.mixin(EventBus.prototype, {
-            trigger: function(type) {
+            trigger: function (type) {
                 var args = [].slice.call(arguments, 1);
                 this.$el.trigger(namespace + type, args);
             }
         });
         return EventBus;
     }();
-    var PersistentStorage = function() {
+    var PersistentStorage = function () {
         var ls, methods;
         try {
             ls = window.localStorage;
@@ -196,25 +226,25 @@
             ls = null;
         }
         function PersistentStorage(namespace) {
-            this.prefix = [ "__", namespace, "__" ].join("");
+            this.prefix = ["__", namespace, "__"].join("");
             this.ttlKey = "__ttl__";
             this.keyMatcher = new RegExp("^" + this.prefix);
         }
         if (ls && window.JSON) {
             methods = {
-                _prefix: function(key) {
+                _prefix: function (key) {
                     return this.prefix + key;
                 },
-                _ttlKey: function(key) {
+                _ttlKey: function (key) {
                     return this._prefix(key) + this.ttlKey;
                 },
-                get: function(key) {
+                get: function (key) {
                     if (this.isExpired(key)) {
                         this.remove(key);
                     }
                     return decode(ls.getItem(this._prefix(key)));
                 },
-                set: function(key, val, ttl) {
+                set: function (key, val, ttl) {
                     if (utils.isNumber(ttl)) {
                         ls.setItem(this._ttlKey(key), encode(now() + ttl));
                     } else {
@@ -222,24 +252,24 @@
                     }
                     return ls.setItem(this._prefix(key), encode(val));
                 },
-                remove: function(key) {
+                remove: function (key) {
                     ls.removeItem(this._ttlKey(key));
                     ls.removeItem(this._prefix(key));
                     return this;
                 },
-                clear: function() {
+                clear: function () {
                     var i, key, keys = [], len = ls.length;
                     for (i = 0; i < len; i++) {
                         if ((key = ls.key(i)).match(this.keyMatcher)) {
                             keys.push(key.replace(this.keyMatcher, ""));
                         }
                     }
-                    for (i = keys.length; i--; ) {
+                    for (i = keys.length; i--;) {
                         this.remove(keys[i]);
                     }
                     return this;
                 },
-                isExpired: function(key) {
+                isExpired: function (key) {
                     var ttl = decode(ls.getItem(this._ttlKey(key)));
                     return utils.isNumber(ttl) && now() > ttl ? true : false;
                 }
@@ -265,7 +295,7 @@
             return JSON.parse(val);
         }
     }();
-    var RequestCache = function() {
+    var RequestCache = function () {
         function RequestCache(o) {
             utils.bindAll(this);
             o = o || {};
@@ -274,22 +304,26 @@
             this.cachedKeysByAge = [];
         }
         utils.mixin(RequestCache.prototype, {
-            get: function(url) {
-                return this.cache[url];
+            get: function (cacheKey) {
+                return this.cache[cacheKey];
             },
-            set: function(url, resp) {
+            set: function (cacheKey, resp) {
                 var requestToEvict;
                 if (this.cachedKeysByAge.length === this.sizeLimit) {
                     requestToEvict = this.cachedKeysByAge.shift();
                     delete this.cache[requestToEvict];
                 }
-                this.cache[url] = resp;
-                this.cachedKeysByAge.push(url);
+                this.cache[cacheKey] = resp;
+                this.cachedKeysByAge.push(cacheKey);
+            },
+            clear: function () {
+                this.cache = {};
+                this.cachedKeysByAge = [];
             }
         });
         return RequestCache;
     }();
-    var Transport = function() {
+    var Transport = function () {
         var pendingRequestsCount = 0, pendingRequests = {}, maxPendingRequests, requestCache;
         function Transport(o) {
             utils.bindAll(this);
@@ -299,37 +333,57 @@
             requestCache = requestCache || new RequestCache();
             maxPendingRequests = utils.isNumber(o.maxParallelRequests) ? o.maxParallelRequests : maxPendingRequests || 6;
             this.url = o.url;
+            this.handler = o.handler = (typeof o.handler == 'function' ? o.handler : null);
             this.wildcard = o.wildcard || "%QUERY";
             this.filter = o.filter;
             this.replace = o.replace;
-            this.ajaxSettings = {
-                type: "get",
-                cache: o.cache,
-                timeout: o.timeout,
-                dataType: o.dataType || "json",
-                beforeSend: o.beforeSend
+            this.name = o.name;
+            this.limit = o.limit;
+            this.cacheKey = o.cacheKey;
+            this.skipCache = o.skipCache;
+            if (this.url) {
+                this.ajaxSettings = {
+                    type: "get",
+                    cache: o.cache,
+                    timeout: o.timeout,
+                    dataType: o.dataType || "json",
+                    beforeSend: o.beforeSend
+                };
             };
             this._get = (/^throttle$/i.test(o.rateLimitFn) ? utils.throttle : utils.debounce)(this._get, o.rateLimitWait || 300);
         }
         utils.mixin(Transport.prototype, {
-            _get: function(url, cb) {
-                var that = this;
+            _get: function (url, cb, query, cacheKey) {
+                var that = this, computedData = [];
                 if (belowPendingRequestsThreshold()) {
-                    this._sendRequest(url).done(done);
+                    if (this.handler)
+                        //Support Q promises as well as JQuery promises, remember that Q can consume JQuery promise but not vice versa
+                        if (typeof Q !== 'undefined')
+                            return Q.when(this._sendRequest(query, computedData)).then(function () { done(computedData); return Q.resolve(true); });
+                        else
+                            return $.when(this._sendRequest(query, computedData)).then(function () { done(computedData); return $.Deferred().resolve(); });
+                    else
+                        return this._sendRequest(url).done(done);
                 } else {
-                    this.onDeckRequestArgs = [].slice.call(arguments, 0);
+                    return this.onDeckRequestArgs = [].slice.call(arguments, 0);
                 }
                 function done(resp) {
                     var data = that.filter ? that.filter(resp) : resp;
                     cb && cb(data);
-                    requestCache.set(url, resp);
+                    this.skipCache || requestCache.set(cacheKey, resp);
                 }
             },
-            _sendRequest: function(url) {
+            _sendRequest: function (url, data) {
                 var that = this, jqXhr = pendingRequests[url];
                 if (!jqXhr) {
                     incrementPendingRequests();
-                    jqXhr = pendingRequests[url] = $.ajax(url, this.ajaxSettings).always(always);
+                    if (this.handler)
+                        if (Q)
+                            jqXhr = Q.when(this.handler(url, data, that.limit)).then(function () { always(); return Q.resolve(true); });
+                        else
+                            jqXhr = $.when(this.handler(url, data, that.limit)).then(function () { always(); return $.Deferred().resolve(); });
+                    else
+                        jqXhr = pendingRequests[url] = $.ajax(url, this.ajaxSettings).always(always);
                 }
                 return jqXhr;
                 function always() {
@@ -341,18 +395,25 @@
                     }
                 }
             },
-            get: function(query, cb) {
-                var that = this, encodedQuery = encodeURIComponent(query || ""), url, resp;
+            get: function (query, cb) {
+                var that = this, encodedQuery = encodeURIComponent(query || ""), url, resp, cacheKey;
                 cb = cb || utils.noop;
-                url = this.replace ? this.replace(this.url, encodedQuery) : this.url.replace(this.wildcard, encodedQuery);
-                if (resp = requestCache.get(url)) {
-                    utils.defer(function() {
+                url = this.url ? (this.replace ? this.replace(this.url, encodedQuery) : this.url.replace(this.wildcard, encodedQuery)) : '';
+                if (typeof this.cacheKey == 'function')
+                    cacheKey = this.cacheKey(query);
+                else
+                    cacheKey = this.cacheKey ? this.cacheKey + '%_' + query : url;
+                if (!this.skipCache && (resp = requestCache.get(cacheKey))) {
+                    utils.defer(function () {
                         cb(that.filter ? that.filter(resp) : resp);
                     });
                 } else {
-                    this._get(url, cb);
+                    this._get(url, cb, query, cacheKey);
                 }
                 return !!resp;
+            },
+            clearCache: function () {
+                this.skipCache || requestCache.clear();
             }
         });
         return Transport;
@@ -366,12 +427,13 @@
             return pendingRequestsCount < maxPendingRequests;
         }
     }();
-    var Dataset = function() {
+    var Dataset = function () {
         var keys = {
             thumbprint: "thumbprint",
             protocol: "protocol",
             itemHash: "itemHash",
-            adjacencyList: "adjacencyList"
+            adjacencyList: "adjacencyList",
+            nameAdjacencyList: "nameAdjacencyList"
         };
         function Dataset(o) {
             utils.bindAll(this);
@@ -379,64 +441,106 @@
                 $.error("no template engine specified");
             }
             if (!o.local && !o.prefetch && !o.remote) {
-                $.error("one of local, prefetch, or remote is required");
+                $.error("one of local, prefetch or remote is required");
             }
             this.name = o.name || utils.getUniqueId();
             this.limit = o.limit || 5;
-            this.minLength = o.minLength || 1;
+            if (o.minLength === 0)  //Allow for minlength = 0, in that case we should get all available options (for local) and what the remote function will to with empty query
+                this.minLength = 0;
+            else
+                this.minLength = o.minLength || 1;
+            this.cacheKeyFn = null;
+            if (typeof o.cacheKey === 'function') {
+                this.cacheKey = o.cacheKey();
+                this.cacheKeyFn = o.cacheKey;
+            }
+            else
+                this.cacheKey = o.cacheKey ? o.cacheKey : this.name;
             this.header = o.header;
             this.footer = o.footer;
             this.valueKey = o.valueKey || "value";
-            this.template = compileTemplate(o.template, o.engine, this.valueKey);
+            this.nameKey = o.nameKey || this.valueKey;
+            this.restrictInputToDatum = o.restrictInputToDatum; //The behavior to clear input value on leaving the box if it does not contain selected datum and if it dos reset the value to last selected datum name
+            this.template = compileTemplate(o.template, o.engine, this.nameKey);
             this.local = o.local;
             this.prefetch = o.prefetch;
             this.remote = o.remote;
+            this.matcher = o.matcher; //override for _getLocalSuggestions
             this.itemHash = {};
             this.adjacencyList = {};
-            this.storage = o.name ? new PersistentStorage(o.name) : null;
+            this.nameAdjacencyList = {};
+            this.storage = this.cacheKey ? new PersistentStorage(this.cacheKey) : null;
+            this.autoSelect = o.autoSelect === true; //False by default
+            this.floatDropdown = o.floatDropdown === true;
         }
         utils.mixin(Dataset.prototype, {
-            _processLocalData: function(data) {
+            _processLocalData: function (data) {
                 this._mergeProcessedData(this._processData(data));
             },
-            _loadPrefetchData: function(o) {
-                var that = this, thumbprint = VERSION + (o.thumbprint || ""), storedThumbprint, storedProtocol, storedItemHash, storedAdjacencyList, isExpired, deferred;
-                if (this.storage) {
-                    storedThumbprint = this.storage.get(keys.thumbprint);
-                    storedProtocol = this.storage.get(keys.protocol);
-                    storedItemHash = this.storage.get(keys.itemHash);
-                    storedAdjacencyList = this.storage.get(keys.adjacencyList);
-                }
-                isExpired = storedThumbprint !== thumbprint || storedProtocol !== utils.getProtocol();
+            _loadPrefetchData: function (o) {
+                var that = this, thumbprint = VERSION + (o.thumbprint || ""), storedThumbprint, storedProtocol, storedItemHash, storedAdjacencyList, storedNameAdjacencyList, isExpired = true, deferred;
                 o = utils.isString(o) ? {
                     url: o
                 } : o;
                 o.ttl = utils.isNumber(o.ttl) ? o.ttl : 24 * 60 * 60 * 1e3;
-                if (storedItemHash && storedAdjacencyList && !isExpired) {
+                if (!o.skipCache && o.ttl > 0) {
+                    if (this.storage) {
+                        storedThumbprint = this.storage.get(keys.thumbprint);
+                        storedProtocol = this.storage.get(keys.protocol);
+                        storedItemHash = this.storage.get(keys.itemHash);
+                        storedAdjacencyList = this.storage.get(keys.adjacencyList);
+                        storedNameAdjacencyList = this.storage.get(keys.nameAdjacencyList);
+                    }
+                    isExpired = storedThumbprint !== thumbprint || storedProtocol !== utils.getProtocol();
+                }
+                if (!o.skipCache && o.ttl > 0 && storedItemHash && storedAdjacencyList && storedNameAdjacencyList && !isExpired) {
                     this._mergeProcessedData({
                         itemHash: storedItemHash,
-                        adjacencyList: storedAdjacencyList
+                        adjacencyList: storedAdjacencyList,
+                        nameAdjacencyList: storedNameAdjacencyList
                     });
                     deferred = $.Deferred().resolve();
                 } else {
-                    deferred = $.getJSON(o.url).done(processPrefetchData);
+                    if (o.prefetchHandler && typeof o.prefetchHandler == 'function') {
+                        //Support Q promises as well as JQuery promises, remember that Q can consume JQuery promise but not vice versa
+                        if (typeof Q !== 'undefined') {
+                            deferred = $.Deferred();
+                            Q.when(o.prefetchHandler()).then(QDone).fail(function (error) { deferred.resolve(); });
+                        }
+                        else {
+                            deferred = $.when(o.prefetchHandler()).done(processPrefetchData);
+                        }
+                        function QDone(data) {
+                            processPrefetchData(data);
+                            deferred.resolve();
+                            return Q.resolve(true);
+                        }
+                    }
+                    else if (o.url)
+                        deferred = $.getJSON(o.url).done(processPrefetchData).fail(errorPrefetchdata);
                 }
                 return deferred;
+                function errorPrefetchdata(jqxhr, textStatus, error) {
+                    console.log('Prefetch error: ' + error.message);
+                };
                 function processPrefetchData(data) {
-                    var filteredData = o.filter ? o.filter(data) : data, processedData = that._processData(filteredData), itemHash = processedData.itemHash, adjacencyList = processedData.adjacencyList;
+                    var filteredData = o.filter ? o.filter(data) : data, processedData = that._processData(filteredData), itemHash = processedData.itemHash, adjacencyList = processedData.adjacencyList, nameAdjacencyList = processedData.nameAdjacencyList;
                     if (that.storage) {
                         that.storage.set(keys.itemHash, itemHash, o.ttl);
                         that.storage.set(keys.adjacencyList, adjacencyList, o.ttl);
+                        that.storage.set(keys.nameAdjacencyList, nameAdjacencyList, o.ttl);
                         that.storage.set(keys.thumbprint, thumbprint, o.ttl);
                         that.storage.set(keys.protocol, utils.getProtocol(), o.ttl);
                     }
                     that._mergeProcessedData(processedData);
                 }
             },
-            _transformDatum: function(datum) {
-                var value = utils.isString(datum) ? datum : datum[this.valueKey], tokens = datum.tokens || utils.tokenizeText(value), item = {
+            _transformDatum: function (datum) {
+                var value = utils.isString(datum) ? datum : datum[this.valueKey], name = utils.isString(datum) ? datum : datum[this.nameKey], tokens = datum.tokens || utils.tokenizeText(value), item = {
                     value: value,
-                    tokens: tokens
+                    name: name,
+                    tokens: tokens,
+                    dsname: this.name  //Dataset name/key
                 };
                 if (utils.isString(datum)) {
                     item.datum = {};
@@ -444,97 +548,149 @@
                 } else {
                     item.datum = datum;
                 }
-                item.tokens = utils.filter(item.tokens, function(token) {
-                    return !utils.isBlankString(token);
-                });
-                item.tokens = utils.map(item.tokens, function(token) {
-                    return token.toLowerCase();
-                });
+                //We should trust the users not to put in empty tokens - if they do, no harm done
+                //item.tokens = utils.filter(item.tokens, function (token) {
+                //    return !utils.isBlankString(token);
+                //});
+                //in-case insensitve search using regEx should be quicker than indexof so we can skip this processing - this also has bug if token is not string
+                //item.tokens = utils.map(item.tokens, function (token) {
+                //    return token.toLowerCase();
+                //});
                 return item;
             },
-            _processData: function(data) {
-                var that = this, itemHash = {}, adjacencyList = {};
-                utils.each(data, function(i, datum) {
+            _processData: function (data) {
+                var that = this, itemHash = {}, adjacencyList = {}, nameAdjacencyList = {};
+                utils.each(data, function (i, datum) {
                     var item = that._transformDatum(datum), id = utils.getUniqueId(item.value);
                     itemHash[id] = item;
-                    utils.each(item.tokens, function(i, token) {
-                        var character = token.charAt(0), adjacency = adjacencyList[character] || (adjacencyList[character] = [ id ]);
+                    var nChar = item.name.charAt(0).toLowerCase();
+                    nameAdjacency = nameAdjacencyList[nChar] || (nameAdjacencyList[nChar] = [id]);
+                    !~utils.indexOf(nameAdjacency, id) && nameAdjacency.push(id);
+                    utils.each(item.tokens, function (i, token) {
+                        var character = token.charAt(0).toLowerCase();
+                        adjacency = adjacencyList[character] || (adjacencyList[character] = [id]);
                         !~utils.indexOf(adjacency, id) && adjacency.push(id);
                     });
                 });
                 return {
                     itemHash: itemHash,
-                    adjacencyList: adjacencyList
+                    adjacencyList: adjacencyList,
+                    nameAdjacencyList: nameAdjacencyList
                 };
             },
-            _mergeProcessedData: function(processedData) {
+            _mergeProcessedData: function (processedData) {
                 var that = this;
                 utils.mixin(this.itemHash, processedData.itemHash);
-                utils.each(processedData.adjacencyList, function(character, adjacency) {
+                utils.each(processedData.adjacencyList, function (character, adjacency) {
                     var masterAdjacency = that.adjacencyList[character];
                     that.adjacencyList[character] = masterAdjacency ? masterAdjacency.concat(adjacency) : adjacency;
                 });
+                utils.each(processedData.nameAdjacencyList, function (character, nameAdjacency) {
+                    var masterNameAdjacency = that.nameAdjacencyList[character];
+                    that.nameAdjacencyList[character] = masterNameAdjacency ? masterNameAdjacency.concat(nameAdjacency) : nameAdjacency;
+                });
             },
-            _getLocalSuggestions: function(terms) {
-                var that = this, firstChars = [], lists = [], shortestList, suggestions = [];
-                utils.each(terms, function(i, term) {
-                    var firstChar = term.charAt(0);
-                    !~utils.indexOf(firstChars, firstChar) && firstChars.push(firstChar);
-                });
-                utils.each(firstChars, function(i, firstChar) {
-                    var list = that.adjacencyList[firstChar];
-                    if (!list) {
-                        return false;
-                    }
-                    lists.push(list);
-                    if (!shortestList || list.length < shortestList.length) {
-                        shortestList = list;
-                    }
-                });
-                if (lists.length < firstChars.length) {
-                    return [];
+            //_getLocalSuggestion rewritten since the old version was not ideal
+            //Here there is only one search term: the query entered
+            //This search prefers names first and then tokens. This is helpful since we are using hint system and want the hint to match the name
+            //This will also handle empty query as to return all options (up to the limit of cours)
+            _getLocalSuggestions: function (query) {
+                var suggestions = [], src = utils.escapeRegExChars(query.toLowerCase()), itLen, noFound = 0, regSrc = new RegExp('^' + src, 'i');
+                if (utils.isEmpty(query)) {
+                    //User asks for all suggestions if no query
+                    var lim = this.limit;
+                    utils.each(this.itemHash, function (i, item) {
+                        suggestions.push(item);
+                        noFound++;
+                        if (noFound == lim)
+                            return false;
+                    });
                 }
-                utils.each(shortestList, function(i, id) {
-                    var item = that.itemHash[id], isCandidate, isMatch;
-                    isCandidate = utils.every(lists, function(list) {
-                        return ~utils.indexOf(list, id);
-                    });
-                    isMatch = isCandidate && utils.every(terms, function(term) {
-                        return utils.some(item.tokens, function(token) {
-                            return token.indexOf(term) === 0;
-                        });
-                    });
-                    isMatch && suggestions.push(item);
-                });
+                else {
+                    //First round, name-search
+                    //Use the new nameAdjacencyList for indexing on the first char:
+                    var nlist = this.nameAdjacencyList[src.charAt(0)];
+                    if (nlist) {
+                        itLen = nlist.length;
+                        for (var i = 0; i < itLen; i++) {
+                            var item = this.itemHash[nlist[i]];
+                            if (item.name.search(regSrc) === 0) {
+                                suggestions.push(item);
+                                noFound++;
+                            };
+                            if (noFound == this.limit)
+                                break;
+                        };
+                    }
+
+                    if (noFound < this.limit) {
+                        //second round tuple search
+                        var list = this.adjacencyList[src.charAt(0)];
+                        if (!list)
+                            return suggestions;
+                        itLen = list.length;
+                        for (var i = 0; i < itLen; i++) {
+                            var item = this.itemHash[list[i]];
+                            var isMatch = utils.some(item.tokens, function (token) {
+                                return token.search(regSrc) === 0;
+                            });
+                            if (isMatch) {
+                                //Check if suggestion allready found
+                                var isInSuggest = false;
+                                utils.each(suggestions, function (i, sugg) {
+                                    if (sugg.value == item.value) {
+                                        isInSuggest = true;
+                                        return false; //break
+                                    }
+                                });
+                                if (!isInSuggest) {
+                                    suggestions.push(item);
+                                    noFound++;
+                                    if (noFound == this.limit)
+                                        break;
+                                }
+
+                            }
+                        }
+                    }
+                }
                 return suggestions;
             },
-            initialize: function() {
+            initialize: function () {
                 var deferred;
                 this.local && this._processLocalData(this.local);
+                if (this.remote && typeof this.remote == 'function') this.remote = { handler: this.remote }; //Allow for remote to be handler function
+                if (this.prefetch && typeof this.prefetch == 'function') this.prefetch = { prefetchHandler: this.prefetch }; //Allow for prefetch to be handler function
+                if (this.remote && !this.remote.url && !this.remote.cacheKey && !this.remote.name) this.remote.cacheKey = this.cacheKey || this.remote.name || this.name; //Fallback for caching name for handler if cacheKey is not specified in the remote section, another approach would be to raise error if missing
+                if (this.remote) this.remote.limit = this.limit; //transfer th items max limit to remote for use in the transport module
                 this.transport = this.remote ? new Transport(this.remote) : null;
+                this.isRemote = this.remote ? true : false;
                 deferred = this.prefetch ? this._loadPrefetchData(this.prefetch) : $.Deferred().resolve();
-                this.local = this.prefetch = this.remote = null;
-                this.initialize = function() {
+                //this.local = this.prefetch = this.remote = null; we need the original objects for the reload function
+                this.initialize = function () {
                     return deferred;
                 };
                 return deferred;
             },
-            getSuggestions: function(query, cb) {
+            getSuggestions: function (query, cb) {
                 var that = this, terms, suggestions, cacheHit = false;
                 if (query.length < this.minLength) {
                     return;
                 }
-                terms = utils.tokenizeQuery(query);
-                suggestions = this._getLocalSuggestions(terms).slice(0, this.limit);
-                if (suggestions.length < this.limit && this.transport) {
+                //terms = utils.tokenizeQuery(query);
+                //suggestions = this._getLocalSuggestions(terms).slice(0, this.limit);
+                if (this.matcher && typeof this.matcher == 'function')
+                    suggestons = this.matcher(query, this);
+                else
+                    suggestions = this._getLocalSuggestions(query);
+                if (this.transport)
                     cacheHit = this.transport.get(query, processRemoteData);
-                }
                 !cacheHit && cb && cb(suggestions);
                 function processRemoteData(data) {
                     suggestions = suggestions.slice(0);
-                    utils.each(data, function(i, datum) {
+                    utils.each(data, function (i, datum) {
                         var item = that._transformDatum(datum), isDuplicate;
-                        isDuplicate = utils.some(suggestions, function(suggestion) {
+                        isDuplicate = utils.some(suggestions, function (suggestion) {
                             return item.value === suggestion.value;
                         });
                         !isDuplicate && suggestions.push(item);
@@ -542,10 +698,31 @@
                     });
                     cb && cb(suggestions);
                 }
+            },
+            //Returns deferred object that resolves when local abnd prefetched data has been loaded
+            reload: function () {
+                var deferred;
+                if (this.cacheKeyFn) {
+                    var oldKey = this.cacheKey;
+                    this.cacheKey = this.cacheKeyFn(); //Reevaluate the cache key
+                    if (this.cacheKey != oldKey)
+                        this.clearCache();
+                }
+                this.itemHash = {};
+                this.adjacencyList = {};
+                this.nameAdjacencyList = {};
+                this.local && this._processLocalData(this.local);
+                return this.prefetch ? this._loadPrefetchData(this.prefetch) : $.Deferred().resolve();
+            },
+            clearCache: function () {
+                if (this.storage)
+                    this.storage.clear();
+                if (this.transport)
+                    this.transport.clearCache();
             }
         });
         return Dataset;
-        function compileTemplate(template, engine, valueKey) {
+        function compileTemplate(template, engine, nameKey) {
             var renderFn, compiledTemplate;
             if (utils.isFunction(template)) {
                 renderFn = template;
@@ -553,14 +730,14 @@
                 compiledTemplate = engine.compile(template);
                 renderFn = utils.bind(compiledTemplate.render, compiledTemplate);
             } else {
-                renderFn = function(context) {
-                    return "<p>" + context[valueKey] + "</p>";
+                renderFn = function (context) {
+                    return "<p>" + context[nameKey] + "</p>";
                 };
             }
             return renderFn;
         }
     }();
-    var InputView = function() {
+    var InputView = function () {
         function InputView(o) {
             var that = this;
             utils.bindAll(this);
@@ -573,12 +750,14 @@
                 38: "up",
                 40: "down"
             };
+            this.tracer = o.tracer;
+            this.isFocused = false;
             this.$hint = $(o.hint);
             this.$input = $(o.input).on("blur.tt", this._handleBlur).on("focus.tt", this._handleFocus).on("keydown.tt", this._handleSpecialKeyEvent);
             if (!utils.isMsie()) {
                 this.$input.on("input.tt", this._compareQueryToInputValue);
             } else {
-                this.$input.on("keydown.tt keypress.tt cut.tt paste.tt", function($e) {
+                this.$input.on("keydown.tt keypress.tt cut.tt paste.tt", function ($e) {
                     if (that.specialKeyCodeMap[$e.which || $e.keyCode]) {
                         return;
                     }
@@ -589,66 +768,77 @@
             this.$overflowHelper = buildOverflowHelper(this.$input);
         }
         utils.mixin(InputView.prototype, EventTarget, {
-            _handleFocus: function() {
+            _handleFocus: function () {
+                //this.tracer.push('inputview focus');
+                this.isFocused = true;
                 this.trigger("focused");
             },
-            _handleBlur: function() {
+            _handleBlur: function () {
+                //this.tracer.push('inputview blured');
+                this.isFocused = false;
                 this.trigger("blured");
             },
-            _handleSpecialKeyEvent: function($e) {
+            _handleSpecialKeyEvent: function ($e) {
                 var keyName = this.specialKeyCodeMap[$e.which || $e.keyCode];
                 keyName && this.trigger(keyName + "Keyed", $e);
+                if (keyName == 'enter') {
+                    $e.preventDefault(); //Stop event if/when moved to next field (i.e. from submitint or entering link)
+                }
+
             },
-            _compareQueryToInputValue: function() {
-                var inputValue = this.getInputValue(), isSameQuery = compareQueries(this.query, inputValue), isSameQueryExceptWhitespace = isSameQuery ? this.query.length !== inputValue.length : false;
-                if (isSameQueryExceptWhitespace) {
-                    this.trigger("whitespaceChanged", {
-                        value: this.query
-                    });
-                } else if (!isSameQuery) {
+            _compareQueryToInputValue: function () {
+                var inputValue = this.getInputValue(), isSameQuery = compareQueries(this.query, inputValue);
+                //No need for whitespace handling, query suggestons include whitespace like any other character!
+                //, isSameQueryExceptWhitespace = isSameQuery ? this.query.length !== inputValue.length : false;
+                //if (isSameQueryExceptWhitespace) {
+                //    this.trigger("whitespaceChanged", {
+                //        value: this.query
+                //    });
+                //} else
+                if (!isSameQuery) {
                     this.trigger("queryChanged", {
                         value: this.query = inputValue
                     });
                 }
             },
-            destroy: function() {
+            destroy: function () {
                 this.$hint.off(".tt");
                 this.$input.off(".tt");
                 this.$hint = this.$input = this.$overflowHelper = null;
             },
-            focus: function() {
+            focus: function () {
                 this.$input.focus();
             },
-            blur: function() {
+            blur: function () {
                 this.$input.blur();
             },
-            getQuery: function() {
+            getQuery: function () {
                 return this.query;
             },
-            setQuery: function(query) {
+            setQuery: function (query) {
                 this.query = query;
             },
-            getInputValue: function() {
+            getInputValue: function () {
                 return this.$input.val();
             },
-            setInputValue: function(value, silent) {
+            setInputValue: function (value, silent) {
                 this.$input.val(value);
                 !silent && this._compareQueryToInputValue();
             },
-            getHintValue: function() {
+            getHintValue: function () {
                 return this.$hint.val();
             },
-            setHintValue: function(value) {
+            setHintValue: function (value) {
                 this.$hint.val(value);
             },
-            getLanguageDirection: function() {
+            getLanguageDirection: function () {
                 return (this.$input.css("direction") || "ltr").toLowerCase();
             },
-            isOverflow: function() {
+            isOverflow: function () {
                 this.$overflowHelper.text(this.getInputValue());
                 return this.$overflowHelper.width() > this.$input.width();
             },
-            isCursorAtEnd: function() {
+            isCursorAtEnd: function () {
                 var valueLength = this.$input.val().length, selectionStart = this.$input[0].selectionStart, range;
                 if (utils.isNumber(selectionStart)) {
                     return selectionStart === valueLength;
@@ -658,6 +848,10 @@
                     return valueLength === range.text.length;
                 }
                 return true;
+            },
+            //Report if the input has focus or not 
+            hasFocus: function () {
+                return this.isFocused || this.$input.is(':focus');
             }
         });
         return InputView;
@@ -685,7 +879,7 @@
             return a === b;
         }
     }();
-    var DropdownView = function() {
+    var DropdownView = function () {
         var html = {
             suggestionsList: '<span class="tt-suggestions"></span>'
         }, css = {
@@ -702,36 +896,58 @@
         };
         function DropdownView(o) {
             utils.bindAll(this);
+            this.tracer = o.tracer;
             this.isOpen = false;
             this.isEmpty = true;
             this.isMouseOverDropdown = false;
-            this.$menu = $(o.menu).on("mouseenter.tt", this._handleMouseenter).on("mouseleave.tt", this._handleMouseleave).on("click.tt", ".tt-suggestion", this._handleSelection).on("mouseover.tt", ".tt-suggestion", this._handleMouseover);
+            this.$menu = $(o.menu).on("mousedown.tt", this._handleMouseDown).on("mouseenter.tt", this._handleMouseenter).on("mouseleave.tt", this._handleMouseleave).on("click.tt", ".tt-suggestion", this._handleSelection).on("mouseover.tt", ".tt-suggestion", this._handleMouseover);
+            this.$input = o.input;
+            this.$hint = o.hint;
         }
         utils.mixin(DropdownView.prototype, EventTarget, {
-            _handleMouseenter: function() {
+            _handleMouseenter: function () {
                 this.isMouseOverDropdown = true;
             },
-            _handleMouseleave: function() {
+            _handleMouseleave: function () {
                 this.isMouseOverDropdown = false;
             },
-            _handleMouseover: function($e) {
+            _handleMouseover: function ($e) {
                 var $suggestion = $($e.currentTarget);
                 this._getSuggestions().removeClass("tt-is-under-cursor");
                 $suggestion.addClass("tt-is-under-cursor");
             },
-            _handleSelection: function($e) {
+            _handleMouseDown: function ($e) {
+                //This stops the inputview from bluring (this from focusing) but the _handleSelection is still executed without problem (which is exactly what we needed)
+                //this.tracer.push('Dropdownview mousedown target: ' + $e.type + ' ' + $e.currentTarget.innerText);
+                $e.preventDefault();
+            },
+            _handleSelection: function ($e) {
+                //this.tracer.push('Dropdownview handleselecton target: ' + extractSuggestion($($e.currentTarget)).name);
                 if($e.toElement.className != "customer_info") {
                     var $suggestion = $($e.currentTarget);
                     this.trigger("suggestionSelected", extractSuggestion($suggestion));
                 }
             },
-            _show: function() {
+            _show: function () {
                 this.$menu.css("display", "block");
             },
-            _hide: function() {
+            setPos: function () {
+                var winH = $(window).height(), menuH = $(this.$menu[0]).outerHeight(true), inpPos = $(this.$input[0]).offset();
+                var y, inpH = $(this.$input[0]).outerHeight(true), scrollTop = $(window).scrollTop();
+                //Move dropdown above input if not enaugh room below and there is visible room enaugh above
+                if ((inpPos.top + inpH + menuH > winH + scrollTop) && (menuH < (inpPos.top - scrollTop))) {
+                    y = inpPos.top - menuH; // + scrollTop;
+                    //this.tracer.push('MenuUp: '+y);
+                } else {
+                    y = inpPos.top + inpH;
+                    //this.tracer.push('Menu: ' + y);
+                }
+                $(this.$menu[0]).offset({ top: y, left: inpPos.left });
+            },
+            _hide: function () {
                 this.$menu.hide();
             },
-            _moveCursor: function(increment) {
+            _moveCursor: function (increment) {
                 var $suggestions, $cur, nextIndex, $underCursor;
                 if (!this.isVisible()) {
                     return;
@@ -751,10 +967,10 @@
                 this._ensureVisibility($underCursor);
                 this.trigger("cursorMoved", extractSuggestion($underCursor));
             },
-            _getSuggestions: function() {
+            _getSuggestions: function () {
                 return this.$menu.find(".tt-suggestions > .tt-suggestion");
             },
-            _ensureVisibility: function($el) {
+            _ensureVisibility: function ($el) {
                 var menuHeight = this.$menu.height() + parseInt(this.$menu.css("paddingTop"), 10) + parseInt(this.$menu.css("paddingBottom"), 10), menuScrollTop = this.$menu.scrollTop(), elTop = $el.position().top, elBottom = elTop + $el.outerHeight(true);
                 if (elTop < 0) {
                     this.$menu.scrollTop(menuScrollTop + elTop);
@@ -762,19 +978,19 @@
                     this.$menu.scrollTop(menuScrollTop + (elBottom - menuHeight));
                 }
             },
-            destroy: function() {
+            destroy: function () {
                 this.$menu.off(".tt");
                 this.$menu = null;
             },
-            isVisible: function() {
+            isVisible: function () {
                 return this.isOpen && !this.isEmpty;
             },
-            closeUnlessMouseIsOverDropdown: function() {
+            closeUnlessMouseIsOverDropdown: function () {
                 if (!this.isMouseOverDropdown) {
                     this.close();
                 }
             },
-            close: function() {
+            close: function () {
                 if (this.isOpen) {
                     this.isOpen = false;
                     this.isMouseOverDropdown = false;
@@ -783,14 +999,15 @@
                     this.trigger("closed");
                 }
             },
-            open: function() {
+            open: function () {
                 if (!this.isOpen) {
                     this.isOpen = true;
-                    !this.isEmpty && this._show();
+                    //!this.isEmpty && this._show();
+                    this._show();
                     this.trigger("opened");
                 }
             },
-            setLanguageDirection: function(dir) {
+            setLanguageDirection: function (dir) {
                 var ltrCss = {
                     left: "0",
                     right: "auto"
@@ -798,23 +1015,30 @@
                     left: "auto",
                     right: " 0"
                 };
-                dir === "ltr" ? this.$menu.css(ltrCss) : this.$menu.css(rtlCss);
+                //dir === "ltr" ? this.$menu.css(ltrCss) : this.$menu.css(rtlCss); Suggested by @nawar:
+                if (dir === "ltr") {
+                    this.$menu.css(ltrCss);
+                    this.$hint.css(ltrCss);
+                } else {
+                    this.$menu.css(rtlCss);
+                    this.$hint.css(rtlCss);
+                }
             },
-            moveCursorUp: function() {
+            moveCursorUp: function () {
                 this._moveCursor(-1);
             },
-            moveCursorDown: function() {
+            moveCursorDown: function () {
                 this._moveCursor(+1);
             },
-            getSuggestionUnderCursor: function() {
+            getSuggestionUnderCursor: function () {
                 var $suggestion = this._getSuggestions().filter(".tt-is-under-cursor").first();
                 return $suggestion.length > 0 ? extractSuggestion($suggestion) : null;
             },
-            getFirstSuggestion: function() {
-                var $suggestion = this._getSuggestions().first();
-                return $suggestion.length > 0 ? extractSuggestion($suggestion) : null;
-            },
-            renderSuggestions: function(dataset, suggestions) {
+            //getFirstSuggestion: function () {  //Replaced by _findFirstSuggestion that finds first matching (remote data can include suggestion where the first one does not neccecerily match the query)
+            //    var $suggestion = this._getSuggestions().first();
+            //    return $suggestion.length > 0 ? extractSuggestion($suggestion) : null;
+            //},
+            renderSuggestions: function (dataset, suggestions) {
                 var datasetClassName = "tt-dataset-" + dataset.name, wrapper = '<div class="tt-suggestion">%body</div>', compiledHtml, $suggestionsList, $dataset = this.$menu.find("." + datasetClassName), elBuilder, fragment, $el;
                 if ($dataset.length === 0) {
                     $suggestionsList = $(html.suggestionsList).css(css.suggestionsList);
@@ -825,12 +1049,12 @@
                     this.isOpen && this._show();
                     elBuilder = document.createElement("div");
                     fragment = document.createDocumentFragment();
-                    utils.each(suggestions, function(i, suggestion) {
-                        suggestion.dataset = dataset.name;
+                    utils.each(suggestions, function (i, suggestion) {
+                        //suggestion.dataset = dataset.name; (dsname takes care of this at suggestion creation)
                         compiledHtml = dataset.template(suggestion.datum);
                         elBuilder.innerHTML = wrapper.replace("%body", compiledHtml);
                         $el = $(elBuilder.firstChild).css(css.suggestion).data("suggestion", suggestion);
-                        $el.children().each(function() {
+                        $el.children().each(function () {
                             $(this).css(css.suggestionChild);
                         });
                         fragment.appendChild($el[0]);
@@ -841,13 +1065,50 @@
                 }
                 this.trigger("suggestionsRendered");
             },
-            clearSuggestions: function(datasetName) {
+            clearSuggestions: function (datasetName) {
+                //this.tracer.push('Dropdownview clearSuggestions');
                 var $datasets = datasetName ? this.$menu.find(".tt-dataset-" + datasetName) : this.$menu.find('[class^="tt-dataset-"]'), $suggestions = $datasets.find(".tt-suggestions");
                 $datasets.hide();
                 $suggestions.empty();
                 if (this._getSuggestions().length === 0) {
                     this.isEmpty = true;
                     this._hide();
+                }
+            },
+            _findSuggestion: function (keyValue) { //Returns suggestion JQuery element
+                var suggestions = this._getSuggestions();
+                var $foundSuggestion = null;
+                utils.each(suggestions, function (i, suggestion) {
+                    var data = extractSuggestion($(suggestion));
+                    if (data && data.value === keyValue) {
+                        $foundSuggestion = $(suggestion);
+                        return false;
+                    }
+                });
+                return $foundSuggestion;
+            },
+            _findFirstSuggestion: function (query) { //Find first suggestion that matches query by name - returns suggestion element
+                var suggestions = this._getSuggestions(), suggestionObj = { element: null, data: null };
+                utils.each(suggestions, function (i, suggestion) {
+                    var data = extractSuggestion($(suggestion));
+                    if (data && query.toLowerCase() === data.name.substring(0, query.length).toLowerCase()) {
+                        suggestionObj.element = $(suggestion);
+                        suggestionObj.data = data;
+                        return false; //break
+                    }
+                });
+                return suggestionObj;
+            },
+            highlightSuggestion: function ($suggestion) {
+                this._getSuggestions().removeClass("tt-is-under-cursor");
+                if ($suggestion) {
+                    $suggestion.addClass("tt-is-under-cursor");
+                }
+            },
+            highlightDatum: function ($suggestion) { //Higlight selected datum with own css
+                this._getSuggestions().removeClass("tt-is-current");
+                if ($suggestion) {
+                    $suggestion.addClass("tt-is-current");
                 }
             }
         });
@@ -856,7 +1117,7 @@
             return $el.data("suggestion");
         }
     }();
-    var TypeaheadView = function() {
+    var TypeaheadView = function () {
         var html = {
             wrapper: '<span class="twitter-typeahead"></span>',
             hint: '<input class="tt-hint" type="text" autocomplete="off" spellcheck="off" disabled>',
@@ -882,7 +1143,7 @@
                 position: "absolute",
                 top: "100%",
                 left: "0",
-                zIndex: "100",
+                zIndex: "1070", //to overlay at least bootstrap navbar-fixed-top (1030)
                 display: "none"
             }
         };
@@ -904,38 +1165,118 @@
             var $menu, $input, $hint;
             utils.bindAll(this);
             this.$node = buildDomStructure(o.input);
+            this.selectedDatum = null;
+            this.selectedDatumDsName = null;
             this.datasets = o.datasets;
             this.dir = null;
             this.eventBus = o.eventBus;
+            this.hasRemote = false;
+            this.isBusy = false;  //For controllyng busy/notBusy events
+            this.isLoading = false; //
+            this.dsnameAny = null; //Failsafe dsname for setDatum
+            this.restrictInputToDatum = null;
+            this.tracer = null; //Debug tool for logs since console.log is unusable in IE since it receives focus
+            this.dsIdx = []; //NameIndex on datasets
+            this.minMinLength = null; //The least minLength of the datasets - to check if any of them allow for empty query (get all)
+            this.autoSelect = false;
+            this.floatDropdown = false;
+            //Pickup required options from the datasets
+            //Note: we are assuming that each dataset has the same name and valueKeys, restrictInputToDatum is picked up from any of those
+            //Perhaps a better way would be to have some global settings seporate from the datasets
+            if (this.datasets && this.datasets.length > 0) {
+                for (var i = 0; i < this.datasets.length; i++) {
+                    this.dsIdx[this.datasets[i].name] = this.datasets[i];
+                    if (!this.dsnameAny)
+                        this.dsnameAny = this.datasets[i].name;
+                    if (this.datasets[i].isRemote) {
+                        this.hasRemote = true;
+                        this.dsnameAny = this.datasets[i].name; //prefer remote dataset as failsafe for setDatum
+                    }
+                    if (!this.restrictInputToDatum && this.datasets[i]['restrictInputToDatum'])
+                        this.restrictInputToDatum = this.datasets[i]['restrictInputToDatum'];
+                    if (!this.tracer)
+                        this.tracer = this.datasets[i]['tracer'];
+                    if (this.minMinLength === null || this.minMinLength > this.datasets[i].minLength)
+                        this.minMinLength = this.datasets[i].minLength;
+                    if (this.datasets[i].autoSelect === true) this.autoSelect = true;
+                    if (this.datasets[i].floatDropdown === true) this.floatDropdown = true;
+                }
+            }
+            if (!this.tracer) this.tracer = [];
             $menu = this.$node.find(".tt-dropdown-menu");
             $input = this.$node.find(".tt-query");
             $hint = this.$node.find(".tt-hint");
             this.dropdownView = new DropdownView({
-                menu: $menu
+                menu: $menu,
+                input: $input, //Needed to calculate dropdown position
+                hint: $hint, //Needed to control alignment
+                tracer: this.tracer
             }).on("suggestionSelected", this._handleSelection).on("cursorMoved", this._clearHint).on("cursorMoved", this._setInputValueToSuggestionUnderCursor).on("cursorRemoved", this._setInputValueToQuery).on("cursorRemoved", this._updateHint).on("suggestionsRendered", this._updateHint).on("opened", this._updateHint).on("closed", this._clearHint).on("opened closed", this._propagateEvent);
             this.inputView = new InputView({
                 input: $input,
-                hint: $hint
-            }).on("focused", this._openDropdown).on("blured", this._closeDropdown).on("blured", this._setInputValueToQuery).on("enterKeyed tabKeyed", this._handleSelection).on("queryChanged", this._clearHint).on("queryChanged", this._clearSuggestions).on("queryChanged", this._getSuggestions).on("whitespaceChanged", this._updateHint).on("queryChanged whitespaceChanged", this._openDropdown).on("queryChanged whitespaceChanged", this._setLanguageDirection).on("escKeyed", this._closeDropdown).on("escKeyed", this._setInputValueToQuery).on("tabKeyed upKeyed downKeyed", this._managePreventDefault).on("upKeyed downKeyed", this._moveDropdownCursor).on("upKeyed downKeyed", this._openDropdown).on("tabKeyed leftKeyed rightKeyed", this._autocomplete);
+                hint: $hint,
+                tracer: this.tracer
+                //Little cleanup of all the event handlers here
+                //I do not see any need for handling whitespace key at all !
+            }).on("focused", this._handleFocused)
+                //.on("queryChanged", this._clearHint).on("queryChanged", this._clearSuggestions).on("queryChanged", this._queryForSuggestions)
+                //.on("whitespaceChanged", this._updateHint)
+                //.on("queryChanged whitespaceChanged", this._queryForSuggestions)
+                //.on("queryChanged whitespaceChanged", this._setLanguageDirection) //include in queryForSuggestions
+                .on("queryChanged", this._queryForSuggestions)
+                .on("escKeyed", this._closeDropdown).on("escKeyed", this._setInputValueToQuery)
+                .on("tabKeyed upKeyed downKeyed", this._managePreventDefault)
+                .on("upKeyed downKeyed", this._moveDropdownCursor)
+                .on("upKeyed downKeyed", this._openDropdown)
+                .on("tabKeyed leftKeyed rightKeyed", this._autocomplete)
+                .on("enterKeyed tabKeyed", this._handleSelection)
+                .on("blured", this._handleBlured);
         }
         utils.mixin(TypeaheadView.prototype, EventTarget, {
-            _managePreventDefault: function(e) {
+            _managePreventDefault: function (e) {
                 var $e = e.data, hint, inputValue, preventDefault = false;
                 switch (e.type) {
-                  case "tabKeyed":
-                    hint = this.inputView.getHintValue();
-                    inputValue = this.inputView.getInputValue();
-                    preventDefault = hint && hint !== inputValue;
-                    break;
+                    case "tabKeyed":  //Stop user from leaving input on tab-key if auto-completion is still to be done by tab key
+                        hint = this.inputView.getHintValue();
+                        inputValue = this.inputView.getInputValue();
+                        preventDefault = hint && hint !== inputValue && !this.autoSelect;
+                        break;
 
-                  case "upKeyed":
-                  case "downKeyed":
-                    preventDefault = !$e.shiftKey && !$e.ctrlKey && !$e.metaKey;
-                    break;
+                    case "upKeyed":
+                    case "downKeyed":
+                        preventDefault = !$e.shiftKey && !$e.ctrlKey && !$e.metaKey;
+                        break;
                 }
                 preventDefault && $e.preventDefault();
             },
-            _setLanguageDirection: function() {
+            _manageLeaving: function (e) {
+                //this.tracer.push('Leaving');
+                var inputValue = this.inputView.getInputValue();
+                var restrict = (typeof this.restrictInputToDatum == 'function' ? this.restrictInputToDatum() : this.restrictInputToDatum);
+                //To allow user to select nothing we nullify the datum if the input string is empty and the datum name is not empty
+                if (utils.isEmpty(inputValue)) {
+                    if (!this.selectedDatum || this.selectedDatum[this.dsIdx[this.selectedDatumDsName].nameKey]) {
+                        this.selectedDatum = null; //Clear the selected datum and notify
+                        this.eventBus.trigger("noSelect", ''); //TTrigger event for databinding since user is deliberatly selecting empty value
+                    }
+                }
+                else if (this.selectedDatum && inputValue != this.selectedDatum[this.dsIdx[this.selectedDatumDsName].nameKey]) {
+                    if (restrict) {
+                        this.inputView.setInputValue(this.selectedDatum[this.dsIdx[this.selectedDatumDsName].nameKey], true); //Reset input value as current datum
+                    }
+                    else {
+                        this.selectedDatum = null; //Clear the selected datum and notify (without removing the input text)
+                        this.eventBus.trigger("noSelect", inputValue); //TTrigger event for databinding of selected datum
+                    }
+                }
+                else if (!this.selectedDatum && !utils.isEmpty(inputValue)) {
+                    if (restrict)
+                        this.inputView.setInputValue('', true); //Reset input value to empty value if restriction
+                    this.eventBus.trigger("noSelect", inputValue); //TTrigger event for databinding of selected datum
+                }
+
+            },
+            _setLanguageDirection: function () {
                 var dir = this.inputView.getLanguageDirection();
                 if (dir !== this.dir) {
                     this.dir = dir;
@@ -943,8 +1284,16 @@
                     this.dropdownView.setLanguageDirection(dir);
                 }
             },
-            _updateHint: function() {
-                var suggestion = this.dropdownView.getFirstSuggestion(), hint = suggestion ? suggestion.value : null, dropdownIsVisible = this.dropdownView.isVisible(), inputHasOverflow = this.inputView.isOverflow(), inputValue, query, escapedQuery, beginsWithQuery, match;
+            _updateHint: function () {
+                var suggestionObj = { element: null, data: null }, $suggestion = null;
+                if (this.selectedDatum) { //Find by key and highlight
+                    var key = this.dsIdx[this.selectedDatumDsName].valueKey;
+                    $suggestion = this.dropdownView._findSuggestion(this.selectedDatum[key]);
+                }
+                this.dropdownView.highlightDatum($suggestion);
+                suggestionObj = this.dropdownView._findFirstSuggestion(this.inputView.getInputValue()); //The hint suggestion (not element)
+                this.dropdownView.highlightSuggestion(suggestionObj.element); //Show the suggestion being hinted
+                var hint = suggestionObj.data ? suggestionObj.data.name : null, dropdownIsVisible = this.dropdownView.isVisible(), inputHasOverflow = this.inputView.isOverflow(), inputValue, query, escapedQuery, beginsWithQuery, match;
                 if (hint && dropdownIsVisible && !inputHasOverflow) {
                     inputValue = this.inputView.getInputValue();
                     query = inputValue.replace(/\s{2,}/g, " ").replace(/^\s+/g, "");
@@ -952,57 +1301,135 @@
                     beginsWithQuery = new RegExp("^(?:" + escapedQuery + ")(.*$)", "i");
                     match = beginsWithQuery.exec(hint);
                     this.inputView.setHintValue(inputValue + (match ? match[1] : ""));
+                    //this.tracer.push('updateHint: ' + inputValue + (match ? match[1] : ""));
                 }
             },
-            _clearHint: function() {
+            _clearHint: function () {
                 this.inputView.setHintValue("");
             },
-            _clearSuggestions: function() {
+            _clearSuggestions: function () {
                 this.dropdownView.clearSuggestions();
             },
-            _setInputValueToQuery: function() {
+            _setInputValueToQuery: function () {
                 this.inputView.setInputValue(this.inputView.getQuery());
             },
-            _setInputValueToSuggestionUnderCursor: function(e) {
+            _setInputValueToSuggestionUnderCursor: function (e) {
                 var suggestion = e.data;
-                this.inputView.setInputValue(suggestion.value, true);
+                this.inputView.setInputValue(suggestion.name, true);
             },
-            _openDropdown: function() {
-                this.dropdownView.open();
+            _openDropdown: function (e) {  //basically does the same thing as _queryForSuggestions now but only if closed
+                //this.dropdownView.open();
+                if (!this.dropdownView.isOpen)
+                    this._queryForSuggestions(); //Suggestion render will open dropdown when something is found
             },
-            _closeDropdown: function(e) {
-                this.dropdownView[e.type === "blured" ? "closeUnlessMouseIsOverDropdown" : "close"]();
+            _closeDropdown: function (e) {
+                var e_type = e && e.type ? e.type : 'close'; //Ability to call without event info
+                this._handleBusy(false, null);
+                this.dropdownView[e_type === "blured" ? "closeUnlessMouseIsOverDropdown" : "close"]();
             },
-            _moveDropdownCursor: function(e) {
+            _moveDropdownCursor: function (e) {
                 var $e = e.data;
                 if (!$e.shiftKey && !$e.ctrlKey && !$e.metaKey) {
                     this.dropdownView[e.type === "upKeyed" ? "moveCursorUp" : "moveCursorDown"]();
                 }
             },
-            _handleSelection: function(e) {
-                var byClick = e.type === "suggestionSelected", suggestion = byClick ? e.data : this.dropdownView.getSuggestionUnderCursor();
+            _handleSelection: function (e) {
+                //this.tracer.push('Typeahead view handle selection');
+                //var byClick = e.type === "suggestionSelected", suggestion = byClick ? e.data : this.dropdownView.getSuggestionUnderCursor();
+                //In any case now the getSuggestion under control works fine
+                //suggestion = this.dropdownView.getSuggestionUnderCursor();
+                //Change this to accept the suggestion if we get it by event but as a failback look for it in the dropdownview
+                var suggestion = null;
+                if (e.data && e.data.hasOwnProperty('datum'))
+                    suggestion = e.data;
+                else
+                    suggestion = this.dropdownView.getSuggestionUnderCursor();
                 if (suggestion) {
-                    this.inputView.setInputValue(suggestion.value);
-                    byClick ? this.inputView.focus() : e.data.preventDefault();
-                    byClick && utils.isMsie() ? utils.defer(this.dropdownView.close) : this.dropdownView.close();
-                    this.eventBus.trigger("selected", suggestion.datum, suggestion.dataset);
-                }
+                    //this.tracer.push('Typeaheadview handleselection: ' + suggestion.name);
+                    this.inputView.setQuery(suggestion.name);
+                    this.inputView.setInputValue(suggestion.name, true);
+                    this.selectedDatumDsName = suggestion.dsname;
+                    this.selectedDatum = suggestion.datum;
+                    this._clearSuggestions();
+                    //this._getSuggestions();
+                    //this._updateHint();
+                    //The previous code was to tackle the problem of the dropdownview having received focus on mouse click
+                    //This has been fixed now, at least for FF and Crome so we sould be able to simpli close the dropdown without refocusing the input view
+                    //byClick ? this.inputView.focus() : e.data.preventDefault();
+                    //byClick && utils.isMsie() ? utils.defer(this.dropdownView.close) : this.dropdownView.close();
+                    //Another thing we want to do here is to clear 
+                    this._handleBusy(false, null);
+                    this.dropdownView.close();
+                    this.eventBus.trigger("selected", suggestion.datum, suggestion.dsname);
+                    //If autoSelect then move to the next field
+                    if (this.autoSelect && e.type != 'tabKeyed') {
+                        utils.moveToNextField(this.inputView.$input[0]);
+                    }
+                };
+                //else
+                //    this.tracer.push('Typeaheadview handleselection found no suggestion');
             },
-            _getSuggestions: function() {
+            //Allow page/binders manage busy controller or dataBind to busy property
+            //This function is called when Suggestions are rendered but also when the dropdown is closed, the same goes for prefetching data
+            //Caller sets null for unknown values, else true/false
+            _handleBusy: function (isBusy, isLoading) {
+                var busyNow = this.isBusy === true || this.isLoading === true;
+                if (!busyNow && (isBusy === true || isLoading === true))
+                    this.eventBus.trigger("busyUpdate", true);
+                else if (busyNow && (isBusy === false || isLoading === false)) {
+                    var okNow = true;
+                    if (this.isBusy === true && isBusy !== false)
+                        okNow = false;
+                    if (this.isLoading === true && isLoading !== false)
+                        okNow = false;
+                    okNow && this.eventBus.trigger("busyUpdate", false);
+                }
+                if (isBusy !== null)
+                    this.isBusy = isBusy;
+                if (isLoading !== null)
+                    this.isLoading = isLoading;
+            },
+            _handleFocused: function () {
+                this.inputView.isFocused = true;
+                this._queryForSuggestions();
+            },
+            _handleBlured: function (e) {
+                this.inputView.isFocused = false;
+                this._closeDropdown(e);
+                this._setInputValueToQuery();
+                this._manageLeaving(e);
+            },
+            //Now made to run on demand (on focus on input or when typing)
+            //Also renamed from _getSuggestons since same method name with different functionality is used in other classes
+            _queryForSuggestions: function () {
+                this._clearHint();
+                this._clearSuggestions();
                 var that = this, query = this.inputView.getQuery();
-                if (utils.isBlankString(query)) {
+                //this.tracer.push('Typeaheadview getSuggestins: '+query);
+                if (this.minMinLength !== 0 && utils.isBlankString(query)) {
                     return;
                 }
-                utils.each(this.datasets, function(i, dataset) {
-                    dataset.getSuggestions(query, function(suggestions) {
-                        if (query === that.inputView.getQuery()) {
-                            that.dropdownView.renderSuggestions(dataset, suggestions);
+                this._handleBusy(true, null);
+                utils.each(this.datasets, function (i, dataset) {
+                    dataset.getSuggestions(query, function (suggestions) {
+                        if (query === that.inputView.getQuery()) { //This is still the active query
+                            //NOW OPEN THE DROPDOWN - but only if this is the focused input control
+                            if (that.inputView.hasFocus()) {
+                                that._setLanguageDirection();
+                                that.dropdownView.open();
+                                that.dropdownView.renderSuggestions(dataset, suggestions);
+                                if (that.floatDropdown)
+                                    that.dropdownView.setPos(); //move up if not enaugh room below the input
+                            }
                         }
                     });
                 });
+                if (query === that.inputView.getQuery()) {
+                    this._handleBusy(false, null);
+                }
             },
-            _autocomplete: function(e) {
-                var isCursorAtEnd, ignoreEvent, query, hint, suggestion;
+            _autocomplete: function (e) {
+                var isCursorAtEnd, ignoreEvent, query, hint, suggestionObj;
                 if (e.type === "rightKeyed" || e.type === "leftKeyed") {
                     isCursorAtEnd = this.inputView.isCursorAtEnd();
                     ignoreEvent = this.inputView.getLanguageDirection() === "ltr" ? e.type === "leftKeyed" : e.type === "rightKeyed";
@@ -1013,26 +1440,52 @@
                 query = this.inputView.getQuery();
                 hint = this.inputView.getHintValue();
                 if (hint !== "" && query !== hint) {
-                    suggestion = this.dropdownView.getFirstSuggestion();
-                    this.inputView.setInputValue(suggestion.value);
-                    this.eventBus.trigger("autocompleted", suggestion.datum, suggestion.dataset);
+                    //suggestion = this.dropdownView.getFirstSuggestion();
+                    suggestionObj = this.dropdownView._findFirstSuggestion(query);
+                    if (suggestionObj && suggestionObj.data) {
+                        this.selectedDatum = suggestionObj.data.datum;
+                        this.selectedDatumDsName = suggestionObj.data.dsname;
+                        this.inputView.setInputValue(suggestionObj.data.name);
+                        this.eventBus.trigger("autocompleted", suggestionObj.data.datum, suggestionObj.data.dsname);
+                        //this.tracer.push('Typeaheadview autocompleteOK: ' + query);
+                    }
                 }
             },
-            _propagateEvent: function(e) {
+            _propagateEvent: function (e) {
                 this.eventBus.trigger(e.type);
             },
-            destroy: function() {
+            destroy: function () {
                 this.inputView.destroy();
                 this.dropdownView.destroy();
                 destroyDomStructure(this.$node);
                 this.$node = null;
             },
-            setQuery: function(query) {
+            setQuery: function (query) {
                 this.inputView.setQuery(query);
                 this.inputView.setInputValue(query);
                 this._clearHint();
                 this._clearSuggestions();
-                this._getSuggestions();
+                //this._getSuggestions();  
+                if (this.inputView.hasFocus())
+                    this._queryForSuggestions();  //only do this if control is already focused
+            },
+            setDatum: function (datum, dsname) {
+                //Since we are using namekeys and valuekeys we can not assume how to pickup datum values unless we have the name and value keys
+                //Those keys are stored in the dataset, this is why we need the dsname property.
+                //We are still prepared for it to be emty, because it should be ok if we have only one dataset,only one remote dataset the datum belongs to, or all the datasets use the same keys. (probably 95% of all cases)
+                dsname = dsname ? dsname : this.dsnameAny;
+                if (typeof dsname !== 'undefined' && this.dsIdx[dsname].nameKey) {
+                    this.selectedDatumDsName = dsname;
+                    this.selectedDatum = datum;
+                    query = datum ? datum[this.dsIdx[dsname].nameKey] : '';
+                    this.inputView.setQuery(query);
+                    this.inputView.setInputValue(query);
+                    this._clearHint();
+                    this._clearSuggestions();
+                    //this._getSuggestions();
+                    if (this.inputView.hasFocus())
+                        this._queryForSuggestions(); //oly do this if control is allready focused
+                };
             }
         });
         return TypeaheadView;
@@ -1062,75 +1515,130 @@
             }).css(css.query);
             try {
                 !$input.attr("dir") && $input.attr("dir", "auto");
-            } catch (e) {}
+            } catch (e) { }
             return $input.wrap($wrapper).parent().prepend($hint).append($dropdown);
         }
         function destroyDomStructure($node) {
             var $input = $node.find(".tt-query");
-            utils.each($input.data("ttAttrs"), function(key, val) {
+            utils.each($input.data("ttAttrs"), function (key, val) {
                 utils.isUndefined(val) ? $input.removeAttr(key) : $input.attr(key, val);
             });
             $input.detach().removeData("ttAttrs").removeClass("tt-query").insertAfter($node);
             $node.remove();
         }
     }();
-    (function() {
-        var cache = {}, viewKey = "ttView", methods;
+    (function () {
+        var cache = {}, viewKey = "ttView", methods, eventBus;
         methods = {
-            initialize: function(datasetDefs) {
-                var datasets;
-                datasetDefs = utils.isArray(datasetDefs) ? datasetDefs : [ datasetDefs ];
+            initialize: function (datasetDefs) {
+                var datasets, view;
+                datasetDefs = utils.isArray(datasetDefs) ? datasetDefs : [datasetDefs];
                 if (datasetDefs.length === 0) {
                     $.error("no datasets provided");
                 }
-                datasets = utils.map(datasetDefs, function(o) {
-                    var dataset = cache[o.name] ? cache[o.name] : new Dataset(o);
-                    if (o.name) {
-                        cache[o.name] = dataset;
-                    }
-                    return dataset;
+                datasets = utils.map(datasetDefs, function (o) {
+                    //No reason to cache the whole dataset object, preset and remote cache should do fine
+                    //var dataset = cache[o.name] ? cache[o.name] : new Dataset(o);
+                    //if (o.name) {
+                    //    cache[o.name] = dataset;
+                    //}
+                    //return dataset;
+                    return new Dataset(o);
                 });
                 return this.each(initialize);
                 function initialize() {
-                    var $input = $(this), deferreds, eventBus = new EventBus({
+                    var $input = $(this), deferreds;
+                    eventBus = new EventBus({
                         el: $input
-                    });
-                    deferreds = utils.map(datasets, function(dataset) {
-                        return dataset.initialize();
                     });
                     $input.data(viewKey, new TypeaheadView({
                         input: $input,
                         eventBus: eventBus = new EventBus({
                             el: $input
                         }),
-                        datasets: datasets
+                        datasets: datasets,
                     }));
-                    $.when.apply($, deferreds).always(function() {
-                        utils.defer(function() {
+                    view = $(this).data(viewKey);
+                    view._handleBusy(null, true); //Notify busy for initialiszation
+                    deferreds = utils.map(datasets, function (dataset) {
+                        return dataset.initialize();
+                    });
+                    $.when.apply($, deferreds).always(function () {
+                        utils.defer(function () {
+                            //if current is focused - recalculate suggestions - releaving programmers from calling setQuery on initialized
+                            if (view.inputView && view.inputView.hasFocus())
+                                view._queryForSuggestions();
+                            view._handleBusy(null, false); //Notify no longer busy for initialization
                             eventBus.trigger("initialized");
                         });
                     });
                 }
             },
-            destroy: function() {
+            reload: function () {
+                var $input = $(this), deferreds, view = $input.data(viewKey);
+                return this.each(reload);
+                function reload() {
+                    var datasets = view && view.datasets ? view.datasets : null;
+                    view._handleBusy(null, true); //Notify busy for reload
+                    view._clearSuggestions();
+                    deferreds = utils.map(datasets, function (dataset) {
+                        return dataset.reload();
+                    });
+                    $.when.apply($, deferreds).always(function () {
+                        utils.defer(function () {
+                            if (view && view.inputView && view.inputView.hasFocus())
+                                view._queryForSuggestions();
+                            view._handleBusy(null, false); //Notify reload compleated
+                            eventBus.trigger("reloaded");
+                        });
+                    });
+                    return deferreds;
+                }
+            },
+            destroy: function () {
                 return this.each(destroy);
                 function destroy() {
                     var $this = $(this), view = $this.data(viewKey);
-                    if (view) {
+                    if (view = $input.data(viewKey)) {
                         view.destroy();
                         $this.removeData(viewKey);
                     }
                 }
             },
-            setQuery: function(query) {
-                return this.each(setQuery);
-                function setQuery() {
-                    var view = $(this).data(viewKey);
-                    view && view.setQuery(query);
+            setQuery: function (query) {
+                var view = $(this).data(viewKey);
+                view && view.setQuery(query);
+            },
+            setDatum: function (datum, dsname) {
+                var view = $(this).data(viewKey);
+                view && view.setDatum(datum, dsname);
+            },
+            getDatum: function () {
+                var view = $(this).data(viewKey);
+                return view && view.selectedDatum;
+            },
+            getQuery: function () {
+                var view = $(this).data(viewKey);
+                return view && view.inputView.getInputValue();
+            },
+            clearCache: function () {
+                var view = $(this).data(viewKey);
+                var datasets = view && view.datasets ? view.datasets : null;
+                utils.each(datasets, clearCache);
+                function clearCache(i, ds) {
+                    ds.clearCache();
                 }
+            },
+            openDropdown: function () {
+                var view = $(this).data(viewKey);
+                view && view._openDropdown();
+            },
+            closeDropdown: function () {
+                var view = $(this).data(viewKey);
+                view && view._closeDropdown();
             }
         };
-        jQuery.fn.typeahead = function(method) {
+        jQuery.fn.typeahead = function (method) {
             if (methods[method]) {
                 return methods[method].apply(this, [].slice.call(arguments, 1));
             } else {

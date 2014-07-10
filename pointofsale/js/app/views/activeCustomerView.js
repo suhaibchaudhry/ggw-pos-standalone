@@ -15,6 +15,7 @@ jQuery(function($) {
 		initialize: function(attributes, options) {
 			this.employeeSession = attributes['employeeSession'];
 			this.activeCustomer = attributes['activeCustomer'];
+			this.searchTicketView = attributes['searchTicketView'];
 
 			this.listenTo(this.activeCustomer, 'change:id', this.customerChanged);
 
@@ -58,6 +59,8 @@ jQuery(function($) {
 		},
 		itemSelected: function(e, datum) {
 			this.$searchbox.typeahead('setQuery', '');
+			//this.searchTicketView.$searchbox.typeahead('setQuery', '');
+			this.searchTicketView.$searchbox.typeahead('clearCache');
 			this.activeCustomer.set(datum);
 			this.activeCustomer.updateTicketCustomerUidOnServer(datum['id']);
 		},

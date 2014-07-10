@@ -26,6 +26,7 @@ jQuery(function($) {
         el: this.$('.activeCustomer').get(0),
         employeeSession: this.employeeSession,
         activeCustomer: this.activeCustomer,
+        searchTicketView: this.searchTicketRegion,
         menuItems: this.$('.header ul.menu')
       });
 
