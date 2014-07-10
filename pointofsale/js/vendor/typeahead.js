@@ -1599,10 +1599,10 @@
                 return this.each(destroy);
                 function destroy() {
                     var $this = $(this), view = $this.data(viewKey);
-                    if (view = $input.data(viewKey)) {
+                    //if (view = $input.data(viewKey)) {
                         view.destroy();
                         $this.removeData(viewKey);
-                    }
+                    //}
                 }
             },
             setQuery: function (query) {
