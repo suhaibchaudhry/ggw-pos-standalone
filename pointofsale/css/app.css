@@ -545,23 +545,29 @@ a.forceHide, .lockedTicket a.delete-item, .lockedTicket a.increase, .lockedTicke
     text-indent: -9999px;
     width: 100%;
 }
-a.lock-toggle, a.print-ticket {
+a.lock-toggle, a.print-ticket, a.unlock-price-override {
     display: block;
     width: 48px;
     height: 48px;
 }
 
-a.lock-toggle{
+a.lock-toggle, a.unlock-price-override {
      float: left;
      background: url(../images/lock-closed-outline.png);
 }
 
-a.lock-toggle:hover {
-    background: url(../images/lock-open-outline.png);
+a.lock-toggle:hover, a.unlock-price-override:hover {
+    background-image: url(../images/lock-open-outline.png);
 }
 
-a.lock-toggle:active {
-    background: url(../images/lock-open.png);
+a.lock-toggle:active, a.unlock-price-override:active {
+    background-image: url(../images/lock-open.png);
+}
+
+a.unlock-price-override {
+    text-indent: 9999px;
+    background-position: 0px -6px;
+    height: 36px;
 }
 
 a.print-ticket {

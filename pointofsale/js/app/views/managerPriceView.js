@@ -7,7 +7,8 @@ jQuery(function($) {
       "click a.price-override-cancel": "cancelOverride",
       "click a.price-override-continue": "continueOverride",
       "click .price-override-settings .qty-split a.incr": "increaseQtySplit",
-      "click .price-override-settings .qty-split a.decr": "decreaseQtySplit"
+      "click .price-override-settings .qty-split a.decr": "decreaseQtySplit",
+      "click a.unlock-price-override": 'unlockPriceOverride'
     },
     labelizeData: _.template($('#labelize-data').html()),
     priceOverrideSettings: _.template($('#price-override-settings-form').html()),
@@ -41,8 +42,10 @@ jQuery(function($) {
 
         if(this.employeeSession.get('privileged')) {
           this.$('.overriden-price').attr('disabled', false);
+          this.$('a.unlock-price-override').hide();
         } else {
           this.$('.overriden-price').attr('disabled', true);
+          this.$('a.unlock-price-override').show();
         }
       }
     },
@@ -110,6 +113,10 @@ jQuery(function($) {
           this.priceModify(price, qty_split);
         }
       }
+    },
+    unlockPriceOverride: function(e) {
+      e.preventDefault();
+      
     },
     priceModify: function(price, qty_split) {
       price = price/qty_split;
