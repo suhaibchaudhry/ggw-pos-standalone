@@ -16,6 +16,7 @@ jQuery(function($) {
       this.employeeSession = attributes['employeeSession'];
       this.modal = attributes['modal'];
       this.ticket = attributes['ticket'];
+      this.authorizationModal = new authorizationModal({managerPriceView: this, employeeSession: attributes['employeeSession']});
     },
     template: _.template($('#manager-price-modal').html()),
     render: function() {
@@ -116,7 +117,7 @@ jQuery(function($) {
     },
     unlockPriceOverride: function(e) {
       e.preventDefault();
-      
+      this.authorizationModal.display(true);
     },
     priceModify: function(price, qty_split) {
       price = price/qty_split;
