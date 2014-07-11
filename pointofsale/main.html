@@ -52,10 +52,12 @@
 	<script type="text/javascript" src="js/app/views/invoiceDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/rmaDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/activeCustomerView.js"></script>
+	<script type="text/javascript" src="js/app/views/authorizationView.js"></script>
 	<script type="text/javascript" src="js/app/views/customerInfoDialogView.js"></script>
 	<script type="text/javascript" src="js/app/views/searchTicketView.js"></script>
 	<script type="text/javascript" src="js/app/views/activeTicketView.js"></script>
 	<script type="text/javascript" src="js/app/views/loginModal.js"></script>
+	<script type="text/javascript" src="js/app/views/authorizationModal.js"></script>
 	<script type="text/javascript" src="js/app/views/ticketStatusDialogModal.js"></script>
 	<script type="text/javascript" src="js/app/views/checkoutDialogModal.js"></script>
 	<script type="text/javascript" src="js/app/views/managerPriceDialog.js"></script>
@@ -75,6 +77,7 @@
 	<div class="customerInfoOverlay dialogOverlay"></div>
 	<div class="rmaItemSelectOverlay dialogOverlay"></div>
 	<div class="managerPrice dialogOverlay"></div>
+	<div class="authorizationOverlay dialogOverlay"></div>
 	<div class="modalOverlay dialogOverlay"></div>
 	<div class="loaderOverlay dialogOverlay"><a href="#" class="refresh"></a></div>
 
@@ -142,6 +145,26 @@
 			<div class="bbm-modal__bottombar login-modal-bottombar">
 				<div class="preloader"></div>
 				<button id="login-button" type="submit" class="pure-button pure-button-success">Login</button>
+			</div>
+		</form>
+	</script>
+
+	<script type="text/template" id="authorization-modal">
+		<div class="bbm-modal__topbar">
+			<h3 class="bbm-modal__title title">Manager Authorization</h3>
+		</div>
+		<form name="login-form" method="post" class="pure-form pure-form-stacked authorization-form login-form">
+			<div class="bbm-modal__section">
+				<p>Login using your General Goods Wholesale Manager ID and Password.</p>
+			        <label for="uname">Manager ID</label>
+			        <input id="login-uname" name="uname" type="text" placeholder="Manager ID">
+
+			        <label for="password">Password</label>
+			        <input id="login-password" name="password" type="password" placeholder="Password">
+			</div>
+			<div class="bbm-modal__bottombar login-modal-bottombar">
+				<div class="preloader"></div>
+				<button id="login-button" type="submit" class="pure-button pure-button-success">Authorize</button>
 			</div>
 		</form>
 	</script>
