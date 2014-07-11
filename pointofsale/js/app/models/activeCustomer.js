@@ -1,14 +1,19 @@
 jQuery(function($) {
 	activeCustomer = Backbone.Model.extend({
-		setActiveTicketViewSingleton: function(ticketView) {
-			this.set('ticket', ticketView.ticket);
-			//Listen for customer id changes on ticket.
+		  setActiveTicketViewSingleton: function(ticketView) {
+			    this.set('ticket', ticketView.ticket);
+			    //Listen for customer id changes on ticket.
       		this.listenTo(this.get('ticket'), 'change:customerUid', this.changeTicketCustomerUid);
-      	},
-      	changeTicketCustomerUid: function(ticket, uid) {
+      },
+      changeTicketCustomerUid: function(ticket, uid) {
       		//Load entire customer object from server and set it to as default
       		//When user is changed by gui change customerUid with silent flag, and update customer Uid on server.
-      		if(uid) {
+      		if(uid == 0) {
+            this.unlockTicketCustomer();
+            this.set({
+              id: 0
+            });
+          } else {
       			var ticket = this.get('ticket');
 
       			if(ticket.employeeSession.get('admin')) {
@@ -36,9 +41,6 @@ jQuery(function($) {
 		            ticket.trigger('ticket:preloader', false);
 		          }
 		        });
-      		} else {
-      			this.unlockTicketCustomer();
-      			this.set('id', uid);
       		}
       	},
       	lockTicketCustomer: function() {
@@ -52,14 +54,14 @@ jQuery(function($) {
       	updateTicketCustomerUidOnServer: function(uid) {
       		var ticket = this.get('ticket');
       		if(ticket.employeeSession.get('admin')) {
-  				this.unlockTicketCustomer();
-  			} else {
-  				if(uid) {
-  					this.lockTicketCustomer();
-  				} else {
-  					this.unlockTicketCustomer();
-  				}
-  			}
+  				  this.unlockTicketCustomer();
+  			  } else {
+    				if(uid == 0) {
+    					this.unlockTicketCustomer();
+    				} else {
+              this.lockTicketCustomer();
+    				}
+  			  }
       		ticket.set('customerUid', uid, {silent: true});
       		var updateTicketCustomerId = JSON.stringify({token: sessionStorage.token, customerUid: uid, ticketId: ticket.get('ticketId')});
 
