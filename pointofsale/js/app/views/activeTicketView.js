@@ -157,7 +157,7 @@ jQuery(function($) {
       var total = this.ticket.get('total');
       var customer = this.activeCustomer.get('id');
 
-      if(status != 'pos_quote' || total != 0 || customer != 0) {
+      if(status != 'pos_quote' || customer != 0) {
         this.ticket.createTicketOnServer(this.employeeSession.get('login'));
       }
     },
