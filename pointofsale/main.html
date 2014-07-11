@@ -580,6 +580,7 @@
 		<div class="badge-attr-wrap">
 			<div class="ticket-id"><span class="label">Ticket #: </span><span class="value"><%= ticketId %></span></div>
 			<div class="ticket-status"><span class="label">Status: </span><span class="value"><%= status_en %></span></div>
+			<% if(status == 'pos_quote') { %><div class="status_change"><a href="#">[Convert to Open Ticket]</a></div><% } %>
 		</div>
 	</script>
 

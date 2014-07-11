@@ -14,11 +14,17 @@ jQuery(function($) {
       this.activeCustomer = new activeCustomer();
       this.preloaderSemaphore = 0;
 
+      //Modal Dialogs
+      this.ticketStatusDialogModal = new ticketStatusDialogModal({
+        activeCustomer: this.activeCustomer
+      });
+
   		//Regional Views
       this.employeeOperationsRegion = new employeeOperationsView({el: this.$('.employeeOperations').get(0), employeeSession: this.employeeSession});
 
       this.searchTicketRegion = new searchTicketView({
         el: this.$('.ticketSearch').get(0),
+        ticketStatusDialogModal: this.ticketStatusDialogModal,
         employeeSession: this.employeeSession
       });
 
@@ -27,6 +33,7 @@ jQuery(function($) {
         employeeSession: this.employeeSession,
         activeCustomer: this.activeCustomer,
         searchTicketView: this.searchTicketRegion,
+        ticketStatusDialogModal: this.ticketStatusDialogModal,
         menuItems: this.$('.header ul.menu')
       });
 

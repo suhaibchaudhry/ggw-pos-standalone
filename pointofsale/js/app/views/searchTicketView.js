@@ -3,7 +3,8 @@ jQuery(function($) {
 		events: {
 			"typeahead:selected .ticket-search": 'itemSelected',
 			"click .checkout a.checkout-button": 'checkout',
-			"click a.lock-toggle": 'managerUnlockClosedTicket'
+			"click a.lock-toggle": 'managerUnlockClosedTicket',
+			"click .status_change a": 'changeStatusOpen'
 		},
 		tagName: 'div',
 		selectedTicketWrapTemplate: _.template($('#selected-ticket-wrap').html()),
@@ -13,6 +14,7 @@ jQuery(function($) {
 		checkoutButtons: _.template($('#checkout-buttons').html()),
 		initialize: function(attributes, options) {
 			this.employeeSession = attributes['employeeSession'];
+			this.ticketStatusDialogModal = attributes['ticketStatusDialogModal'];
 		},
 		setActiveTicket: function(activeTicketView) {
 			this.activeTicketView = activeTicketView;
@@ -44,7 +46,7 @@ jQuery(function($) {
     		}
     	},
     	changeTicketStatus: function(ticket, ticketStatus, options) {
-    		$('.ticket-status span.value').text(ticket.get('status_en'));
+    		this.$('.selected-ticket').html(this.selectedTicketTemplate(ticket.attributes));
     		this.ticketSpecialButtons(ticket);
     	},
     	ticketSpecialButtons: function(ticket) {
@@ -170,6 +172,10 @@ jQuery(function($) {
 		    });
 
 		    Mousetrap.bind('shift+d p', _.bind(this.mouseTrapCatch, this));
+		},
+		changeStatusOpen: function(e) {
+			e.preventDefault();
+			this.ticketStatusDialogModal.switch(true);
 		},
 		demolish: function() {
 			Mousetrap.unbind('shift+d p');

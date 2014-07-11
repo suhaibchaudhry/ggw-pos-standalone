@@ -16,13 +16,9 @@ jQuery(function($) {
 			this.employeeSession = attributes['employeeSession'];
 			this.activeCustomer = attributes['activeCustomer'];
 			this.searchTicketView = attributes['searchTicketView'];
+			this.ticketStatusDialogModal = attributes['ticketStatusDialogModal'];
 
 			this.listenTo(this.activeCustomer, 'change:id', this.customerChanged);
-
-			//Modal Dialogs
-			this.ticketStatusDialogModal = new ticketStatusDialogModal({
-				activeCustomer: attributes['activeCustomer']
-			});
 
 			this.$menuItems = attributes['menuItems'];
 			this.$menuItems.find('a.customer-info-button').on('click', _.bind(this.customerInfo, this));

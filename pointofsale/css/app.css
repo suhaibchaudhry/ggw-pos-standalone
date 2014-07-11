@@ -679,3 +679,14 @@ a.ticket-rma-return {
     background-repeat: no-repeat;
     text-indent: -9999px;
 }
+.selected-ticket .status_change {
+    text-align: center;
+}
+.selected-ticket .status_change a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #D34646;
+}
+.selected-ticket .status_change a:hover {
+    color: #FF2727;
+}
