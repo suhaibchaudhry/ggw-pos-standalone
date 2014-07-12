@@ -652,6 +652,9 @@ a.ticket-customer-link:hover {
 .toggle-payment input {
     zoom: 2;
 }
+.toggle-payment input[type="text"] {
+    margin: 0 0 2px;
+}
 .toggle-payment .payment-input {
     background: #E6E6E6;
     padding: 10px;
