@@ -182,6 +182,7 @@ jQuery(function($) {
                                                     cash_val: this.$('input.cash-paid').val(),
                                                     check: this.$('input#check-payment').is(':checked'),
                                                     check_val: this.$('input.check-amount').val(),
+                                                    check_number: this.$('input.check-number').val(),
                                                     check_post_dated: this.$('input#post-dated').is(':checked'),
                                                     check_date: this.$('input#cash-date').val(),
                                                     mo: this.$('input#mo-payment').is(':checked'),
