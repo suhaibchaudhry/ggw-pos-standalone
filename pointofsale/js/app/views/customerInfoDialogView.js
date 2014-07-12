@@ -13,7 +13,8 @@ jQuery(function($) {
       "click .returning-items a.delete-item": 'rmaDeleteItem',
       "click .returning-items a.decrease": 'rmaDecrease',
       "click .returning-items a.increase": 'rmaIncrease',
-      "keyup input.rma-scan": 'searchKeyUp'
+      "keyup input.rma-scan": 'searchKeyUp',
+      'click .toggle-payment input[type="checkbox"]': 'checkboxToggle'
     },
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
@@ -29,6 +30,7 @@ jQuery(function($) {
       this.listenTo(this.rmaItemsCollectionFinal, 'change', this.changeReturnQty);
     },
     template: _.template($('#customer-info-modal').html()),
+    paymentTemplate: _.template($('#credit-payments-checkout').html()),
     RMAFormTemplate: _.template($('#process-rma-form').html()),
     RMAFinalTemplate: _.template($('#rma-final-line-item').html()),
     fetchRegisterID: _.template($('#register-id').html()),
@@ -66,7 +68,8 @@ jQuery(function($) {
             that.populateInvoices(that.$('.invoice-history'), res.invoices);
 
             //Payments
-            that.$('.payment-history').html(res.payments);
+            that.setupPaymentForm(res.payments);
+            //that.$('.payment-history').html(res.payments);
 
             that.adjustBlockHeights();
           } else {
@@ -83,6 +86,9 @@ jQuery(function($) {
     },
     populateInvoices: function(invoices, ahah) {
       invoices.html(ahah);
+    },
+    setupPaymentForm: function(payments) {
+      this.$('.payment-history').html(this.paymentTemplate(payments));
     },
     changeTab: function(e) {
       e.preventDefault();
@@ -173,6 +179,15 @@ jQuery(function($) {
       this.rmaItemsCollectionFinal.reset();
       this.rmaTicket.set('total', 0);
       return this;
+    },
+    checkboxToggle: function(e) {
+      if(e.currentTarget.checked) {
+        this.$(e.currentTarget).parent().children('.hidden-child').show();
+      } else {
+        this.$(e.currentTarget).parent().children('.hidden-child').hide();
+      }
+
+      this.$('input.cash-paid').trigger('keyup');
     },
     closeCheckoutDialog: function(e) {
       e.preventDefault();

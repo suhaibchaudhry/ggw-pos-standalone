@@ -336,6 +336,78 @@
 			</div>
 	</script>
 
+	<script type="text/template" id="credit-payments-checkout">
+		<div class="credit-payments-checkout pure-form">
+		    <div>
+			<div class="available-credit-label checkout-label">Available Credit:</div>
+			<div class="available-credit-value checkout-value"><%= accounting.formatMoney(available_credit) %></div>
+			</div>
+
+			<div>
+			<div class="credit-limit-label checkout-label">Credit Limit:</div>
+			<div class="credit-limit-value checkout-value"><%= accounting.formatMoney(credit_limit) %></div>
+			</div>
+
+			<div>
+			<div class="amount-due-label checkout-label">Amount Due:</div>
+			<div class="amount-due-value checkout-value"><%= accounting.formatMoney(pending_payments) %></div>
+			</div>
+
+			<div>
+			<div class="term-limit-label checkout-label">Term Limit:</div>
+			<div class="term-limit-value checkout-value"><%= term_limit %> Days</div>
+			</div>
+
+			<div>
+			<label class="cash-paid-label" for="cash-paid">Cash Paid:</label>
+			<input id="cash-paid" type="text" class="cash-paid" value="0.00" />
+			</div>
+
+			<div class="check-payment toggle-payment">
+				<input type="checkbox" id="check-payment" name="check-payment" value="check_payment" /><label for="check-payment">Check Payment</label>
+				<div class="payment-input hidden-child">
+					<div>
+					<label for="check-amount">Check Amount:</label>
+					<input id="check-amount" type="text" class="check-amount" value="0.00" />
+					</div>
+					<input type="checkbox" id="post-dated" name="post-dated" value="post_dated" /><label for="post-dated">Post Dated</label>
+					<div class="cash-date-input hidden-child">
+						<label for="cash-date">Check Date:</label>
+						<input type="text" id="cash-date" name="cash-date" value="" />
+					</div>
+				</div>
+			</div>
+
+			<div class="mo-payment toggle-payment">
+				<input type="checkbox" id="mo-payment" name="mo-payment" value="mo_payment" /><label for="mo-payment">Money Order Payment</label>
+				<div class="payment-input hidden-child">
+					<div>
+					<label for="money-order">M.O. Amount:</label>
+					<input id="money-order" type="text" class="mo-amount" value="0.00" />
+					</div>
+					<div>
+					<label for="mo-ref">Reference:</label>
+					<input id="mo-ref" type="text" class="mo-ref" value="" />
+					</div>
+				</div>
+			</div>
+
+			<div class="cc-payment toggle-payment">
+				<input type="checkbox" id="cc-payment" name="cc-payment" value="cc_payment" /><label for="cc-payment">Credit Card Payment</label>
+				<div class="payment-input hidden-child">
+					<div>
+						<label for="mo-ref">Charge Amount:</label>
+						<input id="mo-ref" type="text" class="charge-amount" value="0.00" />
+					</div>
+					<div>
+						<label for="transaction-id">Transaction #:</label>
+						<input id="transaction-id" type="text" class="transaction-id" value="" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</script>
+
 	<script type="text/template" id="process-rma-modal">
 		<div class="bbm-modal__topbar">
 			<h3 class="bbm-modal__title title">Select Purchase</h3>
