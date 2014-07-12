@@ -142,7 +142,6 @@ div.dialogOverlay {
 	bottom: 0;
 	display: none;
 	z-index: 100;
-    -webkit-transform: translateZ(0);
 }
 
 div.loaderOverlay {
