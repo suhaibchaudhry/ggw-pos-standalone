@@ -9,8 +9,8 @@ jQuery(function($) {
     beforeCancel: function() {
       return false;
     },
-    populateSelections: function(products, customerInfoDialog) {
-      this.rmaDialogView.populateSelections(products, customerInfoDialog);
+    populateSelections: function(products, customerInfoDialog, historic) {
+      this.rmaDialogView.populateSelections(products, customerInfoDialog, historic);
     },
     display: function(state) {
       if(state) {

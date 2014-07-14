@@ -435,9 +435,15 @@ jQuery(function($) {
           if(res.status) {
             dialog.rmaItemsCollection.reset();
             dialog.rmaDialogModal.display(true);
-            dialog.rmaDialogModal.populateSelections(res.products, dialog);
+            dialog.rmaDialogModal.populateSelections(res.products, dialog, true);
           } else {
-            $.jGrowl(res.error);
+            if(res.error_forgive) {
+              dialog.rmaItemsCollection.reset();
+              dialog.rmaDialogModal.display(true);
+              dialog.rmaDialogModal.populateSelections(res.products, dialog, false);
+            } else {
+              $.jGrowl(res.error);
+            }
           }
         },
         error: function(xhr, errorType, error) {
@@ -475,7 +481,7 @@ jQuery(function($) {
       e.preventDefault();
       var itemId = e.target.parentElement.parentElement.parentElement.dataset.id;
       var product = this.rmaItemsCollectionFinal.get(itemId);
-      var quantity = product.get('qty');
+      var quantity = product.get('remaining_qty');
       var returning_qty = product.get('returning_qty');
       returning_qty--;
       this.setReturnQty(product, quantity, returning_qty)
