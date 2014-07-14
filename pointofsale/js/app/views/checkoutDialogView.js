@@ -15,7 +15,8 @@ jQuery(function($) {
       "keyup .toggle-payment input.check-amount": 'calculateCashChange',
       "keyup .toggle-payment input.mo-amount": 'calculateCashChange',
       "keyup .toggle-payment input.charge-amount": 'calculateCashChange',
-      'click .toggle-payment input[type="checkbox"]': 'checkboxToggle'
+      'change .toggle-payment input[type="checkbox"]': 'checkboxToggle',
+      "change #cc-payment-split": 'changeModeToSwipe'
     },
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
@@ -38,6 +39,8 @@ jQuery(function($) {
       var ticket = this.ticket;
       var totalRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId')});
       var that = this;
+
+      $.cardswipe('enable');
 
       ticket.trigger('ticket:preloader', true);
       $.ajax({
@@ -78,9 +81,6 @@ jQuery(function($) {
         this.cashCheckout(e);
       } else if(this.currentTab == 2) {
         this.creditCheckout(e);
-      } else {
-        //Credit card checkout and swipe disable.
-
       }
     },
     creditCardSwiperSetup: function() {
@@ -204,14 +204,15 @@ jQuery(function($) {
               //stop preloader
               ticket.trigger('ticket:preloader', false);
               if(res.status) {
-                if(this.change_left == 0) {
+                var formattedChange = accounting.formatNumber(that.change_value, 2, "");
+                if(formattedChange == "0.00") {
                   alert("Checkout Complete. No CHANGE.");
                 } else {
                   alert("Checkout Complete. Please make change for amount: "+accounting.formatMoney(that.change_value));
                 }
                 //Close ticket
                 ticket.set('status_en', 'Closed Ticket');
-                ticket.set('status', 'pos_completed');         
+                ticket.set('status', 'pos_completed');
               } else {
                 alert(res.message);
               }
@@ -244,10 +245,16 @@ jQuery(function($) {
       tabs.eq(index).show();
       this.currentTab = index;
 
+      //if(index == 0 || index == 1) {
+        //$.cardswipe('enable');
+      //} else {
+        //$.cardswipe('disable');
+      //}
+
       if(index == 1) {
-        $.cardswipe('enable');
+        this.$('.ticket-checkout-continue').hide();
       } else {
-        $.cardswipe('disable');
+        this.$('.ticket-checkout-continue').show();
       }
     },
     focusCash: function() {
@@ -335,6 +342,14 @@ jQuery(function($) {
 
       this.$('input.cash-paid').trigger('keyup');
     },
+    changeModeToSwipe: function(e) {
+      if(e.currentTarget.checked) {
+        this.$('.manual-cc').hide();
+        this.$('input.charge-amount').val('').trigger('keyup');
+      } else {
+        this.$('.manual-cc').show();
+      }
+    },
     creditCardParser: function(rawData) {
       var p = new SwipeParserObj(rawData);
       return p.dump();
@@ -358,45 +373,111 @@ jQuery(function($) {
       */
       var ticket = this.ticket;
       var that = this;
+      var cuid = this.activeCustomer.get('id');
 
-      var swipeCheckoutRequest = JSON.stringify({
-        token: sessionStorage.token,
-        ticketId: ticket.get('ticketId'),
-        total: that.ticketTotal,
-        register_id: this.fetchRegisterID(),
-        customer: this.activeCustomer.get('id'),
-        cardData: cardData
-      });
-
-      that.$('.status-message').addClass('in-progress');
-      $.cardswipe('disable');
-
-      $.ajax({
-        type: 'POST',
-        url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/swipe-checkout',
-        data: {request: swipeCheckoutRequest},
-        timeout: 15000,
-        success: function(res, status, xhr) {
-          that.$('.status-message').removeClass('in-progress');
-
-          if(res.status) {
-            //Close ticket
-            ticket.set('status_en', 'Closed Ticket');
-            ticket.set('status', 'pos_completed');
-            alert(res.message);
-            that.closeCheckoutDialog();
+      if(this.currentTab == 0) {
+        var cc_payment = this.$('#cc-payment').is(":checked");
+        var split = this.$('#cc-payment-split').is(":checked");
+        if(split && cc_payment) {
+          var formattedChange = accounting.formatNumber(this.change_left, 2, "");
+          if(formattedChange == "0.00") {
+            alert("There are no remaining payments to be placed on the card. Please continue with regular checkout.");
           } else {
+            var partialSwipeRequest = JSON.stringify({token: sessionStorage.token,
+                                                    ticketId: ticket.get('ticketId'),
+                                                    total: that.ticketTotal,
+                                                    remaining_balance: this.change_left,
+                                                    cash: that.cash_paid,
+                                                    change: that.change_value,
+                                                    customer: cuid,
+                                                    cardData: cardData,
+                                                    cash_val: this.$('input.cash-paid').val(),
+                                                    check: this.$('input#check-payment').is(':checked'),
+                                                    check_val: this.$('input.check-amount').val(),
+                                                    check_number: this.$('input.check-number').val(),
+                                                    check_post_dated: this.$('input#post-dated').is(':checked'),
+                                                    check_date: this.$('input#cash-date').val(),
+                                                    mo: this.$('input#mo-payment').is(':checked'),
+                                                    mo_val: this.$('input.mo-amount').val(),
+                                                    mo_ref: this.$('input.mo-ref').val(),
+                                                    register_id: this.fetchRegisterID()
+                                                  });
+
+            that.$('.status-message').addClass('in-progress');
+            $.cardswipe('disable');
+
+            $.ajax({
+              type: 'POST',
+              url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/partial-swipe-checkout',
+              data: {request: partialSwipeRequest},
+              timeout: 15000,
+              success: function(res, status, xhr) {
+                that.$('.status-message').removeClass('in-progress');
+                $.cardswipe('enable');
+                if(res.status) {
+                  //Close ticket
+                  ticket.set('status_en', 'Closed Ticket');
+                  ticket.set('status', 'pos_completed');
+                  alert(res.message);
+                  that.closeCheckoutDialog();
+                } else {
+                  that.$('.status-message').removeClass('in-progress');
+                  alert(res.error);
+                }
+              },
+              error: function(xhr, errorType, error) {
+                $.cardswipe('enable');
+                that.$('.status-message').removeClass('in-progress');
+                that.closeCheckoutDialog();
+                ticket.employeeSession.set('login', false);
+              }
+            });
+          }
+        } else {
+          alert('Please select "Credit Card Payment" and "Swipe Remaining Amount" before swiping a card.');
+        }
+      } else if(this.currentTab == 1) {
+        var swipeCheckoutRequest = JSON.stringify({
+          token: sessionStorage.token,
+          ticketId: ticket.get('ticketId'),
+          total: that.ticketTotal,
+          register_id: this.fetchRegisterID(),
+          customer: this.activeCustomer.get('id'),
+          cardData: cardData
+        });
+
+        that.$('.status-message').addClass('in-progress');
+        $.cardswipe('disable');
+
+        $.ajax({
+          type: 'POST',
+          url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/swipe-checkout',
+          data: {request: swipeCheckoutRequest},
+          timeout: 15000,
+          success: function(res, status, xhr) {
             that.$('.status-message').removeClass('in-progress');
             $.cardswipe('enable');
-            alert(res.error);
+            if(res.status) {
+              //Close ticket
+              ticket.set('status_en', 'Closed Ticket');
+              ticket.set('status', 'pos_completed');
+              alert(res.message);
+              that.closeCheckoutDialog();
+            } else {
+              that.$('.status-message').removeClass('in-progress');
+              alert(res.error);
+            }
+          },
+          error: function(xhr, errorType, error) {
+            $.cardswipe('enable');
+            that.$('.status-message').removeClass('in-progress');
+            that.closeCheckoutDialog();
+            ticket.employeeSession.set('login', false);
           }
-        },
-        error: function(xhr, errorType, error) {
-          that.$('.status-message').removeClass('in-progress');
-          that.closeCheckoutDialog();
-          ticket.employeeSession.set('login', false);
-        }
-      });
+        });
+      } else {
+        alert('Credit Card swipes are not allowed in this mode.');
+      }
     },
     creditCardScanFail: function() {
       alert('We could not read this card, please try again.');

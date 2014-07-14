@@ -669,6 +669,10 @@ a.ticket-customer-link:hover {
     width: 25%;
 }
 
+.toggle-payment .payment-input label.full-label {
+    width: auto;
+}
+
 a.ticket-rma-return {
      margin-top: 10px;
 }
