@@ -549,7 +549,7 @@ jQuery(function($) {
           }
         });
       } else {
-        alert('No refund amount on RMA.');
+        alert('No items to refund on RMA.');
       }
     }
   });
