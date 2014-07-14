@@ -4,7 +4,8 @@ jQuery(function($) {
     tagName: 'div',
     className: 'customerInfoOverlay',
     events: {
-      "click a.customer-info-continue": 'closeCheckoutDialog',
+      "click a.customer-info-continue": 'continueProcess',
+      "click a.customer-info-cancel": 'closeCheckoutDialog',
       "click a.ticket-rma-return": 'ticket_rma_return',
       "click .info-menu-tabs a": 'changeTab',
       "click .invoice-history a": 'invoiceDataRefresh',
@@ -14,7 +15,16 @@ jQuery(function($) {
       "click .returning-items a.decrease": 'rmaDecrease',
       "click .returning-items a.increase": 'rmaIncrease',
       "keyup input.rma-scan": 'searchKeyUp',
-      'click .toggle-payment input[type="checkbox"]': 'checkboxToggle'
+      "keypress .credit-payments-checkout input.cash-paid": 'cashInputValidate',
+      "keypress .toggle-payment input.check-amount": 'cashInputValidate',
+      "keypress .toggle-payment input.mo-amount": 'cashInputValidate',
+      "keypress .toggle-payment input.charge-amount": 'cashInputValidate',
+      "keyup .credit-payments-checkout input.cash-paid": 'calculateCashChange',
+      "keyup .toggle-payment input.check-amount": 'calculateCashChange',
+      "keyup .toggle-payment input.mo-amount": 'calculateCashChange',
+      "keyup .toggle-payment input.charge-amount": 'calculateCashChange',
+      'change .toggle-payment input[type="checkbox"]': 'checkboxToggle',
+      "change #cc-payment-split": 'changeModeToSwipe'
     },
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
@@ -38,9 +48,11 @@ jQuery(function($) {
       var that = this;
       if(uid) {
         var customer_uid = uid;
+        this.customer_uid = customer_uid;
       } else {
         var activeCustomer = this.activeCustomer;
         var customer_uid = activeCustomer.get('id');
+        this.customer_uid = undefined;
       }
 
       this.customer_uid = customer_uid;
@@ -69,6 +81,7 @@ jQuery(function($) {
 
             //Payments
             that.setupPaymentForm(res.payments);
+            that.pending_payments = res.payments;
             //that.$('.payment-history').html(res.payments);
 
             that.adjustBlockHeights();
@@ -103,6 +116,14 @@ jQuery(function($) {
       var tabs = this.$('.tabs .tab');
       tabs.hide();
       tabs.eq(index).show();
+
+      if(index == 2) {
+        this.$('a.customer-info-cancel').show();
+      } else {
+        this.$('a.customer-info-cancel').hide();
+      }
+
+      this.currentTab = index;
     },
     invoiceDataRefresh: function(e) {
       e.preventDefault();
@@ -178,7 +199,87 @@ jQuery(function($) {
       this.$('.rma-form').html(this.RMAFormTemplate());
       this.rmaItemsCollectionFinal.reset();
       this.rmaTicket.set('total', 0);
+      
+      this.pending_payments = undefined;
+      this.change_left = undefined; 
+      this.change_value = undefined;
+      this.cash_paid = undefined;
+
+      this.$('a.customer-info-cancel').hide();
+
+      this.remaining = 0;
       return this;
+    },
+    cashInputValidate: function(e) {
+      if(e.currentTarget.value == e.currentTarget.defaultValue) {
+        e.currentTarget.value = '';
+      }
+
+      if((e.keyCode < 48 || e.keyCode > 57) && e.keyCode != 46 && e.keyCode != 8 && e.keyCode != 190) {
+        e.preventDefault();
+      }
+    },
+    calculateCashChange: function(e) {
+      if(_.isUndefined(this.pending_payments)) {
+        alert("Could not load customer. Please close and try again.");
+      } else {
+        var total = this.pending_payments.pending_payments;
+        var val = this.$('input.cash-paid').val();
+        var paid;
+        if(val == '') {
+          paid = 0;
+        } else {
+          paid = parseFloat(val);
+        }
+
+        var check = this.$('input#check-payment');
+        val = this.$('input.check-amount').val();
+        if(check.is(':checked') && val != '') {
+          paid += parseFloat(val);
+        }
+
+        check = this.$('input#mo-payment');
+        val = this.$('input.mo-amount').val();
+        if(check.is(':checked') && val != '') {
+          paid += parseFloat(val);
+        }
+
+        check = this.$('input#cc-payment');
+        val = this.$('input.charge-amount').val();
+
+        if(check.is(':checked') && val != '') {
+          paid += parseFloat(val);
+        }
+
+        var change = total - paid;
+
+        if(change > 0) {
+          total = change;
+          change = 0;
+        } else if(change < 0) {
+          total = 0;
+          change = -change;
+        } else {
+          total = 0;
+          change = 0;
+        }
+
+        this.change_left = total;
+        this.change_value = change;
+        this.cash_paid = paid;
+
+        this.$('.payment-made-value').html(accounting.formatMoney(paid));
+        this.$('.remaining-due-value').html(accounting.formatMoney(total));
+        this.$('.change-due-value').html(accounting.formatMoney(change));
+      }
+    },
+    changeModeToSwipe: function(e) {
+      if(e.currentTarget.checked) {
+        this.$('.manual-cc').hide();
+        this.$('input.charge-amount').val('').trigger('keyup');
+      } else {
+        this.$('.manual-cc').show();
+      }
     },
     checkboxToggle: function(e) {
       if(e.currentTarget.checked) {
@@ -189,10 +290,86 @@ jQuery(function($) {
 
       this.$('input.cash-paid').trigger('keyup');
     },
+    continueProcess: function(e) {
+      if(this.currentTab == 2) {
+        this.cashCheckout(e);
+      } else {
+        this.closeCheckoutDialog(e);
+      }
+    },
     closeCheckoutDialog: function(e) {
       e.preventDefault();
       e.stopPropagation(); //Stop bubbling click to focus on the secondary rma scanner, so focus can goes to primary scanner
       this.modal.display(false);
+    },
+    cashCheckout: function(e) {
+      e.preventDefault();
+      var that = this;
+
+      if(!_.isUndefined(this.change_left) && !_.isUndefined(this.change_value) && !_.isUndefined(this.cash_paid)) {
+        var formatedCash = accounting.formatNumber(this.cash_paid, 2, "");
+        if(formatedCash == "0.00") {
+          alert("Please enter a cash amount higher than $0.00 to continue.");
+        } else {
+          var ticket = this.ticket;
+          if(_.isUndefined(this.customer_uid)) {
+            var cuid = this.activeCustomer.get('id');            
+          } else {
+            var cuid = this.customer_uid;
+          }
+
+          var creditCashCheckoutRequest = JSON.stringify({token: sessionStorage.token,
+                                                    cash: this.cash_paid,
+                                                    change: this.change_value,
+                                                    customer: cuid,
+                                                    cash_val: this.$('input.cash-paid').val(),
+                                                    check: this.$('input#check-payment').is(':checked'),
+                                                    check_val: this.$('input.check-amount').val(),
+                                                    check_number: this.$('input.check-number').val(),
+                                                    check_post_dated: this.$('input#post-dated').is(':checked'),
+                                                    check_date: this.$('input#cash-date').val(),
+                                                    mo: this.$('input#mo-payment').is(':checked'),
+                                                    mo_val: this.$('input.mo-amount').val(),
+                                                    mo_ref: this.$('input.mo-ref').val(),
+                                                    credit: this.$('input#cc-payment').is(':checked'),
+                                                    credit_val: this.$('input.charge-amount').val(),
+                                                    transac_id: this.$('input#transaction-id').val(),
+                                                    register_id: this.fetchRegisterID()
+                                                  });
+
+          ticket.trigger('ticket:preloader', true);
+          $.ajax({
+            type: 'POST',
+            url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/credit-cash-checkout',
+            data: {request: creditCashCheckoutRequest},
+            timeout: 15000,
+            success: function(res, status, xhr) {
+              //stop preloader
+              ticket.trigger('ticket:preloader', false);
+              if(res.status) {
+                var formattedChange = accounting.formatNumber(that.change_value, 2, "");
+                if(formattedChange == "0.00") {
+                  alert("Payment Complete. No CHANGE.");
+                } else {
+                  alert("Payment Complete. Please make change for amount: "+accounting.formatMoney(that.change_value));
+                }
+              } else {
+                alert(res.message);
+              }
+
+              that.closeCheckoutDialog(e);
+            },
+            error: function(xhr, errorType, error) {
+              //stop pre loader and logout user.
+              that.closeCheckoutDialog();
+              ticket.trigger('ticket:preloader', false);
+              ticket.employeeSession.set('login', false);
+            }
+          });
+        }
+      } else {
+        alert("Please input cash amount before checkout.");
+      }
     },
     selectInvoice: function(e) {
       var ticketId = $('td:eq(1)', e.currentTarget).text();

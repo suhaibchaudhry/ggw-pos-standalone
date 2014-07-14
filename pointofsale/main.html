@@ -367,6 +367,21 @@
 			</div>
 
 			<div>
+			<div class="remaining-due-label checkout-label">Remaining Due:</div>
+			<div class="remaining-due-value checkout-value"><%= accounting.formatMoney(pending_payments) %></div>
+			</div>
+
+			<div>
+			<div class="payment-made-label checkout-label">Payment:</div>
+			<div class="payment-made-value checkout-value"><%= accounting.formatMoney(0) %></div>
+			</div>
+
+			<div>
+			<div class="change-due-label checkout-label">Change:</div>
+			<div class="change-due-value checkout-value"><%= accounting.formatMoney(0) %></div>
+			</div>
+
+			<div>
 			<div class="term-limit-label checkout-label">Term Limit:</div>
 			<div class="term-limit-value checkout-value"><%= term_limit %> Days</div>
 			</div>
@@ -383,6 +398,8 @@
 					<label for="check-amount">Check Amount:</label>
 					<input id="check-amount" type="text" class="check-amount" value="0.00" />
 					</div>
+					<label for="check-number">Check Number:</label>
+					<input id="check-number" type="text" class="check-number" />
 					<input type="checkbox" id="post-dated" name="post-dated" value="post_dated" /><label for="post-dated">Post Dated</label>
 					<div class="cash-date-input hidden-child">
 						<label for="cash-date">Check Date:</label>
@@ -408,13 +425,24 @@
 			<div class="cc-payment toggle-payment">
 				<input type="checkbox" id="cc-payment" name="cc-payment" value="cc_payment" /><label for="cc-payment">Credit Card Payment</label>
 				<div class="payment-input hidden-child">
-					<div>
-						<label for="chrg-ref">Charge Amount:</label>
-						<input id="chrg-ref" type="text" class="charge-amount" value="0.00" />
+					<input type="checkbox" id="cc-payment-split" name="cc-payment-split" value="cc_payment_split" /><label class="full-label" for="cc-payment-split">Swipe Remaining Amount</label>
+					<div class="payment-input-split hidden-child">
+						<div>
+							<div class="remaining-due-label checkout-label">Amount Remaining:</div>
+							<div class="remaining-due-value checkout-value"></div>
+						</div>
+
+						<div class="status-message">Swipe credit card to continue...</div>
 					</div>
-					<div>
-						<label for="transaction-id">Transaction #:</label>
-						<input id="transaction-id" type="text" class="transaction-id" value="" />
+					<div class="manual-cc">
+						<div>
+							<label for="chrg-ref">Charge Amount:</label>
+							<input id="chrg-ref" type="text" class="charge-amount" value="0.00" />
+						</div>
+						<div>
+							<label for="transaction-id">Transaction #:</label>
+							<input id="transaction-id" type="text" class="transaction-id" value="" />
+						</div>
 					</div>
 				</div>
 			</div>
@@ -532,6 +560,7 @@
 			</div>
 			<div class="bbm-modal__bottombar">
 				<a href="#" class="pure-button pure-button-success customer-info-continue">Continue</a>
+				<a href="#" class="pure-button pure-button-error customer-info-cancel">Cancel</a>
 			</div>
 	</script>
 

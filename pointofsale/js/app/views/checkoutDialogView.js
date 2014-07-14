@@ -63,6 +63,7 @@ jQuery(function($) {
         },
         error: function(xhr, errorType, error) {
           //stop pre loader and logout user.
+          that.closeCheckoutDialog();
           ticket.trigger('ticket:preloader', false);
           ticket.employeeSession.set('login', false);
         }
@@ -116,6 +117,7 @@ jQuery(function($) {
           },
           error: function(xhr, errorType, error) {
             //stop pre loader and logout user.
+            that.closeCheckoutDialog();
             ticket.trigger('ticket:preloader', false);
             ticket.employeeSession.set('login', false);
           }
@@ -157,6 +159,7 @@ jQuery(function($) {
             },
             error: function(xhr, errorType, error) {
               //stop pre loader and logout user.
+              that.closeCheckoutDialog();
               ticket.trigger('ticket:preloader', false);
               ticket.employeeSession.set('login', false);
             }
@@ -221,6 +224,7 @@ jQuery(function($) {
             },
             error: function(xhr, errorType, error) {
               //stop pre loader and logout user.
+              that.closeCheckoutDialog();
               ticket.trigger('ticket:preloader', false);
               ticket.employeeSession.set('login', false);
             }
