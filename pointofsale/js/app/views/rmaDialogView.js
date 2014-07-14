@@ -21,6 +21,7 @@ jQuery(function($) {
         this.customerInfoDialog = customerInfoDialog;
         var template = this.rmaLineItemsSelectTemplate;
         _.each(products, function(product) {
+          product.historic = true;
           this.$('.returning-items-select .product-table').append(template(product));
           customerInfoDialog.rmaItemsCollection.add(product);
         });
@@ -28,6 +29,7 @@ jQuery(function($) {
         this.customerInfoDialog = customerInfoDialog;
         var template = this.rmaLineItemsSelectTemplate;
         _.each(products, function(product) {
+          product.historic = false;
           product.date = 'NEVER PURCHASED';
           product.remaining_qty = 50;
           product.qty = 1;

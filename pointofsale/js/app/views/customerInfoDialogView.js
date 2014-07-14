@@ -527,7 +527,8 @@ jQuery(function($) {
             nid: product.get('nid'),
             order_product_id: product.get('id'),
             qty_returned: product.get('returning_qty'),
-            price: product.get('sell_price')
+            price: product.get('sell_price'),
+            historic: product.get('historic')
           });
         });
 
