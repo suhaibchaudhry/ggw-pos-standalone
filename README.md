@@ -74,6 +74,11 @@ Use gtk-chtheme package to change theme
 
 More details: http://fluxbox-wiki.org/index.php?title=Using_gtk_themes
 
+Print Requirements
+-------------------
+Install Node Cupsidity with libcups2-dev package.
+Install Wkhtmltopdf with node package.
+
 Harware:
 --------
 *LCD For Employee
