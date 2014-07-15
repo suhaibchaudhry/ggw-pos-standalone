@@ -517,47 +517,132 @@ jQuery(function($) {
       var customer_uid = this.customer_uid;
       var total = this.rmaTicket.get('total');
       var that = this;
-
+      var status = ticket.get('status');
       e.preventDefault();
 
       if(total > 0) {
         var products = new Array();
         this.rmaItemsCollectionFinal.each(function(product) {
+          var historic = product.get('historic');
+          var nid;
+          if(historic) {
+            nid = product.get('nid');
+          } else {
+            nid = product.get('id');
+          }
+          var qty = product.get('returning_qty');
           products.push({
-            nid: product.get('nid'),
+            nid: nid,
+            name: product.get('name'),
             order_product_id: product.get('id'),
-            qty_returned: product.get('returning_qty'),
+            sku: product.get('sku'),
+            qty_returned: qty,
             price: product.get('sell_price'),
             historic: product.get('historic')
           });
-        });
 
-        var rmaRecordRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, total: total, products: products, register_id: this.fetchRegisterID()});
-        ticket.trigger('ticket:preloader', true);
-        $.ajax({
-          type: 'POST',
-          url: this.employeeSession.get('apiServer')+'/pos-api/ticket/rma-checkout',
-          data: {request: rmaRecordRequest},
-          timeout: 15000,
-          success: function(res, status, xhr) {
-            if(res.status) {
-              alert(res.message);
-            } else {
-              that.employeeSession.set('login', false);
-            }
-            that.closeCheckoutDialog(e);
-            ticket.trigger('ticket:preloader', false);
-          },
-          error: function(xhr, errorType, error) {
-            //stop pre loader and logout user.
-            ticket.trigger('ticket:preloader', false);
-            that.employeeSession.set('login', false);
-            that.closeCheckoutDialog(e);
+          if(status == 'pos_return') {
+            that.scanItemRegular(product.get('sku'), qty);
           }
         });
+
+        if(status == 'pos_return') {
+          that.record_rma_transaction(products, this.ticket.get('ticketId'));
+          that.closeCheckoutDialog(e);
+        } else {
+          var rmaTicketOpenRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, products: products, register_id: this.fetchRegisterID()});
+          ticket.trigger('ticket:preloader', true);
+          //console.log(products);
+          $.ajax({
+            type: 'POST',
+            url: this.employeeSession.get('apiServer')+'/pos-api/ticket/create-rma-ticket',
+            data: {request: rmaTicketOpenRequest},
+            timeout: 15000,
+            success: function(res, status, xhr) {
+              if(res.status) {
+                var stasuses = ticket.get('ticketStasuses');
+                //Change without silent to populate active customer and ticket products (Empty on create ticket command).
+                ticket.set({
+                  status: res.ticketStatus,
+                  status_en: stasuses[res.ticketStatus],
+                  ticketId: res.ticketId,
+                  customerUid: customer_uid
+                });
+
+                that.record_rma_transaction(products, res.ticketId);
+              }
+              alert(res.message);
+              that.closeCheckoutDialog(e);
+              ticket.trigger('ticket:preloader', false);
+            },
+            error: function(xhr, errorType, error) {
+              //stop pre loader and logout user.
+              ticket.trigger('ticket:preloader', false);
+              that.employeeSession.set('login', false);
+              that.closeCheckoutDialog(e);
+            }
+          });
+        }
       } else {
-        alert('No items to refund on RMA.');
+          alert('No items to refund on RMA.');
       }
+    },
+    record_rma_transaction: function(products) {
+      var ticket = this.ticket;
+      var customer_uid = this.customer_uid;
+      var total = this.rmaTicket.get('total');
+      var that = this;
+
+      var rmaRecordRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, total: total, products: products, register_id: this.fetchRegisterID()});
+      ticket.trigger('ticket:preloader', true);
+      $.ajax({
+        type: 'POST',
+        url: this.employeeSession.get('apiServer')+'/pos-api/ticket/rma-checkout',
+        data: {request: rmaRecordRequest},
+        timeout: 15000,
+        success: function(res, status, xhr) {
+          if(res.status) {
+            alert(res.message);
+          } else {
+            that.employeeSession.set('login', false);
+          }
+          ticket.trigger('ticket:preloader', false);
+        },
+        error: function(xhr, errorType, error) {
+          //stop pre loader and logout user.
+          ticket.trigger('ticket:preloader', false);
+        }
+      });
+    },
+    scanItemRegular: function(barcode, qty) {
+      var that = this;
+
+      var scanRequest = JSON.stringify({
+        token: this.employeeSession.get("token"),
+        barcode: barcode
+      });
+
+      var ticket = this.ticket.get('activeTicketView');
+
+      $.ajax({
+        type: 'POST',
+        url: this.employeeSession.get('apiServer')+'/pos-api/product-scan',
+        data: {request: scanRequest},
+        timeout: 10000,
+        success: function(res, status, xhr) {
+          if(res.scan) {
+            ticket.addItemToCollection(res.product, qty);
+          } else {
+            //$.jGrowl("Could not find item with barcode: <strong>"+barcode+"</strong>");
+            alert("Could not find item with barcode: "+barcode);
+          }
+        },
+        error: function(xhr, errorType, error) {
+          $.jGrowl("Could not connect to the network. Please check connection.");
+          //Something is wrong log user out.
+          that.employeeSession.set('login', false);
+        }
+      });
     }
   });
 });

@@ -59,7 +59,7 @@ jQuery(function($) {
     		}
 
     		//Lock unlock ticket if closed using Global Selectors for now, need to be namespaced.
-    		if(ticket.get('status') == 'pos_completed') {
+    		if(ticket.get('status') == 'pos_completed' || ticket.get('status') == 'pos_return') {
     			$('.lock-indicator').show();
     			this.lockTicket();
     		} else {
@@ -68,7 +68,7 @@ jQuery(function($) {
     			$('.item-search input.search').focus();
     		}
 
-    		if(ticket.get('status') == 'pos_quote') {
+    		if(ticket.get('status') == 'pos_quote' || ticket.get('status') == 'pos_return') {
     			$('.lock-indicator').show();
     			$('.lock-indicator a.lock-toggle').hide();
     		} else {
