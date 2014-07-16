@@ -38,6 +38,7 @@ jQuery(function($) {
       this.listenTo(this.rmaItemsCollectionFinal, 'add', this.addItemToRMA);
       this.listenTo(this.rmaItemsCollectionFinal, 'remove', this.removeItemFromRMA);
       this.listenTo(this.rmaItemsCollectionFinal, 'change', this.changeReturnQty);
+      this.currentTab = 0; //Start with 0th tab.
     },
     template: _.template($('#customer-info-modal').html()),
     paymentTemplate: _.template($('#credit-payments-checkout').html()),
@@ -300,6 +301,7 @@ jQuery(function($) {
     closeCheckoutDialog: function(e) {
       e.preventDefault();
       e.stopPropagation(); //Stop bubbling click to focus on the secondary rma scanner, so focus can goes to primary scanner
+      this.currentTab = 0; //reset current tab
       this.modal.display(false);
     },
     cashCheckout: function(e) {
