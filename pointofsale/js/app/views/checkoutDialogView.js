@@ -130,41 +130,48 @@ jQuery(function($) {
       var that = this;
       var ticket = this.ticket;
       var total = this.ticketTotal;
-      if(_.isUndefined(this.available_credit) || _.isUndefined(this.term_limit) || total > this.available_credit) {
+      if(_.isUndefined(this.available_credit) || _.isUndefined(this.term_limit)) {
         alert("Insufficient credit limit. Transaction could not be completed.");
         this.closeCheckoutDialog(e);
+      } else if(total > this.available_credit) {
+        if (confirm('Customer has an insufficient credit limit. Are you sure you want to continue anyways?')) {
+          this.performCreditCheckout(that, ticket, total, e);
+        }
       } else {
-        var cuid = this.activeCustomer.get('id');
-        var creditCheckoutRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId'), total: total, customer: cuid, term_limit: this.term_limit, register_id: this.fetchRegisterID()});
-
-        ticket.trigger('ticket:preloader', true);
-        $.ajax({
-            type: 'POST',
-            url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/credit-checkout',
-            data: {request: creditCheckoutRequest},
-            timeout: 15000,
-            success: function(res, status, xhr) {
-              //stop preloader
-              ticket.trigger('ticket:preloader', false);
-              if(res.status) {
-                alert("Checkout Complete.");
-                //Close ticket
-                ticket.set('status_en', 'Closed Ticket');
-                ticket.set('status', 'pos_completed');         
-              } else {
-                alert(res.message);
-              }
-
-              that.closeCheckoutDialog(e);
-            },
-            error: function(xhr, errorType, error) {
-              //stop pre loader and logout user.
-              that.closeCheckoutDialog();
-              ticket.trigger('ticket:preloader', false);
-              ticket.employeeSession.set('login', false);
-            }
-        });
+        this.performCreditCheckout(that, ticket, total, e);
       }
+    },
+    performCreditCheckout: function(that, ticket, total, e) {
+      var cuid = this.activeCustomer.get('id');
+      var creditCheckoutRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId'), total: total, customer: cuid, term_limit: this.term_limit, register_id: this.fetchRegisterID()});
+
+      ticket.trigger('ticket:preloader', true);
+      $.ajax({
+          type: 'POST',
+          url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/credit-checkout',
+          data: {request: creditCheckoutRequest},
+          timeout: 15000,
+          success: function(res, status, xhr) {
+            //stop preloader
+            ticket.trigger('ticket:preloader', false);
+            if(res.status) {
+              alert("Checkout Complete.");
+              //Close ticket
+              ticket.set('status_en', 'Closed Ticket');
+              ticket.set('status', 'pos_completed');         
+            } else {
+              alert(res.message);
+            }
+
+            that.closeCheckoutDialog(e);
+          },
+          error: function(xhr, errorType, error) {
+            //stop pre loader and logout user.
+            that.closeCheckoutDialog();
+            ticket.trigger('ticket:preloader', false);
+            ticket.employeeSession.set('login', false);
+          }
+      });
     },
     cashCheckout: function(e) {
       var that = this;
