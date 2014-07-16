@@ -587,13 +587,13 @@ jQuery(function($) {
           alert('No items to refund on RMA.');
       }
     },
-    record_rma_transaction: function(products) {
+    record_rma_transaction: function(products, ticketId) {
       var ticket = this.ticket;
       var customer_uid = this.customer_uid;
       var total = this.rmaTicket.get('total');
       var that = this;
 
-      var rmaRecordRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, total: total, products: products, register_id: this.fetchRegisterID()});
+      var rmaRecordRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, total: total, ticketId: ticketId, products: products, register_id: this.fetchRegisterID()});
       ticket.trigger('ticket:preloader', true);
       $.ajax({
         type: 'POST',
