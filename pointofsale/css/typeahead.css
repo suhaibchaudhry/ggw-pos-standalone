@@ -239,19 +239,19 @@
 }
 .customer-search a.customer_info {
   background: #0D85D4;
-  padding: 2px 8px;
-  border-radius: 10px;
+  padding: 15px 7px 15px 8px;
   text-decoration: none;
   position: absolute;
-  top: 50%;
   right: 0;
   color: #fff;
-  margin-top: -9px;
-  right: 4px;
-  border: 1px solid #fff;
+  top: 0;
+  bottom: 0;
+  font-size: 18px;
+  background-image: -webkit-linear-gradient(top, #94D59C, #00B147);
+  border-left: 1px solid #fff;
 }
 
 .customer-search a.customer_info:hover {
   background: #fff;
-  color: #0D85D4;
+  background-image: -webkit-linear-gradient(top, #00770F, #00B147);
 }
