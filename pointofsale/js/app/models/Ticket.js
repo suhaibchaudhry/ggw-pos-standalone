@@ -5,7 +5,7 @@ jQuery(function($) {
 
       this.set({
         productCollection: new ticketProductCollection([],
-          {activeCustomer: attributes['activeCustomer']})
+          {activeCustomer: attributes['activeCustomer'], ticket: this})
       });
 
       this.set('activeTicketView', attributes['activeTicketView']);

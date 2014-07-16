@@ -3,12 +3,15 @@ jQuery(function($) {
   ticketProduct = Backbone.Model.extend({
   	initialize: function(attributes, options) {
       var activeCustomer = options['collection'].activeCustomer;
+      var ticket = options['collection'].ticket;
+
       this.set('activeCustomer', activeCustomer);
+      this.set('ticket', ticket);
 
       this.set('retail', true);
       //Set last price before triggering price change to subtract from totals.
       //this.set('last_price', this.get('price'));
-      if(activeCustomer.get('id')) {
+      if(activeCustomer.get('id') && ticket.get('status') != 'pos_return' && ticket.get('status') != 'pos_completed') {
         //Perform role checks, and set the smallest price for current user.
         this.set('price', this.getRolePrice());
       } else {
@@ -27,9 +30,10 @@ jQuery(function($) {
     customerChanged: function(model, customer_id, options) {
       //this.set('last_price', this.get('price'));
       var price = this.get('manager_price');
+      var ticket = this.get('ticket');
       if(price) {
         this.set('price', price);
-      } else if(customer_id) {
+      } else if(customer_id && ticket.get('status') != 'pos_return' && ticket.get('status') != 'pos_completed') {
         //Perform role checks, listen on active customer for changing roles.
         this.set('price', this.getRolePrice());
       } else {
@@ -83,6 +87,7 @@ jQuery(function($) {
     model: ticketProduct,
     initialize: function(models, options) {
       this.activeCustomer = options['activeCustomer'];
+      this.ticket = options['ticket'];
     }
   });
 });
