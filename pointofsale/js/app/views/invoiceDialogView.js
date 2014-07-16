@@ -85,7 +85,7 @@ jQuery(function($) {
       var that = this;
       var query = this.removeURLParameter(e.currentTarget.search, 'request');
 
-      this.$('.title').text('Quote Invoices');
+      this.$('.title').text('RMA Tickets');
 
       $.ajax({
         type: 'POST',

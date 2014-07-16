@@ -21,9 +21,18 @@ jQuery(function($) {
         this.customerInfoDialog = customerInfoDialog;
         var template = this.rmaLineItemsSelectTemplate;
         _.each(products, function(product) {
-          product.historic = true;
-          this.$('.returning-items-select .product-table').append(template(product));
+          if(product.unhistoric) {
+            product.historic = false;
+            product.date = 'NEVER PURCHASED';
+            product.remaining_qty = 50;
+            product.qty = 1;
+            console.log(product);
+          } else {
+            product.historic = true;
+          }
           customerInfoDialog.rmaItemsCollection.add(product);
+          console.log(product);
+          this.$('.returning-items-select .product-table').append(template(product));
         });
       } else {
         this.customerInfoDialog = customerInfoDialog;
