@@ -543,12 +543,12 @@ jQuery(function($) {
             historic: product.get('historic')
           });
 
-          if(status == 'pos_return') {
+          if(status == 'pos_return'&& that.activeCustomer.get('id') == customer_uid) {
             that.scanItemRegular(product.get('sku'), qty);
           }
         });
 
-        if(status == 'pos_return') {
+        if(status == 'pos_return' && this.activeCustomer.get('id') == customer_uid) {
           that.record_rma_transaction(products, this.ticket.get('ticketId'));
           that.closeCheckoutDialog(e);
         } else {
