@@ -544,7 +544,7 @@ jQuery(function($) {
           });
 
           if(status == 'pos_return'&& that.activeCustomer.get('id') == customer_uid) {
-            that.scanItemRegular(product.get('sku'), qty);
+            that.scanItemRegular(product.get('sku'), qty, product.get('sell_price'));
           }
         });
 
@@ -616,12 +616,14 @@ jQuery(function($) {
         }
       });
     },
-    scanItemRegular: function(barcode, qty) {
+    scanItemRegular: function(barcode, qty, sell_price) {
       var that = this;
 
       var scanRequest = JSON.stringify({
         token: this.employeeSession.get("token"),
-        barcode: barcode
+        barcode: barcode,
+        sell_price: sell_price,
+        rma_scan: true
       });
 
       var ticket = this.ticket.get('activeTicketView');
