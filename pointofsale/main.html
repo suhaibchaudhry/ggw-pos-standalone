@@ -219,9 +219,9 @@
 					value: '<input name="overriden-price" class="overriden-price" value="'+accounting.formatNumber(product.price, 2, "", ".")+'" />'
 				}) %></div>
 		</div>
-		<div class="product-info-item qty-split"><%= labelizeData({
+		<div class="product-info-item qty-split" data-orig-split="<%= split %>"><%= labelizeData({
 					label: "Quantity Split",
-					value: '<span class="split-value">1</span><a href="#" class="decr">-</a><a href="#" class="incr">+</a>'
+					value: '<span class="split-value">'+split+'</span><a href="#" class="decr">-</a><a href="#" class="incr">+</a>'
 				}) %>
 		</div>
 	</script>

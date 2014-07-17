@@ -36,9 +36,17 @@ jQuery(function($) {
         this.product = product;
         this.modal.display(true);
 
+        var split;
+        if(product.get('qty_split')) {
+          split = product.get('qty_split');
+        } else {
+          split = 1;
+        }
+
         this.$('.price-override-settings').html(this.priceOverrideSettings({
           product: product.attributes,
-          labelizeData: this.labelizeData
+          labelizeData: this.labelizeData,
+          split: split
         }));
 
         if(this.employeeSession.get('privileged')) {
@@ -59,6 +67,7 @@ jQuery(function($) {
       var that = this;
       var ticket = this.ticket;
       var price = accounting.unformat(this.$('input.overriden-price').val());
+      var qty_split = accounting.unformat(this.$('span.split-value').text());
 
       var managerOverrideRequest = JSON.stringify({
         token: this.employeeSession.get("token"),
@@ -77,6 +86,10 @@ jQuery(function($) {
         success: function(res, status, xhr) {
           if(res.status) {
             $.jGrowl("Item price was changed.");
+            if(!that.product.get('orig_price')) {
+              that.product.set('orig_price', that.product.get('price'));
+            }
+            that.product.set('qty_split', qty_split);
             that.product.set('manager_price', price);
             that.product.set('price', price);
           } else {
@@ -105,13 +118,14 @@ jQuery(function($) {
     QtySplitModify: function(incr) {
       var price = this.product.get('price');
       var qty_split = accounting.unformat(this.$('span.split-value').text());
+      var orig_split = accounting.unformat(this.$('div.qty-split').attr('data-orig-split'));
       if(incr) {
         qty_split++;
-        this.priceModify(price, qty_split);
+        this.priceModify(price, qty_split, orig_split);
       } else {
         if(qty_split > 1) {
           qty_split--;
-          this.priceModify(price, qty_split);
+          this.priceModify(price, qty_split, orig_split);
         }
       }
     },
@@ -119,8 +133,12 @@ jQuery(function($) {
       e.preventDefault();
       this.authorizationModal.display(true);
     },
-    priceModify: function(price, qty_split) {
-      price = price/qty_split;
+    priceModify: function(price, qty_split, orig_split) {
+      if(this.product.get('orig_price')) {
+        price = this.product.get('orig_price')/qty_split;
+      } else {
+        price = (price*orig_split)/qty_split;
+      }
       this.$('input.overriden-price').val(accounting.formatNumber(price, 2, "", "."));
       this.$('span.split-value').text(qty_split);
     }
