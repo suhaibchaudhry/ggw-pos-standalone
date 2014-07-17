@@ -45,11 +45,11 @@ jQuery(function($) {
       	},
       	lockTicketCustomer: function() {
       		$('a.clear-customer').addClass('forceHide');
-    		$('.customer-search input.tt-query').attr('disabled', true);
+    		  $('.customer-search input.tt-query').attr('disabled', true);
       	},
       	unlockTicketCustomer: function() {
       		$('a.clear-customer').removeClass('forceHide');
-	    	$('.customer-search input.tt-query').attr('disabled', false);
+	    	  $('.customer-search input.tt-query').attr('disabled', false);
       	},
       	updateTicketCustomerUidOnServer: function(uid) {
       		var ticket = this.get('ticket');

@@ -76,8 +76,8 @@ jQuery(function($) {
     		}
     	},
     	lockTicket: function() {
-    		//$('a.clear-customer').addClass('forceHide');
-    		//$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', true);
+    		$('a.clear-customer').addClass('forceHide');
+    		$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', true);
     		$('.item-search input.tt-query').attr('disabled', true);
     		$('.activeTicket').addClass('lockedTicket');
     		this.activeTicketView.ticket.set('locked', true);
