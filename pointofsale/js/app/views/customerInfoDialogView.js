@@ -7,6 +7,7 @@ jQuery(function($) {
       "click a.customer-info-continue": 'continueProcess',
       "click a.customer-info-cancel": 'closeCheckoutDialog',
       "click a.ticket-rma-return": 'ticket_rma_return',
+      "click a.ticket-rma-empty": 'ticket_create_rma_empty',
       "click .info-menu-tabs a": 'changeTab',
       "click .invoice-history a": 'invoiceDataRefresh',
       "click .invoice-history table.uc-order-history tbody tr": 'selectInvoice',
@@ -513,6 +514,43 @@ jQuery(function($) {
       var id = product.get('id');
       var qty = product.get('returning_qty');
       this.$('.returning-items #line-item-'+id+' .qty span.return-value').text(qty);
+    },
+    ticket_create_rma_empty: function(e) {
+      var ticket = this.ticket;
+      var customer_uid = this.customer_uid;
+      var that = this;
+      var status = ticket.get('status');
+
+      var rmaTicketOpenRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, products: new Array(), register_id: this.fetchRegisterID()});
+      ticket.trigger('ticket:preloader', true);
+      //console.log(products);
+      $.ajax({
+        type: 'POST',
+        url: this.employeeSession.get('apiServer')+'/pos-api/ticket/create-rma-ticket',
+        data: {request: rmaTicketOpenRequest},
+        timeout: 15000,
+        success: function(res, status, xhr) {
+          if(res.status) {
+            var stasuses = ticket.get('ticketStasuses');
+            //Change without silent to populate active customer and ticket products (Empty on create ticket command).
+            ticket.set({
+              status: res.ticketStatus,
+              status_en: stasuses[res.ticketStatus],
+              ticketId: res.ticketId,
+              customerUid: customer_uid
+            });
+          }
+          alert(res.message);
+          that.closeCheckoutDialog(e);
+          ticket.trigger('ticket:preloader', false);
+        },
+        error: function(xhr, errorType, error) {
+          //stop pre loader and logout user.
+          ticket.trigger('ticket:preloader', false);
+          that.employeeSession.set('login', false);
+          that.closeCheckoutDialog(e);
+        }
+      });
     },
     ticket_rma_return: function(e) {
       var ticket = this.ticket;
