@@ -493,11 +493,11 @@ div.register-display span.label {
 .statusOverlay a.status-quote-ticket {
     float: right;
 }
-.ticketSearch .checkout {
+.ticketSearch .checkout, .ticketSearch .rma-process {
     padding: 0 10px;
     display: none;
 }
-.checkout a.checkout-button {
+.checkout a.checkout-button, .rma-process a.rma-process-button {
     margin: 10px 0;
     width: 100%;
     box-sizing: border-box;
