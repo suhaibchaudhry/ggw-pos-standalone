@@ -3,6 +3,7 @@ jQuery(function($) {
 		events: {
 			"typeahead:selected .ticket-search": 'itemSelected',
 			"click .checkout a.checkout-button": 'checkout',
+			"click .rma-process a.rma-process-button": 'rma_process',
 			"click a.lock-toggle": 'managerUnlockClosedTicket',
 			"click .status_change a": 'changeStatusOpen'
 		},
@@ -12,6 +13,7 @@ jQuery(function($) {
 		searchBoxTemplate: _.template($('#ticket-search-components').html()),
 		ticketSearchBadge: _.template($('#ticket-search-badge').html()),
 		checkoutButtons: _.template($('#checkout-buttons').html()),
+		rmaButtons: _.template($('#rma-buttons').html()),
 		initialize: function(attributes, options) {
 			this.employeeSession = attributes['employeeSession'];
 			this.ticketStatusDialogModal = attributes['ticketStatusDialogModal'];
@@ -51,15 +53,22 @@ jQuery(function($) {
     	},
     	ticketSpecialButtons: function(ticket) {
     		//Enable Disable Checkout Button
-    		if(ticket.get('status') == 'pos_in_progress') {
+    		var status = ticket.get('status');
+    		if(status == 'pos_in_progress') {
     			this.$('.checkout').show();
     			$('.item-search input.search').focus();
     		} else {
     			this.$('.checkout').hide();
     		}
 
+    		if(status == 'pos_return') {
+    			this.$('.rma-process').show();
+    		} else {
+    			this.$('.rma-process').hide();
+    		}
+
     		//Lock unlock ticket if closed using Global Selectors for now, need to be namespaced.
-    		if(ticket.get('status') == 'pos_completed' || ticket.get('status') == 'pos_return') {
+    		if(status == 'pos_completed' || status == 'pos_return') {
     			$('.lock-indicator').show();
     			this.lockTicket();
     		} else {
@@ -68,7 +77,7 @@ jQuery(function($) {
     			$('.item-search input.search').focus();
     		}
 
-    		if(ticket.get('status') == 'pos_quote') {
+    		if(status == 'pos_quote') {
     			$('.lock-indicator').show();
     			$('.lock-indicator a.lock-toggle').hide();
     		} else {
@@ -159,6 +168,9 @@ jQuery(function($) {
 			this.$checkoutButtons = this.$('.checkout');
 			this.$checkoutButtons.append(this.checkoutButtons());
 
+			this.$rmaButtons = this.$('.rma-process');
+			this.$rmaButtons.append(this.rmaButtons());
+
 			//Create TypeaheadJs Box
 			this.$searchbox.typeahead({
 		      valueKey: 'ticketId',
@@ -172,6 +184,34 @@ jQuery(function($) {
 		    });
 
 		    Mousetrap.bind('shift+d p', _.bind(this.mouseTrapCatch, this));
+		},
+		rma_process: function(e) {
+			e.preventDefault();
+			var ticket = this.ticket;
+			var ticketId = ticket.get('ticketId');
+			var customer_uid = ticket.get('activeCustomer').get('id');
+			var that = this;
+
+		    var rmaReprocessReq = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, ticketId: ticketId});
+   	        ticket.trigger('ticket:preloader', true);
+		    $.ajax({
+		      type: 'POST',
+		      url: this.employeeSession.get('apiServer')+'/pos-api/ticket/reprocess-rma',
+		      data: {request: rmaReprocessReq},
+		      timeout: 15000,
+		      success: function(res, status, xhr) {
+		        if(res.status) {
+		          alert(res.message);
+		        } else {
+		          that.employeeSession.set('login', false);
+		        }
+		        ticket.trigger('ticket:preloader', false);
+		      },
+		      error: function(xhr, errorType, error) {
+		        //stop pre loader and logout user.
+		        ticket.trigger('ticket:preloader', false);
+		      }
+		    });
 		},
 		changeStatusOpen: function(e) {
 			e.preventDefault();
