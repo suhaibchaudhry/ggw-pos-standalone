@@ -68,7 +68,7 @@ jQuery(function($) {
     			$('.item-search input.search').focus();
     		}
 
-    		if(ticket.get('status') == 'pos_quote' || ticket.get('status') == 'pos_return') {
+    		if(ticket.get('status') == 'pos_quote') {
     			$('.lock-indicator').show();
     			$('.lock-indicator a.lock-toggle').hide();
     		} else {
