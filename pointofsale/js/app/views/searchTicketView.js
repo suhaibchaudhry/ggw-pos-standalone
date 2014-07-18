@@ -23,7 +23,11 @@ jQuery(function($) {
 		},
 		checkout: function(e) {
 			e.preventDefault();
-			this.checkoutDialogModal.display(true);
+			if(this.ticket.get('productCount') > 0) {
+				this.checkoutDialogModal.display(true);
+			} else {
+				alert("Please scan products before continuing with checkout.");
+			}
 		},
 		changeTicket: function(ticket, ticketId, options) {
 			if(ticketId) {
