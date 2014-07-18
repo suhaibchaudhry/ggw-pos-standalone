@@ -112,6 +112,7 @@ jQuery(function($) {
             if(res.status) {
                 that.available_credit = res.credit_limits.available_credit;
                 that.term_limit = res.credit_limits.term_limit;
+                that.credit_limit = res.credit_limits.credit_limit;
                 that.$('.term-credit-checkout').html(that.creditSummaryTemplate(res.credit_limits));
             }
           },
@@ -134,8 +135,12 @@ jQuery(function($) {
         alert("Insufficient credit limit. Transaction could not be completed.");
         this.closeCheckoutDialog(e);
       } else if(total > this.available_credit) {
-        if (confirm('Customer has an insufficient credit limit. Are you sure you want to continue anyways?')) {
-          this.performCreditCheckout(that, ticket, total, e);
+        if(that.credit_limit == 0) {
+          if (confirm('Customer has an insufficient credit limit. Are you sure you want to continue anyways?')) {
+            this.performCreditCheckout(that, ticket, total, e);
+          }
+        } else {
+          alert("Customer has insufficient credit limit. Transaction could not be completed.");
         }
       } else {
         this.performCreditCheckout(that, ticket, total, e);
