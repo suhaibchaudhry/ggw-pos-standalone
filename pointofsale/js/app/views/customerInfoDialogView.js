@@ -587,7 +587,7 @@ jQuery(function($) {
         });
 
         if(status == 'pos_return' && this.activeCustomer.get('id') == customer_uid) {
-          that.record_rma_transaction(products, this.ticket.get('ticketId'));
+          //that.record_rma_transaction(products, this.ticket.get('ticketId'));
           that.closeCheckoutDialog(e);
         } else {
           var rmaTicketOpenRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, products: products, register_id: this.fetchRegisterID()});
@@ -609,7 +609,7 @@ jQuery(function($) {
                   customerUid: customer_uid
                 });
 
-                that.record_rma_transaction(products, res.ticketId);
+                //that.record_rma_transaction(products, res.ticketId);
               }
               alert(res.message);
               that.closeCheckoutDialog(e);
@@ -627,6 +627,7 @@ jQuery(function($) {
           alert('No items to refund on RMA.');
       }
     },
+    /*
     record_rma_transaction: function(products, ticketId) {
       var ticket = this.ticket;
       var customer_uid = this.customer_uid;
@@ -653,7 +654,7 @@ jQuery(function($) {
           ticket.trigger('ticket:preloader', false);
         }
       });
-    },
+    },*/
     scanItemRegular: function(barcode, qty, sell_price) {
       var that = this;
 

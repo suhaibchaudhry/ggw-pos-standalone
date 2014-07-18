@@ -14,6 +14,7 @@ jQuery(function($) {
 		ticketSearchBadge: _.template($('#ticket-search-badge').html()),
 		checkoutButtons: _.template($('#checkout-buttons').html()),
 		rmaButtons: _.template($('#rma-buttons').html()),
+		fetchRegisterID: _.template($('#register-id').html()),
 		initialize: function(attributes, options) {
 			this.employeeSession = attributes['employeeSession'];
 			this.ticketStatusDialogModal = attributes['ticketStatusDialogModal'];
@@ -194,13 +195,14 @@ jQuery(function($) {
 			var ticket = this.ticket;
 			var ticketId = ticket.get('ticketId');
 			var customer_uid = ticket.get('activeCustomer').get('id');
+
 			var that = this;
 
-		    var rmaReprocessReq = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, ticketId: ticketId});
+		    var rmaReprocessReq = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, ticketId: ticketId, register_id: this.fetchRegisterID()});
    	        ticket.trigger('ticket:preloader', true);
 		    $.ajax({
 		      type: 'POST',
-		      url: this.employeeSession.get('apiServer')+'/pos-api/ticket/reprocess-rma',
+		      url: this.employeeSession.get('apiServer')+'/pos-api/ticket/process-rma',
 		      data: {request: rmaReprocessReq},
 		      timeout: 15000,
 		      success: function(res, status, xhr) {
