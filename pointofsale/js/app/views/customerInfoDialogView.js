@@ -580,49 +580,40 @@ jQuery(function($) {
             price: product.get('sell_price'),
             historic: product.get('historic')
           });
-
-          if(status == 'pos_return'&& that.activeCustomer.get('id') == customer_uid) {
-            that.scanItemRegular(product.get('sku'), qty, product.get('sell_price'));
-          }
         });
 
-        if(status == 'pos_return' && this.activeCustomer.get('id') == customer_uid) {
-          //that.record_rma_transaction(products, this.ticket.get('ticketId'));
-          that.closeCheckoutDialog(e);
-        } else {
-          var rmaTicketOpenRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, products: products, register_id: this.fetchRegisterID()});
-          ticket.trigger('ticket:preloader', true);
-          //console.log(products);
-          $.ajax({
-            type: 'POST',
-            url: this.employeeSession.get('apiServer')+'/pos-api/ticket/create-rma-ticket',
-            data: {request: rmaTicketOpenRequest},
-            timeout: 15000,
-            success: function(res, status, xhr) {
-              if(res.status) {
-                var stasuses = ticket.get('ticketStasuses');
-                //Change without silent to populate active customer and ticket products (Empty on create ticket command).
-                ticket.set({
-                  status: res.ticketStatus,
-                  status_en: stasuses[res.ticketStatus],
-                  ticketId: res.ticketId,
-                  customerUid: customer_uid
-                });
+        var rmaTicketOpenRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, products: products, register_id: this.fetchRegisterID()});
+        ticket.trigger('ticket:preloader', true);
+        //console.log(products);
+        $.ajax({
+          type: 'POST',
+          url: this.employeeSession.get('apiServer')+'/pos-api/ticket/create-rma-ticket',
+          data: {request: rmaTicketOpenRequest},
+          timeout: 15000,
+          success: function(res, status, xhr) {
+            if(res.status) {
+              var stasuses = ticket.get('ticketStasuses');
+              //Change without silent to populate active customer and ticket products (Empty on create ticket command).
+              ticket.set({
+                status: res.ticketStatus,
+                status_en: stasuses[res.ticketStatus],
+                ticketId: res.ticketId,
+                customerUid: customer_uid
+              });
 
-                //that.record_rma_transaction(products, res.ticketId);
-              }
-              alert(res.message);
-              that.closeCheckoutDialog(e);
-              ticket.trigger('ticket:preloader', false);
-            },
-            error: function(xhr, errorType, error) {
-              //stop pre loader and logout user.
-              ticket.trigger('ticket:preloader', false);
-              that.employeeSession.set('login', false);
-              that.closeCheckoutDialog(e);
+              //that.record_rma_transaction(products, res.ticketId);
             }
-          });
-        }
+            alert(res.message);
+            that.closeCheckoutDialog(e);
+            ticket.trigger('ticket:preloader', false);
+          },
+          error: function(xhr, errorType, error) {
+            //stop pre loader and logout user.
+            ticket.trigger('ticket:preloader', false);
+            that.employeeSession.set('login', false);
+            that.closeCheckoutDialog(e);
+          }
+        });
       } else {
           alert('No items to refund on RMA.');
       }
@@ -655,7 +646,7 @@ jQuery(function($) {
         }
       });
     },*/
-    scanItemRegular: function(barcode, qty, sell_price) {
+    /*scanItemRegular: function(barcode, qty, sell_price) {
       var that = this;
 
       var scanRequest = JSON.stringify({
@@ -686,6 +677,6 @@ jQuery(function($) {
           that.employeeSession.set('login', false);
         }
       });
-    }
+    }*/
   });
 });
