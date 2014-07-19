@@ -46,6 +46,7 @@ jQuery(function($) {
     RMAFormTemplate: _.template($('#process-rma-form').html()),
     RMAFinalTemplate: _.template($('#rma-final-line-item').html()),
     fetchRegisterID: _.template($('#register-id').html()),
+    labelizeTemplate: _.template($('#labelize-data').html()),
     loadUserProfile: function(uid) {
       var that = this;
       if(uid) {
@@ -85,6 +86,11 @@ jQuery(function($) {
             that.setupPaymentForm(res.payments);
             that.pending_payments = res.payments;
             //that.$('.payment-history').html(res.payments);
+
+            that.$('.rma-credits').html(that.labelizeTemplate({
+              label: 'RMA Credit',
+              value: res.rma_credits
+            }));
 
             that.adjustBlockHeights();
           } else {
@@ -617,7 +623,7 @@ jQuery(function($) {
       } else {
           alert('No items to refund on RMA.');
       }
-    },
+    }
     /*
     record_rma_transaction: function(products, ticketId) {
       var ticket = this.ticket;
