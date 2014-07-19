@@ -73,7 +73,7 @@ jQuery(function($) {
     		}
 
     		//Lock unlock ticket if closed using Global Selectors for now, need to be namespaced.
-    		if(status == 'pos_completed' || status == 'pos_return') {
+    		if(status == 'pos_completed' || status == 'pos_return' || status == 'pos_return_closed') {
     			$('.lock-indicator').show();
     			this.lockTicket();
     		} else {
@@ -82,7 +82,7 @@ jQuery(function($) {
     			$('.item-search input.search').focus();
     		}
 
-    		if(status == 'pos_quote') {
+    		if(status == 'pos_quote' || status == 'pos_return_closed') {
     			$('.lock-indicator').show();
     			$('.lock-indicator a.lock-toggle').hide();
     		} else {
@@ -208,6 +208,8 @@ jQuery(function($) {
 		      success: function(res, status, xhr) {
 		        if(res.status) {
 		          alert(res.message);
+		          ticket.set('status_en', 'Closed RMA Ticket');
+              	  ticket.set('status', 'pos_return_closed');
 		        } else {
 		          that.employeeSession.set('login', false);
 		        }
