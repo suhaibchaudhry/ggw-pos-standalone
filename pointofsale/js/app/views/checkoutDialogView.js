@@ -40,6 +40,11 @@ jQuery(function($) {
       var totalRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId')});
       var that = this;
 
+      this.currentTab = 0;
+      this.change_left = undefined; 
+      this.change_value = undefined;
+      this.cash_paid = undefined;
+
       $.cardswipe('enable');
 
       ticket.trigger('ticket:preloader', true);
@@ -53,9 +58,9 @@ jQuery(function($) {
           if(res.status) {
               that.ticketTotal = accounting.unformat(res.total);
               that.ticketTax = accounting.unformat(res.taxes);
-              that.focusCash();
 
               that.creditCardSwiperSetup();
+              that.creditTermCheckoutSetup();
           } else {
             ticket.employeeSession.set('login', false);
           }
@@ -69,11 +74,6 @@ jQuery(function($) {
         }
       });
 
-      this.currentTab = 0;
-      this.change_left = undefined; 
-      this.change_value = undefined;
-      this.cash_paid = undefined;
-      this.creditTermCheckoutSetup();
       return this;
     },
     checkoutProcess: function(e) {
@@ -114,6 +114,7 @@ jQuery(function($) {
                 that.term_limit = res.credit_limits.term_limit;
                 that.credit_limit = res.credit_limits.credit_limit;
                 that.$('.term-credit-checkout').html(that.creditSummaryTemplate(res.credit_limits));
+                that.focusCash();
             }
           },
           error: function(xhr, errorType, error) {

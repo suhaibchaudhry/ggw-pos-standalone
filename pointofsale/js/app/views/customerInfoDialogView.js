@@ -70,9 +70,6 @@ jQuery(function($) {
         timeout: 15000,
         success: function(res, status, xhr) {
           if(res.status) {
-            that.$('.loader').hide();
-            that.$('.tabs').show();
-
             //Customer Info Tab
             that.$('.profile-content').html(res.customer_info);
             var company = that.$('h2').remove().text();
@@ -91,7 +88,8 @@ jQuery(function($) {
               label: 'RMA Credit',
               value: res.rma_credits
             }));
-
+            that.$('.loader').hide();
+            that.$('.tabs').show();
             that.adjustBlockHeights();
           } else {
             that.employeeSession.set('login', false);
