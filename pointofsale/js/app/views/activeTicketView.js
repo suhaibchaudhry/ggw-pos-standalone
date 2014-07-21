@@ -158,7 +158,7 @@ jQuery(function($) {
       var customer = this.activeCustomer.get('id');
 
       if(status != 'pos_quote' || customer != 0) {
-        this.ticket.createTicketOnServer(this.employeeSession.get('login'));
+        this.ticket.createTicketOnServer(this.employeeSession.get('login'), true);
       }
     },
     activateScanFocus: function(e) {

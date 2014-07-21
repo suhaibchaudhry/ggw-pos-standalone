@@ -123,13 +123,13 @@ jQuery(function($) {
         ticket.set('total', 0);
       }
     },
-    createTicketOnServer: function(login) {
+    createTicketOnServer: function(login, clicked) {
       var ticket = this;
       if(login) {
         var last_ticket = this.employeeSession.get('last_ticket');
         var stasuses = ticket.get('ticketStasuses');
 
-        if(last_ticket) {
+        if(last_ticket && !clicked) {
           ticket.set({
             status: "pos_quote",
             status_en: stasuses[last_ticket.order_status],
