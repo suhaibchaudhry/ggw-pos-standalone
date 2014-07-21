@@ -126,35 +126,54 @@ jQuery(function($) {
     createTicketOnServer: function(login) {
       var ticket = this;
       if(login) {
-        var generateNewTicket = JSON.stringify({token: sessionStorage.token});
-        //Start preloader
-        this.trigger('ticket:preloader', true);
-        $.ajax({
-          type: 'POST',
-          url: this.employeeSession.get('apiServer')+'/pos-api/new-ticket',
-          data: {request: generateNewTicket},
-          timeout: 15000,
-          success: function(res, status, xhr) {
-            ticket.trigger('ticket:preloader', false);
-            if(res.status) {
-              var stasuses = ticket.get('ticketStasuses');
-              //Change without silent to populate active customer and ticket products (Empty on create ticket command).
-              ticket.set({
-                status: res.ticketStatus,
-                status_en: stasuses[res.ticketStatus],
-                ticketId: res.ticketId,
-                customerUid: res.customerUid
-              });
-            } else {
+        var last_ticket = this.employeeSession.get('last_ticket');
+        var stasuses = ticket.get('ticketStasuses');
+
+        if(last_ticket) {
+          ticket.set({
+            status: "pos_quote",
+            status_en: stasuses[last_ticket.order_status],
+            ticketId: 0,
+            customerUid: 0
+          });
+
+          ticket.set({
+            status: last_ticket.order_status,
+            status_en: stasuses[last_ticket.order_status],
+            ticketId: last_ticket.ticket_id,
+            customerUid: last_ticket.uid
+          });
+        } else {
+          var generateNewTicket = JSON.stringify({token: sessionStorage.token});
+          //Start preloader
+          this.trigger('ticket:preloader', true);
+          $.ajax({
+            type: 'POST',
+            url: this.employeeSession.get('apiServer')+'/pos-api/new-ticket',
+            data: {request: generateNewTicket},
+            timeout: 15000,
+            success: function(res, status, xhr) {
+              ticket.trigger('ticket:preloader', false);
+              if(res.status) {
+                var stasuses = ticket.get('ticketStasuses');
+                //Change without silent to populate active customer and ticket products (Empty on create ticket command).
+                ticket.set({
+                  status: res.ticketStatus,
+                  status_en: stasuses[res.ticketStatus],
+                  ticketId: res.ticketId,
+                  customerUid: res.customerUid
+                });
+              } else {
+                ticket.employeeSession.set('login', false);
+              }
+            },
+            error: function(xhr, errorType, error) {
+              //stop pre loader and logout user.
+              ticket.trigger('ticket:preloader', false);
               ticket.employeeSession.set('login', false);
             }
-          },
-          error: function(xhr, errorType, error) {
-            //stop pre loader and logout user.
-            ticket.trigger('ticket:preloader', false);
-            ticket.employeeSession.set('login', false);
-          }
-        });
+          });
+        }
       } else {
         ticket.set('ticketId', 0);
       }

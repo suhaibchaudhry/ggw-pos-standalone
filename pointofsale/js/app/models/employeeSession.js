@@ -11,8 +11,8 @@ jQuery(function($) {
       //Get latest clock flag on start
     	if(sessionStorage.token) {
         var session = this;
-    		session.set({token: sessionStorage.token, login: true, clock: false, lunch: false});
-        
+    		session.set({token: sessionStorage.token, login: false, clock: false, lunch: false});
+
         var clockStateReq = JSON.stringify({token: sessionStorage.token});
         $.ajax({
           type: 'POST',
@@ -20,7 +20,7 @@ jQuery(function($) {
           data: {request: clockStateReq},
           timeout: 15000,
           success: function(res, status, xhr) {
-            session.set({clock: res.clock, lunch: res.lunch, privileged: res.privileged, admin: res.admin});
+            session.set({clock: res.clock, lunch: res.lunch, privileged: res.privileged, admin: res.admin, last_ticket: res.last_ticket});
           },
           error: function(xhr, errorType, error) {
             session.set({clock: false, lunch: false});
@@ -49,7 +49,7 @@ jQuery(function($) {
     			if(res.login) {
     				sessionStorage.token = res.token;
             sessionStorage.account = uname;
-    				session.set({token: res.token, login: true, clock: res.clock, lunch: res.lunch, privileged: res.privileged, admin: res.admin});
+    				session.set({token: res.token, login: true, clock: res.clock, lunch: res.lunch, privileged: res.privileged, admin: res.admin, last_ticket: res.last_ticket});
     			} else {
             sessionStorage.account = '';
     				session.set({token: '', login: false, message: 'Provided employee login/password were invalid.'});
