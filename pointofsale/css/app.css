@@ -702,3 +702,42 @@ a.ticket-rma-return {
 .selected-ticket .status_change a:hover {
     color: #FF2727;
 }
+.pending-payments-message {
+    margin: 15px 0 0;
+    color: #C30000;
+}
+
+a.reload-payments {
+    background: url(../images/arrow-sync-outline.png);
+    float: right;
+    height: 48px;
+    width: 48px;
+    text-indent: -9999px;
+}
+
+a.reload-payments:hover {
+    background-image: url(../images/arrow-sync.png);
+}
+
+/*Settlements Table*/
+table.user-term-credits-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+table.user-term-credits-table tr.settled-false {
+    background: #FAAFAF;    
+}
+
+table.user-term-credits-table tr.settled-true {
+    background: #B6F8C3;
+}
+
+table.user-term-credits-table tr.settled-exceeded {
+    background: #FF4040;
+}
+
+table.user-term-credits-table th {
+    padding: 0;
+    text-align: center;
+    border-color: #fff;
+}

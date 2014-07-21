@@ -25,7 +25,8 @@ jQuery(function($) {
       "keyup .toggle-payment input.mo-amount": 'calculateCashChange',
       "keyup .toggle-payment input.charge-amount": 'calculateCashChange',
       'change .toggle-payment input[type="checkbox"]': 'checkboxToggle',
-      "change #cc-payment-split": 'changeModeToSwipe'
+      "change #cc-payment-split": 'changeModeToSwipe',
+      "click a.reload-payments": 'reloadPaymentHistory'
     },
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
@@ -40,6 +41,7 @@ jQuery(function($) {
       this.listenTo(this.rmaItemsCollectionFinal, 'remove', this.removeItemFromRMA);
       this.listenTo(this.rmaItemsCollectionFinal, 'change', this.changeReturnQty);
       this.currentTab = 0; //Start with 0th tab.
+      this.requests = new Array();
     },
     template: _.template($('#customer-info-modal').html()),
     paymentTemplate: _.template($('#credit-payments-checkout').html()),
@@ -47,6 +49,7 @@ jQuery(function($) {
     RMAFinalTemplate: _.template($('#rma-final-line-item').html()),
     fetchRegisterID: _.template($('#register-id').html()),
     labelizeTemplate: _.template($('#labelize-data').html()),
+    noPendingPaymentsMessage: _.template($('#no-pending-payments').html()),
     loadUserProfile: function(uid) {
       var that = this;
       if(uid) {
@@ -63,7 +66,7 @@ jQuery(function($) {
       var customerInfoRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid});
       //Start preloader
       //this.trigger('ticket:preloader', true);
-      $.ajax({
+      var request = $.ajax({
         type: 'POST',
         url: this.employeeSession.get('apiServer')+'/pos-api/customer/info',
         data: {request: customerInfoRequest},
@@ -80,14 +83,18 @@ jQuery(function($) {
             that.populateInvoices(that.$('.invoice-history'), res.invoices);
 
             //Payments
-            that.setupPaymentForm(res.payments);
             that.pending_payments = res.payments;
-            //that.$('.payment-history').html(res.payments);
+            if(res.payments.pending_payments > 0) {
+              that.setupPaymentForm(res.payments, true);
+            } else {
+              that.setupPaymentForm(res.payments, false);
+            }
 
             that.$('.rma-credits').html(that.labelizeTemplate({
               label: 'RMA Credit',
               value: res.rma_credits
             }));
+
             that.$('.loader').hide();
             that.$('.tabs').show();
             that.adjustBlockHeights();
@@ -102,12 +109,55 @@ jQuery(function($) {
           that.employeeSession.set('login', false);
         }
       });
+
+      this.requests.push(request);
+    },
+    reloadPaymentHistory: function(e) {
+      e.preventDefault();
+      var that = this;
+      this.$('.loader').show();
+      this.$('.tabs').hide();
+
+      var customerPaymentInfoRequest = JSON.stringify({token: sessionStorage.token, customer_uid: this.customer_uid});
+      var request = $.ajax({
+        type: 'POST',
+        url: this.employeeSession.get('apiServer')+'/pos-api/customer/info-payments',
+        data: {request: customerPaymentInfoRequest},
+        timeout: 15000,
+        success: function(res, status, xhr) {
+          if(res.status) {
+            //Payments
+            that.pending_payments = res.payments;
+            if(res.payments.pending_payments > 0) {
+              that.setupPaymentForm(res.payments, true);
+            } else {
+              that.setupPaymentForm(res.payments, false);
+            }
+
+            that.$('.loader').hide();
+            that.$('.tabs').show();
+          } else {
+            that.employeeSession.set('login', false);
+          }
+          //ticket.trigger('ticket:preloader', false);
+        },
+        error: function(xhr, errorType, error) {
+          //stop pre loader and logout user.
+          //ticket.trigger('ticket:preloader', false);
+          that.employeeSession.set('login', false);
+        }
+      });
+      this.requests.push(request);
     },
     populateInvoices: function(invoices, ahah) {
       invoices.html(ahah);
     },
-    setupPaymentForm: function(payments) {
-      this.$('.payment-history').html(this.paymentTemplate(payments));
+    setupPaymentForm: function(payments, flag) {
+      if(flag) {
+        this.$('.payment-history').html(this.paymentTemplate(payments));
+      } else {
+        this.$('.payment-history').html(this.noPendingPaymentsMessage());
+      }
     },
     changeTab: function(e) {
       e.preventDefault();
@@ -141,7 +191,7 @@ jQuery(function($) {
       var customer_uid = this.customer_uid;
 
       var customerInvoicesRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid});
-      $.ajax({
+      var request = $.ajax({
         type: 'POST',
         url: this.employeeSession.get('apiServer')+'/pos-api/customer/invoice'+query,
         data: {request: customerInvoicesRequest},
@@ -165,7 +215,7 @@ jQuery(function($) {
           //that.employeeSession.set('login', false);
         }
       });
-
+      this.requests.push(request);
     },
     removeURLParameter: function(url, parameter) {
         //prefer to use l.search if you have a location/link object
@@ -307,6 +357,10 @@ jQuery(function($) {
       e.preventDefault();
       e.stopPropagation(); //Stop bubbling click to focus on the secondary rma scanner, so focus can goes to primary scanner
       this.currentTab = 0; //reset current tab
+      _.each(this.requests, function(request) {
+        request.abort();
+      });
+      this.requests = [];
       this.modal.display(false);
     },
     cashCheckout: function(e) {
@@ -408,7 +462,7 @@ jQuery(function($) {
             this.trigger('ticket:preloader', false);
             ticket.employeeSession.set('login', false);
           }
-      });
+        });
     },
     focusScanner: function(e) {
       if(this.$('li.pure-menu-selected').hasClass('rma')){

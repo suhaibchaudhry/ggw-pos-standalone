@@ -22,6 +22,7 @@ jQuery(function($) {
       this.activeCustomer = attributes['activeCustomer'];
       this.modal = attributes['modal'];
       this.ticket = attributes['ticket'];
+      this.requests = new Array();
 
       $.cardswipe({
         parser: _.bind(this.creditCardParser, this),
@@ -48,7 +49,7 @@ jQuery(function($) {
       $.cardswipe('enable');
 
       ticket.trigger('ticket:preloader', true);
-      $.ajax({
+      var request = $.ajax({
         type: 'POST',
         url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/load-total',
         data: {request: totalRequest},
@@ -73,7 +74,7 @@ jQuery(function($) {
           ticket.employeeSession.set('login', false);
         }
       });
-
+      this.requests.push(request);
       return this;
     },
     checkoutProcess: function(e) {
@@ -101,7 +102,7 @@ jQuery(function($) {
         var that = this;
 
         ticket.trigger('ticket:preloader', true);
-        $.ajax({
+        var request = $.ajax({
           type: 'POST',
           url: ticket.employeeSession.get('apiServer')+'/pos-api/customer/credits',
           data: {request: creditTermLimitsRequest},
@@ -124,6 +125,7 @@ jQuery(function($) {
             ticket.employeeSession.set('login', false);
           }
         });
+        this.requests.push(request);
       } else {
         this.$('.info-menu-tabs ul li.term-checkout').hide();
       }
@@ -290,6 +292,10 @@ jQuery(function($) {
         e.preventDefault();
       }
       $.cardswipe('disable');
+      _.each(this.requests, function(request) {
+        request.abort();
+      });
+      this.requests = [];
       this.modal.display(false);
     },
     cashInputValidate: function(e) {
