@@ -671,7 +671,7 @@ a.ticket-customer-link:hover {
 .toggle-payment input {
     zoom: 2;
 }
-.toggle-payment input[type="text"] {
+.toggle-payment input[type="text"], .toggle-payment input[type="date"] {
     margin: 0 0 2px;
 }
 .toggle-payment .payment-input {
