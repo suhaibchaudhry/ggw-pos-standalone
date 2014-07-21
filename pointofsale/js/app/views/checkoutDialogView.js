@@ -309,7 +309,8 @@ jQuery(function($) {
     },
     calculateCashChange: function(e) {
       var total = this.ticketTotal;
-      var val = this.$('input.cash-paid').val();
+      var input_field = this.$('input.cash-paid');
+      var val = input_field.val();
       var paid;
       if(val == '') {
         paid = 0;
@@ -352,6 +353,17 @@ jQuery(function($) {
       this.change_left = total;
       this.change_value = change;
       this.cash_paid = paid;
+
+      if(e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode == 190) {
+        var start = e.currentTarget.selectionStart,
+        end = e.currentTarget.selectionEnd;
+        e.currentTarget.value = accounting.formatNumber(e.currentTarget.value, 2, '');
+        e.currentTarget.setSelectionRange(start, end);
+      }
+      if((e.keyCode == 8 || e.keyCode == 46) && e.currentTarget.value == '') {
+        e.currentTarget.value = '0.00';
+        e.currentTarget.setSelectionRange(1, 1);
+      }
 
       this.$('.change-left-value').html(accounting.formatMoney(total));
       this.$('.change-value').html(accounting.formatMoney(change));
