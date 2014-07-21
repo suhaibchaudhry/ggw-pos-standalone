@@ -20,7 +20,7 @@ jQuery(function($) {
           data: {request: clockStateReq},
           timeout: 15000,
           success: function(res, status, xhr) {
-            session.set({clock: res.clock, lunch: res.lunch, privileged: res.privileged, admin: res.admin, last_ticket: res.last_ticket});
+            session.set({login: true, clock: res.clock, lunch: res.lunch, privileged: res.privileged, admin: res.admin, last_ticket: res.last_ticket});
           },
           error: function(xhr, errorType, error) {
             session.set({clock: false, lunch: false});
