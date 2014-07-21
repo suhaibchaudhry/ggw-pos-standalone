@@ -26,7 +26,8 @@ jQuery(function($) {
       "keyup .toggle-payment input.charge-amount": 'calculateCashChange',
       'change .toggle-payment input[type="checkbox"]': 'checkboxToggle',
       "change #cc-payment-split": 'changeModeToSwipe',
-      "click a.reload-payments": 'reloadPaymentHistory'
+      "click a.reload-payments": 'reloadPaymentHistory',
+      "click ul.pager a": 'changeSettlementsPage'
     },
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
@@ -147,6 +148,34 @@ jQuery(function($) {
           that.employeeSession.set('login', false);
         }
       });
+      this.requests.push(request);
+    },
+    changeSettlementsPage: function(e) {
+      e.preventDefault();
+
+      var that = this;
+      var query = this.removeURLParameter(e.currentTarget.search, 'request');
+      var customerPaymentInfoRequest = JSON.stringify({token: sessionStorage.token, customer_uid: this.customer_uid});
+      var request = $.ajax({
+        type: 'POST',
+        url: this.employeeSession.get('apiServer')+'/pos-api/customer/settlement-list'+query,
+        data: {request: customerPaymentInfoRequest},
+        timeout: 15000,
+        success: function(res, status, xhr) {
+          if(res.status) {
+            that.$('.credit-usages').html(res.payments);
+          } else {
+            that.employeeSession.set('login', false);
+          }
+          //ticket.trigger('ticket:preloader', false);
+        },
+        error: function(xhr, errorType, error) {
+          //stop pre loader and logout user.
+          //ticket.trigger('ticket:preloader', false);
+          that.employeeSession.set('login', false);
+        }
+      });
+
       this.requests.push(request);
     },
     populateInvoices: function(invoices, ahah) {
