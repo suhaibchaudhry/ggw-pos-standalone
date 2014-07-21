@@ -587,7 +587,8 @@ a.print-ticket:hover {
 .tabs input.cash-paid {
     font-size: 50px;
     width: 100%;
-    padding: 7px 12px;
+    padding: 7px 12px 7px 223px;
+    text-align: right;
 }
 
 .tabs label.cash-paid-label, .tabs .credit-total-due span.label, .tabs .change-remaining-label, .return-summary span.label, .term-credit-checkout .credit-summary span.label, .tabs div.total-remaining-label, .tabs div.cc-swipe-field span.label, .credit-payments-checkout .checkout-label, .rma-credits .label {
@@ -596,9 +597,28 @@ a.print-ticket:hover {
     color: #5980BB;
     font-size: 22px;
     width: 232px;
+    padding: 0 0 0 9px;
+}
+.tabs .credit-total-due, .tabs .available-credit-label {
+    margin-top: 0;
+}
+.rma-credits .label {
+    margin: 0;
 }
 .tabs label.cash-paid-label {
     display: block;
+    color: #129400;
+    position: absolute;
+    top: 26px;
+    left: 7px;
+    width: auto;
+    font-size: 40px;
+    padding: 0;
+    margin: 0;
+}
+
+.tabs .checkout-cash-line {
+    position: relative;
 }
 
 a.ticket-customer-link {
@@ -646,7 +666,7 @@ a.ticket-customer-link:hover {
     margin: 10px 0;
 }
 .toggle-payment label {
-    font-size: 25px;
+    font-size: 20px;
 }
 .toggle-payment input {
     zoom: 2;
@@ -713,6 +733,7 @@ a.reload-payments {
     height: 48px;
     width: 48px;
     text-indent: -9999px;
+    margin: 13px 0;
 }
 
 a.reload-payments:hover {
@@ -740,4 +761,24 @@ table.user-term-credits-table th {
     padding: 0;
     text-align: center;
     border-color: #fff;
+}
+
+table.user-term-credits-table td {
+    text-align: center;
+    padding: 10px;
+}
+
+table.user-term-credits-table td:nth-child(2), table.user-term-credits-table td:nth-child(3) {
+    text-align: right;
+    padding: 10px;
+}
+
+.pure-menu.pure-menu-horizontal, .pure-menu.pure-menu-horizontal .pure-menu-heading {
+    border-bottom: 1px solid #DAD7D7;
+    padding: 0 0 9px;
+    margin: 0 0 18px;
+}
+
+.pure-menu .pure-menu-selected a {
+    background: #eee;
 }
