@@ -329,7 +329,13 @@ jQuery(function($) {
     printTicket: function() {
       var ticketId = this.ticket.get('ticketId');
       //Print Ticket
-      window.open(this.employeeSession.get('apiServer')+'/admin/invoice/print/'+ticketId+'?token='+this.employeeSession.get("token"));
+      //window.open(this.employeeSession.get('apiServer')+'/admin/invoice/print/'+ticketId+'?token='+this.employeeSession.get("token"));
+      $.ajax({
+          url: 'http://127.0.0.1:3000/', 
+          type: 'POST', 
+          contentType: 'application/json', 
+          data: JSON.stringify({ticket : this.employeeSession.get('apiServer')+'/admin/invoice/print/'+ticketId+'?token='+this.employeeSession.get("token")})
+      });
     },
     managerPriceOverride: function(e) {
       this.managerPriceDialog.openDialog(e);
