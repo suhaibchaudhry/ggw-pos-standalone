@@ -2,13 +2,12 @@ var wkhtmltopdf = require('wkhtmltopdf');
 var express = require('express');
 var bodyParser = require('body-parser');
 var tmp = require('tmp');
-var lp = require("printer-lp");
+var exec = require('child_process').exec;
 
 var app = express();
 app.use(bodyParser.json());
 
 app.post('/', function(req, res){
-    //console.dir(req.body.ticket);
     if(req.body.ticket) {
       tmp.file({postfix: '.pdf'}, function _tempFileCreated(err, path, fd) {
 	if (!err) {
@@ -17,10 +16,9 @@ app.post('/', function(req, res){
 			pageSize: 'letter',
 			output: path,
 			footerRight: "[title] - [page] of [topage]",
-			footerFontSize: 8,
-			marginTop: 5
+			footerFontSize: 8
 		}, function() {
-			lp.printFile(path, {}, "Invoice Print");	
+			exec('lp '+path);
 		});
 	}
       });
