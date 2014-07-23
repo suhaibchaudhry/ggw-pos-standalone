@@ -3,10 +3,11 @@
   "description": "Print packages for GGW invoices.",
   "author": "Asad Hasan <asad@dadesigners.com>",
   "dependencies": {
-    "wkhtmltopdf": "0.x.x"
+    "wkhtmltopdf": "0.x.x",
+    "express": "~4.0.0",
+    "body-parser": "~1.0.0",
+    "tmp": "0.x.x",
+    "printer-lp": "~1.0.0"
   },
-  "engine": "node >= 0.4.1",
-  "scripts": {
-        "preinstall": "sudo npm i -g cupsidity"
-  }
+  "engine": "node >= 0.4.1"
 }
