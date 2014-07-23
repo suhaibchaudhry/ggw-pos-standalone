@@ -4,7 +4,7 @@ jQuery(function($) {
     tagName: 'div',
     className: 'customerInfoOverlay',
     events: {
-      "click a.customer-info-continue": 'continueProcess',
+      "click a.customer-info-continue": 'continueProcessDebounced',
       "click a.customer-info-cancel": 'closeCheckoutDialog',
       "click a.ticket-rma-return": 'ticket_rma_return',
       "click a.ticket-rma-empty": 'ticket_create_rma_empty',
@@ -38,6 +38,9 @@ jQuery(function($) {
       this.rmaItemsCollection = new rmaItemsCollection();
       this.rmaItemsCollectionFinal = new rmaItemsCollection();
       this.rmaTicket = new rmaTicket({rmaItemsCollection: this.rmaItemsCollectionFinal, total: 0, dialog: this});
+      
+      this.continueProcessDebounced = _.debounce(this.continueProcess, 2000, true);
+
       this.listenTo(this.rmaItemsCollectionFinal, 'add', this.addItemToRMA);
       this.listenTo(this.rmaItemsCollectionFinal, 'remove', this.removeItemFromRMA);
       this.listenTo(this.rmaItemsCollectionFinal, 'change', this.changeReturnQty);

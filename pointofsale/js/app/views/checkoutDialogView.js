@@ -4,7 +4,7 @@ jQuery(function($) {
     tagName: 'div',
     className: 'checkoutOverlay',
     events: {
-      "click a.ticket-checkout-continue": 'checkoutProcess',
+      "click a.ticket-checkout-continue": 'checkoutProcessDebounced',
       "click a.ticket-checkout-cancel": 'closeCheckoutDialog',
       "click .info-menu-tabs a": 'changeTab',
       "keypress .cash-checkout input.cash-paid": 'cashInputValidate',
@@ -23,6 +23,7 @@ jQuery(function($) {
       this.modal = attributes['modal'];
       this.ticket = attributes['ticket'];
       this.requests = new Array();
+      this.checkoutProcessDebounced = _.debounce(this.checkoutProcess, 2000, true);
 
       $.cardswipe({
         parser: _.bind(this.creditCardParser, this),
