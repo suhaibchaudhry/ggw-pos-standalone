@@ -334,7 +334,13 @@ jQuery(function($) {
           url: 'http://127.0.0.1:3000/', 
           type: 'POST', 
           contentType: 'application/json', 
-          data: JSON.stringify({ticket : this.employeeSession.get('apiServer')+'/admin/invoice/print/'+ticketId+'?token='+this.employeeSession.get("token")})
+          data: JSON.stringify({ticket : this.employeeSession.get('apiServer')+'/admin/invoice/print/'+ticketId+'?token='+this.employeeSession.get("token")}),
+          success: function(data) {
+            alert(data);
+          },
+          error: function() {
+            alert("Failed to send ticket to printer.");
+          }
       });
     },
     managerPriceOverride: function(e) {
