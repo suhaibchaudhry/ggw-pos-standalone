@@ -188,7 +188,8 @@ jQuery(function($) {
       if(flag) {
         this.$('.payment-history').html(this.paymentTemplate(payments));
       } else {
-        this.$('.payment-history').html(this.noPendingPaymentsMessage());
+        var usages = {usages: payments.usages};
+        this.$('.payment-history').html(this.noPendingPaymentsMessage(usages));
       }
     },
     changeTab: function(e) {
