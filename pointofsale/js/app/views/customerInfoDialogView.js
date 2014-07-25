@@ -459,6 +459,7 @@ jQuery(function($) {
                 } else {
                   alert("Payment Complete. Please make change for amount: "+accounting.formatMoney(that.change_value));
                 }
+                that.printReceipt(res);
               } else {
                 alert(res.message);
               }
@@ -475,6 +476,25 @@ jQuery(function($) {
         }
       } else {
         alert("Please input cash amount before checkout.");
+      }
+    },
+    printReceipt: function(res) {
+      var ticketId = this.ticket.get('ticketId');
+      //Print Ticket
+      //window.open(this.employeeSession.get('apiServer')+'/admin/invoice/print/'+ticketId+'?token='+this.employeeSession.get("token"));
+      if(confirm('Would you like to print a receipt?')) {
+        $.ajax({
+            url: 'http://127.0.0.1:3000/', 
+            type: 'POST', 
+            contentType: 'application/json', 
+            data: JSON.stringify({ticket : this.employeeSession.get('apiServer')+'/admin/invoice/print-reciept/'+res.cuid+'/'+res.time+'?token='+this.employeeSession.get("token")}),
+            success: function(data) {
+              alert("Receipt was sent to printer.");
+            },
+            error: function() {
+              alert("Failed to send receipt to printer.");
+            }
+        });
       }
     },
     selectInvoice: function(e) {
