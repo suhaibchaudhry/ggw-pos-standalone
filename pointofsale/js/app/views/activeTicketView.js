@@ -357,7 +357,7 @@ jQuery(function($) {
       //To be moved to the view.
       var product_table = this.$('.product-table');
 
-      //this.trigger('ticket:preloader', true);
+      ticket.trigger('ticket:preloader', true);
       $.ajax({
           type: 'POST',
           url: that.employeeSession.get('apiServer')+'/pos-api/ticket/rma-products',
@@ -375,10 +375,10 @@ jQuery(function($) {
               //User token is rejected by server server.
               ticket.employeeSession.set('login', false);
             }
-            //ticket.trigger('ticket:preloader', false);
+            ticket.trigger('ticket:preloader', false);
           },
           error: function(xhr, errorType, error) {
-            //ticket.trigger('ticket:preloader', false);
+            ticket.trigger('ticket:preloader', false);
             //Something is wrong log user out.
             that.employeeSession.set('login', false);
           }
