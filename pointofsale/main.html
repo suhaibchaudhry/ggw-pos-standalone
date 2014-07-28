@@ -254,8 +254,18 @@
 			</div>
 			<div class="tabs">
 				<div class="tab cash-checkout pure-form">
+					<div>
+					<div class="change-remaining-label">Amount Remaining:</div>
+					<div class="change-left-value"></div>
+					</div>
+
+					<div>
+					<div class="change-remaining-label">Change:</div>
+					<div class="change-value"></div>
+					</div>
+					<hr />
 				    <div>
-					<div class="change-remaining-label">Amount Due:</div>
+					<div class="change-remaining-label">Sub Total:</div>
 					<div class="change-due-value"></div>
 					</div>
 
@@ -265,18 +275,8 @@
 					</div>
 
 					<div>
-					<div class="total-remaining-label">Total Remaining:</div>
+					<div class="total-remaining-label">Total Due:</div>
 					<div class="total-left-value"></div>
-					</div>
-
-					<div>
-					<div class="change-remaining-label">Amount Remaining:</div>
-					<div class="change-left-value"></div>
-					</div>
-
-					<div>
-					<div class="change-remaining-label">Change:</div>
-					<div class="change-value"></div>
 					</div>
 
 					<div class="checkout-cash-line">
@@ -353,22 +353,6 @@
 	<script type="text/template" id="credit-payments-checkout">
 		<div class="credit-payments-checkout pure-form">
 			<a href="#" class="reload-payments">Reload</a>
-
-		    <div>
-			<div class="available-credit-label checkout-label">Available Credit:</div>
-			<div class="available-credit-value checkout-value"><%= accounting.formatMoney(available_credit) %></div>
-			</div>
-
-			<div>
-			<div class="credit-limit-label checkout-label">Credit Limit:</div>
-			<div class="credit-limit-value checkout-value"><%= accounting.formatMoney(credit_limit) %></div>
-			</div>
-
-			<div>
-			<div class="amount-due-label checkout-label">Amount Due:</div>
-			<div class="amount-due-value checkout-value"><%= accounting.formatMoney(pending_payments) %></div>
-			</div>
-
 			<div>
 			<div class="remaining-due-label checkout-label">Remaining Due:</div>
 			<div class="remaining-due-value checkout-value"><%= accounting.formatMoney(pending_payments) %></div>
@@ -382,6 +366,16 @@
 			<div>
 			<div class="change-due-label checkout-label">Change:</div>
 			<div class="change-due-value checkout-value"><%= accounting.formatMoney(0) %></div>
+			</div>
+			<hr />
+			<div>
+			<div class="amount-due-label checkout-label">Amount Due:</div>
+			<div class="amount-due-value checkout-value"><%= accounting.formatMoney(pending_payments) %></div>
+			</div>
+
+			<div>
+			<div class="credit-limit-label checkout-label">Credit Limit:</div>
+			<div class="credit-limit-value checkout-value"><%= accounting.formatMoney(credit_limit) %></div>
 			</div>
 
 			<div>
@@ -742,15 +736,6 @@
 
 	<script type="text/template" id="credit-summary-template">
 		<div class="credit-summary">
-			<div class="credit-total-due credit-amount">
-				<span class="label">Amount Due: </span><span class="value"></span>
-			</div>
-			<div class="credit-total-due credit-tax">
-				<span class="label">Tax Due: </span><span class="value"></span>
-			</div>
-			<div class="credit-total-due credit-total">
-				<span class="label">Total: </span><span class="value"></span>
-			</div>
 			<div class="available-credit">
 				<span class="label">Available Credit: </span><span class="value"><%= available_credit_view %></span>
 			</div>
@@ -759,6 +744,16 @@
 			</div>
 			<div class="pending-payments">
 				<span class="label">Pending Payments: </span><span class="value"><%= pending_payments_view %></span>
+			</div>
+			<hr />
+			<div class="credit-total-due credit-amount">
+				<span class="label">Sub Total: </span><span class="value"></span>
+			</div>
+			<div class="credit-total-due credit-tax">
+				<span class="label">Tax Due: </span><span class="value"></span>
+			</div>
+			<div class="credit-total-due credit-total">
+				<span class="label">Total Due: </span><span class="value"></span>
 			</div>
 		</div>
 	</script>
@@ -781,7 +776,7 @@
 				<span class="label">Tax Due: </span><span class="value"><%= tax %></span>
 		</div>
 		<div class="cc-swipe-field cc-total-due full-total">
-			<span class="label">Total: </span><span class="value"><%= total %></span>
+			<span class="label">Total Due: </span><span class="value"><%= total %></span>
 		</div>
 	</script>
 
