@@ -599,6 +599,12 @@ a.print-ticket:hover {
     width: 232px;
     padding: 0 0 0 9px;
 }
+.tabs .history .credit-usages {
+    display: none;
+}
+.tabs .history .checkout-label {
+    cursor: pointer;
+}
 .tabs .credit-total-due, .tabs .available-credit-label {
     margin-top: 0;
 }

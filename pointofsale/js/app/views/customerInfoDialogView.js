@@ -27,7 +27,8 @@ jQuery(function($) {
       'change .toggle-payment input[type="checkbox"]': 'checkboxToggle',
       "change #cc-payment-split": 'changeModeToSwipe',
       "click a.reload-payments": 'reloadPaymentHistory',
-      "click ul.pager a": 'changeSettlementsPage'
+      "click ul.pager a": 'changeSettlementsPage',
+      "click .history .checkout-label": 'toggleUsageDisplay'
     },
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
@@ -740,6 +741,9 @@ jQuery(function($) {
       } else {
           alert('No items to refund on RMA.');
       }
+    },
+    toggleUsageDisplay: function(e) {
+      this.$('.history .credit-usages').slideToggle();
     }
     /*
     record_rma_transaction: function(products, ticketId) {
