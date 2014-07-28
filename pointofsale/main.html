@@ -284,6 +284,18 @@
 					<input id="cash-paid" type="text" class="cash-paid" value="0.00" />
 					</div>
 
+					<div class="rma-credit-usage toggle-payment">
+						<input type="checkbox" id="rma-payment" name="rma-payment" value="rma_payment" /><label for="rma-payment">Use RMA Credit</label>
+						<div class="payment-input hidden-child">
+							<div class="rma-remaining-label">RMA Credit:</div>
+							<div class="rma-left-value"></div>
+							<div>
+							<label for="rma-amount">Credit Usage:</label>
+							<input id="rma-amount" type="text" class="rma-amount" value="0.00" />
+							</div>
+						</div>
+					</div>
+
 					<div class="check-payment toggle-payment">
 						<input type="checkbox" id="check-payment" name="check-payment" value="check_payment" /><label for="check-payment">Check Payment</label>
 						<div class="payment-input hidden-child">

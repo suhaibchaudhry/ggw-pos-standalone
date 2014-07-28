@@ -11,10 +11,12 @@ jQuery(function($) {
       "keypress .toggle-payment input.check-amount": 'cashInputValidate',
       "keypress .toggle-payment input.mo-amount": 'cashInputValidate',
       "keypress .toggle-payment input.charge-amount": 'cashInputValidate',
+      "keypress .toggle-payment input.rma-amount": 'cashInputValidate',
       "keyup .cash-checkout input.cash-paid": 'calculateCashChange',
       "keyup .toggle-payment input.check-amount": 'calculateCashChange',
       "keyup .toggle-payment input.mo-amount": 'calculateCashChange',
       "keyup .toggle-payment input.charge-amount": 'calculateCashChange',
+      "keyup .toggle-payment input.rma-amount": 'calculateCashChange',
       'change .toggle-payment input[type="checkbox"]': 'checkboxToggle',
       "change #cc-payment-split": 'changeModeToSwipe'
     },
@@ -115,6 +117,13 @@ jQuery(function($) {
                 that.available_credit = res.credit_limits.available_credit;
                 that.term_limit = res.credit_limits.term_limit;
                 that.credit_limit = res.credit_limits.credit_limit;
+                that.rma_credits = accounting.unformat(res.rma_credits);
+                if(that.rma_credits > 0) {
+                  that.$('.rma-left-value').html(accounting.formatMoney(that.rma_credits));
+                  that.$('.rma-credit-usage').show();
+                } else {
+                  that.$('.rma-credit-usage').hide();
+                }
                 that.$('.term-credit-checkout').html(that.creditSummaryTemplate(res.credit_limits));
                 that.focusCash();
             }
@@ -210,6 +219,8 @@ jQuery(function($) {
                                                     credit: this.$('input#cc-payment').is(':checked'),
                                                     credit_val: this.$('input.charge-amount').val(),
                                                     transac_id: this.$('input#transaction-id').val(),
+                                                    rma_credit_used: this.$('input#rma-payment').is(':checked'),
+                                                    rma_credit: this.$('input#rma-amount').val(),
                                                     register_id: this.fetchRegisterID()
                                                   });
 
@@ -316,26 +327,39 @@ jQuery(function($) {
       if(val == '') {
         paid = 0;
       } else {
-        paid = parseFloat(val);
+        paid = accounting.unformat(val);
       }
 
       var check = this.$('input#check-payment');
       val = this.$('input.check-amount').val();
       if(check.is(':checked') && val != '') {
-        paid += parseFloat(val);
+        paid += accounting.unformat(val);
       }
 
       check = this.$('input#mo-payment');
       val = this.$('input.mo-amount').val();
       if(check.is(':checked') && val != '') {
-        paid += parseFloat(val);
+        paid += accounting.unformat(val);
       }
 
       check = this.$('input#cc-payment');
       val = this.$('input.charge-amount').val();
 
       if(check.is(':checked') && val != '') {
-        paid += parseFloat(val);
+        paid += accounting.unformat(val);
+      }
+
+      check = this.$('input#rma-payment');
+      val = this.$('input.rma-amount').val();
+
+      if(check.is(':checked') && val != '') {
+        val = accounting.unformat(val);
+        if(val <= this.rma_credits) {
+          paid += val;
+        } else {
+          paid += this.rma_credits;
+          e.currentTarget.value = this.rma_credits;
+        }
       }
 
       var change = total - paid;
@@ -433,6 +457,8 @@ jQuery(function($) {
                                                     check_number: this.$('input.check-number').val(),
                                                     check_post_dated: this.$('input#post-dated').is(':checked'),
                                                     check_date: this.$('input#cash-date').val(),
+                                                    rma_credit_used: this.$('input#rma-payment').is(':checked'),
+                                                    rma_credit: this.$('input#rma-amount').val(),
                                                     mo: this.$('input#mo-payment').is(':checked'),
                                                     mo_val: this.$('input.mo-amount').val(),
                                                     mo_ref: this.$('input.mo-ref').val(),
