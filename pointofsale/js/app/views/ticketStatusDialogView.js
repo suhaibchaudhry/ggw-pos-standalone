@@ -17,6 +17,7 @@ jQuery(function($) {
     render: function() {
       var that = this;
       var recentInvoicesRequest = JSON.stringify({token: sessionStorage.token});
+      var heading = '<div class="rma-remaining-label">Open Tickets:</div>';
 
       that.activeTicketView.ticket.trigger('ticket:preloader', true);
       $.ajax({
@@ -26,7 +27,7 @@ jQuery(function($) {
         timeout: 15000,
         success: function(res, status, xhr) {
           if(res.status) {
-            that.$('.open-tickets-container').html(res.content);
+            that.$('.open-tickets-container').html(heading+res.content);
           } else {
             that.employeeSession.set('login', false);
           }
