@@ -16,7 +16,8 @@ app.post('/', function(req, res){
 				pageSize: 'letter',
 				output: path,
 				footerRight: "[title] - [page] of [topage]",
-				footerFontSize: 8
+				footerFontSize: 8,
+				minimumFontSize: 10
 			}, function() {
 				exec('lp '+path);
 			});
