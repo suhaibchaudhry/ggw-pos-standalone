@@ -788,3 +788,11 @@ table.user-term-credits-table td:nth-child(2), table.user-term-credits-table td:
 .pure-menu .pure-menu-selected a {
     background: #eee;
 }
+
+.open-tickets-container {
+    margin: 20px 0 0;
+}
+
+.open-tickets-container table {
+    width: 100%;
+}

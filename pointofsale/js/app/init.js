@@ -16,7 +16,8 @@ jQuery(function($) {
 
       //Modal Dialogs
       this.ticketStatusDialogModal = new ticketStatusDialogModal({
-        activeCustomer: this.activeCustomer
+        activeCustomer: this.activeCustomer,
+        employeeSession: this.employeeSession
       });
 
   		//Regional Views
@@ -46,6 +47,7 @@ jQuery(function($) {
         appFrame: this
       });
 
+      this.ticketStatusDialogModal.setActiveTicket(this.activeTicketRegion);
       this.searchTicketRegion.setActiveTicket(this.activeTicketRegion);
 
       this.invoiceDialog = this.activeTicketRegion.invoiceDialog;

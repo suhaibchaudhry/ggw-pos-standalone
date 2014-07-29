@@ -148,15 +148,15 @@ h3.content-profile-title {
 	background: #737373;
 	color: #fff;
 }
-.tab .pure-table th a {
+.tab .pure-table th a, .open-tickets-container .pure-table th a {
 	text-decoration: none;
 	color: #000;
 }
-.tab .pure-table tr.even {
+.tab .pure-table tr.even, .open-tickets-container .pure-table tr.even {
 	background: #F5F5F5;
 }
 
-.tab .pure-table tbody tr:hover {
+.tab .pure-table tbody tr:hover, .open-tickets-container .pure-table tbody tr:hover {
 	background: #DDF4FE;
 	cursor: pointer;
 }
