@@ -25,8 +25,10 @@ jQuery(function($) {
 		},
 		clearCustomer: function(e) {
 			e.preventDefault();
-			this.activeCustomer.set('id', false);
-			this.activeCustomer.updateTicketCustomerUidOnServer(0);
+			if(confirm('Are you sure you want to clear the customer?')) {
+				this.activeCustomer.set('id', false);
+				this.activeCustomer.updateTicketCustomerUidOnServer(0);
+			}
 		},
 		customerInfo: function(e) {
 			e.preventDefault();
@@ -57,8 +59,11 @@ jQuery(function($) {
 			this.$searchbox.typeahead('setQuery', '');
 			//this.searchTicketView.$searchbox.typeahead('setQuery', '');
 			this.searchTicketView.$searchbox.typeahead('clearCache');
-			this.activeCustomer.set(datum);
-			this.activeCustomer.updateTicketCustomerUidOnServer(datum['id']);
+
+			if(this.activeCustomer.get('id') == 0 || confirm("Are you sure you want to change the customer?")) {
+				this.activeCustomer.set(datum);
+				this.activeCustomer.updateTicketCustomerUidOnServer(datum['id']);
+			}
 		},
 		resolveSearchRPC: function(url, uriEncodedQuery) {
 			//Preprocess URL: Strip forward slashes to make compatible with Drupal GET arg syntax, Decouple later via POST. 
