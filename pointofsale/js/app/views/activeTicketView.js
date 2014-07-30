@@ -177,7 +177,15 @@ jQuery(function($) {
     removeLineItem: function(e) {
       e.preventDefault();
       e.stopPropagation(); //Allow propagation to select text box.
-      this.ticket.removeItem(e.currentTarget.parentNode.parentNode.dataset.id);
+      var name = $('.name', e.currentTarget.parentNode.parentNode).text();
+      var packaging = $('.packaging', e.currentTarget.parentNode.parentNode).text();
+      var confirm_message = "Are you sure you want to remove '"+name+"'";
+      if(packaging) {
+        confirm_message += " - "+packaging;
+      }
+      if(confirm(confirm_message)) {
+        this.ticket.removeItem(e.currentTarget.parentNode.parentNode.dataset.id);
+      }
     },
     incrementQty: function(e) {
       e.preventDefault();
