@@ -129,7 +129,7 @@ jQuery(function($) {
         var last_ticket = this.employeeSession.get('last_ticket');
         var stasuses = ticket.get('ticketStasuses');
 
-        if(last_ticket && !clicked) {
+        if(last_ticket && !clicked && last_ticket.uid == 0 && last_ticket.product_count == 0 && last_ticket.order_status == 'pos_quote') {
           ticket.set({
             status: "pos_quote",
             status_en: stasuses[last_ticket.order_status],
