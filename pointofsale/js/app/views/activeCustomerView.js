@@ -60,7 +60,7 @@ jQuery(function($) {
 			//this.searchTicketView.$searchbox.typeahead('setQuery', '');
 			this.searchTicketView.$searchbox.typeahead('clearCache');
 
-			if(this.activeCustomer.get('id') == 0 || confirm("Are you sure you want to change the customer?")) {
+			if(this.activeCustomer.get('id') == 0 || confirm("Are you sure you want to change the customer to '"+datum.company_name+"'?")) {
 				this.activeCustomer.set(datum);
 				this.activeCustomer.updateTicketCustomerUidOnServer(datum['id']);
 			}
