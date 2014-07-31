@@ -97,12 +97,11 @@ jQuery(function($) {
     },
     creditTermCheckoutSetup: function() {
       var cuid = this.activeCustomer.get('id');
-      if(cuid) {
+      var that = this;
+      var ticket = this.ticket;
+      if(cuid && ticket.get('zone') == 0) {
         this.$('.info-menu-tabs ul li.term-checkout').show();
-
-        var ticket = this.ticket;
         var creditTermLimitsRequest = JSON.stringify({token: sessionStorage.token, customer: cuid});
-        var that = this;
 
         ticket.trigger('ticket:preloader', true);
         var request = $.ajax({
@@ -223,7 +222,8 @@ jQuery(function($) {
                                                     transac_id: this.$('input#transaction-id').val(),
                                                     rma_credit_used: this.$('input#rma-payment').is(':checked'),
                                                     rma_credit: this.$('input#rma-amount').val(),
-                                                    register_id: this.fetchRegisterID()
+                                                    register_id: this.fetchRegisterID(),
+                                                    zone: ticket.get('zone')
                                                   });
 
           ticket.trigger('ticket:preloader', true);
@@ -465,7 +465,8 @@ jQuery(function($) {
                                                     mo: this.$('input#mo-payment').is(':checked'),
                                                     mo_val: this.$('input.mo-amount').val(),
                                                     mo_ref: this.$('input.mo-ref').val(),
-                                                    register_id: this.fetchRegisterID()
+                                                    register_id: this.fetchRegisterID(),
+                                                    zone: ticket.get('zone')
                                                   });
 
             that.$('.status-message').addClass('in-progress');
@@ -508,7 +509,8 @@ jQuery(function($) {
           total: that.ticketTotal,
           register_id: this.fetchRegisterID(),
           customer: this.activeCustomer.get('id'),
-          cardData: cardData
+          cardData: cardData,
+          zone: ticket.get('zone')
         });
 
         that.$('.status-message').addClass('in-progress');
