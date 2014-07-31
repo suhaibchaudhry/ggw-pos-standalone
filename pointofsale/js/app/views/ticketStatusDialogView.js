@@ -16,28 +16,31 @@ jQuery(function($) {
     template: _.template($('#ticket-status-modal').html()),
     render: function() {
       var that = this;
-      var recentInvoicesRequest = JSON.stringify({token: sessionStorage.token});
-      var heading = '<div class="rma-remaining-label">Open Tickets:</div>';
+      var cuid = this.activeCustomer.get('id');
+      if(cuid) {
+        var recentInvoicesRequest = JSON.stringify({token: sessionStorage.token});
+        var heading = '<div class="rma-remaining-label">Open Tickets:</div>';
 
-      that.activeTicketView.ticket.trigger('ticket:preloader', true);
-      $.ajax({
-        type: 'POST',
-        url: this.employeeSession.get('apiServer')+'/pos-api/ticket/open/'+this.activeCustomer.get('id'),
-        data: {request: recentInvoicesRequest},
-        timeout: 15000,
-        success: function(res, status, xhr) {
-          if(res.status) {
-            that.$('.open-tickets-container').html(heading+res.content);
-          } else {
+        that.activeTicketView.ticket.trigger('ticket:preloader', true);
+        $.ajax({
+          type: 'POST',
+          url: this.employeeSession.get('apiServer')+'/pos-api/ticket/open/'+this.activeCustomer.get('id'),
+          data: {request: recentInvoicesRequest},
+          timeout: 15000,
+          success: function(res, status, xhr) {
+            if(res.status) {
+              that.$('.open-tickets-container').html(heading+res.content);
+            } else {
+              that.employeeSession.set('login', false);
+            }
+            that.activeTicketView.ticket.trigger('ticket:preloader', false);
+          },
+          error: function(xhr, errorType, error) {
+            that.activeTicketView.ticket.trigger('ticket:preloader', false);
             that.employeeSession.set('login', false);
           }
-          that.activeTicketView.ticket.trigger('ticket:preloader', false);
-        },
-        error: function(xhr, errorType, error) {
-          that.activeTicketView.ticket.trigger('ticket:preloader', false);
-          that.employeeSession.set('login', false);
-        }
-      });
+        });
+      }
 
       return that;
     },
