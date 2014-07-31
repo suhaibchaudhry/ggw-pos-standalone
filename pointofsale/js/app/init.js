@@ -9,6 +9,9 @@ jQuery(function($) {
       "click a.print-ticket": 'printTicket'
     },
   	initialize: function() {
+      //Global checkout locking flag
+      checkoutActive = false;
+
       //Employee Session Model
       this.employeeSession = new employeeSession({apiServer: 'http://www.general-goods.com'});
       this.activeCustomer = new activeCustomer();

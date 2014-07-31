@@ -48,7 +48,7 @@ jQuery(function($) {
       this.change_left = undefined; 
       this.change_value = undefined;
       this.cash_paid = undefined;
-
+      checkoutActive = true;
       $.cardswipe('enable');
 
       ticket.trigger('ticket:preloader', true);
@@ -138,6 +138,8 @@ jQuery(function($) {
         this.requests.push(request);
       } else {
         this.$('.info-menu-tabs ul li.term-checkout').hide();
+        this.$('.rma-credit-usage').hide();
+        this.focusCash();
       }
     },
     creditCheckout: function(e) {
@@ -303,6 +305,7 @@ jQuery(function($) {
       if(e) {
         e.preventDefault();
       }
+      checkoutActive = false;
       $.cardswipe('disable');
       _.each(this.requests, function(request) {
         request.abort();
