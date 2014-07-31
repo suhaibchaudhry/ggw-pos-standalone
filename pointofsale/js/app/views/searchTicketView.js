@@ -108,7 +108,7 @@ jQuery(function($) {
     	mouseTrapCatch: function(e) {
     		var ticket = this.ticket;
       		this.$('.progress').toggle();
-
+      		ticket.trigger('ticket:preloader', true);
 			var updateZoneRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId')});
             $.ajax({
 	          type: 'POST',
@@ -119,9 +119,11 @@ jQuery(function($) {
 	            if(!res.status) {
 	              ticket.employeeSession.set('login', false);
 	            }
+	            ticket.trigger('ticket:preloader', false);
 	          },
 	          error: function(xhr, errorType, error) {
 	            ticket.employeeSession.set('login', false);
+	            ticket.trigger('ticket:preloader', false);
 	          }
 	        });
     	},
