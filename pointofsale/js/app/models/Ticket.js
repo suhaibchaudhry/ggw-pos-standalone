@@ -186,7 +186,7 @@ jQuery(function($) {
       if((status != 'pos_completed' && status != 'pos_return_closed' || !ticket.get('locked')) && checkoutActive != true) {
         var updateTotalRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId'), productCount: ticket.get('productCount')});
         //Start preloader
-        this.trigger('ticket:preloader', true);
+        //this.trigger('ticket:preloader', true);
         $.ajax({
           type: 'POST',
           url: this.employeeSession.get('apiServer')+'/pos-api/ticket/update-total',
@@ -196,11 +196,11 @@ jQuery(function($) {
             if(!res.status) {
               ticket.employeeSession.set('login', false);
             }
-            ticket.trigger('ticket:preloader', false);
+            //ticket.trigger('ticket:preloader', false);
           },
           error: function(xhr, errorType, error) {
             //stop pre loader and logout user.
-            ticket.trigger('ticket:preloader', false);
+            //ticket.trigger('ticket:preloader', false);
             ticket.employeeSession.set('login', false);
           }
         });
