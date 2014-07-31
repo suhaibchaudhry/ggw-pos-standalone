@@ -107,25 +107,35 @@ jQuery(function($) {
     	},
     	mouseTrapCatch: function(e) {
     		var ticket = this.ticket;
-      		this.$('.progress').toggle();
-      		ticket.trigger('ticket:preloader', true);
-			var updateZoneRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId')});
-            $.ajax({
-	          type: 'POST',
-	          url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/delivery',
-	          data: {request: updateZoneRequest},
-	          timeout: 15000,
-	          success: function(res, status, xhr) {
-	            if(!res.status) {
-	              ticket.employeeSession.set('login', false);
-	            }
-	            ticket.trigger('ticket:preloader', false);
-	          },
-	          error: function(xhr, errorType, error) {
-	            ticket.employeeSession.set('login', false);
-	            ticket.trigger('ticket:preloader', false);
-	          }
-	        });
+    		var that = this;
+    		var status = ticket.get('status');
+    		if(status == 'pos_in_progress' || status == 'pos_quote') {
+	      		ticket.trigger('ticket:preloader', true);
+				var updateZoneRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId')});
+	            $.ajax({
+		          type: 'POST',
+		          url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/delivery',
+		          data: {request: updateZoneRequest},
+		          timeout: 15000,
+		          success: function(res, status, xhr) {
+		            if(res.status) {
+		              var zone = ticket.get('zone');
+		              if(zone == 0) {
+		              	var zone = ticket.set('zone', 1);
+		              } else {
+		              	var zone = ticket.set('zone', 0);
+		              }
+		            } else {
+		              ticket.employeeSession.set('login', false);
+		            }
+		            ticket.trigger('ticket:preloader', false);
+		          },
+		          error: function(xhr, errorType, error) {
+		            ticket.employeeSession.set('login', false);
+		            ticket.trigger('ticket:preloader', false);
+		          }
+		        });
+        	}
     	},
 		itemSelected: function(e, datum) {
 			var ticket = this.ticket;

@@ -33,6 +33,7 @@ jQuery(function($) {
       //Load ticket stasuses and product categories on login.
       this.listenTo(this.employeeSession, 'change:login', this.fetchTicketStasuses);
 
+      this.listenTo(this, 'change:zone', this.changeZone);
       //Listen for ticket change to load new products.
       this.listenTo(this, 'change:ticketId', this.changeTicketProducts);
     },
@@ -236,6 +237,15 @@ jQuery(function($) {
         this.loadTicket(ticketId);
       }
     },
+    changeZone: function(ticket, zone, options) {
+      if(zone == 0) {
+        $('.ticketSearch .progress').hide();
+        $('.header.region').removeClass('gradient-zone').addClass('gradient');
+      } else {
+        $('.ticketSearch .progress').show();
+        $('.header.region').removeClass('gradient').addClass('gradient-zone');
+      }
+    },
     changeProductQuantity: function(product, qty, options) {
       //Debounce and update product quantity on server.
       var ticket = this;
@@ -403,6 +413,8 @@ jQuery(function($) {
               if(ticket.get('status') == 'pos_completed') {
                 ticket.get('activeTicketView').populateReturnItems();
               }
+
+              ticket.set('zone', res.zone);
             } else {
               //User token is rejected by server server.
               ticket.employeeSession.set('login', false);

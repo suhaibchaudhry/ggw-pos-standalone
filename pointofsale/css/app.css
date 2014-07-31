@@ -194,15 +194,14 @@ div.loaderOverlay a.refresh:hover {
     margin: 0;
     box-shadow: 0 0 4px #000;
     background: #7ABCFF;
-    /*background: -moz-linear-gradient(top, #7abcff 0%, #60abf8 44%, #4096ee 100%);*/
-    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7ABCFF), color-stop(44%,#60ABF8), color-stop(100%,#4096EE));
-    background: -webkit-linear-gradient(top, #7ABCFF 0%,#60ABF8 44%,#4096EE 100%);*/
-    /*background: -o-linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%);*/
-    /*background: -ms-linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%);*/
-    /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', endColorstr='#4096ee',GradientType=0 );*/
     background: linear-gradient(to bottom, #7ABCFF 0%,#60ABF8 44%,#4096EE 100%);
 }
-
+.gradient-zone {
+    margin: 0;
+    box-shadow: 0 0 4px #000;
+    background: #CB1212;
+    background: linear-gradient(to bottom, #FF7E83 0%,#FF4A4A 44%,#CB1212 100%);
+}
 /*Buttons*/
 .employeeOperations .controls {
     margin: 7px auto 0;
@@ -480,7 +479,7 @@ div.register-display span.label {
     background: url(../images/cancel.png);
     position: absolute;
     bottom: 0;
-    right: 0;
+    right: 75px;
     display: none;
 }
 .statusOverlay a.pure-button {
