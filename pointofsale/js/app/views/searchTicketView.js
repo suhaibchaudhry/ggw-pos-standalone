@@ -3,7 +3,7 @@ jQuery(function($) {
 		events: {
 			"typeahead:selected .ticket-search": 'itemSelected',
 			"click .checkout a.checkout-button": 'checkout',
-			"click .rma-process a.rma-process-button": 'rma_process',
+			"click .rma-process a.rma-process-button": 'rma_process_debounced',
 			"click a.lock-toggle": 'managerUnlockClosedTicket',
 			"click .status_change a": 'changeStatusOpen'
 		},
@@ -18,6 +18,7 @@ jQuery(function($) {
 		initialize: function(attributes, options) {
 			this.employeeSession = attributes['employeeSession'];
 			this.ticketStatusDialogModal = attributes['ticketStatusDialogModal'];
+			this.rma_process_debounced = _.debounce(this.rma_process, 2000, true);
 		},
 		setActiveTicket: function(activeTicketView) {
 			this.activeTicketView = activeTicketView;
