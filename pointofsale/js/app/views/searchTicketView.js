@@ -3,7 +3,8 @@ jQuery(function($) {
 		events: {
 			"typeahead:selected .ticket-search": 'itemSelected',
 			"click .checkout a.checkout-button": 'checkout',
-			"click .rma-process a.rma-process-button": 'rma_process_debounced',
+			"click .rma-process a.rma-process-button": 'rma_process_credit_return',
+			"click .rma-process a.rma-cash-button": 'rma_process_cash_return',
 			"click a.lock-toggle": 'managerUnlockClosedTicket',
 			"click .status_change a": 'changeStatusOpen'
 		},
@@ -203,15 +204,22 @@ jQuery(function($) {
 
 		    Mousetrap.bind('shift+d p', _.bind(this.mouseTrapCatch, this));
 		},
-		rma_process: function(e) {
+		rma_process_credit_return: function(e) {
 			e.preventDefault();
+			this.rma_process_debounced(true);
+		},
+		rma_process_cash_return: function(e) {
+			e.preventDefault();
+			this.rma_process_debounced(false);
+		},
+		rma_process: function(credit_return) {
 			var ticket = this.ticket;
 			var ticketId = ticket.get('ticketId');
 			var customer_uid = ticket.get('activeCustomer').get('id');
 
 			var that = this;
 
-		    var rmaReprocessReq = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, ticketId: ticketId, register_id: this.fetchRegisterID()});
+		    var rmaReprocessReq = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, ticketId: ticketId, register_id: this.fetchRegisterID(), credit_return: credit_return});
    	        ticket.trigger('ticket:preloader', true);
 		    $.ajax({
 		      type: 'POST',
