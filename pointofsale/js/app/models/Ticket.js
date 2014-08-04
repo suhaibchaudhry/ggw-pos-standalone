@@ -314,6 +314,8 @@ jQuery(function($) {
     },
     addItem: function(productAttributes, callback) {
       var ticket = this;
+      var product = ticket.get('productCollection').add(productAttributes);
+
       //Add Item to database
       var addItemToTicketRequest = JSON.stringify({
                               token: sessionStorage.token,
@@ -321,7 +323,7 @@ jQuery(function($) {
                               productId: productAttributes['id'],
                               name: productAttributes['name'],
                               sku: productAttributes['sku'],
-                              price: productAttributes['sell_price']
+                              price: product.get('price')
                             });
 
       productAttributes['locked'] = false;
@@ -335,7 +337,6 @@ jQuery(function($) {
             if(res.status) {
               var id = productAttributes['id'];
               productAttributes['id'] = res.ticketProductId;
-              var product = ticket.get('productCollection').add(productAttributes);
               productAttributes['id'] = id;
               if(typeof callback == "function") {
                 callback(product);
