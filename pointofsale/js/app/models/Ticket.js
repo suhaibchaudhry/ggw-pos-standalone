@@ -315,13 +315,15 @@ jQuery(function($) {
     addItem: function(productAttributes, callback) {
       var ticket = this;
       //Add Item to database
+      var cuid = this.get('activeCustomerView').activeCustomer.get('id');
       var addItemToTicketRequest = JSON.stringify({
                               token: sessionStorage.token,
                               ticketId: this.get('ticketId'),
                               productId: productAttributes['id'],
                               name: productAttributes['name'],
                               sku: productAttributes['sku'],
-                              price: productAttributes['sell_price']
+                              price: productAttributes['sell_price'],
+                              customerUid: cuid
                             });
 
       productAttributes['locked'] = false;
