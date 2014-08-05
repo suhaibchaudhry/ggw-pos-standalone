@@ -97,11 +97,12 @@ jQuery(function($) {
     //Backbone Event Handlers
     addItem: function(product) {
       this.$ticketContainer.find('.product-table').append(this.lineItemTemplate(product.attributes));
-      if(product.get('retail')) {
-        this.$('#line-item-'+product.get('id')+' .price').html(accounting.formatMoney(product.get('price')));
+      //if(product.get('retail')) {
+      this.$('#line-item-'+product.get('id')+' .price').html(accounting.formatMoney(product.get('price')));
+      /*
       } else {
         this.$('#line-item-'+product.get('id')+' .price').html('<span class="orig">'+accounting.formatMoney(product.get('sell_price'))+'</span>'+'<span class="special">'+accounting.formatMoney(product.get('price'))+'</span>');
-      }
+      }*/
 
       if(product.get('manager_price')) {
         this.$('#line-item-'+product.get('id')+' .price').addClass('manager-overriden');
@@ -123,11 +124,11 @@ jQuery(function($) {
     },
     priceUpdate: function(product, value, options) {
       //Update physical view price of an item when price changes on product model.
-      if(product.get('retail')) {
-        this.$('#line-item-'+product.get('id')+' .price').html(accounting.formatMoney(product.get('price')));
-      } else {
+      //if(product.get('retail')) {
+      this.$('#line-item-'+product.get('id')+' .price').html(accounting.formatMoney(product.get('price')));
+      /*} else {
         this.$('#line-item-'+product.get('id')+' .price').html('<span class="orig">'+accounting.formatMoney(product.get('sell_price'))+'</span>'+'<span class="special">'+accounting.formatMoney(product.get('price'))+'</span>');
-      }
+      }*/
 
       if(product.get('manager_price')) {
         this.$('#line-item-'+product.get('id')+' .price').addClass('manager-overriden');
