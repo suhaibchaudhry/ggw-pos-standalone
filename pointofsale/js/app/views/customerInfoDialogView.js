@@ -525,7 +525,7 @@ jQuery(function($) {
             ticket.trigger('ticket:preloader', false);
           },
           error: function(xhr, errorType, error) {
-            this.trigger('ticket:preloader', false);
+            ticket.trigger('ticket:preloader', false);
             ticket.employeeSession.set('login', false);
           }
         });
