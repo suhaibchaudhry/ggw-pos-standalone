@@ -49,7 +49,7 @@ jQuery(function($) {
 			            ticket.employeeSession.set('login', false);
 			          }
 			        });
-				}, 2000);
+				}, 30000);
 			} else {
 				this.$('.selected-ticket').empty();
 			}
