@@ -58,7 +58,7 @@ jQuery(function($) {
 			if(previous_ticketId > 0) {
 				$.ajax({
 		          type: 'GET',
-		          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+ticketId+'&register_id='+$('#register-id').html()+'&op=unlock',
+		          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+previous_ticketId+'&register_id='+$('#register-id').html()+'&op=unlock',
 		          timeout: 1000,
 		          error: function(xhr, errorType, error) {
 		            ticket.employeeSession.set('login', false);
