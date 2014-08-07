@@ -17,6 +17,7 @@ jQuery(function($) {
 		rmaButtons: _.template($('#rma-buttons').html()),
 		fetchRegisterID: _.template($('#register-id').html()),
 		initialize: function(attributes, options) {
+			this.lockInterval = false;
 			this.employeeSession = attributes['employeeSession'];
 			this.ticketStatusDialogModal = attributes['ticketStatusDialogModal'];
 			this.rma_process_debounced = _.debounce(this.rma_process, 2000, true);
@@ -33,11 +34,36 @@ jQuery(function($) {
 			}
 		},
 		changeTicket: function(ticket, ticketId, options) {
+			if(this.lockInterval) {
+				clearInterval(this.lockInterval);
+			}
 			if(ticketId) {
 				this.$('.selected-ticket').html(this.selectedTicketTemplate(ticket.attributes));
 				this.ticketSpecialButtons(ticket);
+				this.lockInterval = setInterval(function() {
+					$.ajax({
+			          type: 'GET',
+			          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+ticketId+'&register_id='+$('#register-id').html()+'&op=renew',
+			          timeout: 1000,
+			          error: function(xhr, errorType, error) {
+			            ticket.employeeSession.set('login', false);
+			          }
+			        });
+				}, 2000);
 			} else {
 				this.$('.selected-ticket').empty();
+			}
+
+			var previous_ticketId = ticket.previous('ticketId');
+			if(previous_ticketId > 0) {
+				$.ajax({
+		          type: 'GET',
+		          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+ticketId+'&register_id='+$('#register-id').html()+'&op=unlock',
+		          timeout: 1000,
+		          error: function(xhr, errorType, error) {
+		            ticket.employeeSession.set('login', false);
+		          }
+		        });
 			}
 
 			this.$('.progress').hide();
@@ -149,25 +175,39 @@ jQuery(function($) {
                 ticketId: datum['ticketId'],
                 customerUid: datum['customerUid']
             });*/
-
-			ticket.trigger('ticket:preloader', true);
-            //Get Latest Customer UID on ticket, incase cache is dirty.
-            var currentTicketRequest = JSON.stringify({token: sessionStorage.token, ticketId: datum['ticketId']});
-            $.ajax({
-	          type: 'POST',
-	          url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/get-current',
-	          data: {request: currentTicketRequest},
-	          timeout: 15000,
-	          success: function(res, status, xhr) {
-	            if(res.status) {
-	              ticket.set(res.ticket);
-	            } else {
-	              ticket.employeeSession.set('login', false);
-	            }
-	            ticket.trigger('ticket:preloader', false);
+			
+			$.ajax({
+	          type: 'GET',
+	          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+datum['ticketId']+'&register_id='+$('#register-id').html()+'&op=acquire',
+	          timeout: 1000,
+	          success: function(res) {
+	          	if(res.status) {
+	          		ticket.trigger('ticket:preloader', true);
+		            //Get Latest Customer UID on ticket, incase cache is dirty.
+		            var currentTicketRequest = JSON.stringify({token: sessionStorage.token, ticketId: datum['ticketId']});
+		            $.ajax({
+			          type: 'POST',
+			          url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/get-current',
+			          data: {request: currentTicketRequest},
+			          timeout: 15000,
+			          success: function(res, status, xhr) {
+			            if(res.status) {
+			              ticket.set(res.ticket);
+			            } else {
+			              ticket.employeeSession.set('login', false);
+			            }
+			            ticket.trigger('ticket:preloader', false);
+			          },
+			          error: function(xhr, errorType, error) {
+			          	ticket.trigger('ticket:preloader', false);
+			            ticket.employeeSession.set('login', false);
+			          }
+			        });
+	          	} else {
+	          		alert(res.message);
+	          	}
 	          },
 	          error: function(xhr, errorType, error) {
-	          	ticket.trigger('ticket:preloader', false);
 	            ticket.employeeSession.set('login', false);
 	          }
 	        });

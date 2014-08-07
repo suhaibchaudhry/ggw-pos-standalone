@@ -145,7 +145,7 @@ jQuery(function($) {
             customerUid: last_ticket.uid
           });
         } else {
-          var generateNewTicket = JSON.stringify({token: sessionStorage.token});
+          var generateNewTicket = JSON.stringify({token: sessionStorage.token, register_id: $('register-id').html()});
           //Start preloader
           this.trigger('ticket:preloader', true);
           $.ajax({

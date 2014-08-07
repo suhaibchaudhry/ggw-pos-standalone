@@ -46,9 +46,25 @@ jQuery(function($) {
     },
     selectInvoice: function(e) {
       var ticketId = $('td:eq(1)', e.currentTarget).text();
+      var that = this;
+      var ticket = that.activeTicketView.ticket;
       if(ticketId) {
-        this.modal.switch(false);
-        this.loadSelectedTicket(ticketId);
+        $.ajax({
+          type: 'GET',
+          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+ticketId+'&register_id='+$('#register-id').html()+'&op=acquire',
+          timeout: 1000,
+          success: function(res) {
+            if(res.status) {
+              that.modal.switch(false);
+              that.loadSelectedTicket(ticketId);
+            } else {
+              alert(res.message);
+            }
+          },
+          error: function(xhr, errorType, error) {
+            ticket.employeeSession.set('login', false);
+          }
+        });
       }
     },
     loadSelectedTicket: function(ticketId) {

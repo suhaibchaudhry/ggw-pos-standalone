@@ -13,7 +13,7 @@ jQuery(function($) {
         var session = this;
     		session.set({token: sessionStorage.token, login: false, clock: false, lunch: false});
 
-        var clockStateReq = JSON.stringify({token: sessionStorage.token});
+        var clockStateReq = JSON.stringify({token: sessionStorage.token, register_id: $('#register-id').html()});
         $.ajax({
           type: 'POST',
           url: session.get('apiServer')+'/pos-api/clockState',
@@ -36,7 +36,7 @@ jQuery(function($) {
       //Set session to initial state to get change events on attributes.
       this.set({message: ''});
 
-    	var requestedUser = JSON.stringify({uname: uname, pass: pass});
+    	var requestedUser = JSON.stringify({uname: uname, pass: pass, register_id: $('#register-id').html()});
     	var session = this;
 
       this.trigger('session:login-preloader', true);
