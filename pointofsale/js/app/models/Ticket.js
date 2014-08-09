@@ -131,6 +131,7 @@ jQuery(function($) {
         var stasuses = ticket.get('ticketStasuses');
 
         if(last_ticket && !clicked && last_ticket.uid == 0 && last_ticket.product_count == 0 && last_ticket.order_status == 'pos_quote') {
+          //Last ticket comes pre-acquired.
           ticket.set({
             status: "pos_quote",
             status_en: stasuses[last_ticket.order_status],
@@ -145,39 +146,54 @@ jQuery(function($) {
             customerUid: last_ticket.uid
           });
         } else {
-          var generateNewTicket = JSON.stringify({token: sessionStorage.token, register_id: $('register-id').html()});
-          //Start preloader
-          this.trigger('ticket:preloader', true);
-          $.ajax({
-            type: 'POST',
-            url: this.employeeSession.get('apiServer')+'/pos-api/new-ticket',
-            data: {request: generateNewTicket},
-            timeout: 15000,
-            success: function(res, status, xhr) {
-              ticket.trigger('ticket:preloader', false);
-              if(res.status) {
-                var stasuses = ticket.get('ticketStasuses');
-                //Change without silent to populate active customer and ticket products (Empty on create ticket command).
-                ticket.set({
-                  status: res.ticketStatus,
-                  status_en: stasuses[res.ticketStatus],
-                  ticketId: res.ticketId,
-                  customerUid: res.customerUid
-                });
-              } else {
-                ticket.employeeSession.set('login', false);
-              }
-            },
-            error: function(xhr, errorType, error) {
-              //stop pre loader and logout user.
-              ticket.trigger('ticket:preloader', false);
-              ticket.employeeSession.set('login', false);
-            }
-          });
+          this.createUnusedTicket(ticket);
         }
       } else {
         ticket.set('ticketId', 0);
       }
+    },
+    createUnusedTicket: function(ticket) {
+      var generateNewTicket = JSON.stringify({token: sessionStorage.token, register_id: $('register-id').html()});
+      //Start preloader
+      this.trigger('ticket:preloader', true);
+      $.ajax({
+        type: 'POST',
+        url: this.employeeSession.get('apiServer')+'/pos-api/new-ticket',
+        data: {request: generateNewTicket},
+        timeout: 15000,
+        success: function(res, status, xhr) {
+          ticket.trigger('ticket:preloader', false);
+          if(res.status) {
+            var stasuses = ticket.get('ticketStasuses');
+            //Change without silent to populate active customer and ticket products (Empty on create ticket command).
+            ticket.set({
+              status: res.ticketStatus,
+              status_en: stasuses[res.ticketStatus],
+              ticketId: res.ticketId,
+              customerUid: res.customerUid
+            });
+
+            //Unconditionally acquire new ticket from lock server.
+            if(res.ticketId) {
+              $.ajax({
+                type: 'GET',
+                url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+res.ticketId+'&register_id='+$('#register-id').html()+'&op=acquire',
+                timeout: 1000,
+                error: function(xhr, errorType, error) {
+                  ticket.employeeSession.set('login', false);
+                }
+              });
+            }
+          } else {
+            ticket.employeeSession.set('login', false);
+          }
+        },
+        error: function(xhr, errorType, error) {
+          //stop pre loader and logout user.
+          ticket.trigger('ticket:preloader', false);
+          ticket.employeeSession.set('login', false);
+        }
+      });
     },
     //Detect debounced Updates on ticket totals and product counts on server.
     updateTotal: function(ticket, total, options) {
