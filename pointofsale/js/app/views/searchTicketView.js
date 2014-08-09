@@ -36,9 +36,12 @@ jQuery(function($) {
 			}
 		},
 		changeTicket: function(ticket, ticketId, options) {
+			var previous_ticketId = ticket.previous('ticketId');
+
 			if(this.lockInterval) {
 				clearInterval(this.lockInterval);
 			}
+
 			if(ticketId) {
 				this.$('.selected-ticket').html(this.selectedTicketTemplate(ticket.attributes));
 				this.ticketSpecialButtons(ticket);
@@ -56,7 +59,6 @@ jQuery(function($) {
 				this.$('.selected-ticket').empty();
 			}
 
-			var previous_ticketId = ticket.previous('ticketId');
 			if(previous_ticketId > 0) {
 				$.ajax({
 		          type: 'GET',
