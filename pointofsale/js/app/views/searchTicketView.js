@@ -21,6 +21,8 @@ jQuery(function($) {
 			this.employeeSession = attributes['employeeSession'];
 			this.ticketStatusDialogModal = attributes['ticketStatusDialogModal'];
 			this.rma_process_debounced = _.debounce(this.rma_process, 2000, true);
+			var authCallback = _.bind(this.authorizedCallback, this);
+			this.authorizationModal = new authorizationModal({authorizedCallback: authCallback, employeeSession: attributes['employeeSession'], el: $('.unlockAuthorizationOverlay'), title: 'Admin Authorization'});
 		},
 		setActiveTicket: function(activeTicketView) {
 			this.activeTicketView = activeTicketView;
@@ -70,15 +72,31 @@ jQuery(function($) {
     	},
     	managerUnlockClosedTicket: function(e) {
     		e.preventDefault();
+    		var locked = this.activeTicketView.ticket.get('locked');
     		//Perform permission checks and dialongs here
-    		if(this.employeeSession.get('privileged')) {
-    			var locked = this.activeTicketView.ticket.get('locked');
+    		if(this.employeeSession.get('admin')) {
+    			this.toggleTicketLock(locked);
+    		} else {
     			if(locked) {
-    				this.unlockTicket();
+    				this.authorizationModal.display(true);
     			} else {
     				this.lockTicket();
     			}
     		}
+    	},
+    	authorizedCallback: function(res) {
+    		if(res.admin) {
+    			this.unlockTicket();
+    		} else {
+        		alert('Provided admin login/password were invalid.');
+      		}
+    	},
+    	toggleTicketLock: function(locked) {
+			if(locked) {
+				this.unlockTicket();
+			} else {
+				this.lockTicket();
+			}
     	},
     	changeTicketStatus: function(ticket, ticketStatus, options) {
     		this.$('.selected-ticket').html(this.selectedTicketTemplate(ticket.attributes));

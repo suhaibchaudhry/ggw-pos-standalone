@@ -77,7 +77,8 @@
 	<div class="customerInfoOverlay dialogOverlay"></div>
 	<div class="rmaItemSelectOverlay dialogOverlay"></div>
 	<div class="managerPrice dialogOverlay"></div>
-	<div class="authorizationOverlay dialogOverlay"></div>
+	<div class="unlockAuthorizationOverlay dialogOverlay"></div>
+	<div class="managerAuthorizationOverlay dialogOverlay"></div>
 	<div class="modalOverlay dialogOverlay"></div>
 	<div class="loaderOverlay dialogOverlay"><a href="#" class="refresh"></a></div>
 
@@ -152,7 +153,7 @@
 
 	<script type="text/template" id="authorization-modal">
 		<div class="bbm-modal__topbar">
-			<h3 class="bbm-modal__title title">Manager Authorization</h3>
+			<h3 class="bbm-modal__title title"><%= title %></h3>
 		</div>
 		<form name="login-form" method="post" class="pure-form pure-form-stacked authorization-form login-form">
 			<div class="bbm-modal__section">
@@ -165,6 +166,7 @@
 			</div>
 			<div class="bbm-modal__bottombar login-modal-bottombar">
 				<div class="preloader"></div>
+				<a href="#" class="pure-button pure-button-error authorize-cancel-button">Cancel</a>
 				<button id="login-button" type="submit" class="pure-button pure-button-success">Authorize</button>
 			</div>
 		</form>
@@ -179,8 +181,8 @@
 		</div>
 		<div class="bbm-modal__bottombar login-modal-bottombar">
 		<a href="#" class="unlock-price-override">Unlock</a>
-		<a href="#" class="pure-button pure-button-success price-override-continue">Change Price</a>
 		<a href="#" class="pure-button pure-button-error price-override-cancel">Cancel</a>
+		<a href="#" class="pure-button pure-button-success price-override-continue">Change Price</a>
 		</div>
 	</script>
 

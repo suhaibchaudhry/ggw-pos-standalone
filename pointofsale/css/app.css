@@ -179,8 +179,8 @@ div.loaderOverlay a.refresh:hover {
 }
 .login-modal-bottombar .preloader {
     position: absolute;
-    right: 100px;
-    bottom: 23px;
+    left: 35px;
+    bottom: 20px;
     display: none;
 }
 

@@ -16,7 +16,16 @@ jQuery(function($) {
       this.employeeSession = attributes['employeeSession'];
       this.modal = attributes['modal'];
       this.ticket = attributes['ticket'];
-      this.authorizationModal = new authorizationModal({managerPriceView: this, employeeSession: attributes['employeeSession']});
+      var authCallback = _.bind(this.authorizedCallback, this);
+      this.authorizationModal = new authorizationModal({authorizedCallback: authCallback, employeeSession: attributes['employeeSession'], el: $('.managerAuthorizationOverlay'), title: 'Manager Authorization'});
+    },
+    authorizedCallback: function(res) {
+      if(res.login && res.privileged) {
+        this.$('a.unlock-price-override').hide();
+        this.$('.overriden-price').attr('disabled', false);
+      } else {
+        alert('Provided manager login/password were invalid.');
+      }
     },
     template: _.template($('#manager-price-modal').html()),
     render: function() {
