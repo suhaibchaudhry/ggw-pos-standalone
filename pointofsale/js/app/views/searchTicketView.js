@@ -305,6 +305,24 @@ jQuery(function($) {
 			this.ticketStatusDialogModal.switch(true);
 		},
 		demolish: function() {
+			//Avoid mutex renewal on logout.
+			var ticket = this.ticket;
+			var previous_ticket_id = ticket.get('ticketId');
+			if(this.lockInterval) {
+				clearInterval(this.lockInterval);
+			}
+
+			if(previous_ticket_id > 0) {
+				$.ajax({
+		          type: 'GET',
+		          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+previous_ticket_id+'&register_id='+$('#register-id').html()+'&op=unlock',
+		          timeout: 1000,
+		          error: function(xhr, errorType, error) {
+		            ticket.employeeSession.set('login', false);
+		          }
+		        });
+			}
+
 			Mousetrap.unbind('shift+d p');
 			this.$('.ticket-search input.search').typeahead('destroy');
 			this.$('.ticket-search').empty();
