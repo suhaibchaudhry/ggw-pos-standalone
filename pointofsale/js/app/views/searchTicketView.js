@@ -75,23 +75,39 @@ jQuery(function($) {
     	managerUnlockClosedTicket: function(e) {
     		e.preventDefault();
     		var locked = this.activeTicketView.ticket.get('locked');
+    		var status = this.ticket.get('status');
     		//Perform permission checks and dialongs here
     		if(this.employeeSession.get('admin')) {
     			this.toggleTicketLock(locked);
     		} else {
     			if(locked) {
     				this.authorizationModal.display(true);
+
+    				if(status == 'pos_return') {
+    					$('.unlockAuthorizationOverlay h3.title').text('Manager Authorization');
+    				} else {
+    					$('.unlockAuthorizationOverlay h3.title').text('Admin Authorization');
+    				}
     			} else {
     				this.lockTicket();
     			}
     		}
     	},
     	authorizedCallback: function(res) {
-    		if(res.admin) {
-    			this.unlockTicket();
+    		var status = this.ticket.get('status');
+    		if(status == 'pos_return') {
+    			if(res.login && res.privileged) {
+    				this.unlockTicket();
+    			} else {
+    				alert('Provided manager login/password were invalid.');
+    			}
     		} else {
-        		alert('Provided admin login/password were invalid.');
-      		}
+    			if(res.admin) {
+	    			this.unlockTicket();
+	    		} else {
+	        		alert('Provided admin login/password were invalid.');
+	      		}
+    		}
     	},
     	toggleTicketLock: function(locked) {
 			if(locked) {
