@@ -11,7 +11,7 @@ jQuery(function($) {
       this.set('retail', true);
       //Set last price before triggering price change to subtract from totals.
       //this.set('last_price', this.get('price'));
-      if(activeCustomer.get('id') && ticket.get('status') != 'pos_return' && ticket.get('status') != 'pos_completed') {
+      if(activeCustomer.get('id') && ticket.get('status') != 'pos_return_closed' && ticket.get('status') != 'pos_completed') {
         //Perform role checks, and set the smallest price for current user.
         this.set('price', this.getRolePrice());
       } else {
@@ -33,7 +33,7 @@ jQuery(function($) {
       var ticket = this.get('ticket');
       if(price) {
         this.set('price', price);
-      } else if(customer_id && ticket.get('status') != 'pos_return' && ticket.get('status') != 'pos_completed') {
+      } else if(customer_id && ticket.get('status') != 'pos_return_closed' && ticket.get('status') != 'pos_completed') {
         //Perform role checks, listen on active customer for changing roles.
         this.set('price', this.getRolePrice());
       } else {
