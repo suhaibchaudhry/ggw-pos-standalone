@@ -330,7 +330,7 @@ jQuery(function($) {
 			this.$('.ticket-search').empty();
 			this.$('.category-breakdown').empty();
 			this.$('.checkout').empty();
-			this.$('.rma-process').empty();
+			this.$('.rma-process').hide().empty();
 		}
 	});
 });
