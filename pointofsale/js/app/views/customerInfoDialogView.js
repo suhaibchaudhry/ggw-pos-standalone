@@ -660,6 +660,7 @@ jQuery(function($) {
       var customer_uid = this.customer_uid;
       var that = this;
       var status = ticket.get('status');
+      e.preventDefault();
 
       var rmaTicketOpenRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, products: new Array(), register_id: this.fetchRegisterID()});
       ticket.trigger('ticket:preloader', true);
