@@ -680,6 +680,18 @@ jQuery(function($) {
               ticketId: res.ticketId,
               customerUid: customer_uid
             });
+
+            //Unconditionally acquire new rma ticket from lock server.
+            if(res.ticketId) {
+              $.ajax({
+                type: 'GET',
+                url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+res.ticketId+'&register_id='+$('#register-id').html()+'&op=acquire',
+                timeout: 1000,
+                error: function(xhr, errorType, error) {
+                  ticket.employeeSession.set('login', false);
+                }
+              });
+            }
           }
           alert(res.message);
           that.closeCheckoutDialog(e);
@@ -742,7 +754,17 @@ jQuery(function($) {
                 customerUid: customer_uid
               });
 
-              //that.record_rma_transaction(products, res.ticketId);
+              //Unconditionally acquire new rma ticket from lock server.
+              if(res.ticketId) {
+                $.ajax({
+                  type: 'GET',
+                  url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+res.ticketId+'&register_id='+$('#register-id').html()+'&op=acquire',
+                  timeout: 1000,
+                  error: function(xhr, errorType, error) {
+                    ticket.employeeSession.set('login', false);
+                  }
+                });
+              }
             }
             alert(res.message);
             that.closeCheckoutDialog(e);
@@ -762,65 +784,5 @@ jQuery(function($) {
     toggleUsageDisplay: function(e) {
       this.$('.history .credit-usages').slideToggle();
     }
-    /*
-    record_rma_transaction: function(products, ticketId) {
-      var ticket = this.ticket;
-      var customer_uid = this.customer_uid;
-      var total = this.rmaTicket.get('total');
-      var that = this;
-
-      var rmaRecordRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid, total: total, ticketId: ticketId, products: products, register_id: this.fetchRegisterID()});
-      ticket.trigger('ticket:preloader', true);
-      $.ajax({
-        type: 'POST',
-        url: this.employeeSession.get('apiServer')+'/pos-api/ticket/rma-checkout',
-        data: {request: rmaRecordRequest},
-        timeout: 15000,
-        success: function(res, status, xhr) {
-          if(res.status) {
-            alert(res.message);
-          } else {
-            that.employeeSession.set('login', false);
-          }
-          ticket.trigger('ticket:preloader', false);
-        },
-        error: function(xhr, errorType, error) {
-          //stop pre loader and logout user.
-          ticket.trigger('ticket:preloader', false);
-        }
-      });
-    },*/
-    /*scanItemRegular: function(barcode, qty, sell_price) {
-      var that = this;
-
-      var scanRequest = JSON.stringify({
-        token: this.employeeSession.get("token"),
-        barcode: barcode,
-        sell_price: sell_price,
-        rma_scan: true
-      });
-
-      var ticket = this.ticket.get('activeTicketView');
-
-      $.ajax({
-        type: 'POST',
-        url: this.employeeSession.get('apiServer')+'/pos-api/product-scan',
-        data: {request: scanRequest},
-        timeout: 10000,
-        success: function(res, status, xhr) {
-          if(res.scan) {
-            ticket.addItemToCollection(res.product, qty);
-          } else {
-            //$.jGrowl("Could not find item with barcode: <strong>"+barcode+"</strong>");
-            alert("Could not find item with barcode: "+barcode);
-          }
-        },
-        error: function(xhr, errorType, error) {
-          $.jGrowl("Could not connect to the network. Please check connection.");
-          //Something is wrong log user out.
-          that.employeeSession.set('login', false);
-        }
-      });
-    }*/
   });
 });
