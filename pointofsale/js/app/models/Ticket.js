@@ -199,7 +199,7 @@ jQuery(function($) {
     updateTotal: function(ticket, total, options) {
       var ticket = this;
       var status = ticket.get('status');
-      if((status != 'pos_completed' && status != 'pos_return_closed' || !ticket.get('locked')) && checkoutActive != true) {
+      if((status != 'pos_completed' && status != 'pos_return_closed' && status != 'pos_return' || !ticket.get('locked')) && checkoutActive != true) {
         var updateTotalRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId'), productCount: ticket.get('productCount')});
         //Start preloader
         //this.trigger('ticket:preloader', true);
