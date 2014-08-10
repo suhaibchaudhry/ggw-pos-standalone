@@ -16,7 +16,7 @@ jQuery(function($) {
           } else {
       			var ticket = this.get('ticket');
             var status = ticket.get('status');
-      			if(ticket.employeeSession.get('admin') && status != 'pos_completed' && status != 'pos_return') {
+      			if(ticket.employeeSession.get('admin') && status != 'pos_completed' && status != 'pos_return' && status != 'pos_return_closed') {
       				this.unlockTicketCustomer();
       			} else {
       				this.lockTicketCustomer();
@@ -54,7 +54,7 @@ jQuery(function($) {
       	updateTicketCustomerUidOnServer: function(uid) {
       		var ticket = this.get('ticket');
           var status = ticket.get('status');
-      		if(ticket.employeeSession.get('admin') && status != 'pos_completed' && status != 'pos_return') {
+      		if(ticket.employeeSession.get('admin') && status != 'pos_completed' && status != 'pos_return' && status != 'pos_return_closed') {
   				  this.unlockTicketCustomer();
   			  } else {
     				if(uid == 0) {
