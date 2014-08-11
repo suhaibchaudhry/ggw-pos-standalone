@@ -116,8 +116,8 @@ jQuery(function($) {
                 that.available_credit = res.credit_limits.available_credit;
                 that.term_limit = res.credit_limits.term_limit;
                 that.credit_limit = res.credit_limits.credit_limit;
-                that.rma_credits = accounting.unformat(res.rma_credits);
-                if(that.rma_credits > 0) {
+                that.rma_credits = Big(res.rma_credits);
+                if(that.rma_credits.cmp(Big(0)) == 1) {
                   that.$('.rma-left-value').html(accounting.formatMoney(that.rma_credits));
                   that.$('.rma-credit-usage').show();
                 } else {
@@ -196,17 +196,17 @@ jQuery(function($) {
       var that = this;
 
       if(!_.isUndefined(this.change_left) && !_.isUndefined(this.change_value) && !_.isUndefined(this.cash_paid)) {
-        var formattedChange = accounting.formatNumber(this.change_left, 2, "");
-        if(this.change_left > 0 && formattedChange != "0.00") {
-          alert("Customer still owes amount: "+accounting.formatMoney(this.change_left));
+        var formattedChange = this.change_left.toFixed(2);
+        if(this.change_left.gt(Big(0)) && formattedChange != "0.00") {
+          alert("Customer still owes amount: $"+formattedChange);
         } else {
           var ticket = this.ticket;
           var cuid = this.activeCustomer.get('id');
           var cashCheckoutRequest = JSON.stringify({token: sessionStorage.token,
                                                     ticketId: ticket.get('ticketId'),
                                                     total: that.ticketTotal,
-                                                    cash: this.cash_paid,
-                                                    change: this.change_value,
+                                                    cash: this.cash_paid.toFixed(2),
+                                                    change: this.change_value.toFixed(2),
                                                     customer: cuid,
                                                     cash_val: this.$('input.cash-paid').val(),
                                                     check: this.$('input#check-payment').is(':checked'),
@@ -236,11 +236,10 @@ jQuery(function($) {
               //stop preloader
               ticket.trigger('ticket:preloader', false);
               if(res.status) {
-                var formattedChange = accounting.formatNumber(that.change_value, 2, "");
-                if(formattedChange == "0.00") {
+                if(that.change_value.eq(Big(0))) {
                   alert("Checkout Complete. No CHANGE.");
                 } else {
-                  alert("Checkout Complete. Please make change for amount: "+accounting.formatMoney(that.change_value));
+                  alert("Checkout Complete. Please make change for amount: $"+that.change_value.toFixed(2));
                 }
                 //Close ticket
                 ticket.set('status_en', 'Closed Ticket');
@@ -323,64 +322,12 @@ jQuery(function($) {
       }
     },
     calculateCashChange: function(e) {
-      var total = this.ticketTotal;
+      //Change ticket total to big before here.
+      var total = Big(this.ticketTotal);
       var input_field = this.$('input.cash-paid');
       var val = input_field.val();
+      var big_zero = Big(0);
       var paid;
-      if(val == '') {
-        paid = 0;
-      } else {
-        paid = accounting.unformat(val);
-      }
-
-      var check = this.$('input#check-payment');
-      val = this.$('input.check-amount').val();
-      if(check.is(':checked') && val != '') {
-        paid += accounting.unformat(val);
-      }
-
-      check = this.$('input#mo-payment');
-      val = this.$('input.mo-amount').val();
-      if(check.is(':checked') && val != '') {
-        paid += accounting.unformat(val);
-      }
-
-      check = this.$('input#cc-payment');
-      val = this.$('input.charge-amount').val();
-
-      if(check.is(':checked') && val != '') {
-        paid += accounting.unformat(val);
-      }
-
-      check = this.$('input#rma-payment');
-      val = this.$('input.rma-amount').val();
-
-      if(check.is(':checked') && val != '') {
-        val = accounting.unformat(val);
-        if(val <= this.rma_credits) {
-          paid += val;
-        } else {
-          paid += this.rma_credits;
-          e.currentTarget.value = this.rma_credits;
-        }
-      }
-
-      var change = total - paid;
-
-      if(change > 0) {
-        total = change;
-        change = 0;
-      } else if(change < 0) {
-        total = 0;
-        change = -change;
-      } else {
-        total = 0;
-        change = 0;
-      }
-
-      this.change_left = total;
-      this.change_value = change;
-      this.cash_paid = paid;
 
       if((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode == 190 || e.keyCode == 110) {
         var start = e.currentTarget.selectionStart,
@@ -393,8 +340,64 @@ jQuery(function($) {
         e.currentTarget.setSelectionRange(1, 1);
       }
 
-      this.$('.change-left-value').html(accounting.formatMoney(total));
-      this.$('.change-value').html(accounting.formatMoney(change));
+      if(val == '') {
+        paid = big_zero;
+      } else {
+        paid = Big(val);
+      }
+
+      var check = this.$('input#check-payment');
+      val = this.$('input.check-amount').val();
+      if(check.is(':checked') && val != '') {
+        paid = paid.plus(Big(val));
+      }
+
+      check = this.$('input#mo-payment');
+      val = this.$('input.mo-amount').val();
+      if(check.is(':checked') && val != '') {
+        paid = paid.plus(Big(val));
+      }
+
+      check = this.$('input#cc-payment');
+      val = this.$('input.charge-amount').val();
+
+      if(check.is(':checked') && val != '') {
+        paid = paid.plus(Big(val));
+      }
+
+      check = this.$('input#rma-payment');
+      val = this.$('input.rma-amount').val();
+
+      if(check.is(':checked') && val != '') {
+        val = Big(val);
+        var comparison = this.rma_credits.cmp(val) == -1;
+        if(comparison == -1 || comparison == 0) {
+          paid = paid.plus(val);
+        } else {
+          paid = paid.plus(this.rma_credits);
+          e.currentTarget.value = this.rma_credits.toFixed(2);
+        }
+      }
+
+      var change = total.minus(paid);
+
+      if(change.cmp(big_zero) == 1) {
+        total = change;
+        change = big_zero;
+      } else if(change.cmp(big_zero) == -1) {
+        total = big_zero;
+        change = change.times(Big('-1'));
+      } else {
+        total = big_zero;
+        change = big_zero;
+      }
+
+      this.change_left = total;
+      this.change_value = change;
+      this.cash_paid = paid;
+
+      this.$('.change-left-value').html(total.toFixed(2));
+      this.$('.change-value').html(change.toFixed(2));
     },
     checkboxToggle: function(e) {
       if(e.currentTarget.checked) {
