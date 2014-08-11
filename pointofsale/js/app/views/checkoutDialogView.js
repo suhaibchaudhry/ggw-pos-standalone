@@ -236,7 +236,7 @@ jQuery(function($) {
               //stop preloader
               ticket.trigger('ticket:preloader', false);
               if(res.status) {
-                if(that.change_value.eq(Big('0'))) {
+                if(that.change_value.cmp(Big('0')) == 0) {
                   alert("Checkout Complete. No CHANGE.");
                 } else {
                   alert("Checkout Complete. Please make change for amount: $"+that.change_value.toFixed(2));
@@ -313,7 +313,7 @@ jQuery(function($) {
       this.modal.display(false);
     },
     cashInputValidate: function(e) {
-      if(e.currentTarget.value == e.currentTarget.defaultValue) {
+      if(e.currentTarget.value == e.currentTarget.defaultValue && e.currentTarget.selectionStart == 0) {
         e.currentTarget.value = '';
       }
 
@@ -328,46 +328,39 @@ jQuery(function($) {
       var big_zero = Big('0');
       var paid;
 
-      if((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode == 190 || e.keyCode == 110) {
-        var start = e.currentTarget.selectionStart,
-        end = e.currentTarget.selectionEnd;
-        e.currentTarget.value = accounting.formatNumber(e.currentTarget.value, 2, '');
-        e.currentTarget.setSelectionRange(start, end);
-      }
-      if((e.keyCode == 8 || e.keyCode == 46) && e.currentTarget.value == '') {
-        e.currentTarget.value = '0.00';
-        e.currentTarget.setSelectionRange(1, 1);
-      }
-
       if(val == '') {
         paid = big_zero;
       } else {
-        paid = Big(val);
+        if(isNaN(val)) {
+          paid = Big(0);
+        } else {
+          paid = Big(val);
+        }
       }
 
       var check = this.$('input#check-payment');
       val = this.$('input.check-amount').val();
-      if(check.is(':checked') && val != '') {
+      if(check.is(':checked') && val != '' && !isNaN(val)) {
         paid = paid.plus(Big(val));
       }
 
       check = this.$('input#mo-payment');
       val = this.$('input.mo-amount').val();
-      if(check.is(':checked') && val != '') {
+      if(check.is(':checked') && val != '' && !isNaN(val)) {
         paid = paid.plus(Big(val));
       }
 
       check = this.$('input#cc-payment');
       val = this.$('input.charge-amount').val();
 
-      if(check.is(':checked') && val != '') {
+      if(check.is(':checked') && val != '' && !isNaN(val)) {
         paid = paid.plus(Big(val));
       }
 
       check = this.$('input#rma-payment');
       val = this.$('input.rma-amount').val();
 
-      if(check.is(':checked') && val != '') {
+      if(check.is(':checked') && val != '' && !isNaN(val)) {
         val = Big(val);
         var comparison = this.rma_credits.cmp(val) == -1;
         if(comparison == -1 || comparison == 0) {
@@ -394,6 +387,17 @@ jQuery(function($) {
       this.change_left = total;
       this.change_value = change;
       this.cash_paid = paid;
+
+      if((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode == 190 || e.keyCode == 110) {
+        var start = e.currentTarget.selectionStart,
+        end = e.currentTarget.selectionEnd;
+        e.currentTarget.value = accounting.formatNumber(e.currentTarget.value, 2, '');
+        e.currentTarget.setSelectionRange(start, end);
+      }
+      if((e.keyCode == 8 || e.keyCode == 46) && e.currentTarget.value == '') {
+        e.currentTarget.value = '0.00';
+        e.currentTarget.setSelectionRange(0, 0);
+      }
 
       this.$('.change-left-value').html(total.toFixed(2));
       this.$('.change-value').html(change.toFixed(2));
