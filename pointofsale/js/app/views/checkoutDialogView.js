@@ -449,16 +449,16 @@ jQuery(function($) {
         var cc_payment = this.$('#cc-payment').is(":checked");
         var split = this.$('#cc-payment-split').is(":checked");
         if(split && cc_payment) {
-          var formattedChange = accounting.formatNumber(this.change_left, 2, "");
+          var formattedChange = this.change_left.toFixed(2);
           if(formattedChange == "0.00") {
             alert("There are no remaining payments to be placed on the card. Please continue with regular checkout.");
           } else {
             var partialSwipeRequest = JSON.stringify({token: sessionStorage.token,
                                                     ticketId: ticket.get('ticketId'),
-                                                    total: that.ticketTotal,
-                                                    remaining_balance: this.change_left,
-                                                    cash: that.cash_paid,
-                                                    change: that.change_value,
+                                                    total: that.ticketTotal.toFixed(2),
+                                                    remaining_balance: this.change_left.toFixed(2),
+                                                    cash: that.cash_paid.toFixed(2),
+                                                    change: that.change_value.toFixed(2),
                                                     customer: cuid,
                                                     cardData: cardData,
                                                     cash_val: this.$('input.cash-paid').val(),
@@ -513,7 +513,7 @@ jQuery(function($) {
         var swipeCheckoutRequest = JSON.stringify({
           token: sessionStorage.token,
           ticketId: ticket.get('ticketId'),
-          total: that.ticketTotal,
+          total: that.ticketTotal.toFixed(2),
           register_id: this.fetchRegisterID(),
           customer: this.activeCustomer.get('id'),
           cardData: cardData,
