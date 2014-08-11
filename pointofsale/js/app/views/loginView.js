@@ -11,7 +11,8 @@ jQuery(function($) {
       e.stopPropagation();
       var uname = this.$('input#login-uname').val();
       var pass = this.$('input#login-password').val();
-      
+      //Remove checkout dialog if open from before.
+      $('a.ticket-checkout-cancel').trigger('click');
       this.employeeSession.login(uname, pass);
     },
     template: _.template($('#login-modal').html()),
