@@ -399,8 +399,8 @@ jQuery(function($) {
         e.currentTarget.setSelectionRange(0, 0);
       }
 
-      this.$('.change-left-value').html(total.toFixed(2));
-      this.$('.change-value').html(change.toFixed(2));
+      this.$('.change-left-value').html(accounting.formatMoney(total.toFixed(2)));
+      this.$('.change-value').html(accounting.formatMoney(change.toFixed(2)));
     },
     checkboxToggle: function(e) {
       if(e.currentTarget.checked) {
