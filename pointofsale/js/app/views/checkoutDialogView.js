@@ -60,8 +60,8 @@ jQuery(function($) {
         success: function(res, status, xhr) {
           //stop preloader
           if(res.status) {
-              that.ticketTotal = accounting.unformat(res.total);
-              that.ticketTax = accounting.unformat(res.taxes);
+              that.ticketTotal = Big(res.total);
+              that.ticketTax = Big(res.taxes);
 
               that.creditCardSwiperSetup();
               that.creditTermCheckoutSetup();
@@ -91,8 +91,8 @@ jQuery(function($) {
     creditCardSwiperSetup: function() {
       this.$('.credit-card-checkout').html(this.ccCheckoutTemplate({
         subtotal: accounting.formatMoney(this.ticket.get('total')),
-        tax: accounting.formatMoney(this.ticketTax),
-        total: accounting.formatMoney(this.ticketTotal)
+        tax: accounting.formatMoney(this.ticketTax.toFixed(2)),
+        total: accounting.formatMoney(this.ticketTotal.toFixed(2))
       }));
     },
     creditTermCheckoutSetup: function() {
@@ -117,7 +117,7 @@ jQuery(function($) {
                 that.term_limit = res.credit_limits.term_limit;
                 that.credit_limit = res.credit_limits.credit_limit;
                 that.rma_credits = Big(res.rma_credits);
-                if(that.rma_credits.cmp(Big(0)) == 1) {
+                if(that.rma_credits.cmp(Big('0')) == 1) {
                   that.$('.rma-left-value').html(accounting.formatMoney(that.rma_credits));
                   that.$('.rma-credit-usage').show();
                 } else {
@@ -197,14 +197,14 @@ jQuery(function($) {
 
       if(!_.isUndefined(this.change_left) && !_.isUndefined(this.change_value) && !_.isUndefined(this.cash_paid)) {
         var formattedChange = this.change_left.toFixed(2);
-        if(this.change_left.gt(Big(0)) && formattedChange != "0.00") {
+        if(this.change_left.gt(Big('0')) && formattedChange != "0.00") {
           alert("Customer still owes amount: $"+formattedChange);
         } else {
           var ticket = this.ticket;
           var cuid = this.activeCustomer.get('id');
           var cashCheckoutRequest = JSON.stringify({token: sessionStorage.token,
                                                     ticketId: ticket.get('ticketId'),
-                                                    total: that.ticketTotal,
+                                                    total: that.ticketTotal.toFixed(2),
                                                     cash: this.cash_paid.toFixed(2),
                                                     change: this.change_value.toFixed(2),
                                                     customer: cuid,
@@ -236,7 +236,7 @@ jQuery(function($) {
               //stop preloader
               ticket.trigger('ticket:preloader', false);
               if(res.status) {
-                if(that.change_value.eq(Big(0))) {
+                if(that.change_value.eq(Big('0'))) {
                   alert("Checkout Complete. No CHANGE.");
                 } else {
                   alert("Checkout Complete. Please make change for amount: $"+that.change_value.toFixed(2));
@@ -292,13 +292,13 @@ jQuery(function($) {
     focusCash: function() {
       this.$('.cash-paid').focus();
       this.$('.change-due-value').html(accounting.formatMoney(this.ticket.get('total')));
-      this.$('.tax-due-value').html(accounting.formatMoney(this.ticketTax));
-      this.$('.total-left-value').html(accounting.formatMoney(this.ticketTotal));
-      this.$('.change-left-value').html(accounting.formatMoney(this.ticketTotal));
+      this.$('.tax-due-value').html(accounting.formatMoney(this.ticketTax.toFixed(2)));
+      this.$('.total-left-value').html(accounting.formatMoney(this.ticketTotal.toFixed(2)));
+      this.$('.change-left-value').html(accounting.formatMoney(this.ticketTotal.toFixed(2)));
       this.$('.change-value').html(accounting.formatMoney(0));
       this.$('.credit-amount span.value').html(accounting.formatMoney(this.ticket.get('total')));
-      this.$('.credit-tax span.value').html(accounting.formatMoney(this.ticketTax));
-      this.$('.credit-total span.value').html(accounting.formatMoney(this.ticketTotal));
+      this.$('.credit-tax span.value').html(accounting.formatMoney(this.ticketTax.toFixed(2)));
+      this.$('.credit-total span.value').html(accounting.formatMoney(this.ticketTotal.toFixed(2)));
     },
     closeCheckoutDialog: function(e) {
       if(e) {
@@ -322,11 +322,10 @@ jQuery(function($) {
       }
     },
     calculateCashChange: function(e) {
-      //Change ticket total to big before here.
-      var total = Big(this.ticketTotal);
+      var total = this.ticketTotal;
       var input_field = this.$('input.cash-paid');
       var val = input_field.val();
-      var big_zero = Big(0);
+      var big_zero = Big('0');
       var paid;
 
       if((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode == 190 || e.keyCode == 110) {
