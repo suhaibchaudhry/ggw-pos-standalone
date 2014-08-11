@@ -113,9 +113,10 @@ jQuery(function($) {
             //stop preloader
             ticket.trigger('ticket:preloader', false);
             if(res.status) {
-                that.available_credit = res.credit_limits.available_credit;
+                that.available_credit = Big(res.credit_limits.available_credit);
+                that.credit_limit = Big(res.credit_limits.credit_limit);
                 that.term_limit = res.credit_limits.term_limit;
-                that.credit_limit = res.credit_limits.credit_limit;
+
                 that.rma_credits = Big(res.rma_credits);
                 if(that.rma_credits.cmp(Big('0')) == 1) {
                   that.$('.rma-left-value').html(accounting.formatMoney(that.rma_credits));
@@ -148,8 +149,8 @@ jQuery(function($) {
       if(_.isUndefined(this.available_credit) || _.isUndefined(this.term_limit)) {
         alert("Insufficient credit limit. Transaction could not be completed.");
         this.closeCheckoutDialog(e);
-      } else if(total > this.available_credit) {
-        if(that.credit_limit == 0) {
+      } else if(total.gt(this.available_credit)) {
+        if(that.credit_limit.eq(Big('0'))) {
           if (confirm('Customer has an insufficient credit limit. Are you sure you want to continue anyways?')) {
             this.performCreditCheckout(that, ticket, total, e);
           }
@@ -162,7 +163,7 @@ jQuery(function($) {
     },
     performCreditCheckout: function(that, ticket, total, e) {
       var cuid = this.activeCustomer.get('id');
-      var creditCheckoutRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId'), total: total, customer: cuid, term_limit: this.term_limit, register_id: this.fetchRegisterID()});
+      var creditCheckoutRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId'), total: total.toFixed(2), customer: cuid, term_limit: this.term_limit, register_id: this.fetchRegisterID()});
 
       ticket.trigger('ticket:preloader', true);
       $.ajax({
