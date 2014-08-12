@@ -347,6 +347,7 @@ jQuery(function($) {
 			this.$('.category-breakdown').empty();
 			this.$('.checkout').empty();
 			this.$('.rma-process').hide().empty();
+			this.$('.lock-indicator').hide();
 		}
 	});
 });
