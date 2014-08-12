@@ -51,6 +51,7 @@ jQuery(function($) {
       });
 
       this.ticketStatusDialogModal.setActiveTicket(this.activeTicketRegion);
+      this.ticketStatusDialogModal.setCustomerView(this.activeCustomerRegion);
       this.searchTicketRegion.setActiveTicket(this.activeTicketRegion);
 
       this.invoiceDialog = this.activeTicketRegion.invoiceDialog;

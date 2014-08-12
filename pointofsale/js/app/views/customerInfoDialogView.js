@@ -55,7 +55,7 @@ jQuery(function($) {
     fetchRegisterID: _.template($('#register-id').html()),
     labelizeTemplate: _.template($('#labelize-data').html()),
     noPendingPaymentsMessage: _.template($('#no-pending-payments').html()),
-    loadUserProfile: function(uid) {
+    loadUserProfile: function(uid, default_tab_flag) {
       var that = this;
       if(uid) {
         var customer_uid = uid;
@@ -103,6 +103,12 @@ jQuery(function($) {
             that.$('.loader').hide();
             that.$('.tabs').show();
             that.adjustBlockHeights();
+
+            if(default_tab_flag == 1) {
+              $('.info-menu-tabs li:eq(2) a').trigger('click');
+            } else if(default_tab_flag == 2) {
+              $('.info-menu-tabs li:eq(3) a').trigger('click');
+            }
           } else {
             that.employeeSession.set('login', false);
           }

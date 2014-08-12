@@ -4,9 +4,13 @@ jQuery(function($) {
     tagName: 'div',
     className: 'statusOverlay',
     events: {
-      "click a.status-open-ticket": "openTicket",
-      "click a.status-quote-ticket": "quoteTicket",
-      "click .open-tickets-container table tr": 'selectInvoice'
+      "click a.action-open-ticket": "openTicket",
+      "click a.action-quote-ticket": "quoteTicket",
+      "click .open-tickets-container table tr": 'selectInvoice',
+      "click a.clear-ticket": 'clearTicketForReuse',
+      "click a.ticket-checkout-cancel": 'cancelTicketStatusChange',
+      "click a.make-payments-direct": 'makeCustomerPayments',
+      "click a.make-rma-direct": 'makeRMAReturn'
     },
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
@@ -43,6 +47,34 @@ jQuery(function($) {
       }
 
       return that;
+    },
+    clearTicketForReuse: function(e) {
+      e.preventDefault();
+      this.activeCustomer.set('id', false);
+      this.activeCustomer.updateTicketCustomerUidOnServer(0);
+      this.modal.switch(false);
+    },
+    makeCustomerPayments: function(e) {
+      e.preventDefault();
+      var customer_uid = this.activeCustomer.get('id');
+      if(customer_uid) {
+        this.activeCustomerView.customerInfoDialogModal.display(true, customer_uid, 1);
+      } else {
+        alert("Cannot make payments on walk-in customers.");
+      }
+    },
+    makeRMAReturn: function(e) {
+      e.preventDefault();
+      var customer_uid = this.activeCustomer.get('id');
+      if(customer_uid) {
+        this.activeCustomerView.customerInfoDialogModal.display(true, customer_uid, 2);
+      } else {
+        alert("Cannot make returns for walk-in customers.");
+      }
+    },
+    cancelTicketStatusChange: function(e) {
+      e.preventDefault();
+      this.modal.switch(false);
     },
     selectInvoice: function(e) {
       var ticketId = $('td:eq(1)', e.currentTarget).text();

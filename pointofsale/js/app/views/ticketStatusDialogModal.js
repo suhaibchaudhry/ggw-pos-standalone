@@ -13,6 +13,9 @@ jQuery(function($) {
     setActiveTicket: function(activeTicketView) {
       this.ticketStatusDialogView.activeTicketView = activeTicketView;
     },
+    setCustomerView: function(activeCustomerView) {
+      this.ticketStatusDialogView.activeCustomerView = activeCustomerView;
+    },
     switch: function(on) {
       if(on && this.activeCustomer.get('ticket').get('status') == 'pos_quote') {
         $('.statusOverlay').stop().show().html(this.render().el);

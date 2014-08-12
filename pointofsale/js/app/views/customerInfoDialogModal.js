@@ -12,11 +12,15 @@ jQuery(function($) {
     beforeCancel: function() {
       return false;
     },
-    display: function(state, uid) {
+    display: function(state, uid, default_tab_flag) {
       if(state) {
         $('.customerInfoOverlay').stop().show().html(this.render().el);
         if(uid) {
-          this.customerInfoDialogView.loadUserProfile(uid);
+          if(default_tab_flag == 1 || default_tab_flag == 2) {
+            this.customerInfoDialogView.loadUserProfile(uid, default_tab_flag);
+          } else {
+            this.customerInfoDialogView.loadUserProfile(uid);
+          }
         } else {
           this.customerInfoDialogView.loadUserProfile();
         }

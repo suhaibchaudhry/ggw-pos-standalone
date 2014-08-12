@@ -233,14 +233,18 @@
 	<script type="text/template" id="ticket-status-modal">
 		<div class="bbm-modal__topbar">
 			<h3 class="bbm-modal__title title">Ticket Status</h3>
+			<a href="#" class="clear-ticket">X</a>
 		</div>
 			<div class="bbm-modal__section">
 				<p>Would you like to turn this ticket in to an open ticket?</p>
-			    <a href="#" class="pure-button pure-button-success status-open-ticket">Yes, Open Ticket</a>
-			    <a href="#" class="pure-button pure-button-warning status-quote-ticket">No, Keep as Quote Ticket</a>
+			    <a href="#" class="pure-button pure-button-special pure-button-success status-open-ticket action-open-ticket">Yes, Open Ticket</a>
+			    <a href="#" class="pure-button pure-button-special pure-button-warning status-quote-ticket action-quote-ticket">No, Keep as Quote Ticket</a>
+			    <a href="#" class="pure-button pure-button-special pure-button-success status-open-ticket status-make-payments make-payments-direct">Make Payments</a>
+			    <a href="#" class="pure-button pure-button-special pure-button-warning status-quote-ticket status-make-payments make-rma-direct">Return Merchandise</a>
 			    <div class="open-tickets-container"></div>
 			</div>
 			<div class="bbm-modal__bottombar">
+				<a href="#" class="pure-button pure-button-error ticket-checkout-cancel">Cancel</a>
 			</div>
 	</script>
 

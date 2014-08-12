@@ -482,15 +482,32 @@ div.register-display span.label {
     right: 75px;
     display: none;
 }
-.statusOverlay a.pure-button {
+.statusOverlay a.pure-button-special {
     width: 243px;
     padding: 27px 0;
+}
+.statusOverlay a.status-make-payments {
+    padding: 8px;
+    margin: 10px 0 0;
 }
 .statusOverlay .bbm-modal {
     max-width: 600px;
 }
 .statusOverlay a.status-quote-ticket {
     float: right;
+}
+.statusOverlay a.clear-ticket {
+    width: 48px;
+    height: 48px;
+    background: url(../images/delete-outline_24.png) no-repeat;
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    text-indent: -9999px;
+}
+.statusOverlay a.clear-ticket:hover {
+    background-image: url(../images/delete_24.png);
 }
 .ticketSearch .checkout, .ticketSearch .rma-process {
     padding: 0 10px;
