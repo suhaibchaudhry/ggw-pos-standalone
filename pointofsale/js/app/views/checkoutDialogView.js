@@ -61,7 +61,11 @@ jQuery(function($) {
           //stop preloader
           if(res.status) {
               that.ticketTotal = Big(res.total);
-              that.ticketTax = Big(res.taxes);
+              if(_.isNaN(res.taxes) || _.isNull(res.taxes)) {
+                that.ticketTax = Big('0');
+              } else {
+                that.ticketTax = Big(res.taxes);
+              }
 
               that.creditCardSwiperSetup();
               that.creditTermCheckoutSetup();
@@ -332,7 +336,7 @@ jQuery(function($) {
       if(val == '') {
         paid = big_zero;
       } else {
-        if(isNaN(val)) {
+        if(_.isNaN(val)) {
           paid = Big(0);
         } else {
           paid = Big(val);
@@ -341,27 +345,27 @@ jQuery(function($) {
 
       var check = this.$('input#check-payment');
       val = this.$('input.check-amount').val();
-      if(check.is(':checked') && val != '' && !isNaN(val)) {
+      if(check.is(':checked') && val != '' && !_.isNaN(val)) {
         paid = paid.plus(Big(val));
       }
 
       check = this.$('input#mo-payment');
       val = this.$('input.mo-amount').val();
-      if(check.is(':checked') && val != '' && !isNaN(val)) {
+      if(check.is(':checked') && val != '' && !_.isNaN(val)) {
         paid = paid.plus(Big(val));
       }
 
       check = this.$('input#cc-payment');
       val = this.$('input.charge-amount').val();
 
-      if(check.is(':checked') && val != '' && !isNaN(val)) {
+      if(check.is(':checked') && val != '' && !_.isNaN(val)) {
         paid = paid.plus(Big(val));
       }
 
       check = this.$('input#rma-payment');
       val = this.$('input.rma-amount').val();
 
-      if(check.is(':checked') && val != '' && !isNaN(val)) {
+      if(check.is(':checked') && val != '' && !_.isNaN(val)) {
         val = Big(val);
         var comparison = this.rma_credits.cmp(val) == -1;
         if(comparison == -1 || comparison == 0) {
