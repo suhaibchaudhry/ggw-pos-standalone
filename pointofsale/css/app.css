@@ -509,6 +509,12 @@ div.register-display span.label {
 .statusOverlay a.clear-ticket:hover {
     background-image: url(../images/delete_24.png);
 }
+.statusOverlay .ticket-status-header {
+    position: relative;
+}
+.statusOverlay .hidden-cancel-button {
+    display: none;
+}
 .ticketSearch .checkout, .ticketSearch .rma-process {
     padding: 0 10px;
     display: none;
