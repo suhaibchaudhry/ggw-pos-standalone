@@ -55,22 +55,24 @@ jQuery(function($) {
       this.modal.switch(false);
     },
     makeCustomerPayments: function(e) {
-      e.preventDefault();
+      //e.preventDefault();
       var customer_uid = this.activeCustomer.get('id');
       if(customer_uid) {
         this.activeCustomerView.customerInfoDialogModal.display(true, customer_uid, 1);
       } else {
         alert("Cannot make payments on walk-in customers.");
       }
+      this.clearTicketForReuse(e);
     },
     makeRMAReturn: function(e) {
-      e.preventDefault();
+      //e.preventDefault();
       var customer_uid = this.activeCustomer.get('id');
       if(customer_uid) {
         this.activeCustomerView.customerInfoDialogModal.display(true, customer_uid, 2);
       } else {
         alert("Cannot make returns for walk-in customers.");
       }
+      this.clearTicketForReuse(e);
     },
     cancelTicketStatusChange: function(e) {
       e.preventDefault();
