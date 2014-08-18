@@ -62,7 +62,10 @@ jQuery(function($) {
       } else {
         alert("Cannot make payments on walk-in customers.");
       }
-      this.clearTicketForReuse(e);
+
+      if(this.activeTicketView.ticket.get('productCollection').length == 0) {
+        this.clearTicketForReuse(e);
+      }
     },
     makeRMAReturn: function(e) {
       //e.preventDefault();
@@ -72,7 +75,10 @@ jQuery(function($) {
       } else {
         alert("Cannot make returns for walk-in customers.");
       }
-      this.clearTicketForReuse(e);
+
+      if(this.activeTicketView.ticket.get('productCollection').length == 0) {
+        this.clearTicketForReuse(e);
+      }
     },
     cancelTicketStatusChange: function(e) {
       e.preventDefault();
