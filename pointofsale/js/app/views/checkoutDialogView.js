@@ -241,7 +241,7 @@ jQuery(function($) {
               //stop preloader
               ticket.trigger('ticket:preloader', false);
               if(res.status) {
-                if(that.change_value.cmp(Big('0')) == 0) {
+                if(that.change_value.toFixed(2) == '0.00') {
                   alert("Checkout Complete. No CHANGE.");
                 } else {
                   alert("Checkout Complete. Please make change for amount: $"+that.change_value.toFixed(2));
