@@ -412,7 +412,7 @@
 				<input type="checkbox" id="rma-payment" name="rma-payment" value="rma_payment" /><label for="rma-payment">Use RMA Credit</label>
 				<div class="payment-input hidden-child">
 					<div class="rma-remaining-label">RMA Credit:</div>
-					<div class="rma-left-value"></div>
+					<div class="rma-left-value"><%= accounting.formatMoney(rma_credits) %></div>
 					<div>
 					<label for="rma-amount">Credit Usage:</label>
 					<input id="rma-amount" type="text" class="rma-amount" value="0.00" />
