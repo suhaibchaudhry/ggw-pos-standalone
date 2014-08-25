@@ -97,7 +97,7 @@ jQuery(function($) {
 
             that.$('.rma-credits').html(that.labelizeTemplate({
               label: 'RMA Credit',
-              value: res.rma_credits
+              value: accounting.formatMoney(res.rma_credits)
             }));
 
             that.$('.loader').hide();
