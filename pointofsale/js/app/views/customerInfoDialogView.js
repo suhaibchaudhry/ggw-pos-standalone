@@ -462,6 +462,7 @@ jQuery(function($) {
                                                     check_date: this.$('input#cash-date').val(),
                                                     mo: this.$('input#mo-payment').is(':checked'),
                                                     mo_val: this.$('input.mo-amount').val(),
+                                                    stash_change: this.$('input.stash-change').val(),
                                                     mo_ref: this.$('input.mo-ref').val(),
                                                     credit: this.$('input#cc-payment').is(':checked'),
                                                     credit_val: this.$('input.charge-amount').val(),
