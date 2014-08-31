@@ -693,10 +693,14 @@ a.ticket-customer-link:hover {
 .toggle-payment {
     margin: 10px 0;
 }
-.toggle-payment label {
+.stash-change-remaining {
+    display: inline-block;
+    margin: 0 0 0 50px;
+}
+.toggle-payment label, .stash-change-remaining label {
     font-size: 20px;
 }
-.toggle-payment input {
+.toggle-payment input, .stash-change-remaining input {
     zoom: 2;
 }
 .toggle-payment input[type="text"], .toggle-payment input[type="date"] {

@@ -20,10 +20,12 @@ jQuery(function($) {
       "keypress .toggle-payment input.check-amount": 'cashInputValidate',
       "keypress .toggle-payment input.mo-amount": 'cashInputValidate',
       "keypress .toggle-payment input.charge-amount": 'cashInputValidate',
+      "keypress .toggle-payment input.rma-amount": 'cashInputValidate',
       "keyup .credit-payments-checkout input.cash-paid": 'calculateCashChange',
       "keyup .toggle-payment input.check-amount": 'calculateCashChange',
       "keyup .toggle-payment input.mo-amount": 'calculateCashChange',
       "keyup .toggle-payment input.charge-amount": 'calculateCashChange',
+      "keyup .toggle-payment input.rma-amount": 'calculateCashChange',
       'change .toggle-payment input[type="checkbox"]': 'checkboxToggle',
       "change #cc-payment-split": 'changeModeToSwipe',
       "click a.reload-payments": 'reloadPaymentHistory',
@@ -89,15 +91,16 @@ jQuery(function($) {
 
             //Payments
             that.pending_payments = res.payments;
+            that.rma_credits = res.rma_credits;
             if(res.payments.pending_payments > 0) {
-              that.setupPaymentForm(res.payments, true);
+              that.setupPaymentForm(res.payments, res.rma_credits, true);
             } else {
-              that.setupPaymentForm(res.payments, false);
+              that.setupPaymentForm(res.payments, res.rma_credits, false);
             }
 
             that.$('.rma-credits').html(that.labelizeTemplate({
               label: 'RMA Credit',
-              value: res.rma_credits
+              value: accounting.formatMoney(res.rma_credits)
             }));
 
             that.$('.loader').hide();
@@ -139,10 +142,11 @@ jQuery(function($) {
           if(res.status) {
             //Payments
             that.pending_payments = res.payments;
+            that.rma_credits = res.rma_credits;
             if(res.payments.pending_payments > 0) {
-              that.setupPaymentForm(res.payments, true);
+              that.setupPaymentForm(res.payments, res.rma_credits, true);
             } else {
-              that.setupPaymentForm(res.payments, false);
+              that.setupPaymentForm(res.payments, res.rma_credits, false);
             }
 
             that.$('.loader').hide();
@@ -191,8 +195,9 @@ jQuery(function($) {
     populateInvoices: function(invoices, ahah) {
       invoices.html(ahah);
     },
-    setupPaymentForm: function(payments, flag) {
+    setupPaymentForm: function(payments, rma_credits, flag) {
       if(flag) {
+        payments.rma_credits = rma_credits;
         this.$('.payment-history').html(this.paymentTemplate(payments));
       } else {
         var usages = {usages: payments.usages};
@@ -311,7 +316,7 @@ jQuery(function($) {
         e.currentTarget.value = '';
       }
 
-      if((e.keyCode < 48 || e.keyCode > 57) && e.keyCode != 46 && e.keyCode != 8 && e.keyCode != 190) {
+      if((e.keyCode < 48 || e.keyCode > 57) /*|| (e.keyCode < 96 || e.keyCode > 105)*/ && e.keyCode != 46 && e.keyCode != 8 && e.keyCode != 190 /*&& e.keyCode != 110*/) {
         e.preventDefault();
       }
     },
@@ -348,6 +353,20 @@ jQuery(function($) {
           paid += parseFloat(val);
         }
 
+        check = this.$('input#rma-payment');
+        val = this.$('input.rma-amount').val();
+
+        if(check.is(':checked') && val != '' && !isNaN(val)) {
+          val = parseFloat(val);
+          var rma_credits = parseFloat(this.rma_credits);
+          if(val <= rma_credits) {
+            paid += val;
+          } else {
+            paid += rma_credits;
+            e.currentTarget.value = rma_credits;
+          }
+        }
+
         var change = total - paid;
 
         if(change > 0) {
@@ -365,7 +384,7 @@ jQuery(function($) {
         this.change_value = change;
         this.cash_paid = paid;
 
-        if(e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode == 190) {
+        if((e.keyCode >= 48 && e.keyCode <= 57) /*|| (e.keyCode >= 96 && e.keyCode <= 105)*/ || e.keyCode == 190 /*|| e.keyCode == 110*/) {
           var start = e.currentTarget.selectionStart,
           end = e.currentTarget.selectionEnd;
           e.currentTarget.value = accounting.formatNumber(e.currentTarget.value, 2, '');
@@ -373,7 +392,7 @@ jQuery(function($) {
         }
         if((e.keyCode == 8 || e.keyCode == 46) && e.currentTarget.value == '') {
           e.currentTarget.value = '0.00';
-          e.currentTarget.setSelectionRange(1, 1);
+          e.currentTarget.setSelectionRange(0, 0);
         }
 
         this.$('.payment-made-value').html(accounting.formatMoney(paid));
@@ -443,9 +462,12 @@ jQuery(function($) {
                                                     check_date: this.$('input#cash-date').val(),
                                                     mo: this.$('input#mo-payment').is(':checked'),
                                                     mo_val: this.$('input.mo-amount').val(),
+                                                    stash_change: this.$('input.stash-change').val(),
                                                     mo_ref: this.$('input.mo-ref').val(),
                                                     credit: this.$('input#cc-payment').is(':checked'),
                                                     credit_val: this.$('input.charge-amount').val(),
+                                                    rma: this.$('input#rma-payment').is(':checked'),
+                                                    rma_value: this.$('input.rma-amount').val(),
                                                     transac_id: this.$('input#transaction-id').val(),
                                                     register_id: this.fetchRegisterID()
                                                   });

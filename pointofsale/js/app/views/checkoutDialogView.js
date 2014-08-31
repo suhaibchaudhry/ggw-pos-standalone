@@ -12,11 +12,13 @@ jQuery(function($) {
       "keypress .toggle-payment input.mo-amount": 'cashInputValidate',
       "keypress .toggle-payment input.charge-amount": 'cashInputValidate',
       "keypress .toggle-payment input.rma-amount": 'cashInputValidate',
+      "keypress .toggle-payment input.ar-amount": 'cashInputValidate',
       "keyup .cash-checkout input.cash-paid": 'calculateCashChange',
       "keyup .toggle-payment input.check-amount": 'calculateCashChange',
       "keyup .toggle-payment input.mo-amount": 'calculateCashChange',
       "keyup .toggle-payment input.charge-amount": 'calculateCashChange',
       "keyup .toggle-payment input.rma-amount": 'calculateCashChange',
+      "keyup .toggle-payment input.ar-amount": 'calculateCashChange',
       'change .toggle-payment input[type="checkbox"]': 'checkboxToggle',
       "change #cc-payment-split": 'changeModeToSwipe'
     },
@@ -219,6 +221,10 @@ jQuery(function($) {
                                                     check_number: this.$('input.check-number').val(),
                                                     check_post_dated: this.$('input#post-dated').is(':checked'),
                                                     check_date: this.$('input#cash-date').val(),
+                                                    ar_used: this.$('input#ar-payment').is(':checked'),
+                                                    ar_val: this.$('input.ar-amount').val(),
+                                                    stash_change: this.$('input.stash-change').val(),
+                                                    term_limit: this.term_limit,
                                                     mo: this.$('input#mo-payment').is(':checked'),
                                                     mo_val: this.$('input.mo-amount').val(),
                                                     mo_ref: this.$('input.mo-ref').val(),
@@ -349,6 +355,12 @@ jQuery(function($) {
         paid = paid.plus(Big(val));
       }
 
+      var ar_flag = this.$('input#ar-payment');
+      val = this.$('input.ar-amount').val();
+      if(ar_flag.is(':checked') && val != '' && !isNaN(val)) {
+        paid = paid.plus(Big(val));
+      }
+
       check = this.$('input#mo-payment');
       val = this.$('input.mo-amount').val();
       if(check.is(':checked') && val != '' && !isNaN(val)) {
@@ -471,6 +483,9 @@ jQuery(function($) {
                                                     check_number: this.$('input.check-number').val(),
                                                     check_post_dated: this.$('input#post-dated').is(':checked'),
                                                     check_date: this.$('input#cash-date').val(),
+                                                    ar_used: this.$('input#ar-payment').is(':checked'),
+                                                    ar_val: this.$('input.ar-amount').val(),
+                                                    term_limit: this.term_limit,
                                                     rma_credit_used: this.$('input#rma-payment').is(':checked'),
                                                     rma_credit: this.$('input#rma-amount').val(),
                                                     mo: this.$('input#mo-payment').is(':checked'),
