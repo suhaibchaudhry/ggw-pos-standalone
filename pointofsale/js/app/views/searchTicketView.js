@@ -282,11 +282,19 @@ jQuery(function($) {
 		},
 		rma_process_credit_return: function(e) {
 			e.preventDefault();
-			this.rma_process_debounced(true);
+			if(this.ticket.get('productCount') > 0) {
+				this.rma_process_debounced(true);
+			} else {
+				alert("Cannot process an empty RMA ticket.");
+			}
 		},
 		rma_process_cash_return: function(e) {
 			e.preventDefault();
-			this.rma_process_debounced(false);
+			if(this.ticket.get('productCount') > 0) {
+				this.rma_process_debounced(false);
+			} else {
+				alert("Cannot process an empty RMA ticket.");
+			}
 		},
 		rma_process: function(credit_return) {
 			var ticket = this.ticket;
