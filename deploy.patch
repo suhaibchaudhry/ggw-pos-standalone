@@ -1,0 +1,27 @@
+diff --git a/pointofsale/js/app/init.js b/pointofsale/js/app/init.js
+index 04753b3..25591c9 100755
+--- a/pointofsale/js/app/init.js
++++ b/pointofsale/js/app/init.js
+@@ -13,7 +13,7 @@ jQuery(function($) {
+       checkoutActive = false;
+ 
+       //Employee Session Model
+-      this.employeeSession = new employeeSession({apiServer: 'http://test.general-goods.com:7000'});
++      this.employeeSession = new employeeSession({apiServer: 'http://www.general-goods.com'});
+       this.activeCustomer = new activeCustomer();
+       this.preloaderSemaphore = 0;
+ 
+diff --git a/pointofsale/main.html b/pointofsale/main.html
+index 18091cc..37a0af1 100644
+--- a/pointofsale/main.html
++++ b/pointofsale/main.html
+@@ -829,6 +829,6 @@
+ 		</div>
+ 	</script>
+ 
+-	<script type="text/template" id="register-id">A</script>
++	<script type="text/template" id="register-id">B</script>
+ </body>
+-</html>
+\ No newline at end of file
++</html>
