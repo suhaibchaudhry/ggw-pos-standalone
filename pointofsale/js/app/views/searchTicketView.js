@@ -250,7 +250,7 @@ jQuery(function($) {
 		},
 		resolveSearchRPC: function(url, uriEncodedQuery) {
 			//Preprocess URL: Strip forward slashes to make compatible with Drupal GET arg syntax, Decouple later via POST. 
-      		var newurl = url + '/' + encodeURIComponent(this.$searchbox.val().replace(/\//g, ''));
+      		var newurl = url + '?searchQuery=' + encodeURIComponent(this.$searchbox.val().replace(/\//g, ''));
       		return newurl;
     	},
 		render: function() {

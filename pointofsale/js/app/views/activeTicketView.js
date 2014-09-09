@@ -247,7 +247,7 @@ jQuery(function($) {
       if(barcode.test(keyword)) {
         return false;
       } else {
-        var newurl = url + '/' + encodeURIComponent(keyword);
+        var newurl = url + '?searchQuery=' + encodeURIComponent(keyword);
         return newurl;
       }
     },
