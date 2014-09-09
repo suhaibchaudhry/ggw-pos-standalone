@@ -213,7 +213,7 @@ jQuery(function($) {
       //Process barcode scan
       if(e.keyCode == 13) {
         var value = e.target.value.trim();
-        if(value.charAt(0) == '+') {
+        if(value.charAt(0) == '+' || value.charAt(0) == '.') {
           alert("Please insert a quantity: i.e. quantity+barcode");
         } else if(value != '') {
           this.scanItem(value);
