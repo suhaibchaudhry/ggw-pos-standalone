@@ -369,6 +369,9 @@ jQuery(function($) {
           }
       });
     },
+    findItemByBarcode: function(barcode) {
+      return this.get('productCollection').where({sku: barcode});
+    },
     removeItem: function(productId) {
       this.get('productCollection').remove(productId);
       //Remove Item from database

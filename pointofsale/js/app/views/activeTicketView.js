@@ -213,7 +213,13 @@ jQuery(function($) {
       //Process barcode scan
       if(e.keyCode == 13) {
         var value = e.target.value.trim();
-        if(value.charAt(0) == '+' || value.charAt(0) == '.') {
+
+        if(value.charAt(0) == '?') {
+          this.findItem(value);
+
+          this.$searchbox.typeahead('setQuery', '');
+          this.$clearSearch.hide();
+        } else if(value.charAt(0) == '+' || value.charAt(0) == '.') {
           alert("Please insert a quantity: i.e. quantity+barcode");
         } else if(value != '') {
           this.scanItem(value);
@@ -251,7 +257,28 @@ jQuery(function($) {
         return newurl;
       }
     },
+    findItem: function(input) {
+      var barcode = input.substr(1);
+      var products = this.ticket.findItemByBarcode(barcode);
+      var that = this;
 
+      if(products.length > 0) {
+        _.each(products, function(p, i) {
+          var item = this.$('.product-table').find('#line-item-'+p.get('id'));
+          if(i == 0) {
+            that.$ticketContainer.scrollTop(0);
+            that.$ticketContainer.scrollTop(item.position().top);
+          }
+
+          item.addClass('item-highlight');
+          setTimeout(function() {
+            item.removeClass('item-highlight');
+          }, 3000);
+        });
+      } else {
+        alert("No items could be found for barcode: "+barcode);
+      }
+    },
     //Render and demolish logic, and other view methods.
     scanItem: function(barcode) {
       var qty = 1;

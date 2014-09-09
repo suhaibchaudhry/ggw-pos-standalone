@@ -821,3 +821,8 @@ table.user-term-credits-table td:nth-child(2), table.user-term-credits-table td:
 .open-tickets-container table {
     width: 100%;
 }
+
+.item-highlight {
+    -webkit-transition: background-color 500ms ease-in;
+    background: #F0FFA1;
+}
