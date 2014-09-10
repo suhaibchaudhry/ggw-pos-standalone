@@ -223,7 +223,6 @@ jQuery(function($) {
                                                     check_date: this.$('input#cash-date').val(),
                                                     ar_used: this.$('input#ar-payment').is(':checked'),
                                                     ar_val: this.$('input.ar-amount').val(),
-                                                    stash_change: this.$('input.stash-change').val(),
                                                     term_limit: this.term_limit,
                                                     mo: this.$('input#mo-payment').is(':checked'),
                                                     mo_val: this.$('input.mo-amount').val(),
