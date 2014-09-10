@@ -462,7 +462,7 @@ jQuery(function($) {
                                                     check_date: this.$('input#cash-date').val(),
                                                     mo: this.$('input#mo-payment').is(':checked'),
                                                     mo_val: this.$('input.mo-amount').val(),
-                                                    stash_change: this.$('input.stash-change').val(),
+                                                    stash_change: this.$('input.stash-change').is(':checked'),
                                                     mo_ref: this.$('input.mo-ref').val(),
                                                     credit: this.$('input#cc-payment').is(':checked'),
                                                     credit_val: this.$('input.charge-amount').val(),
@@ -486,7 +486,7 @@ jQuery(function($) {
                 if(formattedChange == "0.00") {
                   alert("Payment Complete. No CHANGE.");
                 } else {
-                  if(that.$('input.stash-change').val()) {
+                  if(that.$('input.stash-change').is(':checked')) {
                     alert("Payment Complete. Please make NO CHANGE, Customer RMA was credited with amount: "+accounting.formatMoney(that.change_value));
                   } else {
                     alert("Payment Complete. Please make change for amount: "+accounting.formatMoney(that.change_value));
