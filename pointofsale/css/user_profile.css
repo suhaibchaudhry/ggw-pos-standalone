@@ -160,3 +160,38 @@ h3.content-profile-title {
 	background: #DDF4FE;
 	cursor: pointer;
 }
+/*Payments Legend*/
+div.settled-false {
+	background: #FAAFAF;	
+}
+
+div.settled-true {
+	background: #B6F8C3;
+}
+
+div.settled-exceeded {
+	background: #FF4040;
+}
+
+.legend {
+	margin: 20px 0 0;
+}
+
+.legend-item {
+	margin-right: 22px;
+	display: inline-block;
+}
+
+.legend-item .legend-box {
+	width: 30px;
+	height: 30px;
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0 8px 0 0;
+}
+
+.legend-item .legend-content {
+	display: inline-block;
+	vertical-align: middle;
+	font-weight: bold;
+}
