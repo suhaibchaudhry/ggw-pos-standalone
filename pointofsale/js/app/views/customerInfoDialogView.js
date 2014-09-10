@@ -486,7 +486,11 @@ jQuery(function($) {
                 if(formattedChange == "0.00") {
                   alert("Payment Complete. No CHANGE.");
                 } else {
-                  alert("Payment Complete. Please make change for amount: "+accounting.formatMoney(that.change_value));
+                  if(that.$('input.stash-change').val()) {
+                    alert("Payment Complete. Please make NO CHANGE, Customer RMA was credited with amount: "+accounting.formatMoney(that.change_value));
+                  } else {
+                    alert("Payment Complete. Please make change for amount: "+accounting.formatMoney(that.change_value));
+                  }
                 }
                 that.printReceipt(res);
               } else {
