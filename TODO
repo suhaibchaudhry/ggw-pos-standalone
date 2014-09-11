@@ -317,7 +317,7 @@ add product search on product reports
 
 #don't close empty rma ticket
 
-Signiture on bottom of invoice
+#Signiture on bottom of invoice
 
 invoice
 
@@ -340,3 +340,5 @@ customer create new account from website
 
 #?BARCODE previous products.
 #   |_ scroll search
+
+#Weight sort printed invoice
