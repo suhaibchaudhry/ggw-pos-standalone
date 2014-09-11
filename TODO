@@ -1,0 +1,342 @@
+#print quote ticket
+    -> Watermark
+    -> remove info on dpc
+# turn quote to open
+# manager override open
+    #get manager permission
+    #remember value of split.
+#ghost tickets register association
+#dp button check
+mobile invoice order
+  qty packaging title price and then barcode
+home button tablet mobile orders
+Checkbox to mark item as sent
+#Allow price modify and override on closed tickets.
+#Fix extended price on split
+
+#z-index9999 tabs - not on webkit using z transform for odl chrome.
+
+#clear quote tickets - admin link
+
+link back and forth between tickets and show close price.
+
+#date on pos
+
+#only admin can change customer on a ticket.
+
+#Available credit:
+#Amount due:
+
+#White screen on customer
+
+show invoice id on invoice
+
+#fix search cache
+
+check remote invoice template
+
+#check tobacco id update on import.
+
+calculator
+#0 is unlimited limit
+#only available credit if credit limit set.
+
+#Prompt confirmation on delete
+
+Minimum 4 character limit on barcode scan.
+
+Add default 00 at the end of cash.
+
+Do not hide change behind the success dialog on checkout.
+
+Split CC
+
+catch bad scans by catching enter.
+
+#rma accept anything
+
+#accept payments
+   |_Swipe
+
+add pos payment reciept -> 
+
+Clear quote ticket from customer on dialog. and show old invoices.
+
+register id on invoice
+
+header or footer and every page or page number
+
+post dated check on back end payment
+
+
+#LOGIN GO TO LAST TICKET
+
+#RMA quanity increase.
+
+#return everything
+#take payments
+#throttle or debounce checkout
+
+#Add manager override.
+
+#Show message when extra payments.
+
+customers payment report.
+
+Only payment.
+
+Purchase history for customer. Ticket number, date, total
+
+Customer statement: Invoice, $ amount, AR.
+
+Minimum of 3 barcode.
+
+make font bigger.
+
+Prompt on user change.
+
+Invocie style...
+
+DP invoices no tax.
+
+Tokens Expire
+
+return everything
+take payments
+throttle or debounce checkouts
+
+RMA SCAN
+
+Show mobile orders to users on website,...and add history to mmobile last 5
+
+Do not reshow items on rma.
+
+RMA OLD PRICE
+
+Invoice number and page number on every page.
+
+ERROR on continue on customer info.
+
+Layout out on manager ovverride danish.
+
+RMA checkout 0 value ticket id.
+
+closed ticket change out
+return search by name
+
+#create new rma ticket if user not same on current rma ticket
+#rma tab
+rma search
+rma manager override
+rma price tests
+
+#disallow 0 payouts and change check.
+
+#create blank rma ticket.
+
+Add rma item.
+
+Ask password floor agent on never purchased items.
+
+
+password on rma unlock.
+
+bigger font invoice and mobile orders.
+
+Show payments and rma credit ar on invoices.
+
+Summary of line counts on bottom invoice. Show total line count.
+
+#Take out available credit...
+#Redeem credit checkouts...RMA CREDIT on sales report
+#RMA process once
+#RMA...print differently and minus...and quote
+#By default 0, cap when theres a cap...
+
+
+#Avoid checking out empty tickets.
+
+RMA remove never purchased options, Authorize open and rma unlock, take out process after 1 use, Dialog to call manager if item doesn't scan on rma.
+
+#Break payments daily reports
+AR payments on invoice and rma usage.
+
+#-Header every page.
+
+#Fix outstanding total, without RMA
+
+#Adjust settlement flag on table in production.
+
+Lock down with iptables
+
+Search on ticket dialogs with exit button.*
+
+#Add back office page for tracking orders that have changed from thier original closing price.
+
+
+Invoice:
+   AR on bottom of invoice and on sales report.
+   Signature.
+   Payment summary show check # on customer bar. -> also on ticket in back office
+   Payment summary on close.
+   Keep 0.00 and 0 on checkout.
+   #Customer payment cache.
+   Make page for changed invoices to reflect 924.
+
+#Use RMA on checkout
+#-Swipe on credits.
+
+Put ticket date on backend
+
+Admin only change open tickets.
+
+Dialog
+  Open Ticket
+  Quote Ticket
+  Previously Open tickets
+  go to RMA
+  go to Make Payments
+  X
+
+#Do not open previous ticket anymore, only open quote ticket previous and reset date.
+-Header on everypage.
+
+Remove more button for 1-2-3 on website catalog, replace with pagination.
+
+Customer: Ask shipping address (auto populated), box count, case count, and shipping cost.
+
+Wasi
+-Closed RMA ticket has button to open connected open ticket for customer.
+-Up key history, and last item line.***
+-Ask asad about refund of wrong card payments.
+     |_Connect back refund -> admin only
+
+Show last line item for reference on pos above price in yellow.
+
+Abid
+-Lock ticket on other register open
+-Signature on invoice
+-Previous and ending balance on invoice.***
+
+CC REFUND
+
+Add missing reports and balance on payment history.
+
+Show rma cashout as option on sales report.
+
+Add limit to RMA credits swipe, don't do remaining.
+
+#Add button to do cash return on rma. Subtract from sales.
+
+#Ticket type, and rma credit and debit.
+
+Make the total negative on rma invoice.
+
+-Negative on printed rma.
+
+#Line total on bottom that compares invoice total with pyaments.
+#Add column for ticket type
+
+Print RMA in and out on reciept
+
+Clear only on daterange.
+
+Customer activity report, sum tax amounts and payment previous banalance and show active accounts using transaction.
+
+Show mobile orders on customer for users to the re-order table. Change order to add to current order.
+
+Favorites list in the order it was scanned in.
+
+Click on products to get price history.
+
+Turn on spinning again on product add.
+
+#Use rma on payments and swipe.
+   |_Also use rma on AR checkout.
+
+#Pos payments show total amount paid on reciepets. Have a way to access receipts later.
+#Calculate ticket total before rma process to avoid inconsistent tickets made faster than update total.
+
+#demolish rma buttons. Manager authorize on rma instead of admin.
+
+#Begining ending balance on invoice.
+
+#Closeout checkout dialog on disconnect.
+
+Remove credit checkout on DP.
+
+#Fix transaction count.
+
+#Show NO CHANGE on cash checkout.
+
+#Show payment details on payment receipt.
+
+#Clear button missing and cancel.
+
+#Move invoice total
+
+--------------------------------
+
+#Packing and desc elipsis on invoice.
+
+#Average profit margin.
+
+#Ending balance missing aparantly.
+
+Add cron on pos to remove prints.
+
+Rma on payments
+...and minus on credit memo
+
+Product reports by individual product sets, categories, customer.
+
+Show payment history and product cost on products.
+
+Previous orders on mobile.
+
+Add reorder button on website order.
+
+#Switch invoice on website to pos invoice
+
+#Group last line with last box on invoice
+
+#Show account summary on invoice in same group as the last category to avoid splitting to next page.
+
+Starting balance on top
+
+/Group video of shopping with the ticket.
+
+paid unpaid
+payment method each payment
+Edit settlement
+
+4000
+check - 2271
+
+add product search on product reports
+
+#don't close empty rma ticket
+
+Signiture on bottom of invoice
+
+invoice
+
+customer create new account from website
+
+#Remove dl fromm invoice
+#   |_ \s*(T|t)?(X|x)?(D|d)(L|l).{0,3}(\d+|[^a-zA-Z]$)
+#   |_ \#\d+
+#   |_ DL: 
+
+#Search &amp; sign in customer search
+
+#prevent empty rma checkout
+
+#compartmentalize invoice subtotal with last box
+
+#Error scan fix with . key
+
+#Add column active on customers
+
+#?BARCODE previous products.
+   |_ scroll search
