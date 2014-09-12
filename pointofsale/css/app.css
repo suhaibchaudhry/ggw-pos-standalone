@@ -616,7 +616,7 @@ a.print-ticket:hover {
     text-align: right;
 }
 
-.tabs label.cash-paid-label, .tabs .credit-total-due span.label, .tabs .change-remaining-label, .return-summary span.label, .term-credit-checkout .credit-summary span.label, .tabs div.total-remaining-label, .tabs div.cc-swipe-field span.label, .credit-payments-checkout .checkout-label, .history .checkout-label, .rma-credits .label, .rma-remaining-label {
+.tabs label.cash-paid-label, .tabs .credit-total-due span.label, .tabs .change-remaining-label, .return-summary span.label, .term-credit-checkout .credit-summary span.label, .tabs div.total-remaining-label, .tabs div.cc-swipe-field span.label, .credit-payments-checkout .checkout-label, .history .checkout-label, .print-history .checkout-label, .rma-credits .label, .rma-remaining-label {
     display: inline-block;
     margin: 20px 0 10px;
     color: #5980BB;
@@ -627,7 +627,7 @@ a.print-ticket:hover {
 .tabs .history .credit-usages {
     display: none;
 }
-.tabs .history .checkout-label {
+.tabs .history .checkout-label, .tabs .print-history .checkout-label {
     cursor: pointer;
 }
 .tabs .credit-total-due, .tabs .available-credit-label {

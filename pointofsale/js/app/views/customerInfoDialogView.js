@@ -30,7 +30,8 @@ jQuery(function($) {
       "change #cc-payment-split": 'changeModeToSwipe',
       "click a.reload-payments": 'reloadPaymentHistory',
       "click ul.pager a": 'changeSettlementsPage',
-      "click .history .checkout-label": 'toggleUsageDisplay'
+      "click .history .checkout-label": 'toggleUsageDisplay',
+      "click div.print-history": 'printPaymentHistory'
     },
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
@@ -125,6 +126,13 @@ jQuery(function($) {
       });
 
       this.requests.push(request);
+    },
+    printPaymentHistory: function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      var win = window.open(this.employeeSession.get('apiServer')+'/user/'+this.customer_uid+'/term-credits/payment-history/pos?token='+sessionStorage.token, '_blank');
+      win.focus();
     },
     reloadPaymentHistory: function(e) {
       e.preventDefault();
