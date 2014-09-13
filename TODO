@@ -342,3 +342,5 @@ customer create new account from website
 #   |_ scroll search
 
 #Weight sort printed invoice
+
+#implement natural invoice flow - ex: #3034
