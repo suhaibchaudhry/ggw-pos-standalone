@@ -31,7 +31,9 @@ jQuery(function($) {
       "click a.reload-payments": 'reloadPaymentHistory',
       "click ul.pager a": 'changeSettlementsPage',
       "click .history .checkout-label": 'toggleUsageDisplay',
-      "click div.print-history": 'printPaymentHistory'
+      "click div.payment-history-print": 'printPaymentHistory',
+      "click div.invoice-history-print": 'printInvoiceHistory',
+      "click div.customer-statement-print": 'printCustomerHistory'
     },
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
@@ -132,6 +134,20 @@ jQuery(function($) {
       e.stopPropagation();
 
       var win = window.open(this.employeeSession.get('apiServer')+'/user/'+this.customer_uid+'/term-credits/payment-history/pos?token='+sessionStorage.token, '_blank');
+      win.focus();
+    },
+    printInvoiceHistory: function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      var win = window.open(this.employeeSession.get('apiServer')+'/user/'+this.customer_uid+'/term-credits/invoice-history/pos?token='+sessionStorage.token, '_blank');
+      win.focus();
+    },
+    printCustomerHistory: function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      var win = window.open(this.employeeSession.get('apiServer')+'/user/'+this.customer_uid+'/term-credits/customer-statement/pos?token='+sessionStorage.token, '_blank');
       win.focus();
     },
     reloadPaymentHistory: function(e) {
