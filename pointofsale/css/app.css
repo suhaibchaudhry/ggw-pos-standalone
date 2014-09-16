@@ -826,3 +826,9 @@ table.user-term-credits-table td:nth-child(2), table.user-term-credits-table td:
     -webkit-transition: background-color 500ms ease-in;
     background: #F0FFA1;
 }
+
+.print-history {
+    float: left;
+    text-align: center;
+    width: 33%;
+}
