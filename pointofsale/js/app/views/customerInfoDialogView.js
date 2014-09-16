@@ -33,7 +33,8 @@ jQuery(function($) {
       "click .history .checkout-label": 'toggleUsageDisplay',
       "click div.payment-history-print": 'printPaymentHistory',
       "click div.invoice-history-print": 'printInvoiceHistory',
-      "click div.customer-statement-print": 'printCustomerHistory'
+      "click div.customer-statement-print": 'printCustomerHistory',
+      "click .history a": 'ignoreLinkClick'
     },
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
@@ -839,6 +840,10 @@ jQuery(function($) {
     },
     toggleUsageDisplay: function(e) {
       this.$('.history .credit-usages').slideToggle();
+    },
+    ignoreLinkClick: function(e) {
+      e.stopPropagation();
+      e.preventDefault();
     }
   });
 });
