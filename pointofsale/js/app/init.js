@@ -6,8 +6,11 @@ jQuery(function($) {
       "click a.quote-tickets-button": 'loadQuoteTickets',
       "click a.open-tickets-button": 'loadOpenTickets',
       "click a.closed-tickets-button": 'loadCloseTickets',
-      "click a.print-ticket": 'printTicket'
+      "click a.print-ticket": 'printTicket',
+      "click a.calculator-button": 'calculatorInitiate',
+      "click a.clear-calculator": 'clearCalculator'
     },
+    calculatorSkin: _.template($('#dash-calculator').html()),
   	initialize: function() {
       //Global checkout locking flag
       checkoutActive = false;
@@ -138,6 +141,16 @@ jQuery(function($) {
     loadCloseTickets: function(e) {
       this.invoiceDialog.display(true);
       this.invoiceDialog.invoiceDialogView.loadClosedInvoices(e);
+    },
+    calculatorInitiate: function(e) {
+      e.preventDefault();
+      $('.calcOverlay').html(this.calculatorSkin()).show();
+      $('.calcOverlay a.clear-calculator').on('click', _.bind(this.clearCalculator, this));
+      $('.calcOverlay iframe').focus();
+    },
+    clearCalculator: function(e) {
+      e.preventDefault();
+      $('.calcOverlay').empty().hide();
     }
   });
 
