@@ -233,8 +233,9 @@ jQuery(function($) {
         }
       }
 
-      if(e.keyCode == '38' && e.target.value == '') {
+      if(e.keyCode == '38' && e.target.value == '' && this.lastSuggestion != '') {
         this.$searchbox.typeahead('setQuery', this.lastSuggestion);
+        this.$clearSearch.show();
       }
     },
     //Event handlers for kinectic, to stop typeahead box interfering with drag scroll.
