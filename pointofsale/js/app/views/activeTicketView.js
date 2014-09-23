@@ -19,6 +19,7 @@ jQuery(function($) {
     rmaListHeading: _.template($('#return-line-item-list-heading').html()),
     rmaListTotal: _.template($('#return-line-item-total').html()),
     categoryBreakdownTemplate: _.template($('#category-breakdown-template').html()),
+    lastSuggestion: '',
 
     initialize: function(attributes, options) {
       this.employeeSession = attributes['employeeSession'];
@@ -208,10 +209,13 @@ jQuery(function($) {
         this.$clearSearch.hide();
       } else {
         this.$clearSearch.show();
+        if(e.keyCode != '37' && e.keyCode != '38' && e.keyCode != '39' && e.keyCode != '40') {
+          this.lastSuggestion = e.target.value;
+        }
       }
 
       //Process barcode scan
-      if(e.keyCode == 13) {
+      if(e.keyCode == '13') {
         var value = e.target.value.trim();
 
         if(value.charAt(0) == '?') {
@@ -227,6 +231,10 @@ jQuery(function($) {
           this.$searchbox.typeahead('setQuery', '');
           this.$clearSearch.hide();
         }
+      }
+
+      if(e.keyCode == '38' && e.target.value == '') {
+        this.$searchbox.typeahead('setQuery', this.lastSuggestion);
       }
     },
     //Event handlers for kinectic, to stop typeahead box interfering with drag scroll.
