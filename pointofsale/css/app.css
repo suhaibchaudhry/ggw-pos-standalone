@@ -866,3 +866,18 @@ a.clear-calculator {
 a.clear-calculator:hover {
     background: url(../images/delete_24.png) #fff;
 }
+
+a.exit-modal {
+    background: url(../images/delete-outline_24.png) no-repeat;
+    width: 48px;
+    height: 48px;
+    text-indent: -9999px;
+    display: block;
+    position: absolute;
+    right: 30px;
+    top: 6px;
+}
+
+a.exit-modal:hover {
+    background: url(../images/delete_24.png) no-repeat;
+}
