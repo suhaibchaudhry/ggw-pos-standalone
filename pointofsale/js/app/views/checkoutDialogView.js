@@ -4,7 +4,7 @@ jQuery(function($) {
     tagName: 'div',
     className: 'checkoutOverlay',
     events: {
-      "click a.ticket-checkout-continue": 'checkoutProcessDebounced',
+      "click a.ticket-checkout-continue": 'checkoutProcessDebouncedTrigger',
       "click a.ticket-checkout-cancel": 'closeCheckoutDialog',
       "click .info-menu-tabs a": 'changeTab',
       "keypress .cash-checkout input.cash-paid": 'cashInputValidate',
@@ -41,6 +41,10 @@ jQuery(function($) {
     creditSummaryTemplate: _.template($('#credit-summary-template').html()),
     ccCheckoutTemplate: _.template($('#credit-card-checkout-template').html()),
     fetchRegisterID: _.template($('#register-id').html()),
+    checkoutProcessDebouncedTrigger: function(e) {
+      e.preventDefault();
+      this.checkoutProcessDebounced(e);
+    },
     render: function() {
       var ticket = this.ticket;
       var totalRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId')});
@@ -87,7 +91,6 @@ jQuery(function($) {
       return this;
     },
     checkoutProcess: function(e) {
-      e.preventDefault();
       if(this.currentTab == 0) {
         this.cashCheckout(e);
       } else if(this.currentTab == 2) {

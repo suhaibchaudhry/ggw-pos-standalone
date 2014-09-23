@@ -4,7 +4,7 @@ jQuery(function($) {
     tagName: 'div',
     className: 'customerInfoOverlay',
     events: {
-      "click a.customer-info-continue": 'continueProcessDebounced',
+      "click a.customer-info-continue": 'continueProcessDebouncedTrigger',
       "click a.customer-info-cancel": 'closeCheckoutDialog',
       "click a.ticket-rma-return": 'ticket_rma_return',
       "click a.ticket-rma-empty": 'ticket_create_rma_empty',
@@ -61,6 +61,10 @@ jQuery(function($) {
     fetchRegisterID: _.template($('#register-id').html()),
     labelizeTemplate: _.template($('#labelize-data').html()),
     noPendingPaymentsMessage: _.template($('#no-pending-payments').html()),
+    continueProcessDebouncedTrigger: function(e) {
+      e.preventDefault();
+      this.continueProcessDebounced(e);
+    },
     loadUserProfile: function(uid, default_tab_flag) {
       var that = this;
       if(uid) {
