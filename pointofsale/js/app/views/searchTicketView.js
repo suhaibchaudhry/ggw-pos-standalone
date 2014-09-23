@@ -25,6 +25,8 @@ jQuery(function($) {
 			this.rma_process_debounced = _.debounce(this.rma_process, 2000, true);
 			var authCallback = _.bind(this.authorizedCallback, this);
 			this.authorizationModal = new authorizationModal({authorizedCallback: authCallback, employeeSession: attributes['employeeSession'], el: $('.unlockAuthorizationOverlay'), title: 'Admin Authorization'});
+			this.lastScannedItemDebounced = _.debounce(this.lastScannedItem, 500);
+			this.lastItemScanned = this.$('.last-scan-item');
 		},
 		setActiveTicket: function(activeTicketView) {
 			this.activeTicketView = activeTicketView;

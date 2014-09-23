@@ -97,7 +97,8 @@ jQuery(function($) {
     },
     //Backbone Event Handlers
     addItem: function(product) {
-      this.searchTicketView.lastScannedItem(product);
+      this.searchTicketView.lastItemScanned.empty();
+      this.searchTicketView.lastScannedItemDebounced(product);
       this.$ticketContainer.find('.product-table').append(this.lineItemTemplate(product.attributes));
       //if(product.get('retail')) {
       this.$('#line-item-'+product.get('id')+' .price').html(accounting.formatMoney(product.get('price')));
@@ -118,6 +119,7 @@ jQuery(function($) {
       this.$ticketContainer.find('#line-item-'+model.get('id')).remove();
     },
     clearTicket: function() {
+      this.searchTicketView.lastItemScanned.empty();
       this.$ticketContainer.get(0).innerHTML = '<div class="product-table">'+$("#ticket-line-item-heading").html()+'</div>';
       //this.$registerDisplay.find('.calculation').empty();
     },
