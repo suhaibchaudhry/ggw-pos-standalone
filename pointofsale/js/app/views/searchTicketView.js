@@ -363,7 +363,6 @@ jQuery(function($) {
 			this.$('.lock-indicator').hide();
 		},
 		lastScannedItem: function(product) {
-			console.log(product['attributes']);
 			this.$('.last-scan-item').html(this.lastScanItemTpl(product['attributes']));
 		}
 	});
