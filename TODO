@@ -167,7 +167,7 @@ RMA remove never purchased options, Authorize open and rma unlock, take out proc
 
 Lock down with iptables
 
-Search on ticket dialogs with exit button.*
+#Search on ticket dialogs with exit button.*
 
 #Add back office page for tracking orders that have changed from thier original closing price.
 
