@@ -214,7 +214,7 @@ Wasi
 #-X on dialogs
 #-First part of user search
 
-Show last line item for reference on pos above price in yellow.
+#Show last line item for reference on pos above price in yellow.
 
 Abid
 #-Lock ticket on other register open
