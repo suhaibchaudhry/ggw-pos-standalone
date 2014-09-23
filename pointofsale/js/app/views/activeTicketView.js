@@ -97,6 +97,7 @@ jQuery(function($) {
     },
     //Backbone Event Handlers
     addItem: function(product) {
+      this.searchTicketView.lastScannedItem(product);
       this.$ticketContainer.find('.product-table').append(this.lineItemTemplate(product.attributes));
       //if(product.get('retail')) {
       this.$('#line-item-'+product.get('id')+' .price').html(accounting.formatMoney(product.get('price')));

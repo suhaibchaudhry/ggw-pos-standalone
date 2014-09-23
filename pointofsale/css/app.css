@@ -881,3 +881,25 @@ a.exit-modal {
 a.exit-modal:hover {
     background: url(../images/delete_24.png) no-repeat;
 }
+
+.last-scan-item {
+    margin: 40px 0 0;
+}
+
+.line-scanned-item .image {
+    float: left;
+}
+
+.line-scanned-item .last-scanned-info {
+    font-size: 11px;
+    background: #757575;
+    color: #fff;
+    box-sizing: border-box;
+    padding: 5px 10px;
+    line-height: 18px;
+    font-weight: bold;
+}
+
+.line-scanned-item .last-scanned-info .packaging {
+    float: right;
+}

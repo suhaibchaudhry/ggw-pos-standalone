@@ -118,6 +118,7 @@
 	    		<div class="checkout"></div>
 	    		<div class="rma-process"></div>
 	    		<div class="ticket-search"></div>
+	    		<div class="last-scan-item"></div>
 	    		<div class="progress"></div>
 	    		<div class="lock-indicator">
 	    			<a class="lock-toggle" href="#">Unlock</a>
@@ -541,6 +542,17 @@
 				<span class="value"><%= remaining_qty %></span>
 			</div>
 			<div class="image"><img src="<%= thumbnail %>" alt="" width="35" height="35" /></div>
+		</div>
+	</script>
+
+	<script type="text/template" id="last-scan-item-template">
+		<div id="line-scanned-item-<%= id %>" class="line-scanned-item">
+			<div class="image"><img src="<%= image %>" alt="" width="200" /></div>
+			<div class="last-scanned-info">
+				<div class="name"><%= name %></div>
+				<div class="packaging"><%= packaging %></div>
+				<div class="price"><%= accounting.formatMoney(sell_price) %></div>
+			</div>
 		</div>
 	</script>
 

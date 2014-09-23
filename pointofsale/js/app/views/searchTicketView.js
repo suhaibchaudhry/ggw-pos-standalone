@@ -16,6 +16,8 @@ jQuery(function($) {
 		checkoutButtons: _.template($('#checkout-buttons').html()),
 		rmaButtons: _.template($('#rma-buttons').html()),
 		fetchRegisterID: _.template($('#register-id').html()),
+		lastScanItemTpl: _.template($('#last-scan-item-template').html()),
+
 		initialize: function(attributes, options) {
 			this.lockInterval = false;
 			this.employeeSession = attributes['employeeSession'];
@@ -355,7 +357,12 @@ jQuery(function($) {
 			this.$('.category-breakdown').empty();
 			this.$('.checkout').empty();
 			this.$('.rma-process').hide().empty();
+			this.$('.last-scan-item').empty();
 			this.$('.lock-indicator').hide();
+		},
+		lastScannedItem: function(product) {
+			console.log(product['attributes']);
+			this.$('.last-scan-item').html(this.lastScanItemTpl(product['attributes']));
 		}
 	});
 });
