@@ -8,7 +8,8 @@ jQuery(function($) {
       "click a.price-override-continue": "continueOverride",
       "click .price-override-settings .qty-split a.incr": "increaseQtySplit",
       "click .price-override-settings .qty-split a.decr": "decreaseQtySplit",
-      "click a.unlock-price-override": 'unlockPriceOverride'
+      "click a.unlock-price-override": 'unlockPriceOverride',
+      "click .price-override-tabs a": 'changeOverrideTab'
     },
     labelizeData: _.template($('#labelize-data').html()),
     priceOverrideSettings: _.template($('#price-override-settings-form').html()),
@@ -150,6 +151,24 @@ jQuery(function($) {
       }
       this.$('input.overriden-price').val(accounting.formatNumber(price, 2, "", "."));
       this.$('span.split-value').text(qty_split);
+    },
+    changeOverrideTab: function(e) {
+      e.preventDefault();
+      var settingsBlock = this.$('.price-override-settings');
+      var historyBlock = this.$('.price-override-history');
+      var chagePriceButton = this.$('.price-override-continue');
+
+      this.$('.price-override-tabs ul li.pure-menu-selected').removeClass('pure-menu-selected');
+      e.target.parentNode.className = 'pure-menu-selected';
+      if(e.target.className == 'split') {
+        settingsBlock.show();
+        historyBlock.hide();
+        chagePriceButton.show();
+      } else {
+        settingsBlock.hide();
+        historyBlock.show();
+        chagePriceButton.hide();
+      }
     }
   });
 });

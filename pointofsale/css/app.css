@@ -903,3 +903,11 @@ a.exit-modal:hover {
 .line-scanned-item .last-scanned-info .packaging {
     float: right;
 }
+
+.price-override-history {
+    display: none;
+}
+
+.managerPrice .bbm-modal__topbar {
+    margin-bottom: 8px;
+}
