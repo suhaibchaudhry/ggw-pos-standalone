@@ -136,6 +136,7 @@ jQuery(function($) {
 
     render: function() {
       this.$clock = this.$('.clock');
+      this.$('.wrapper').show();
 
       var view = this;
       view.$clock.text(view.fetchCurrentTime());
@@ -161,6 +162,7 @@ jQuery(function($) {
 
       clearInterval(this.clockIntervalId);
       this.$('.controls').empty();
+      this.$('.wrapper').hide();
 
       return this;
     },
