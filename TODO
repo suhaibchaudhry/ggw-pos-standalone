@@ -221,8 +221,6 @@ Abid
 #-Signature on invoice
 #-Previous and ending balance on invoice.***
 
-/CC REFUND
-
 #Add missing reports and balance on payment history.
 
 #Show rma cashout as option on sales report.
@@ -296,10 +294,6 @@ Add cron on pos to remove prints.
 
 Show payment history and product cost on products.
 
-Previous orders on mobile.
-
-Add reorder button on website order.
-
 #Switch invoice on website to pos invoice
 
 #Group last line with last box on invoice
@@ -348,3 +342,9 @@ customer create new account from website
 
 /Edit settlement
 /Group video of shopping with the ticket.
+/CC REFUND
+
+Previous orders on mobile.
+Add reorder button on website order.
+
+Add zoom on pos reports
