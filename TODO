@@ -18,8 +18,6 @@ Checkbox to mark item as sent
 
 #clear quote tickets - admin link
 
-link back and forth between tickets and show close price.
-
 #date on pos
 
 #only admin can change customer on a ticket.
@@ -28,8 +26,6 @@ link back and forth between tickets and show close price.
 #Amount due:
 
 #White screen on customer
-
-show invoice id on invoice
 
 #fix search cache
 
@@ -61,8 +57,6 @@ show invoice id on invoice
 #add pos payment reciept -> 
 
 #Clear quote ticket from customer on dialog. and show old invoices.
-
-register id on invoice
 
 #header or footer and every page or page number
 
@@ -97,15 +91,11 @@ register id on invoice
 
 #Invocie style...
 
-/Tokens Expire
-
 #return everything
 #take payments
 #throttle or debounce checkouts
 
 #RMA SCAN
-
-Show mobile orders to users on website,...and add history to mmobile last 5
 
 #Do not reshow items on rma.
 
@@ -114,8 +104,6 @@ Show mobile orders to users on website,...and add history to mmobile last 5
 #Invoice number and page number on every page.
 
 #ERROR on continue on customer info.
-
-Layout out on manager ovverride danish.
 
 #RMA checkout 0 value ticket id.
 
@@ -154,8 +142,6 @@ Layout out on manager ovverride danish.
 
 #Avoid checking out empty tickets.
 
-RMA remove never purchased options, Authorize open and rma unlock, take out process after 1 use, Dialog to call manager if item doesn't scan on rma.
-
 #Break payments daily reports
 #AR payments on invoice and rma usage.
 
@@ -164,8 +150,6 @@ RMA remove never purchased options, Authorize open and rma unlock, take out proc
 #Fix outstanding total, without RMA
 
 #Adjust settlement flag on table in production.
-
-Lock down with iptables
 
 #Search on ticket dialogs with exit button.*
 
@@ -197,15 +181,11 @@ Lock down with iptables
 #  X
 
 #Do not open previous ticket anymore, only open quote ticket previous and reset date.
--Header on everypage.
-
-Remove more button for 1-2-3 on website catalog, replace with pagination.
-
-Customer: Ask shipping address (auto populated), box count, case count, and shipping cost.
+/-Header on everypage.
 
 Wasi
 /-Closed RMA ticket has button to open connected open ticket for customer.
--Up key history, and last item line.***
+#-Up key history, and last item line.***
 /-Ask asad about refund of wrong card payments.
      |_Connect back refund -> admin only
 -Crash
@@ -233,24 +213,14 @@ Abid
 
 #Make the total negative on rma invoice.
 
--Negative on printed rma.
-
 #Line total on bottom that compares invoice total with pyaments.
 #Add column for ticket type
-
-Print RMA in and out on reciept
 
 #Clear only on daterange.
 
 #Customer activity report, sum tax amounts and payment previous banalance and show active accounts using transaction.
 
-Show mobile orders on customer for users to the re-order table. Change order to add to current order.
-
-Favorites list in the order it was scanned in.
-
-Click on products to get price history.
-
-Turn on spinning again on product add.
+#Click on products to get price history.
 
 #Use rma on payments and swipe.
    |_Also use rma on AR checkout.
@@ -263,8 +233,6 @@ Turn on spinning again on product add.
 #Begining ending balance on invoice.
 
 #Closeout checkout dialog on disconnect.
-
-Remove credit checkout on DP.
 
 #Fix transaction count.
 
@@ -284,15 +252,13 @@ Remove credit checkout on DP.
 
 #Ending balance missing aparantly.
 
-Add cron on pos to remove prints.
-
 #Rma on payments
 #...and minus on credit memo
 
 #Product reports by individual product sets, categories, customer.
    |_Customer Search
 
-Show payment history and product cost on products.
+#Show payment history on products.
 
 #Switch invoice on website to pos invoice
 
@@ -300,13 +266,8 @@ Show payment history and product cost on products.
 
 #Show account summary on invoice in same group as the last category to avoid splitting to next page.
 
-Starting balance on top
-
 #paid unpaid
 #payment method each payment
-
-4000
-check - 2271
 
 #add product search on product reports
 
@@ -315,8 +276,6 @@ check - 2271
 #Signiture on bottom of invoice
 
 #invoice
-
-customer create new account from website
 
 #Remove dl fromm invoice
 #   |_ \s*(T|t)?(X|x)?(D|d)(L|l).{0,3}(\d+|[^a-zA-Z]$)
@@ -340,15 +299,49 @@ customer create new account from website
 
 #implement natural invoice flow - ex: #3034
 
+#Add zoom on pos reports
+
 /Edit settlement
 /Group video of shopping with the ticket.
 /CC REFUND
+/Starting balance on top
+/Add cron on pos to remove prints.
+/RMA remove never purchased options, Authorize open and rma unlock, take out process after 1 use, Dialog to call manager if item doesn't scan on rma.
+/Lock down with iptables
+/Layout out on manager ovverride danish.
+/Tokens Expire
+/show invoice id on invoice
 
 Previous orders on mobile.
 Add reorder button on website order.
 
-Add zoom on pos reports
-
 Qty field
 
-Search on ticket fields
+Search on ticket dialog fields
+
+Show mobile orders on customer for users to the re-order table. Change order to add to current order.
+
+Favorites list in the order it was scanned in.
+
+customer create new account from website
+
+4000
+check - 2271
+
+Remove AR check on on DP checkout.
+
+Turn on spinning again on product add.
+
+Print RMA in and out on reciept
+
+-Negative on printed rma.
+
+Remove more button for 1-2-3 on website catalog, replace with pagination.
+
+Customer: Ask shipping address (auto populated), box count, case count, and shipping cost.
+
+Show mobile orders to users on website,...and add history to mmobile last 5
+
+link back and forth between tickets and show close price.
+
+register id on invoice
