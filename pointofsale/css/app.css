@@ -911,3 +911,31 @@ a.exit-modal:hover {
 .managerPrice .bbm-modal__topbar {
     margin-bottom: 8px;
 }
+
+.price-history-list {
+    display: table;
+    width: 100%;
+}
+
+.price-history-list .qty-split {
+    text-align: center;
+}
+
+.price-history-item:hover {
+    background: #DDF4FE;
+}
+
+.price-history-item div, .price-history-heading div {
+    display: table-cell;
+    padding: 10px 5px;
+}
+
+.price-history-item {
+    cursor: pointer;
+    display: table-row;
+}
+
+.price-history-heading {
+    display: table-row;
+    font-weight: bold;
+}

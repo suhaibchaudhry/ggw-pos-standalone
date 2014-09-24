@@ -195,16 +195,30 @@
 			    </ul>
 			</div>
 			<div class="price-override-settings"></div>
-			<div class="price-override-history">
-				<div class="message">No history was found for product.</div>
-				<div class="loader"></div>
-			</div>
+			<div class="price-override-history"></div>
 		</div>
 		<div class="bbm-modal__bottombar login-modal-bottombar">
 		<a href="#" class="unlock-price-override">Unlock</a>
 		<a href="#" class="pure-button pure-button-error price-override-cancel">Cancel</a>
 		<a href="#" class="pure-button pure-button-success price-override-continue">Change Price</a>
 		</div>
+	</script>
+
+	<script type="text/template" id="price-history-list-tpl">
+	 <div class="price-history-list">
+	 <div class="price-history-heading">
+	 		<div class="date">Last Purchase</div>
+	 		<div class="price">Price</div>
+	 		<div class="qty-split">Qty Split</div>
+	 </div>
+	 <% _.each(product, function(e) {
+	 	%><div class="price-history-item" data-price-raw="<%= e.price %>" data-qty-split-raw="<%= e.qty_split %>">
+	 		<div class="date"><%= e.price_date %></div>
+	 		<div class="price"><%= accounting.formatMoney(e.price) %></div>
+	 		<div class="qty-split"><%= e.qty_split %></div>
+	 	</div><%
+	 }); %>
+	 </div>
 	</script>
 
 	<script type="text/template" id="price-override-settings-form">

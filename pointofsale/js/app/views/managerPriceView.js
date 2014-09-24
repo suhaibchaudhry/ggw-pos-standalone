@@ -9,14 +9,17 @@ jQuery(function($) {
       "click .price-override-settings .qty-split a.incr": "increaseQtySplit",
       "click .price-override-settings .qty-split a.decr": "decreaseQtySplit",
       "click a.unlock-price-override": 'unlockPriceOverride',
-      "click .price-override-tabs a": 'changeOverrideTab'
+      "click .price-override-tabs a": 'changeOverrideTab',
+      "click .price-history-list .price-history-item": 'historyPriceOverride'
     },
     labelizeData: _.template($('#labelize-data').html()),
     priceOverrideSettings: _.template($('#price-override-settings-form').html()),
+    priceHistoryListTpl: _.template($('#price-history-list-tpl').html()),
     initialize: function(attributes, option) {
       this.employeeSession = attributes['employeeSession'];
       this.modal = attributes['modal'];
       this.ticket = attributes['ticket'];
+      this.activeCustomer = attributes['activeCustomer'];
       var authCallback = _.bind(this.authorizedCallback, this);
       this.authorizationModal = new authorizationModal({authorizedCallback: authCallback, employeeSession: attributes['employeeSession'], el: $('.managerAuthorizationOverlay'), title: 'Manager Authorization'});
     },
@@ -168,7 +171,47 @@ jQuery(function($) {
         settingsBlock.hide();
         historyBlock.show();
         chagePriceButton.hide();
+        this.loadPriceHistoy();
       }
+    },
+    loadPriceHistoy: function() {
+      var that = this;
+      var loadPriceHistory = JSON.stringify({
+        token: this.employeeSession.get("token"),
+        product_id: this.product.get('id'),
+        cuid: this.activeCustomer.get('id')
+      });
+
+      that.ticket.trigger('ticket:preloader', true);
+      $.ajax({
+        type: 'POST',
+        url: this.employeeSession.get('apiServer')+'/pos-api/ticket/product/price-history',
+        data: {request: loadPriceHistory},
+        timeout: 10000,
+        success: function(res, status, xhr) {
+          if(res.status) {
+            that.$('.price-override-history').html(that.priceHistoryListTpl(res));
+          } else {
+            that.$('.price-override-history').html(res.error);
+          }
+          //that.modal.display(false);
+          that.ticket.trigger('ticket:preloader', false);
+        },
+        error: function(xhr, errorType, error) {
+          //Something is wrong log user out.
+          that.modal.display(false);
+          that.employeeSession.set('login', false);
+          that.ticket.trigger('ticket:preloader', false);
+        }
+      });
+    },
+    historyPriceOverride: function(e) {
+      e.preventDefault();
+      var price = e.target.parentNode.getAttribute('data-price-raw');
+      var qty = e.target.parentNode.getAttribute('data-qty-split-raw');
+      this.$('input.overriden-price').val(price);
+      this.$('span.split-value').text(qty);
+      this.$('a.price-override-continue').trigger('click');
     }
   });
 });

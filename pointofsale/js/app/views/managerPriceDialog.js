@@ -10,7 +10,8 @@ jQuery(function($) {
         el: $('.managerPrice').get(0),
         employeeSession: attributes['employeeSession'],
         modal: this,
-        ticket: attributes['ticket']
+        ticket: attributes['ticket'],
+        activeCustomer: attributes['activeCustomer']
       });
     },
     beforeCancel: function() {
