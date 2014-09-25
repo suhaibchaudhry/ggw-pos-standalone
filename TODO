@@ -303,6 +303,8 @@ Abid
 
 #Remove AR check on on DP checkout.
 
+#-Negative on printed rma. - Have a different styling for RMA
+
 /Edit settlement
 /Group video of shopping with the ticket.
 /CC REFUND
@@ -333,8 +335,6 @@ check - 2271
 Turn on spinning again on product add.
 
 Print RMA in and out on reciept
-
--Negative on printed rma.
 
 Remove more button for 1-2-3 on website catalog, replace with pagination.
 
