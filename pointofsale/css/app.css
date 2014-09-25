@@ -939,3 +939,16 @@ a.exit-modal:hover {
     display: table-row;
     font-weight: bold;
 }
+
+.invoice-search {
+    padding: 8px;
+    width: 55%;
+}
+
+.search-button {
+    width: 12%;
+}
+
+.ticket-search-bar {
+    display: none;
+}

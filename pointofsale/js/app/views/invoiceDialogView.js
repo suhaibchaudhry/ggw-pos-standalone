@@ -10,6 +10,7 @@ jQuery(function($) {
       "click .invoice-quote-history a": 'loadQuoteInvoices',
       "click .invoice-open-history a": 'loadOpenInvoices',
       "click .invoice-closed-history a": 'loadClosedInvoices',
+      "click a.search-button": 'searchTicketInvoice',
       "click .invoice-history table.uc-order-history tbody tr": 'selectInvoice'
     },
     initialize: function(attributes, options) {
@@ -26,101 +27,64 @@ jQuery(function($) {
       e.preventDefault();
       this.modal.display(false);
     },
-    loadRecentInvoices: function(e) {
+    searchTicketInvoice: function(e) {
       e.preventDefault();
 
-      var recentInvoicesRequest = JSON.stringify({token: sessionStorage.token});
-      var that = this;
+      var search = this.$('input.invoice-search');
+      var query = search.val();
+      var recentInvoicesRequest = JSON.stringify({token: sessionStorage.token, searchQuery: query});
+      search.val('');
+
+      this.loadTicketListData('/pos-api/employee/recent-tickets', '', 'Recent Invoices', recentInvoicesRequest, '.invoice-recent-history');
+    },
+    loadRecentInvoices: function(e) {
+      e.preventDefault();
       var query = this.removeURLParameter(e.currentTarget.search, 'request');
+      var recentInvoicesRequest = JSON.stringify({token: sessionStorage.token});
 
-      this.$('.title').text('Recent Invoices');
-
-      $.ajax({
-        type: 'POST',
-        url: this.employeeSession.get('apiServer')+'/pos-api/employee/recent-tickets'+query,
-        data: {request: recentInvoicesRequest},
-        timeout: 15000,
-        success: function(res, status, xhr) {
-          if(res.status) {
-            that.$('.invoice-recent-history').html(res.content);
-          } else {
-            that.employeeSession.set('login', false);
-          }
-        },
-        error: function(xhr, errorType, error) {
-          that.employeeSession.set('login', false);
-        }
-      });
+      this.$('.ticket-search-bar').show();
+      this.loadTicketListData('/pos-api/employee/recent-tickets', query, 'Recent Invoices', recentInvoicesRequest, '.invoice-recent-history');
     },
     loadClosedInvoices: function(e) {
       e.preventDefault();
 
-      var recentInvoicesRequest = JSON.stringify({token: sessionStorage.token});
+      var closedInvoicesRequest = JSON.stringify({token: sessionStorage.token});
       var that = this;
       var query = this.removeURLParameter(e.currentTarget.search, 'request');
 
-      this.$('.title').text('Closed Invoices');
-
-      $.ajax({
-        type: 'POST',
-        url: this.employeeSession.get('apiServer')+'/pos-api/ticket/closed'+query,
-        data: {request: recentInvoicesRequest},
-        timeout: 15000,
-        success: function(res, status, xhr) {
-          if(res.status) {
-            that.$('.invoice-closed-history').html(res.content);
-          } else {
-            that.employeeSession.set('login', false);
-          }
-        },
-        error: function(xhr, errorType, error) {
-          that.employeeSession.set('login', false);
-        }
-      });
+      this.loadTicketListData('/pos-api/ticket/closed', query, 'Closed Invoices', closedInvoicesRequest, '.invoice-closed-history');
     },
     loadQuoteInvoices: function(e) {
       e.preventDefault();
 
-      var recentInvoicesRequest = JSON.stringify({token: sessionStorage.token});
+      var quoteInvoicesRequest = JSON.stringify({token: sessionStorage.token});
       var that = this;
       var query = this.removeURLParameter(e.currentTarget.search, 'request');
 
-      this.$('.title').text('RMA Tickets');
-
-      $.ajax({
-        type: 'POST',
-        url: this.employeeSession.get('apiServer')+'/pos-api/ticket/quote'+query,
-        data: {request: recentInvoicesRequest},
-        timeout: 15000,
-        success: function(res, status, xhr) {
-          if(res.status) {
-            that.$('.invoice-quote-history').html(res.content);
-          } else {
-            that.employeeSession.set('login', false);
-          }
-        },
-        error: function(xhr, errorType, error) {
-          that.employeeSession.set('login', false);
-        }
-      });
+      this.loadTicketListData('/pos-api/ticket/quote', query, 'RMA Tickets', quoteInvoicesRequest, '.invoice-quote-history');
     },
     loadOpenInvoices: function(e) {
       e.preventDefault();
 
-      var recentInvoicesRequest = JSON.stringify({token: sessionStorage.token});
+      var openInvoicesRequest = JSON.stringify({token: sessionStorage.token});
       var that = this;
       var query = this.removeURLParameter(e.currentTarget.search, 'request');
 
-      this.$('.title').text('Open Invoices');
+      this.loadTicketListData('/pos-api/ticket/open', query, 'Open Invoices', openInvoicesRequest, '.invoice-open-history');
+    },
+    loadTicketListData: function(rpc, query, title, requestObj, contentClass) {
+      var that = this;
+
+      this.$('.title').text(title);
 
       $.ajax({
         type: 'POST',
-        url: this.employeeSession.get('apiServer')+'/pos-api/ticket/open'+query,
-        data: {request: recentInvoicesRequest},
+        url: this.employeeSession.get('apiServer')+rpc+query,
+        data: {request: requestObj},
         timeout: 15000,
         success: function(res, status, xhr) {
           if(res.status) {
-            that.$('.invoice-open-history').html(res.content);
+            that.$(contentClass).html(res.content);
           } else {
             that.employeeSession.set('login', false);
           }
