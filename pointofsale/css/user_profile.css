@@ -84,6 +84,7 @@ h3.content-profile-title {
 .product-info-item span.value {
 	float: left;
 	width: 324px;
+	min-height: 28px;
 }
 
 .qty-split span.value {
