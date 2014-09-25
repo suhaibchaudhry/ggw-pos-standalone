@@ -223,7 +223,7 @@ Abid
 #Click on products to get price history.
 
 #Use rma on payments and swipe.
-   |_Also use rma on AR checkout.
+#   |_Also use rma on AR checkout.
 
 #Pos payments show total amount paid on reciepets. Have a way to access receipts later.
 #Calculate ticket total before rma process to avoid inconsistent tickets made faster than update total.
@@ -301,6 +301,8 @@ Abid
 
 #Add zoom on pos reports
 
+#Remove AR check on on DP checkout.
+
 /Edit settlement
 /Group video of shopping with the ticket.
 /CC REFUND
@@ -327,8 +329,6 @@ customer create new account from website
 
 4000
 check - 2271
-
-#Remove AR check on on DP checkout.
 
 Turn on spinning again on product add.
 
