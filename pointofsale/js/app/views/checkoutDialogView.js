@@ -148,6 +148,7 @@ jQuery(function($) {
       } else {
         this.$('.info-menu-tabs ul li.term-checkout').hide();
         this.$('.rma-credit-usage').hide();
+        this.$('.ar-credit-usage').hide();
         this.focusCash();
       }
     },
