@@ -331,7 +331,7 @@ jQuery(function($) {
         e.currentTarget.value = '';
       }
 
-      if((e.keyCode < 48 || e.keyCode > 57) /*|| (e.keyCode < 96 || e.keyCode > 105)*/ && e.keyCode != 46 && e.keyCode != 8 && e.keyCode != 190 /*&& e.keyCode != 110*/) {
+      if((e.keyCode < 48 || e.keyCode > 57) && (e.keyCode < 96 || e.keyCode > 105) && e.keyCode != 46 && e.keyCode != 8 && e.keyCode != 190 && e.keyCode != 110) {
         e.preventDefault();
       }
     },
@@ -408,7 +408,7 @@ jQuery(function($) {
       this.change_value = change;
       this.cash_paid = paid;
 
-      if((e.keyCode >= 48 && e.keyCode <= 57) /*|| (e.keyCode >= 96 && e.keyCode <= 105)*/ || e.keyCode == 190 /*|| e.keyCode == 110*/) {
+      if((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode == 190 || e.keyCode == 110) {
         var start = e.currentTarget.selectionStart,
         end = e.currentTarget.selectionEnd;
         e.currentTarget.value = accounting.formatNumber(e.currentTarget.value, 2, '');
