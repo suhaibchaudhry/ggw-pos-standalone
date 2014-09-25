@@ -305,6 +305,8 @@ Abid
 
 #-Negative on printed rma. - Have a different styling for RMA
 
+#Print RMA in and out on reciept
+
 /Edit settlement
 /Group video of shopping with the ticket.
 /CC REFUND
@@ -333,8 +335,6 @@ customer create new account from website
 check - 2271
 
 Turn on spinning again on product add.
-
-Print RMA in and out on reciept
 
 Remove more button for 1-2-3 on website catalog, replace with pagination.
 
