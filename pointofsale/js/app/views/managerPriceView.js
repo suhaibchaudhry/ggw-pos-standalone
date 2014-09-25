@@ -69,6 +69,12 @@ jQuery(function($) {
           this.$('.overriden-price').attr('disabled', true);
           this.$('a.unlock-price-override').show();
         }
+
+        if(this.activeCustomer.get('id')) {
+          this.$('.price-override-tabs').show();
+        } else {
+          this.$('.price-override-tabs').hide();
+        }
       }
     },
     cancelOverride: function(e) {
