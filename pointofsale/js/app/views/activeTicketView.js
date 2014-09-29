@@ -165,6 +165,7 @@ jQuery(function($) {
 
       if(status != 'pos_quote' || customer != 0) {
         this.ticket.createTicketOnServer(this.employeeSession.get('login'), true);
+        $('.customer-search input.tt-query').attr('disabled', false);
       }
     },
     activateScanFocus: function(e) {
