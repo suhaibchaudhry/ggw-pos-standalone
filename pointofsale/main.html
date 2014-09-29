@@ -209,12 +209,14 @@
 	 <div class="price-history-heading">
 	 		<div class="date">Purchase Date</div>
 	 		<div class="price">Price</div>
+	 		<div class="cost">Cost</div>
 	 		<div class="qty-split">Qty Split</div>
 	 </div>
 	 <% _.each(product, function(e) {
 	 	%><div class="price-history-item" data-price-raw="<%= e.price %>" data-qty-split-raw="<%= e.qty_split %>">
 	 		<div class="date"><%= e.price_date %></div>
 	 		<div class="price"><%= accounting.formatMoney(e.price) %></div>
+	 		<div class="cost"><%= accounting.formatMoney(e.cost) %></div>
 	 		<div class="qty-split"><%= e.qty_split %></div>
 	 	</div><%
 	 }); %>
