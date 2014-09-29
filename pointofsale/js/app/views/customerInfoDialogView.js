@@ -34,7 +34,8 @@ jQuery(function($) {
       "click div.payment-history-print": 'printPaymentHistory',
       "click div.invoice-history-print": 'printInvoiceHistory',
       "click div.customer-statement-print": 'printCustomerHistory',
-      "click .history a": 'ignoreLinkClick'
+      "click .history a": 'ignoreLinkClick',
+      "click a.block-current-customer": 'blockCustomerUid'
     },
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
@@ -191,6 +192,39 @@ jQuery(function($) {
           that.employeeSession.set('login', false);
         }
       });
+      this.requests.push(request);
+    },
+    blockCustomerUid: function(e) {
+      e.preventDefault();
+
+      var that = this;
+      var customer_uid = this.customer_uid;
+      var ticket = this.ticket;
+      var blockCustomerUidRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid});
+      ticket.trigger('ticket:preloader', true);
+      var request = $.ajax({
+        type: 'POST',
+        url: this.employeeSession.get('apiServer')+'/pos-api/customer/block',
+        data: {request: blockCustomerUidRequest},
+        timeout: 15000,
+        success: function(res, status, xhr) {
+          if(res.status) {
+            alert(res.message);
+          } else {
+            that.employeeSession.set('login', false);
+          }
+          that.modal.display(false);
+          ticket.trigger('ticket:preloader', false);
+        },
+        error: function(xhr, errorType, error) {
+          //Seems to be a forgivabale error, perhaps no need to logout.
+          //stop pre loader and logout user.
+          ticket.trigger('ticket:preloader', false);
+          that.employeeSession.set('login', false);
+          that.modal.display(false);
+        }
+      });
+
       this.requests.push(request);
     },
     changeSettlementsPage: function(e) {

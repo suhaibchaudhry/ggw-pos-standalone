@@ -952,3 +952,7 @@ a.exit-modal:hover {
 .ticket-search-bar {
     display: none;
 }
+
+.block-current-customer {
+    float: left;
+}
