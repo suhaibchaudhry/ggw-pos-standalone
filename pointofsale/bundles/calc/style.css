@@ -268,5 +268,6 @@ button::-moz-focus-inner {
 		filter: progid:dximagetransform.microsoft.gradient(enabled=false);
 	}
 
-
-
+.display-text {
+    zoom: .7;
+}
