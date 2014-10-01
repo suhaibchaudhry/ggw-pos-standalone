@@ -211,13 +211,16 @@
 	 		<div class="price">Price</div>
 	 		<div class="cost">Cost</div>
 	 		<div class="qty-split">Qty Split</div>
+	 		<div class="status">Status</div>
 	 </div>
 	 <% _.each(product, function(e) {
-	 	%><div class="price-history-item" data-price-raw="<%= e.price %>" data-qty-split-raw="<%= e.qty_split %>">
+	 	if(e.order_status=="pos_completed"){var status = 'Purchase'} else {var status = 'Return'};
+	 	%><div class="price-history-item status-<%= e.order_status %>" data-price-raw="<%= e.price %>" data-qty-split-raw="<%= e.qty_split %>">
 	 		<div class="date"><%= e.price_date %></div>
 	 		<div class="price"><%= accounting.formatMoney(e.price) %></div>
-	 		<div class="cost"><%= accounting.formatMoney(e.cost) %></div>
+	 		<div class="cost"><%= accounting.formatMoney(e.cost/e.qty_split) %></div>
 	 		<div class="qty-split"><%= e.qty_split %></div>
+	 		<div class="status"><%= status %></div>
 	 	</div><%
 	 }); %>
 	 </div>
