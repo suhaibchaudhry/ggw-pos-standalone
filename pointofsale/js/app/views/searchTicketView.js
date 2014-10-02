@@ -166,8 +166,11 @@ jQuery(function($) {
     		//$('.lock-indicator a.lock-toggle').show();
     	},
     	unlockTicket: function() {
-	    	//$('a.clear-customer').removeClass('forceHide');
-	    	//$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', false);
+    		if(this.employeeSession.get('admin')) {
+	    		$('a.clear-customer').removeClass('forceHide');
+	    		$('.customer-search input.tt-query, .item-search input.tt-query').attr('disabled', false);
+	    	}
+
 	    	$('.item-search input.tt-query').attr('disabled', false);
 	    	$('.activeTicket').removeClass('lockedTicket');
 	    	this.activeTicketView.ticket.set('locked', false);
