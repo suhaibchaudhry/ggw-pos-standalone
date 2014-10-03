@@ -359,6 +359,7 @@ Quick price edit in row
  sale price
 
 Inventory page
+	|_ Inventory log of all products
 
 Sale date range, and selling price.
  Change price on mobile pos and website.
@@ -372,7 +373,7 @@ User list long and scroll
 
 RMA usage amount on printed page
 
-Fix MSA line issues
+#Fix MSA line issues
 
 Sign up on front
 
@@ -394,8 +395,8 @@ Option to change customer on payment
 
 #Unlock closed customer as admin.
 
-Inventory log of all proucts
-
 Invoice show who created.
 
 DL and liscence and customer name
+
+Add another customer report with all users
