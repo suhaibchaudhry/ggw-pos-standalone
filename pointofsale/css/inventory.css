@@ -1,0 +1,21 @@
+.inventory-manager .viewport-main {
+	margin: 0 auto;
+}
+
+div.header div.right.region {
+	width: 400px;
+}
+
+div.header div.right.region h2 {
+	position: absolute;
+	bottom: 0;
+}
+
+div.content.region {
+	clear: both;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 3px;
+	top: 100px;
+}
