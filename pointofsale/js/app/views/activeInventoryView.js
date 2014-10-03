@@ -1,6 +1,10 @@
 jQuery(function($) {
 	activeInventoryView = Backbone.View.extend({
     	tagName: 'div',
+    	events: {
+    		"keyup .item-search input.search": 'searchKeyUp',
+    		"click .item-search a.clear-search": 'clearProductSearch'
+    	},
     	searchBoxTemplate: _.template($('#item-search-components').html()),
     	initialize: function(attributes, options) {
     		this.render();
@@ -37,6 +41,45 @@ jQuery(function($) {
 	        var newurl = url + '?searchQuery=' + encodeURIComponent(keyword);
 	        return newurl;
 	      }
+	    },
+	    searchKeyUp: function(e) {
+	      if(e.target.value == '') {
+	        this.$clearSearch.hide();
+	      } else {
+	        this.$clearSearch.show();
+	        if(e.keyCode != '37' && e.keyCode != '38' && e.keyCode != '39' && e.keyCode != '40') {
+	          this.lastSuggestion = e.target.value;
+	        }
+	      }
+
+	      //Process barcode scan
+	      if(e.keyCode == '13') {
+	        var value = e.target.value.trim();
+
+	        if(value.charAt(0) == '?') {
+	          this.findItem(value);
+
+	          this.$searchbox.typeahead('setQuery', '');
+	          this.$clearSearch.hide();
+	        } else if(value.charAt(0) == '+' || value.charAt(0) == '.') {
+	          alert("Please insert a quantity: i.e. quantity+barcode");
+	        } else if(value != '') {
+	          this.scanItem(value);
+
+	          this.$searchbox.typeahead('setQuery', '');
+	          this.$clearSearch.hide();
+	        }
+	      }
+
+	      if(e.keyCode == '38' && e.target.value == '' && this.lastSuggestion != '') {
+	        this.$searchbox.typeahead('setQuery', this.lastSuggestion);
+	        this.$clearSearch.show();
+	      }
+	    },
+	    clearProductSearch: function(e) {
+	      e.preventDefault();
+	      this.$searchbox.typeahead('setQuery', '');
+	      this.$clearSearch.hide();
 	    }
 	});
 });
