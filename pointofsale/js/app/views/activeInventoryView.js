@@ -28,7 +28,7 @@ jQuery(function($) {
 	        valueKey: 'id',
 	        name: 'search-items',
 	        remote: {
-	            url: this.api_server+'/pos-api/products/'+this.tmp_token,
+	            url: this.api_server+'/pos-api/products/'+this.token,
 	            replace: _.bind(this.resolveSearchRPC, this)
 	        },
 	        limit: 48,
@@ -96,7 +96,7 @@ jQuery(function($) {
 
 	      $.ajax({
 	        type: 'POST',
-	        url: this.employeeSession.get('apiServer')+'/pos-api/product-scan',
+	        url: this.api_server+'/pos-api/product-scan',
 	        data: {request: scanRequest},
 	        timeout: 10000,
 	        success: function(res, status, xhr) {
