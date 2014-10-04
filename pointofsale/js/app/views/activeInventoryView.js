@@ -161,7 +161,7 @@ jQuery(function($) {
 	        timeout: 10000,
 	        success: function(res, status, xhr) {
 	          console.log(res);
-	          that.$('.ticket-container').append(that.inventoryOutterTemplate({nid: nid}));
+	          that.$('.ticket-container').append(that.inventoryOutterTemplate({nid: nid, product: res.product}));
 	        },
 	        error: function(xhr, errorType, error) {
 	          alert("Could not connect to the network. Please check connection.");

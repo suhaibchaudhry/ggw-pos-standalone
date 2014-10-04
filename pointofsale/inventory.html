@@ -69,15 +69,22 @@
 	</script>
 
 	<script type="text/template" id="inventory-line-item-heading">
-		<div class="product-table" id="line-item-<%= nid %>"><div class="line-item-heading">
-			<div class="sku">Barcode</div>
-			<div class="name">Product</div>
-			<div class="packaging">Pckg.</div>
-			<div class="price">Price</div>
-			<div class="extprice">Ext. Price</div>
-			<div class="image"></div>
-			<div class="qty">Qty.</div>
-		</div></div>
+		<div class="product-table" id="line-item-title-<%= nid %>">
+			<div class="line-item-heading">
+				<div class="image"></div>
+				<div class="sku">Barcode</div>
+				<div class="packaging">Pckg.</div>
+				<div class="name">Product</div>
+				<div class="price">Price</div>
+			</div>
+			<div id="line-item-<%= product.id %>" data-id="<%= product.id %>" class="line-item">
+				<div class="image"><img src="<%= product.image %>" alt="" /></div>
+				<div class="sku"><%= product.sku %></div>
+				<div class="packaging"><%= product.packaging %></div>
+				<div class="name"><%= product.name %></div>
+				<div class="price"><%= accounting.formatMoney(product.sell_price) %></div>
+			</div>
+		</div>
 	</script>
 </body>
 </html>
