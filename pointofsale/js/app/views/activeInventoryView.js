@@ -8,6 +8,7 @@ jQuery(function($) {
     		"typeahead:selected .item-search": 'itemSelected'
     	},
     	searchBoxTemplate: _.template($('#item-search-components').html()),
+    	inventoryOutterTemplate: _.template($('#inventory-line-item-heading').html()),
     	initialize: function(attributes, options) {
     		this.api_server = "http://test.general-goods.com:7000";
     		this.token = "c5f30936df73a4614c83690deb972d483372ce7f";
@@ -88,7 +89,7 @@ jQuery(function($) {
 	      var that = this;
 
 	      var scanRequest = JSON.stringify({
-	        token: this.employeeSession.get("token"),
+	        token: this.token,
 	        barcode: barcode
 	      });
 
@@ -101,7 +102,7 @@ jQuery(function($) {
 	        timeout: 10000,
 	        success: function(res, status, xhr) {
 	          if(res.scan) {
-	          	console.log(scan);
+	          	console.log(res.product);
 	          } else {
 	            //$.jGrowl("Could not find item with barcode: <strong>"+barcode+"</strong>");
 	            alert("Could not find item with barcode: "+barcode);
@@ -118,6 +119,7 @@ jQuery(function($) {
 	      var inventoryRequest = JSON.stringify({
 	        token: this.token
 	      });
+	      var that = this;
 
 	      $.ajax({
 	        type: 'POST',
@@ -125,17 +127,46 @@ jQuery(function($) {
 	        data: {request: inventoryRequest},
 	        timeout: 10000,
 	        success: function(res, status, xhr) {
-	          console.log(res);
+	          that.loadInventoryList(res.inventory_list);
 	        },
 	        error: function(xhr, errorType, error) {
 	          alert("Could not connect to the network. Please check connection.");
 	        }
 	      });
 	    },
+	    loadInventoryList: function(inventoryList) {
+	    	var that = this;
+	    	$.each(inventoryList, function(key, e) {
+	    		that.getItemByNid(key);
+	    		console.log(key);
+	    	});
+	    },
 	    itemSelected: function(e, datum) {
 	    	this.$searchbox.typeahead('setQuery', '');
 	    	this.$clearSearch.hide();
 	    	console.log(datum);
+	    },
+	    getItemByNid: function(nid) {
+	      var itemRequestByNid = JSON.stringify({
+	        token: this.token,
+	        product_nid: nid
+	      });
+
+	      var that = this;
+
+	      $.ajax({
+	        type: 'POST',
+	        url: this.api_server+'/pos-api/inventory/lookup',
+	        data: {request: itemRequestByNid},
+	        timeout: 10000,
+	        success: function(res, status, xhr) {
+	          console.log(res);
+	          that.$('.ticket-container').append(that.inventoryOutterTemplate({nid: nid}));
+	        },
+	        error: function(xhr, errorType, error) {
+	          alert("Could not connect to the network. Please check connection.");
+	        }
+	      });
 	    }
 	});
 });
