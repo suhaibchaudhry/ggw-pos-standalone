@@ -1,4 +1,5 @@
 jQuery(function($) {
+
 	activeInventoryView = Backbone.View.extend({
     	tagName: 'div',
     	events: {
@@ -9,11 +10,11 @@ jQuery(function($) {
     	searchBoxTemplate: _.template($('#item-search-components').html()),
     	initialize: function(attributes, options) {
     		this.api_server = "http://test.general-goods.com:7000";
-    		this.tmp_token = "c5f30936df73a4614c83690deb972d483372ce7f";
+    		this.token = "c5f30936df73a4614c83690deb972d483372ce7f";
 
     		this.render();
     		this.focusSearch();
-    		this.$el.on('click', _.bind(this.focusSearch, this));
+    		$('body').on('click', _.bind(this.focusSearch, this));
     	},
     	focusSearch: function() {
     		this.$el.find('input.search').focus();
@@ -86,11 +87,36 @@ jQuery(function($) {
 	      var qty = 1;
 	      var that = this;
 
+	      var scanRequest = JSON.stringify({
+	        token: this.employeeSession.get("token"),
+	        barcode: barcode
+	      });
+
+	      var ticket = this;
+
+	      $.ajax({
+	        type: 'POST',
+	        url: this.employeeSession.get('apiServer')+'/pos-api/product-scan',
+	        data: {request: scanRequest},
+	        timeout: 10000,
+	        success: function(res, status, xhr) {
+	          if(res.scan) {
+	          	console.log(scan);
+	          } else {
+	            //$.jGrowl("Could not find item with barcode: <strong>"+barcode+"</strong>");
+	            alert("Could not find item with barcode: "+barcode);
+	          }
+	        },
+	        error: function(xhr, errorType, error) {
+	          alert("Could not connect to the network. Please check connection.");
+	        }
+	      });
+
 	      this.$searchbox.typeahead('setQuery', '');
 	    },
 	    loadInventoryEntries: function() {
 	      var inventoryRequest = JSON.stringify({
-	        token: this.tmp_token
+	        token: this.token
 	      });
 
 	      $.ajax({
