@@ -3,7 +3,8 @@ jQuery(function($) {
     	tagName: 'div',
     	events: {
     		"keyup .item-search input.search": 'searchKeyUp',
-    		"click .item-search a.clear-search": 'clearProductSearch'
+    		"click .item-search a.clear-search": 'clearProductSearch',
+    		"typeahead:selected .item-search": 'itemSelected'
     	},
     	searchBoxTemplate: _.template($('#item-search-components').html()),
     	initialize: function(attributes, options) {
@@ -11,6 +12,11 @@ jQuery(function($) {
     		this.tmp_token = "c5f30936df73a4614c83690deb972d483372ce7f";
 
     		this.render();
+    		this.focusSearch();
+    		this.$el.on('click', _.bind(this.focusSearch, this));
+    	},
+    	focusSearch: function() {
+    		this.$el.find('input.search').focus();
     	},
     	render: function() {
 	      this.$('.item-search').append(this.searchBoxTemplate());
@@ -79,6 +85,8 @@ jQuery(function($) {
 	    scanItem: function(barcode) {
 	      var qty = 1;
 	      var that = this;
+
+	      this.$searchbox.typeahead('setQuery', '');
 	    },
 	    loadInventoryEntries: function() {
 	      var inventoryRequest = JSON.stringify({
@@ -97,6 +105,11 @@ jQuery(function($) {
 	          alert("Could not connect to the network. Please check connection.");
 	        }
 	      });
+	    },
+	    itemSelected: function(e, datum) {
+	    	this.$searchbox.typeahead('setQuery', '');
+	    	this.$clearSearch.hide();
+	    	console.log(datum);
 	    }
 	});
 });
