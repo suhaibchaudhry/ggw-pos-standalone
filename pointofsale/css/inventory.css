@@ -32,6 +32,7 @@ div.header div.right.region h2 {
 .line-item-title .line-item .image {
 	background-size: contain;
 	height: 120px;
+	width: 120px;
 	background-repeat: no-repeat;
 	background-position: center;
 }
