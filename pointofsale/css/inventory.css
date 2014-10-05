@@ -29,16 +29,39 @@ div.header div.right.region h2 {
 	letter-spacing: 6px;
 }
 
-.line-item .image {
-	width: 200px;
+.line-item-title .line-item .image {
+	background-size: contain;
+	height: 120px;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 
-.line-item .sku, .line-item .packaging {
+.line-item-title .line-item .sku, .line-item-heading .line-item .packaging {
 	width: 210px;
 }
 
-.line-item .price {
+.line-item-title .line-item .price {
 	text-align: center;
 	cursor: pointer;
 	width: 160px;
+}
+
+.line-item-heading .price {
+	text-align: center;
+}
+
+.item-update-log {
+	width: 100%;
+}
+.line-item-log {
+	font-size: .8em;
+	margin: 10px 0;
+}
+.inventory-item {
+	margin: 18px;
+	border: 1px solid #ccc;
+}
+
+.product-table .line-item:hover { 
+	background: #fff;
 }

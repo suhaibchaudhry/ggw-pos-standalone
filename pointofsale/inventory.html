@@ -69,20 +69,42 @@
 	</script>
 
 	<script type="text/template" id="inventory-line-item-heading">
-		<div class="product-table" id="line-item-title-<%= nid %>">
-			<div class="line-item-heading">
-				<div class="image"></div>
-				<div class="sku">Barcode</div>
-				<div class="packaging">Pckg.</div>
-				<div class="name">Product</div>
-				<div class="price">Price</div>
+		<div class="inventory-item" id="inventory-item-id-<%= nid %>">
+			<div class="product-table line-item-title" id="line-item-title-<%= nid %>">
+				<div class="line-item-heading">
+					<div class="image"></div>
+					<div class="sku">Barcode</div>
+					<div class="packaging">Pckg.</div>
+					<div class="name">Product</div>
+					<div class="price">Price</div>
+				</div>
+				<div id="line-item-<%= product.id %>" data-id="<%= product.id %>" class="line-item">
+					<div class="image" style="background-image: url(<%= product.image %>);"></div>
+					<div class="sku"><%= product.sku %></div>
+					<div class="packaging"><%= product.packaging %></div>
+					<div class="name"><%= product.name %></div>
+					<div class="price"><%= accounting.formatMoney(product.sell_price) %></div>
+				</div>
 			</div>
-			<div id="line-item-<%= product.id %>" data-id="<%= product.id %>" class="line-item">
-				<div class="image"><img src="<%= product.image %>" alt="" /></div>
-				<div class="sku"><%= product.sku %></div>
-				<div class="packaging"><%= product.packaging %></div>
-				<div class="name"><%= product.name %></div>
-				<div class="price"><%= accounting.formatMoney(product.sell_price) %></div>
+			<div class="product-table line-item-log" id="line-item-log-<%= nid %>">
+				<div class="line-item-heading">
+					<div class="name">Quantity Purchased</div>
+					<div class="name">Vendor</div>
+					<div class="name">Purchase Unit</div>
+					<div class="name">Date</div>
+					<div class="name">Reset</div>
+					<div class="name">Qty After</div>
+				</div>
+				<% _.each(log_events, function(log_event) { %>
+					<div id="line-item-<%= product.id %>" data-id="<%= product.id %>" class="line-item">
+						<div class="name"><%= log_event[0] %></div>
+						<div class="name"><%= log_event[1] %></div>
+						<div class="name"><%= log_event[2] %></div>
+						<div class="name"><%= log_event[3] %></div>
+						<div class="name"><%= log_event[4] %></div>
+						<div class="name"><%= log_event[6] %></div>
+					</div>
+				<% }); %>
 			</div>
 		</div>
 	</script>

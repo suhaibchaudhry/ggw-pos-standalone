@@ -137,8 +137,9 @@ jQuery(function($) {
 	    loadInventoryList: function(inventoryList) {
 	    	var that = this;
 	    	$.each(inventoryList, function(key, e) {
-	    		that.getItemByNid(key);
+	    		that.getItemByNid(key, e);
 	    		console.log(key);
+	    		console.log(e);
 	    	});
 	    },
 	    itemSelected: function(e, datum) {
@@ -146,7 +147,7 @@ jQuery(function($) {
 	    	this.$clearSearch.hide();
 	    	console.log(datum);
 	    },
-	    getItemByNid: function(nid) {
+	    getItemByNid: function(nid, log_events) {
 	      var itemRequestByNid = JSON.stringify({
 	        token: this.token,
 	        product_nid: nid
@@ -161,7 +162,7 @@ jQuery(function($) {
 	        timeout: 10000,
 	        success: function(res, status, xhr) {
 	          console.log(res);
-	          that.$('.ticket-container').append(that.inventoryOutterTemplate({nid: nid, product: res.product}));
+	          that.$('.ticket-container').append(that.inventoryOutterTemplate({nid: nid, product: res.product, log_events: log_events}));
 	        },
 	        error: function(xhr, errorType, error) {
 	          alert("Could not connect to the network. Please check connection.");
