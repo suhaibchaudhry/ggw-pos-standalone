@@ -13,6 +13,9 @@ jQuery(function($) {
     		this.api_server = "http://test.general-goods.com:7000";
     		this.token = "c5f30936df73a4614c83690deb972d483372ce7f";
 
+    		this.modifyStockDialog = new modifyStockDialog({}, {api_server: this.api_server, token: this.token});
+    		this.modifyStockDialog.openDialog();
+
     		this.render();
     		this.focusSearch();
     		$('body').on('click', _.bind(this.focusSearch, this));

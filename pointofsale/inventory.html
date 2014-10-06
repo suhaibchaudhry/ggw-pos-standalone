@@ -28,12 +28,15 @@
 	<script type="text/javascript" src="js/vendor/backbone-min.js"></script>
 	<script type="text/javascript" src="js/vendor/backbone.modal.js"></script>
 	<script type="text/javascript" src="js/app/views/activeInventoryView.js"></script>
+	<script type="text/javascript" src="js/app/views/modifyStockDialog.js"></script>
+	<script type="text/javascript" src="js/app/views/modifyStockView.js"></script>
 
 	<script type="text/javascript" src="js/app/init_inventory.js"></script>
 
 	<title>Inventory Manager</title>
 </head>
 <body>
+	<div class="modifyProductStock dialogOverlay"></div>
 	<div class="loaderOverlay dialogOverlay"><a href="#" class="refresh"></a></div>
 
 	<div class="app-wrap inventory-manager">
@@ -106,6 +109,19 @@
 					</div>
 				<% }); %>
 			</div>
+		</div>
+	</script>
+
+	<script type="text/template" id="modify-stock-dialog">
+		<div class="bbm-modal__topbar">
+			<h3 class="bbm-modal__title title">Add/Reset Stock</h3>
+		</div>
+		<div class="bbm-modal__section">
+			<div class="price-override-settings"></div>
+			<div class="price-override-history"></div>
+		</div>
+		<div class="bbm-modal__bottombar login-modal-bottombar">
+		<a href="#" class="pure-button pure-button-error price-override-cancel">Cancel</a>
 		</div>
 	</script>
 </body>
