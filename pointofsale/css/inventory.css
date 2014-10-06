@@ -60,9 +60,13 @@ div.header div.right.region h2 {
 }
 .inventory-item {
 	margin: 18px;
-	border: 1px solid #ccc;
+	border: 2px solid #91C9FF;
 }
 
 .product-table .line-item:hover { 
 	background: #fff;
+}
+
+.line-item-log .name {
+	border-bottom: 1px solid #000;
 }
