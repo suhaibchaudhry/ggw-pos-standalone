@@ -10,8 +10,8 @@ jQuery(function($) {
     	searchBoxTemplate: _.template($('#item-search-components').html()),
     	inventoryOutterTemplate: _.template($('#inventory-line-item-heading').html()),
     	initialize: function(attributes, options) {
-    		this.api_server = "http://test.general-goods.com:7000";
-    		this.token = "c5f30936df73a4614c83690deb972d483372ce7f";
+    		this.api_server = "http://www.general-goods.com";
+    		this.token = "683a98e819262d860ca46934a20c92e5b9c39938";
 
     		this.modifyStockDialog = new modifyStockDialog({}, {api_server: this.api_server, token: this.token});
 
