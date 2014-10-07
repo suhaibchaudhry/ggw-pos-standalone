@@ -1,9 +1,13 @@
 jQuery(function($) {
   var applicationFrame = Backbone.View.extend({
   	tagName: 'div',
-    /*events: {
-
-    },*/
+    events: {
+      'click .exit-app': 'closeApp'
+    },
+    closeApp: function(e) {
+      e.preventDefault();
+      window.close();
+    },
   	initialize: function() {
       this.activeInventoryRegion = new activeInventoryView({
         appFrame: this,

@@ -5,12 +5,7 @@ jQuery(function($) {
     	events: {
     		"keyup .item-search input.search": 'searchKeyUp',
     		"click .item-search a.clear-search": 'clearProductSearch',
-    		"typeahead:selected .item-search": 'itemSelected',
-    		"click a.exit-app": 'closeApp'
-    	},
-    	closeApp: function(e) {
-    		e.preventDefault();
-    		window.close();
+    		"typeahead:selected .item-search": 'itemSelected'
     	},
     	searchBoxTemplate: _.template($('#item-search-components').html()),
     	inventoryOutterTemplate: _.template($('#inventory-line-item-heading').html()),
@@ -145,8 +140,6 @@ jQuery(function($) {
 	    	var that = this;
 	    	$.each(inventoryList, function(key, e) {
 	    		that.getItemByNid(key, e);
-	    		console.log(key);
-	    		console.log(e);
 	    	});
 	    },
 	    itemSelected: function(e, datum) {
@@ -168,7 +161,6 @@ jQuery(function($) {
 	        data: {request: itemRequestByNid},
 	        timeout: 10000,
 	        success: function(res, status, xhr) {
-	          console.log(res);
 	          that.$('.ticket-container').append(that.inventoryOutterTemplate({nid: nid, product: res.product, log_events: log_events}));
 	        },
 	        error: function(xhr, errorType, error) {
