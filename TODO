@@ -422,3 +422,7 @@ Enter percentages for markup.
 Product Group, change price together.
 
 Customer activity report show all customers.
+
+Customer search on product.
+   |_Carton Barcode
+   |_Customer on top

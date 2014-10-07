@@ -11,6 +11,10 @@ jQuery(function($) {
         modal: this
       });
 
+      //$('.modifyProductStock').on('click', function(e) {
+      //  e.preventDefault();
+      //});
+
       this.token = options['token'];
       this.api_server = options['api_server'];
     },
@@ -44,12 +48,55 @@ jQuery(function($) {
           if(res.status) {
             that.display(true);
             $('.modifyProductStock .add-to-stock-form').html(res.form_markup);
+            that.productNid = false;
+            if(productNid) {
+              that.productNid = productNid;
+            }
+            $('.modifyProductStock .add-to-stock-form').on("submit", _.bind(that.submitStockForm, that));
           }
         },
         error: function(xhr, errorType, error) {
           alert("Could not connect to the network. Please check connection.");
         }
       });
+    },
+    submitStockForm: function(e) {
+      e.preventDefault();
+      var vendor = $('#edit-vendor').val();
+      var quantity = $('#edit-quantity-purchased').val();
+      var unit_cost = $('#edit-unit-cost').val();
+      var stock_comment = $('#edit-stock-comment').val();
+      var reset = $('#edit-reset').val();
+
+      if(this.productNid && quantity && unit_cost) {
+        var that = this;
+        var inventoryPopulateRequest = JSON.stringify({
+          token: this.token,
+          product_nid: this.productNid,
+          quantity_purchased: quantity,
+          vendor: vendor,
+          unit_cost: unit_cost,
+          stock_comment: stock_comment,
+          reset: reset
+        });
+
+        $.ajax({
+          type: 'POST',
+          url: this.api_server+'/pos-api/inventory/add-stock',
+          data: {request: inventoryPopulateRequest},
+          timeout: 10000,
+          success: function(res, status, xhr) {
+            if(res.status) {
+              window.location.reload();
+            }
+          },
+          error: function(xhr, errorType, error) {
+            alert("Could not connect to the network. Please check connection.");
+          }
+        });
+      } else {
+        alert("Please make sure to set unit cost and quanity.");
+      }
     }
   });
 });

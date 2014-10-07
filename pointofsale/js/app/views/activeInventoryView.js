@@ -17,7 +17,7 @@ jQuery(function($) {
 
     		this.render();
     		this.focusSearch();
-    		$('body').on('click', _.bind(this.focusSearch, this));
+    		$('.app-wrap').on('click', _.bind(this.focusSearch, this));
     	},
     	focusSearch: function() {
     		this.$el.find('input.search').focus();
