@@ -27,6 +27,7 @@ jQuery(function($) {
 			this.authorizationModal = new authorizationModal({authorizedCallback: authCallback, employeeSession: attributes['employeeSession'], el: $('.unlockAuthorizationOverlay'), title: 'Admin Authorization'});
 			this.lastScannedItemDebounced = _.debounce(this.lastScannedItem, 500);
 			this.lastItemScanned = this.$('.last-scan-item');
+			Mousetrap.bind('ctrl+shift+i', _.bind(this.inventoryCatch, this));
 		},
 		setActiveTicket: function(activeTicketView) {
 			this.activeTicketView = activeTicketView;
@@ -367,6 +368,12 @@ jQuery(function($) {
 		},
 		lastScannedItem: function(product) {
 			this.$('.last-scan-item').html(this.lastScanItemTpl(product['attributes']));
+		},
+		inventoryCatch: function() {
+			window.open(
+			  'inventory.html',
+			  '_blank'
+			);
 		}
 	});
 });
