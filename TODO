@@ -426,3 +426,13 @@ Customer activity report show all customers.
 Customer search on product.
    |_Carton Barcode
    |_Customer on top
+
+Send item to print tag queue on product edit page and in row price edit.
+
+Product name on dialog and barcode....and packaging.
+
+Customer on each log item on inventory.
+
+Show more button on dialog not on main page on inventory page.
+
+Try to fix first scan on restart failure with trim.
