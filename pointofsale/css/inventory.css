@@ -70,3 +70,15 @@ div.header div.right.region h2 {
 .line-item-log .name {
 	border-bottom: 1px solid #000;
 }
+
+.modifyProductStock .bbm-modal {
+	max-width: 860px;
+}
+
+.add-to-stock-form table {
+	width: 100%;
+}
+
+.add-to-stock-form tr td {
+	text-align: center;
+}

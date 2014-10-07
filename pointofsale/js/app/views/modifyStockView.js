@@ -16,9 +16,6 @@ jQuery(function($) {
     render: function() {
       return this;
     },
-    openDialog: function(e) {
-      this.display(true);
-    },
     cancelOverride: function(e) {
       e.preventDefault();
       this.modal.display(false);

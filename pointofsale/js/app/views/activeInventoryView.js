@@ -14,7 +14,6 @@ jQuery(function($) {
     		this.token = "c5f30936df73a4614c83690deb972d483372ce7f";
 
     		this.modifyStockDialog = new modifyStockDialog({}, {api_server: this.api_server, token: this.token});
-    		this.modifyStockDialog.openDialog();
 
     		this.render();
     		this.focusSearch();
@@ -105,7 +104,7 @@ jQuery(function($) {
 	        timeout: 10000,
 	        success: function(res, status, xhr) {
 	          if(res.scan) {
-	          	console.log(res.product);
+	          	that.modifyStockDialog.openDialog(res.product.id);
 	          } else {
 	            //$.jGrowl("Could not find item with barcode: <strong>"+barcode+"</strong>");
 	            alert("Could not find item with barcode: "+barcode);
@@ -148,7 +147,7 @@ jQuery(function($) {
 	    itemSelected: function(e, datum) {
 	    	this.$searchbox.typeahead('setQuery', '');
 	    	this.$clearSearch.hide();
-	    	console.log(datum);
+	    	this.modifyStockDialog.openDialog(datum['id']);
 	    },
 	    getItemByNid: function(nid, log_events) {
 	      var itemRequestByNid = JSON.stringify({

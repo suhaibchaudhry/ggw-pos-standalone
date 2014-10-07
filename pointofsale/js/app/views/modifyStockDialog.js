@@ -10,6 +10,9 @@ jQuery(function($) {
         token: options['token'],
         modal: this
       });
+
+      this.token = options['token'];
+      this.api_server = options['api_server'];
     },
     beforeCancel: function() {
       return false;
@@ -25,8 +28,28 @@ jQuery(function($) {
         });
       }
     },
-    openDialog: function(flag) {
-      this.display(true);
+    openDialog: function(productNid) {
+      var that = this;
+      var inventoryRequest = JSON.stringify({
+        token: this.token,
+        product_nid: productNid
+      });
+
+      $.ajax({
+        type: 'POST',
+        url: this.api_server+'/pos-api/inventory/get-form',
+        data: {request: inventoryRequest},
+        timeout: 10000,
+        success: function(res, status, xhr) {
+          if(res.status) {
+            that.display(true);
+            $('.modifyProductStock .add-to-stock-form').html(res.form_markup);
+          }
+        },
+        error: function(xhr, errorType, error) {
+          alert("Could not connect to the network. Please check connection.");
+        }
+      });
     }
   });
 });
