@@ -82,3 +82,16 @@ div.header div.right.region h2 {
 .add-to-stock-form tr td {
 	text-align: center;
 }
+a.exit-app {
+	position: absolute;
+	right: 11px;
+	z-index: 1;
+	width: 48px;
+	height: 48px;
+	background: url(../images/delete-outline_24.png);
+	text-indent: -9999px;
+}
+
+a.exit-app:hover {
+	background: url(../images/delete_24.png);
+}

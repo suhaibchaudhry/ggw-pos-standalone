@@ -5,7 +5,12 @@ jQuery(function($) {
     	events: {
     		"keyup .item-search input.search": 'searchKeyUp',
     		"click .item-search a.clear-search": 'clearProductSearch',
-    		"typeahead:selected .item-search": 'itemSelected'
+    		"typeahead:selected .item-search": 'itemSelected',
+    		"click a.exit-app": 'closeApp'
+    	},
+    	closeApp: function(e) {
+    		e.preventDefault();
+    		window.close();
     	},
     	searchBoxTemplate: _.template($('#item-search-components').html()),
     	inventoryOutterTemplate: _.template($('#inventory-line-item-heading').html()),
