@@ -305,7 +305,7 @@ jQuery(function($) {
 
       var scanRequest = JSON.stringify({
         token: this.employeeSession.get("token"),
-        barcode: barcode
+        barcode: $.trim(barcode)
       });
 
       var ticket = this;
