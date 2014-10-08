@@ -5,13 +5,14 @@ jQuery(function($) {
     	events: {
     		"keyup .item-search input.search": 'searchKeyUp',
     		"click .item-search a.clear-search": 'clearProductSearch',
-    		"typeahead:selected .item-search": 'itemSelected'
+    		"typeahead:selected .item-search": 'itemSelected',
+    		"click .inventory-item": 'inventoryItemSelected'
     	},
     	searchBoxTemplate: _.template($('#item-search-components').html()),
     	inventoryOutterTemplate: _.template($('#inventory-line-item-heading').html()),
     	initialize: function(attributes, options) {
-    		this.api_server = "http://www.general-goods.com";
-    		this.token = "683a98e819262d860ca46934a20c92e5b9c39938";
+    		this.api_server = "http://test.general-goods.com:7000";
+    		this.token = "c5f30936df73a4614c83690deb972d483372ce7f";
 
     		this.modifyStockDialog = new modifyStockDialog({}, {api_server: this.api_server, token: this.token});
 
@@ -92,7 +93,7 @@ jQuery(function($) {
 
 	      var scanRequest = JSON.stringify({
 	        token: this.token,
-	        barcode: barcode
+	        barcode: $.trim(barcode)
 	      });
 
 	      var ticket = this;
@@ -104,7 +105,7 @@ jQuery(function($) {
 	        timeout: 10000,
 	        success: function(res, status, xhr) {
 	          if(res.scan) {
-	          	that.modifyStockDialog.openDialog(res.product.id);
+	          	that.modifyStockDialog.openDialog(res.product.id, res.product.name, res.product.packaging, res.product.thumbnail);
 	          } else {
 	            //$.jGrowl("Could not find item with barcode: <strong>"+barcode+"</strong>");
 	            alert("Could not find item with barcode: "+barcode);
@@ -145,7 +146,11 @@ jQuery(function($) {
 	    itemSelected: function(e, datum) {
 	    	this.$searchbox.typeahead('setQuery', '');
 	    	this.$clearSearch.hide();
-	    	this.modifyStockDialog.openDialog(datum['id']);
+	    	console.log(datum);
+	    	this.modifyStockDialog.openDialog(datum['id'], datum['name'], datum['packaging'], datum['thumbnail']);
+	    },
+	    inventoryItemSelected: function(e) {
+	    	this.modifyStockDialog.openDialog(e.currentTarget.dataset.productNid, e.currentTarget.dataset.productName, e.currentTarget.dataset.productPackaging, e.currentTarget.dataset.productImage);
 	    },
 	    getItemByNid: function(nid, log_events) {
 	      var itemRequestByNid = JSON.stringify({

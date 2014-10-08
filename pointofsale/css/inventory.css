@@ -95,3 +95,13 @@ a.exit-app {
 a.exit-app:hover {
 	background: url(../images/delete_24.png);
 }
+
+.inventory-item {
+	cursor: pointer;
+}
+
+.modifyProductStock .thumb {
+	position: absolute;
+	right: 12px;
+	top: 10px;
+}

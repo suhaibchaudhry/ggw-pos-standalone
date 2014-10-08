@@ -32,8 +32,9 @@ jQuery(function($) {
         });
       }
     },
-    openDialog: function(productNid) {
+    openDialog: function(productNid, name, packaging, image) {
       var that = this;
+
       var inventoryRequest = JSON.stringify({
         token: this.token,
         product_nid: productNid
@@ -48,6 +49,7 @@ jQuery(function($) {
           if(res.status) {
             that.display(true);
             $('.modifyProductStock .add-to-stock-form').html(res.form_markup);
+            $('.modifyProductStock h3.title').html('<div class="title">'+name+'  ...  '+packaging+'</div><div class="thumb"><img src="'+image+'" alt="" /></div>');
             that.productNid = false;
             if(productNid) {
               that.productNid = productNid;
