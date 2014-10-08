@@ -105,3 +105,30 @@ a.exit-app:hover {
 	right: 12px;
 	top: 10px;
 }
+
+#edit-quantity-purchased-wrapper {
+	float: left;
+	margin: 0 0 10px;
+}
+
+#edit-unit-cost-wrapper {
+	float: right;
+}
+
+#edit-stock-comment-wrapper {
+	clear: both;
+}
+
+#edit-stock-comment {
+	float: left;
+	margin: 0 42px 0 0;
+}
+
+#edit-stock-comment-wrapper label {
+	float: left;
+	margin: 0 40px 0 0;
+}
+
+#edit-reset-wrapper {
+	clear: both;
+}
