@@ -11,8 +11,10 @@ jQuery(function($) {
     	searchBoxTemplate: _.template($('#item-search-components').html()),
     	inventoryOutterTemplate: _.template($('#inventory-line-item-heading').html()),
     	initialize: function(attributes, options) {
-    		this.api_server = "http://test.general-goods.com:7000";
-    		this.token = "c5f30936df73a4614c83690deb972d483372ce7f";
+    		var data = JSON.parse(decodeURIComponent(this.getUrlVars()['data']));
+
+    		this.api_server = data.api_server;
+    		this.token = data.token;
 
     		this.modifyStockDialog = new modifyStockDialog({}, {api_server: this.api_server, token: this.token});
 
@@ -20,6 +22,14 @@ jQuery(function($) {
     		this.focusSearch();
     		$('.app-wrap').on('click', _.bind(this.focusSearch, this));
     	},
+    	getUrlVars: function() {
+		    var vars = {};
+		    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
+		        vars[key] = value;
+		    });
+
+		    return vars;
+		},
     	focusSearch: function() {
     		this.$el.find('input.search').focus();
     	},
