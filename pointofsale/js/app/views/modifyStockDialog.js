@@ -66,9 +66,9 @@ jQuery(function($) {
       var quantity = $('#edit-quantity-purchased').val();
       var unit_cost = $('#edit-unit-cost').val();
       var stock_comment = $('#edit-stock-comment').val();
-      var reset = $('#edit-reset').val();
+      var reset = $('#edit-reset').is(':checked');
 
-      if(this.productNid && quantity && unit_cost) {
+      if(this.productNid && quantity) {
         var that = this;
         var inventoryPopulateRequest = JSON.stringify({
           token: this.token,
