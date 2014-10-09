@@ -436,3 +436,7 @@ Customer on each log item on inventory.
 Show more button on dialog not on main page on inventory page.
 
 #Try to fix first scan on restart failure with trim.  -- Check and confirm
+
+Red diactivated items on backend list.
+
+Customer Account, Name, product name and carton barcode search
