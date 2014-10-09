@@ -962,3 +962,6 @@ a.exit-modal:hover {
 .price-history-list .status-pos_completed {
     color: #078E18;
 }
+.dialogOverlay .bbm-modal {
+    position: relative;
+}
