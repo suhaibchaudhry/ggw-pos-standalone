@@ -444,3 +444,5 @@ Customer Account, Name, product name and carton barcode search
 Ticket log, who opened it on each ticket.
    |_Who closed the ticket on invoice and what register
    |_Who closed ticket on backend
+
+#Line item jumbling
