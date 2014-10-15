@@ -307,7 +307,8 @@ Abid
 
 #Print RMA in and out on reciept
 
-/Edit settlement
+/Edit settlement - temporarily editable
+   |_Option to change customer on payment** (admin only forever or next 10 days)
 /Group video of shopping with the ticket.
 /CC REFUND
 /Starting balance on top
@@ -318,94 +319,98 @@ Abid
 /Tokens Expire
 /show invoice id on invoice
 
-Previous orders on mobile.
-Add reorder button on website order.
+Previous orders on mobile - and invoice and mobile order reorder, and add those to cart.
+Add reorder button on website order. add invoices.
+   |_Show mobile orders on customer for users to the re-order table. Change order to add to current order.
 
-Qty field
+Qty field**
 
-Search on ticket dialog fields
+Search on ticket dialog fields**
 
-Show mobile orders on customer for users to the re-order table. Change order to add to current order.
+Favorites list in the order it was scanned in. Create favorite list button on mobile and webiste.!!
 
-Favorites list in the order it was scanned in.
+customer create new account from website**
 
-customer create new account from website
+Turn on spinning again on product add.**
 
-4000
-check - 2271
-
-Turn on spinning again on product add.
-
-Remove more button for 1-2-3 on website catalog, replace with pagination.
+Remove more button for 1-2-3 on website catalog, replace with pagination.*
 
 Customer: Ask shipping address (auto populated), box count, case count, and shipping cost.
+   On checkout add box, count, shipping cost added to order amount...*
 
-Show mobile orders to users on website,...and add history to mmobile last 5
+Show mobile orders to users on website,...and add history to mmobile last 5!!
 
-link back and forth between tickets and show close price.
+link back and forth between tickets and show close price.!!
 
-register id on invoice
+register id on invoice !!
 
-RMA show cash refund receipt
+Employee on ticket log!! and who closed!!
 
-Calculator form everywhere ven dialogs
+RMA show cash refund receipt!!..change
 
-Clear dp by range
+Calculator form everywhere ven dialogs!!..new calculator
 
-Quick price edit in row
+#Clear dp by range
+   |_Dp ticket have total on bottom.
+
+Quick price edit in row !!
  Cost
  List_Price
- Pricing lives
+ Pricing level
  sale price
+  |_Remove unit item and addition barcodes on products list.
+  |_ Percentage markup inside.!!
+  |_Promo cost on each product*
+  |_Partial matching, last 3 digits.*
 
-Inventory page
-	|_ Inventory log of all products
+#Inventory page
+#	|_ Inventory log of all products
+  |_Change order and pagination
 
-Sale date range, and selling price.
+Sale date range, and selling price. and sell price.!!
  Change price on mobile pos and website.
- Sale Page for website and app for sale.
- 
-Calculator Draggable and on all dialogs
+ Sale Page for website and app for sale. Number of pieces restriction.
+
+Calculator Draggable and on all dialogs**
 
 #Clear DP on range
 
-User list long and scroll
+User list long and scroll -> 50-60 items
 
 RMA usage amount on printed page
 
 #Fix MSA line issues
 
-Sign up on front
+Sign up on front!!
 
-Re-checkout
+Re-checkout**
+ |_Expire 1 day, period.
 
-Save edit nodes back to search results
+#Save edit nodes back to search results
 
-queue items for big label print on product item.
+queue items for big label print on product item.!!
 
 #5762 -> Sams mart 2 ... sams express 2 2813850000
-Search on rma first dialog
+Search on rma first dialog*
 #Closed returns and closed items ... green and red
 
 #cost on split
 
 another calcuator
 
-Option to change customer on payment
-
 #Unlock closed customer as admin.
 
-Invoice show who created.
+Invoice show who created.!!
 
-DL and liscence and customer name
+DL and liscence and customer name remove on invoice.!!
 
-Add another customer report with all users
+Add another customer report with all users...customer activity report!!
 
-Get rid of footer on dp tickets.
+Get rid of footer on dp tickets.!!!
 
-Remove ggw sale tax id and all sales tax id.
+Remove ggw sale tax id and all sales tax id on invoice...and add sales tax permit id under customer tobbaco id...!!
 
-Galaxy s5 issues
+Galaxy s5 issues**
 
 #Update created date on close.
 
@@ -414,35 +419,49 @@ Galaxy s5 issues
 #fix starting
 
 Price history on each item in backend...show Invoice, Customer, Price, Qty, Extended
+   |_product movement of each item.
 
-Show similar items on backend search by barcode.
+Show similar items on backend search by barcode. Last 3 digit similarity.**
 
-Enter percentages for markup.
+Enter percentages for markup.** -> disable by default -> markup for each price level
 
-Product Group, change price together.
+Product Group, change price together.---
 
-Customer activity report show all customers.
+Customer activity report show all customers.!!
 
-Customer search on product.
+Customer search on product velocity report.!!!
    |_Carton Barcode
    |_Customer on top
 
 Send item to print tag queue on product edit page and in row price edit.
 
-Product name on dialog and barcode....and packaging.
+Product name on dialog and barcode....and packaging.!!!
 
-Customer on each log item on inventory.
+/\Customer on each log item on inventory.
 
-Show more button on dialog not on main page on inventory page.
+/\Show more button on dialog not on main page on inventory page.
 
 #Try to fix first scan on restart failure with trim.  -- Check and confirm
 
-Red diactivated items on backend list.
+Red diactivated items on backend list on product page. !!
 
-Customer Account, Name, product name and carton barcode search
+Customer Account, Name, product name and carton barcode search on product velocity.
 
-Ticket log, who opened it on each ticket.
+Ticket log, who opened it on each ticket.!!
    |_Who closed the ticket on invoice and what register
    |_Who closed ticket on backend
 
 #Line item jumbling
+
+7873 - delete - Orem Food mar - Starting balance  5639.61 - revert invetory
+4000
+check - 2271
+
+RMA on customer statement**
+
+Run front on backend
+
+MSA Unit field -> automagic form
+
+Ciggerates -> 200
+
