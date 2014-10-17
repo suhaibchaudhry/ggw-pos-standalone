@@ -453,9 +453,12 @@ Ticket log, who opened it on each ticket.!!
 
 #Line item jumbling
 
-7873 - delete - Orem Food mar - Starting balance  5639.61 - revert invetory
-4000
-check - 2271
+#8597 - B&B news stand - 2815482119 - CUID: 1558
+#7873 - delete - Orem Food mar - Starting balance  5639.61 - revert invetory (timestamp 1412972882)
+/\4000
+/\check - 2271
+
+Re-checkout 2 week limit...Put original date purchase??
 
 RMA on customer statement**
 
@@ -465,3 +468,8 @@ MSA Unit field -> automagic form
 
 Ciggerates -> 200
 
+Backend -> Backoffice
+
+Connect out_stock to nid or order producet id or order id
+
+CHANGE MASTER TO MASTER_HOST='127.0.0.1',MASTER_USER='slaveuser', MASTER_PASSWORD='xyz786', MASTER_LOG_FILE='mysql-bin.000261', MASTER_LOG_POS=3637598;
