@@ -474,9 +474,9 @@ Connect out_stock to nid or order producet id or order id
 
 CHANGE MASTER TO MASTER_HOST='127.0.0.1',MASTER_USER='slaveuser', MASTER_PASSWORD='xyz786', MASTER_LOG_FILE='mysql-bin.000261', MASTER_LOG_POS=3637598;
 
-Change product costs to use average.
+#Change product costs to use average.
 
-Address duplicate transactions.
+#Address duplicate transactions.
 
 Show previous charges on re checkout.
 
