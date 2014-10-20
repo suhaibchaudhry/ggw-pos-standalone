@@ -79,7 +79,7 @@ Checkbox to mark item as sent
 
 #Only payment.
 
-#Purchase history for customer. Ticket number, date, total
+#Purchase history for customer. Ticket number, date, total***
 
 #Customer statement: Invoice, $ amount, AR.
 
@@ -464,7 +464,7 @@ RMA on customer statement**
 
 Run front on backend
 
-MSA Unit field -> automagic form
+#MSA Unit field -> automagic form
 
 Ciggerates -> 200
 
@@ -485,3 +485,5 @@ Fix previous costs after figuring out query issue.
 Ticking closing on error.
 
 Ticket close on main request.
+
+Itemname username and category and barcode on item search.
