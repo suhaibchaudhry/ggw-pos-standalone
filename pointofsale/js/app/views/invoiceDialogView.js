@@ -11,13 +11,25 @@ jQuery(function($) {
       "click .invoice-open-history a": 'loadOpenInvoices',
       "click .invoice-closed-history a": 'loadClosedInvoices',
       "click a.search-button": 'searchTicketInvoice',
-      "click .invoice-history table.uc-order-history tbody tr": 'selectInvoice'
+      "click .invoice-history table.uc-order-history tbody tr": 'selectInvoice',
+      "click a.calculator-button": 'calculatorInitiate'
     },
+    calculatorSkin: _.template($('#dash-calculator').html()),
     initialize: function(attributes, options) {
       this.modal = attributes['modal'];
       this.employeeSession = attributes['employeeSession'];
       this.ticket = attributes['ticket'];
       this.activeCustomerView = attributes['activeCustomerView'];
+    },
+    calculatorInitiate: function(e) {
+      e.preventDefault();
+      $('.calcOverlay').html(this.calculatorSkin()).show();
+      $('.calcOverlay a.clear-calculator').on('click', _.bind(this.clearCalculator, this));
+      $('.calcOverlay iframe').focus();
+    },
+    clearCalculator: function(e) {
+      e.preventDefault();
+      $('.calcOverlay').empty().hide();
     },
     template: _.template($('#invoice-list-modal').html()),
     render: function() {

@@ -847,6 +847,10 @@ a.calculator-button:hover {
     opacity: .6;
 }
 
+.dialogOverlay a.calculator-button {
+    right: 110px;
+}
+
 .calcOverlay iframe {
     display: block;
     border: 0;
