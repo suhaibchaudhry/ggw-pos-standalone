@@ -851,6 +851,10 @@ a.calculator-button:hover {
     right: 110px;
 }
 
+.checkoutOverlay a.calculator-button {
+    right: 15px;
+}
+
 .calcOverlay iframe {
     display: block;
     border: 0;

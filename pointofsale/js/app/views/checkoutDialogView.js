@@ -20,8 +20,10 @@ jQuery(function($) {
       "keyup .toggle-payment input.rma-amount": 'calculateCashChange',
       "keyup .toggle-payment input.ar-amount": 'calculateCashChange',
       'change .toggle-payment input[type="checkbox"]': 'checkboxToggle',
-      "change #cc-payment-split": 'changeModeToSwipe'
+      "change #cc-payment-split": 'changeModeToSwipe',
+      "click a.calculator-button": 'calculatorInitiate'
     },
+    calculatorSkin: _.template($('#dash-calculator').html()),
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
       this.modal = attributes['modal'];
@@ -36,6 +38,16 @@ jQuery(function($) {
       });
 
       $.cardswipe('disable');
+    },
+    calculatorInitiate: function(e) {
+      e.preventDefault();
+      $('.calcOverlay').html(this.calculatorSkin()).show();
+      $('.calcOverlay a.clear-calculator').on('click', _.bind(this.clearCalculator, this));
+      $('.calcOverlay iframe').focus();
+    },
+    clearCalculator: function(e) {
+      e.preventDefault();
+      $('.calcOverlay').empty().hide();
     },
     template: _.template($('#ticket-checkout-modal').html()),
     creditSummaryTemplate: _.template($('#credit-summary-template').html()),
