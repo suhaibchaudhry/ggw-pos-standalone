@@ -480,7 +480,8 @@ CHANGE MASTER TO MASTER_HOST='127.0.0.1',MASTER_USER='slaveuser', MASTER_PASSWOR
 
 Show previous charges on re checkout.
 
-Fix previous costs after figuring out query issue.
+#Fix previous costs after figuring out query issue. - was actually empty issue.
+#Fix old costs that were set to 0.
 
 Ticking closing on error.
 
