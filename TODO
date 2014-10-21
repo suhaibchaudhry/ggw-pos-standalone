@@ -488,3 +488,9 @@ Ticking closing on error.
 Ticket close on main request.
 
 Itemname username and category and barcode on item search.
+
+#RMA bad memo;
+#Invoice #10119
+#Alcopone, credit for 64 dollars and 85 cents....but give 53.28 dollars.
+
+Confirm prompt on RMA.
