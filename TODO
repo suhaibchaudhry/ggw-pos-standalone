@@ -384,6 +384,8 @@ Abid
 
 #MSA Unit field -> automagic form
 
+#MSA show quantity of closing date.
+
 Previous orders on mobile - and invoice and mobile order reorder, and add those to cart.
 Add reorder button on website order. add invoices.
    |_Show mobile orders on customer for users to the re-order table. Change order to add to current order.
@@ -490,8 +492,6 @@ Backend -> Backoffice
 
 Connect out_stock to nid or order producet id or order id
 
-CHANGE MASTER TO MASTER_HOST='127.0.0.1',MASTER_USER='slaveuser', MASTER_PASSWORD='xyz786', MASTER_LOG_FILE='mysql-bin.000261', MASTER_LOG_POS=3637598;
-
 Show previous charges on re checkout.
 
 Ticking closing on error.
@@ -499,3 +499,7 @@ Ticking closing on error.
 Ticket close on main request.
 
 Confirm prompt on RMA.
+
+Add payment items on customer statement.
+
+CHANGE MASTER TO MASTER_HOST='127.0.0.1',MASTER_USER='slaveuser', MASTER_PASSWORD='xyz786', MASTER_LOG_FILE='mysql-bin.000261', MASTER_LOG_POS=3637598;
