@@ -319,6 +319,71 @@ Abid
 /Tokens Expire
 /show invoice id on invoice
 
+#Clear dp by range
+   |_Dp ticket have total on bottom.
+
+#Inventory page
+# |_ Inventory log of all products
+  |_Change order and pagination
+
+#Clear DP on range
+
+#Fix MSA line issues
+
+#Save edit nodes back to search results
+
+#5762 -> Sams mart 2 ... sams express 2 2813850000
+
+#Closed returns and closed items ... green and red
+
+#cost on split
+
+#Unlock closed customer as admin.
+
+#DL and liscence and customer name remove on invoice.!!
+
+#Get rid of footer on dp tickets.!!!
+
+#Remove ggw sale tax id and all sales tax id on invoice...and add sales tax permit id under customer tobbaco id...!!
+
+#Update created date on close.
+
+#include tax on credit memo and rma..RMA REFUND TAX.
+
+#fix starting
+
+#Customer Account, Name, product name and carton barcode search on product velocity.
+
+#Itemname username and category and barcode on item search.
+
+#RMA bad memo;
+#Invoice #10119
+#Alcopone, credit for 64 dollars and 85 cents....but give 53.28 dollars.
+
+#MSA show quantity on end timestamp
+
+#Line item jumbling
+
+#Customer search on product velocity report.!!!
+#   |_Carton Barcode
+#   |_Customer on top
+
+#Change product costs to use average.
+
+#Address duplicate transactions by creating a page like inconsistent tickets.
+
+#Try to fix first scan on restart failure with trim.  -- Check and confirm
+
+#Fix previous costs after figuring out query issue. - was actually empty issue.
+#Fix old costs that were set to 0.
+
+#8597 - B&B news stand - 2815482119 - CUID: 1558
+#7873 - delete - Orem Food mar - Starting balance  5639.61 - revert invetory (timestamp 1412972882)
+/\4000
+/\check - 2271
+
+#MSA Unit field -> automagic form
+
 Previous orders on mobile - and invoice and mobile order reorder, and add those to cart.
 Add reorder button on website order. add invoices.
    |_Show mobile orders on customer for users to the re-order table. Change order to add to current order.
@@ -350,9 +415,6 @@ RMA show cash refund receipt!!..change
 
 Calculator form everywhere ven dialogs!!..new calculator
 
-#Clear dp by range
-   |_Dp ticket have total on bottom.
-
 Quick price edit in row !!
  Cost
  List_Price
@@ -363,60 +425,33 @@ Quick price edit in row !!
   |_Promo cost on each product*
   |_Partial matching, last 3 digits.*
 
-#Inventory page
-#	|_ Inventory log of all products
-  |_Change order and pagination
-
 Sale date range, and selling price. and sell price.!!
  Change price on mobile pos and website.
  Sale Page for website and app for sale. Number of pieces restriction.
 
 Calculator Draggable and on all dialogs**
 
-#Clear DP on range
-
 User list long and scroll -> 50-60 items
 
 RMA usage amount on printed page
-
-#Fix MSA line issues
 
 Sign up on front!!
 
 Re-checkout**
  |_Expire 1 day, period.
 
-#Save edit nodes back to search results
-
 queue items for big label print on product item.!!
 
-#5762 -> Sams mart 2 ... sams express 2 2813850000
 Search on rma first dialog*
-#Closed returns and closed items ... green and red
-
-#cost on split
 
 another calcuator
 
-#Unlock closed customer as admin.
-
 Invoice show who created.!!
-
-#DL and liscence and customer name remove on invoice.!!
 
 Add another customer report with all users...customer activity report!!
 
-#Get rid of footer on dp tickets.!!!
-
-#Remove ggw sale tax id and all sales tax id on invoice...and add sales tax permit id under customer tobbaco id...!!
 
 Galaxy s5 issues**
-
-#Update created date on close.
-
-#include tax on credit memo and rma..RMA REFUND TAX.
-
-#fix starting
 
 Price history on each item in backend...show Invoice, Customer, Price, Qty, Extended
    |_product movement of each item.
@@ -429,10 +464,6 @@ Product Group, change price together.---
 
 Customer activity report show all customers.!!
 
-Customer search on product velocity report.!!!
-   |_Carton Barcode
-   |_Customer on top
-
 Send item to print tag queue on product edit page and in row price edit.
 
 Product name on dialog and barcode....and packaging.!!!
@@ -441,30 +472,17 @@ Product name on dialog and barcode....and packaging.!!!
 
 /\Show more button on dialog not on main page on inventory page.
 
-#Try to fix first scan on restart failure with trim.  -- Check and confirm
-
 Red diactivated items on backend list on product page. !!
-
-Customer Account, Name, product name and carton barcode search on product velocity.
 
 Ticket log, who opened it on each ticket.!!
    |_Who closed the ticket on invoice and what register
    |_Who closed ticket on backend
-
-#Line item jumbling
-
-#8597 - B&B news stand - 2815482119 - CUID: 1558
-#7873 - delete - Orem Food mar - Starting balance  5639.61 - revert invetory (timestamp 1412972882)
-/\4000
-/\check - 2271
 
 Re-checkout 2 week limit...Put original date purchase??
 
 RMA on customer statement**
 
 Run front on backend
-
-#MSA Unit field -> automagic form
 
 Ciggerates -> 200
 
@@ -474,23 +492,10 @@ Connect out_stock to nid or order producet id or order id
 
 CHANGE MASTER TO MASTER_HOST='127.0.0.1',MASTER_USER='slaveuser', MASTER_PASSWORD='xyz786', MASTER_LOG_FILE='mysql-bin.000261', MASTER_LOG_POS=3637598;
 
-#Change product costs to use average.
-
-#Address duplicate transactions.
-
 Show previous charges on re checkout.
-
-#Fix previous costs after figuring out query issue. - was actually empty issue.
-#Fix old costs that were set to 0.
 
 Ticking closing on error.
 
 Ticket close on main request.
-
-Itemname username and category and barcode on item search.
-
-#RMA bad memo;
-#Invoice #10119
-#Alcopone, credit for 64 dollars and 85 cents....but give 53.28 dollars.
 
 Confirm prompt on RMA.
