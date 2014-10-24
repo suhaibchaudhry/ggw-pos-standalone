@@ -11,6 +11,7 @@ jQuery(function($) {
       "click a.clear-calculator": 'clearCalculator'
     },
     calculatorSkin: _.template($('#dash-calculator').html()),
+    addCustomer: _.template($('#add-customer').html()),
   	initialize: function() {
       //Global checkout locking flag
       checkoutActive = false;
@@ -145,6 +146,15 @@ jQuery(function($) {
     calculatorInitiate: function(e) {
       e.preventDefault();
       $('.calcOverlay').html(this.calculatorSkin()).show();
+      $('.calcOverlay a.clear-calculator').on('click', _.bind(this.clearCalculator, this));
+      $('.calcOverlay iframe').focus();
+    },
+    signupFormInitiate: function(e) {
+      e.preventDefault();
+      $('.calcOverlay').html(this.addCustomer({
+        api_server: this.employeeSession.get('apiServer'),
+        token: this.employeeSession.get("token")
+      })).show();
       $('.calcOverlay a.clear-calculator').on('click', _.bind(this.clearCalculator, this));
       $('.calcOverlay iframe').focus();
     },
