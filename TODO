@@ -502,6 +502,6 @@ Confirm prompt on RMA.
 
 Add payment items on customer statement.
 
-Add key support to calc.
+#Add key support to calc.
 
 CHANGE MASTER TO MASTER_HOST='127.0.0.1',MASTER_USER='slaveuser', MASTER_PASSWORD='xyz786', MASTER_LOG_FILE='mysql-bin.000261', MASTER_LOG_POS=3637598;
