@@ -973,3 +973,9 @@ a.exit-modal:hover {
 .dialogOverlay .bbm-modal {
     position: relative;
 }
+.add-user-button {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+    margin: 20px 0 0;
+}
