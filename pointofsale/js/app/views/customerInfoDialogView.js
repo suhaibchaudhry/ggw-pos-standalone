@@ -35,7 +35,24 @@ jQuery(function($) {
       "click div.invoice-history-print": 'printInvoiceHistory',
       "click div.customer-statement-print": 'printCustomerHistory',
       "click .history a": 'ignoreLinkClick',
-      "click a.block-current-customer": 'blockCustomerUid'
+      "click a.block-current-customer": 'blockCustomerUid',
+      "click a.block-edit-customer": 'editFormInitiate'
+    },
+    editCustomer: _.template($('#edit-customer').html()),
+    editFormInitiate: function(e) {
+      e.preventDefault();
+      var cuid = this.activeCustomer.get('id');
+      $('.calcOverlay').html(this.editCustomer({
+        api_server: this.employeeSession.get('apiServer'),
+        token: this.employeeSession.get("token"),
+        customer_uid: cuid
+      })).show();
+      $('.calcOverlay a.clear-calculator').on('click', _.bind(this.clearCalculator, this));
+      $('.calcOverlay iframe').focus();
+    },
+    clearCalculator: function(e) {
+      e.preventDefault();
+      $('.calcOverlay').empty().hide();
     },
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];

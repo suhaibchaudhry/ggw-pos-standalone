@@ -149,6 +149,13 @@
 		</div>
 	</script>
 
+	<script type="text/template" id="edit-customer">
+		<div class="bbm-wrapper">
+		<a href="#" class="clear-calculator">Clear</a>
+		<iframe src="<%= api_server %>/user/<%= customer_uid %>/edit/profile?token=<%= token %>" width="850" height="500"></iframe>
+		</div>
+	</script>
+
 	<script type="text/template" id="login-modal">
 		<div class="bbm-modal__topbar">
 			<h3 class="bbm-modal__title title">Employee Login</h3>
@@ -669,6 +676,7 @@
 			</div>
 			<div class="bbm-modal__bottombar">
 				<a href="#" class="pure-button pure-button-warning block-current-customer">Disable Customer</a>
+				<a href="#" class="pure-button pure-button-error block-edit-customer">Edit Customer</a>
 				<a href="#" class="pure-button pure-button-success customer-info-continue">Continue</a>
 				<a href="#" class="pure-button pure-button-error customer-info-cancel">Cancel</a>
 			</div>
