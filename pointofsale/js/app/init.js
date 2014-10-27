@@ -8,8 +8,7 @@ jQuery(function($) {
       "click a.closed-tickets-button": 'loadCloseTickets',
       "click a.print-ticket": 'printTicket',
       "click a.calculator-button": 'calculatorInitiate',
-      "click a.add-user-button": 'signupFormInitiate',
-      "click a.clear-calculator": 'clearCalculator'
+      "click a.add-user-button": 'signupFormInitiate'
     },
     calculatorSkin: _.template($('#dash-calculator').html()),
     addCustomer: _.template($('#add-customer').html()),
