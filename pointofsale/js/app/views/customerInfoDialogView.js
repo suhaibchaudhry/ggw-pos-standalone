@@ -41,7 +41,12 @@ jQuery(function($) {
     editCustomer: _.template($('#edit-customer').html()),
     editFormInitiate: function(e) {
       e.preventDefault();
-      var cuid = this.activeCustomer.get('id');
+      if(_.isUndefined(this.customer_uid)) {
+        var cuid = this.activeCustomer.get('id');            
+      } else {
+        var cuid = this.customer_uid;
+      }
+
       $('.calcOverlay').html(this.editCustomer({
         api_server: this.employeeSession.get('apiServer'),
         token: this.employeeSession.get("token"),
