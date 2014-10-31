@@ -23,7 +23,9 @@ jQuery(function($) {
     },
     calculatorInitiate: function(e) {
       e.preventDefault();
-      $('.calcOverlay').html(this.calculatorSkin()).show();
+      $('.calcOverlay').html(this.calculatorSkin({
+        api_server: this.employeeSession.get('apiServer')
+      })).show();
       $('.calcOverlay a.clear-calculator').on('click', _.bind(this.clearCalculator, this));
       $('.calcOverlay iframe').focus();
     },
