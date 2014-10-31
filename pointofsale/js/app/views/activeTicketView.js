@@ -37,7 +37,7 @@ jQuery(function($) {
       });
 
       //Initialize Checkout Dialog
-      this.checkoutDialogModal = new checkoutDialogModal({activeCustomer: this.activeCustomer, ticket: this.ticket});
+      this.checkoutDialogModal = new checkoutDialogModal({activeCustomer: this.activeCustomer, ticket: this.ticket, employeeSession: attributes['employeeSession']});
 
       //Initialize Manager Price Override Dialog
       this.managerPriceDialog = new managerPriceDialog({

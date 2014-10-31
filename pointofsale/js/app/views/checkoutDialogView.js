@@ -25,6 +25,7 @@ jQuery(function($) {
     },
     calculatorSkin: _.template($('#dash-calculator').html()),
     initialize: function(attributes, options) {
+      this.employeeSession = attributes['employeeSession'];
       this.activeCustomer = attributes['activeCustomer'];
       this.modal = attributes['modal'];
       this.ticket = attributes['ticket'];
