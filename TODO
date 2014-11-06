@@ -518,4 +518,14 @@ Ticket #
 
 Debounce mobile order and web orders
 
+Ticket 13452 - 192.60 cents cash 2000
+
+Unlocked log and previous.
+
+Who closed
+
+Unlocked -> checkout log
+
+Auto logout
+
 CHANGE MASTER TO MASTER_HOST='127.0.0.1',MASTER_USER='slaveuser', MASTER_PASSWORD='xyz786', MASTER_LOG_FILE='mysql-bin.000261', MASTER_LOG_POS=3637598;
