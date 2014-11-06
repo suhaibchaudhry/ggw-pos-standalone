@@ -58,6 +58,7 @@ jQuery(function($) {
     fetchRegisterID: _.template($('#register-id').html()),
     checkoutProcessDebouncedTrigger: function(e) {
       e.preventDefault();
+      this.calculateCashChange(false);
       this.checkoutProcessDebounced(e);
     },
     render: function() {
@@ -402,7 +403,9 @@ jQuery(function($) {
           paid = paid.plus(val);
         } else {
           paid = paid.plus(this.rma_credits);
-          e.currentTarget.value = this.rma_credits.toFixed(2);
+          if(e) {
+            e.currentTarget.value = this.rma_credits.toFixed(2);
+          }
         }
       }
 
@@ -423,15 +426,17 @@ jQuery(function($) {
       this.change_value = change;
       this.cash_paid = paid;
 
-      if((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode == 190 || e.keyCode == 110) {
-        var start = e.currentTarget.selectionStart,
-        end = e.currentTarget.selectionEnd;
-        e.currentTarget.value = accounting.formatNumber(e.currentTarget.value, 2, '');
-        e.currentTarget.setSelectionRange(start, end);
-      }
-      if((e.keyCode == 8 || e.keyCode == 46) && e.currentTarget.value == '') {
-        e.currentTarget.value = '0.00';
-        e.currentTarget.setSelectionRange(0, 0);
+      if(e) {
+        if((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode == 190 || e.keyCode == 110) {
+          var start = e.currentTarget.selectionStart,
+          end = e.currentTarget.selectionEnd;
+          e.currentTarget.value = accounting.formatNumber(e.currentTarget.value, 2, '');
+          e.currentTarget.setSelectionRange(start, end);
+        }
+        if((e.keyCode == 8 || e.keyCode == 46) && e.currentTarget.value == '') {
+          e.currentTarget.value = '0.00';
+          e.currentTarget.setSelectionRange(0, 0);
+        }
       }
 
       this.$('.change-left-value').html(accounting.formatMoney(total.toFixed(2)));
