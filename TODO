@@ -512,6 +512,10 @@ Ticket #
 10831
 742.78
 
+#http://import.general-goods.com:7000/user/4494/term-credits/settle/
+
+#Remove closed ticket 12210
+
 Debounce mobile order and web orders
 
 CHANGE MASTER TO MASTER_HOST='127.0.0.1',MASTER_USER='slaveuser', MASTER_PASSWORD='xyz786', MASTER_LOG_FILE='mysql-bin.000261', MASTER_LOG_POS=3637598;
