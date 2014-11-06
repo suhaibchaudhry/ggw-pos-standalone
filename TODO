@@ -530,4 +530,10 @@ Auto logout
 
 RMA subtraction doesnt show up on invoice and AR
 
+Do not allow checkout till all items are scanned!!!
+
+Fix the 2000 dollar issue that arrised by forcing change calculation on checkout button.
+
+Fix layout for RMA and other checks
+
 CHANGE MASTER TO MASTER_HOST='127.0.0.1',MASTER_USER='slaveuser', MASTER_PASSWORD='xyz786', MASTER_LOG_FILE='mysql-bin.000261', MASTER_LOG_POS=3637598;
