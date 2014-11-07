@@ -17,7 +17,8 @@ jQuery(function($) {
       this.listenTo(this.get('productCollection'), 'change:price', this.priceUpdate);
 
       //Make sure to send new quantity to server it has stabalized for a few ms.
-      this.listenTo(this.get('productCollection'), 'change:qty', _.debounce(this.changeProductQuantity, 1000));
+      this.changeProductQuantityDebounced = _.debounce(this.changeProductQuantity, 1000);
+      this.listenTo(this.get('productCollection'), 'change:qty', this.changeProductQuantityImmediate);
 
       //Update Category breakdown
       this.listenTo(this.get('productCollection'), 'change:qty', this.updateCategoryBreakdown);
@@ -262,6 +263,10 @@ jQuery(function($) {
         $('.header.region').removeClass('gradient').addClass('gradient-zone');
       }
     },
+    changeProductQuantityImmediate: function(product, qty, options) {
+      $('.ticketSearch .checkout').hide();
+      this.changeProductQuantityDebounced(product, qty, options);
+    },
     changeProductQuantity: function(product, qty, options) {
       //Debounce and update product quantity on server.
       var ticket = this;
@@ -278,6 +283,7 @@ jQuery(function($) {
         data: {request: updateQuantityRequest},
         timeout: 15000,
         success: function(res, status, xhr) {
+          $('.ticketSearch .checkout').show();
           if(!res.status) {
             ticket.employeeSession.set('login', false);
           }
