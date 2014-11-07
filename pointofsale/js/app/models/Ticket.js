@@ -264,7 +264,10 @@ jQuery(function($) {
       }
     },
     changeProductQuantityImmediate: function(product, qty, options) {
-      $('.ticketSearch .checkout').hide();
+      if(this.get('status') == 'pos_in_progress' && !this.get('locked')) {
+        $('.ticketSearch .checkout').hide();
+      }
+
       this.changeProductQuantityDebounced(product, qty, options);
     },
     changeProductQuantity: function(product, qty, options) {
@@ -283,7 +286,10 @@ jQuery(function($) {
         data: {request: updateQuantityRequest},
         timeout: 15000,
         success: function(res, status, xhr) {
-          $('.ticketSearch .checkout').show();
+          if(ticket.get('status') == 'pos_in_progress' && !ticket.get('locked')) {
+            $('.ticketSearch .checkout').show();
+          }
+
           if(!res.status) {
             ticket.employeeSession.set('login', false);
           }
@@ -350,12 +356,20 @@ jQuery(function($) {
 
       productAttributes['locked'] = false;
 
+      if(ticket.get('status') == 'pos_in_progress' && !ticket.get('locked')) {
+        $('.ticketSearch .checkout').hide();
+      }
+
       $.ajax({
           type: 'POST',
           url: this.employeeSession.get('apiServer')+'/pos-api/ticket/add-product',
           data: {request: addItemToTicketRequest},
           timeout: 15000,
           success: function(res, status, xhr) {
+            if(ticket.get('status') == 'pos_in_progress' && !ticket.get('locked')) {
+              $('.ticketSearch .checkout').show();
+            }
+
             if(res.status) {
               var id = productAttributes['id'];
               productAttributes['id'] = res.ticketProductId;
