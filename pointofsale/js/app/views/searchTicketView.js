@@ -176,6 +176,24 @@ jQuery(function($) {
 	    	$('.activeTicket').removeClass('lockedTicket');
 	    	this.activeTicketView.ticket.set('locked', false);
 	    	//$('.lock-indicator a.lock-toggle').hide();
+
+	    	//Report Ticket Unlock
+			var ticket = this.ticket;
+	    	var reportUnlockRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId')});
+            $.ajax({
+	          type: 'POST',
+	          url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/unlock-ticket',
+	          data: {request: reportUnlockRequest},
+	          timeout: 15000,
+	          success: function(res, status, xhr) {
+	            if(!res.status) {
+	              ticket.employeeSession.set('login', false);
+	            }
+	          },
+	          error: function(xhr, errorType, error) {
+	            ticket.employeeSession.set('login', false);
+	          }
+	        });
     	},
     	mouseTrapCatch: function(e) {
     		var ticket = this.ticket;
