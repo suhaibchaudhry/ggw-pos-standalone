@@ -47,7 +47,7 @@ jQuery(function($) {
       });
 
       //Initialize Customer Info Dialog
-      this.customerInfoDialogModal = new customerInfoDialogModal({activeCustomer: this.activeCustomer, employeeSession: this.employeeSession, ticket: this.ticket});
+      this.customerInfoDialogModal = new customerInfoDialogModal({activeCustomer: this.activeCustomer, employeeSession: this.employeeSession, ticket: this.ticket, activeCustomerView: this.activeCustomerView});
       this.activeCustomerView.customerInfoDialogModal = this.customerInfoDialogModal;
 
       //Initialize Invoices List dialog

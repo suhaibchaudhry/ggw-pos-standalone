@@ -61,6 +61,7 @@ jQuery(function($) {
     },
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
+      this.activeCustomerView = attributes['activeCustomerView'];
       this.modal = attributes['modal'];
       this.employeeSession = attributes['employeeSession'];
       this.ticket = attributes['ticket'];
@@ -218,36 +219,39 @@ jQuery(function($) {
     },
     blockCustomerUid: function(e) {
       e.preventDefault();
-
-      var that = this;
-      var customer_uid = this.customer_uid;
-      var ticket = this.ticket;
-      var blockCustomerUidRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid});
-      ticket.trigger('ticket:preloader', true);
-      var request = $.ajax({
-        type: 'POST',
-        url: this.employeeSession.get('apiServer')+'/pos-api/customer/block',
-        data: {request: blockCustomerUidRequest},
-        timeout: 15000,
-        success: function(res, status, xhr) {
-          if(res.status) {
-            alert(res.message);
-          } else {
+      var customerName = this.$('.bbm-modal__title').text();
+      this.activeCustomerView.$searchbox.typeahead('clearCache');
+      if(confirm('Are you sure you want to disable customer: '+customerName+'?')) {
+        var that = this;
+        var customer_uid = this.customer_uid;
+        var ticket = this.ticket;
+        var blockCustomerUidRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid});
+        ticket.trigger('ticket:preloader', true);
+        var request = $.ajax({
+          type: 'POST',
+          url: this.employeeSession.get('apiServer')+'/pos-api/customer/block',
+          data: {request: blockCustomerUidRequest},
+          timeout: 15000,
+          success: function(res, status, xhr) {
+            if(res.status) {
+              alert(res.message);
+            } else {
+              that.employeeSession.set('login', false);
+            }
+            that.modal.display(false);
+            ticket.trigger('ticket:preloader', false);
+          },
+          error: function(xhr, errorType, error) {
+            //Seems to be a forgivabale error, perhaps no need to logout.
+            //stop pre loader and logout user.
+            ticket.trigger('ticket:preloader', false);
             that.employeeSession.set('login', false);
+            that.modal.display(false);
           }
-          that.modal.display(false);
-          ticket.trigger('ticket:preloader', false);
-        },
-        error: function(xhr, errorType, error) {
-          //Seems to be a forgivabale error, perhaps no need to logout.
-          //stop pre loader and logout user.
-          ticket.trigger('ticket:preloader', false);
-          that.employeeSession.set('login', false);
-          that.modal.display(false);
-        }
-      });
+        });
 
-      this.requests.push(request);
+        this.requests.push(request);
+      }
     },
     changeSettlementsPage: function(e) {
       e.preventDefault();
