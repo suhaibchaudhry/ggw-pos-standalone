@@ -518,7 +518,7 @@ Ticket #
 
 Debounce mobile order and web orders
 
-Ticket 13452 - 192.60 cents cash 2000
+#Ticket 13452 - 192.60 cents cash 2000
 
 Unlocked log and previous.
 
@@ -528,17 +528,17 @@ Unlocked -> checkout log
 
 Auto logout
 
-RMA subtraction doesnt show up on invoice and AR
+#RMA subtraction doesnt show up on invoice and AR
 
 #Do not allow checkout till all items are scanned and quantity updated!!!
 
 #Fix the 2000 dollar issue that arrised by forcing change calculation on checkout button.
 
-Fix layout for RMA and other checks
+Fix layout for RMA and other checkouts
 
 Fix user roles
 
-Confirm disable customer?
+#Confirm disable customer?
 
 Add cron to clear prints.
 
