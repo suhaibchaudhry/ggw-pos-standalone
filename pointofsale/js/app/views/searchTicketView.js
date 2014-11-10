@@ -165,6 +165,7 @@ jQuery(function($) {
     		$('.activeTicket').addClass('lockedTicket');
     		this.activeTicketView.ticket.set('locked', true);
     		//$('.lock-indicator a.lock-toggle').show();
+    		$('.ticketSearch div.checkout').hide();
     	},
     	unlockTicket: function() {
     		if(this.employeeSession.get('admin')) {
@@ -186,7 +187,11 @@ jQuery(function($) {
 	          data: {request: reportUnlockRequest},
 	          timeout: 15000,
 	          success: function(res, status, xhr) {
-	            if(!res.status) {
+	            if(res.status) {
+	            	if(res.recheckout) {
+	            		$('.ticketSearch div.checkout').show();
+	            	}
+	            } else {
 	              ticket.employeeSession.set('login', false);
 	            }
 	          },
