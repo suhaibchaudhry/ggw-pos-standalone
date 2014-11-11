@@ -349,6 +349,7 @@ jQuery(function($) {
 
       var charCode = e.keyCode || e.which;
       var charStr = String.fromCharCode(charCode);
+      console.log(charStr);
 
       var reg = /^\d|\.$/;
       if(!reg.test(charStr)) {
@@ -436,13 +437,13 @@ jQuery(function($) {
         var charCode = e.keyCode || e.which;
         var charStr = String.fromCharCode(charCode);
 
-        if(reg.test(charStr) || charCode == 190) {
+        if(reg.test(charStr) || charCode == 190 || charCode == 110 || (e.keyCode >= 96 && e.keyCode <= 105)) {
           var start = e.currentTarget.selectionStart,
           end = e.currentTarget.selectionEnd;
           e.currentTarget.value = accounting.formatNumber(e.currentTarget.value, 2, '');
           e.currentTarget.setSelectionRange(start, end);
         }
-        if((charCode == 8 || charCode == 190) && e.currentTarget.value == '') {
+        if((charCode == 8 || charCode == 190 || charCode == 110) && e.currentTarget.value == '') {
           e.currentTarget.value = '0.00';
           e.currentTarget.setSelectionRange(0, 0);
         }
