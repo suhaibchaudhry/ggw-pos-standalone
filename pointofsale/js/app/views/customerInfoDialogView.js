@@ -87,6 +87,7 @@ jQuery(function($) {
     noPendingPaymentsMessage: _.template($('#no-pending-payments').html()),
     continueProcessDebouncedTrigger: function(e) {
       e.preventDefault();
+      this.calculateCashChange(false);
       this.continueProcessDebounced(e);
     },
     loadUserProfile: function(uid, default_tab_flag) {
@@ -456,7 +457,9 @@ jQuery(function($) {
             paid += val;
           } else {
             paid += rma_credits;
-            e.currentTarget.value = rma_credits;
+            if(e) {
+              e.currentTarget.value = rma_credits;
+            }
           }
         }
 
@@ -477,19 +480,21 @@ jQuery(function($) {
         this.change_value = change;
         this.cash_paid = paid;
 
-        var reg = /^\d$/;
-        var charCode = e.keyCode || e.which;
-        var charStr = String.fromCharCode(charCode);
+        if(e) {
+          var reg = /^\d$/;
+          var charCode = e.keyCode || e.which;
+          var charStr = String.fromCharCode(charCode);
 
-        if(reg.test(charStr) || charCode == 190) {
-          var start = e.currentTarget.selectionStart,
-          end = e.currentTarget.selectionEnd;
-          e.currentTarget.value = accounting.formatNumber(e.currentTarget.value, 2, '');
-          e.currentTarget.setSelectionRange(start, end);
-        }
-        if((e.keyCode == 8 || e.keyCode == 190) && e.currentTarget.value == '') {
-          e.currentTarget.value = '0.00';
-          e.currentTarget.setSelectionRange(0, 0);
+          if(reg.test(charStr) || charCode == 190) {
+            var start = e.currentTarget.selectionStart,
+            end = e.currentTarget.selectionEnd;
+            e.currentTarget.value = accounting.formatNumber(e.currentTarget.value, 2, '');
+            e.currentTarget.setSelectionRange(start, end);
+          }
+          if((e.keyCode == 8 || e.keyCode == 190) && e.currentTarget.value == '') {
+            e.currentTarget.value = '0.00';
+            e.currentTarget.setSelectionRange(0, 0);
+          }
         }
 
         this.$('.payment-made-value').html(accounting.formatMoney(paid));
