@@ -347,14 +347,19 @@ jQuery(function($) {
         e.currentTarget.value = '';
       }
 
-      if((e.keyCode < 48 || e.keyCode > 57) && (e.keyCode < 96 || e.keyCode > 105) && e.keyCode != 46 && e.keyCode != 8 && e.keyCode != 190 && e.keyCode != 110) {
+      var charCode = e.keyCode || e.which;
+      var charStr = String.fromCharCode(charCode);
+
+      var reg = /^\d|\.$/;
+      if(!reg.test(charStr)) {
         e.preventDefault();
       }
     },
     calculateCashChange: function(e) {
       var total = this.ticketTotal;
       var input_field = this.$('input.cash-paid');
-      var val = input_field.val();
+      var val = input_field.val().replace('..', '.');
+
       var big_zero = Big('0');
       var paid;
 
@@ -427,13 +432,18 @@ jQuery(function($) {
       this.cash_paid = paid;
 
       if(e) {
-        if((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode == 190 || e.keyCode == 110) {
+        var reg = /^\d$/;
+        var charCode = e.keyCode || e.which;
+        var charStr = String.fromCharCode(charCode);
+        console.log(e.keyCode);
+
+        if(reg.test(charStr) || charCode == 190) {
           var start = e.currentTarget.selectionStart,
           end = e.currentTarget.selectionEnd;
           e.currentTarget.value = accounting.formatNumber(e.currentTarget.value, 2, '');
           e.currentTarget.setSelectionRange(start, end);
         }
-        if((e.keyCode == 8 || e.keyCode == 46) && e.currentTarget.value == '') {
+        if((charCode == 8 || charCode == 190) && e.currentTarget.value == '') {
           e.currentTarget.value = '0.00';
           e.currentTarget.setSelectionRange(0, 0);
         }
