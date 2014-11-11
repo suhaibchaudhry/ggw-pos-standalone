@@ -435,7 +435,6 @@ jQuery(function($) {
         var reg = /^\d$/;
         var charCode = e.keyCode || e.which;
         var charStr = String.fromCharCode(charCode);
-        console.log(e.keyCode);
 
         if(reg.test(charStr) || charCode == 190) {
           var start = e.currentTarget.selectionStart,
