@@ -551,6 +551,20 @@ Permissions:
     Floor manager -> Price Override
     Floor Agent -> Just checkout
 
-Searcha and sort by close date on dialogs
+#Show payment items on customer history
+
+#Show cash memo instead of credit memo
+
+#Add watermark
+
+Add new activity report
+
+Permissions
+
+Inventory manager paginate
+
+less details on inventory manager
+
+Inline edit and percentage markup
 
 CHANGE MASTER TO MASTER_HOST='127.0.0.1',MASTER_USER='slaveuser', MASTER_PASSWORD='xyz786', MASTER_LOG_FILE='mysql-bin.000261', MASTER_LOG_POS=3637598;
