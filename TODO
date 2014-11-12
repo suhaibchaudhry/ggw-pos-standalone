@@ -546,10 +546,10 @@ Add cron to clear prints.
     |_Qty stock
     |_Show total on DP report
 
-Permissions:
-    Back office -> Content Edit and inventory
-    Floor manager -> Price Override
-    Floor Agent -> Just checkout
+#Permissions:
+#    Back office -> Content Edit and inventory
+#    Floor manager -> Price Override
+#    Floor Agent -> Just checkout
 
 #Show payment items on customer history
 
