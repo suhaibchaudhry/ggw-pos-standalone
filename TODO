@@ -575,6 +575,8 @@ Add check number on tickets: 14803
     |_ also add on dp tickets
     |_ add money order ref
 
+Implement recheckout on DP
+
 Add customer name column
 
 Fix registration form
@@ -590,3 +592,13 @@ Show related barcodes, and save takes back to same results
 Show closed invoice register id and customer on invoice
 
 Dialog close on item alert do not close
+
+Log to show unpaid open red tickets, and print them cleanly from backoffice and admin.
+
+Move subtotal on invoice column under retail, make suggested retail lighter shade.
+
+Customer statement add calendar, add token to apply and submit
+
+Customer number KMS Quick stop, 1969 bug on invoice history
+
+Show cost on managers on price override
