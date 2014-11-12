@@ -546,4 +546,9 @@ Add cron to clear prints.
     |_Qty stock
     |_Show total on DP report
 
+Permissions:
+    Back office -> Content Edit and inventory
+    Floor manager -> Price Override
+    Floor Agent -> Just checkout
+
 CHANGE MASTER TO MASTER_HOST='127.0.0.1',MASTER_USER='slaveuser', MASTER_PASSWORD='xyz786', MASTER_LOG_FILE='mysql-bin.000261', MASTER_LOG_POS=3637598;
