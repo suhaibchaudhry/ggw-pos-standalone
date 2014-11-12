@@ -567,4 +567,26 @@ less details on inventory manager
 
 Inline edit and percentage markup
 
-CHANGE MASTER TO MASTER_HOST='127.0.0.1',MASTER_USER='slaveuser', MASTER_PASSWORD='xyz786', MASTER_LOG_FILE='mysql-bin.000261', MASTER_LOG_POS=3637598;
+CHANGE MASTER TO MASTER_HOST='127.0.0.1',MASTER_USER='slaveuser', MASTER_PASSWORD='xyz786', MASTER_LOG_FILE='mysql-bin.000261', MASTER_LOG_POS=3637598
+
+Distinguish RMA and Invoice on customer statement.
+
+Add check number on tickets: 14803
+    |_ also add on dp tickets
+    |_ add money order ref
+
+Add customer name column
+
+Fix registration form
+
+Add costs on bottom
+
+Promo price with expiry date, with a quantity cap
+
+Show related barcodes, and save takes back to same results
+
+#Mobile order on back office
+
+Show closed invoice register id and customer on invoice
+
+Dialog close on item alert do not close
