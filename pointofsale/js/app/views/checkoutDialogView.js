@@ -226,6 +226,8 @@ jQuery(function($) {
         var formattedChange = this.change_left.toFixed(2);
         if(this.change_left.gt(Big('0')) && formattedChange != "0.00") {
           alert("Customer still owes amount: $"+formattedChange);
+        } else if(this.$('input#rma-payment').is(':checked') && accounting.unformat(this.$('input#rma-amount').val()) == 0) {
+          alert("RMA credit cannot be set to 0.00.");
         } else {
           var ticket = this.ticket;
           var cuid = this.activeCustomer.get('id');
