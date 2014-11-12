@@ -500,17 +500,17 @@ Ticket close on main request.
 
 Confirm prompt on RMA.
 
-Add payment items on customer statement.
+#Add payment items on customer statement.
 
 #Add key support to calc.
 
 #User edit
   -> Style
 
-GHRA 316
-Ticket #
-10831
-742.78
+#GHRA 316
+#Ticket #
+#10831
+#742.78
 
 #http://import.general-goods.com:7000/user/4494/term-credits/settle/
 
@@ -522,7 +522,7 @@ Debounce mobile order and web orders
 
 #Unlocked log and previous.
 
-Who closed
+#Who closed
 
 #Unlocked -> checkout log
 
@@ -536,7 +536,7 @@ Auto logout
 
 Fix layout for RMA and other checkouts
 
-Fix user roles
+#Fix user roles
 
 #Confirm disable customer?
 
@@ -557,9 +557,9 @@ Permissions:
 
 #Add watermark
 
-Add new activity report
+#Add new activity report
 
-Permissions
+#Permissions
 
 Inventory manager paginate
 
