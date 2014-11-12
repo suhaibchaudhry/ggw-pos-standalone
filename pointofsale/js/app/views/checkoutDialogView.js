@@ -351,7 +351,6 @@ jQuery(function($) {
 
       var charCode = e.keyCode || e.which;
       var charStr = String.fromCharCode(charCode);
-      console.log(charStr);
 
       var reg = /^\d|\.$/;
       if(!reg.test(charStr)) {
