@@ -336,7 +336,7 @@ Abid
 
 #Closed returns and closed items ... green and red
 
-#cost on split
+cost on split
 
 #Unlock closed customer as admin.
 
@@ -406,10 +406,12 @@ Customer: Ask shipping address (auto populated), box count, case count, and ship
    On checkout add box, count, shipping cost added to order amount...*
 
 Show mobile orders to users on website,...and add history to mmobile last 5!!
+  |_> Add reorder on invoice.
 
 link back and forth between tickets and show close price.!!
+|_http://www.general-goods.com/admin/store/orders/15053/invoice
 
-register id on invoice !!
+register id on invoice !! and on ticket... also on closed invoices tab
 
 #Employee on ticket log!! and who closed!!
 
@@ -433,7 +435,7 @@ Sale date range, and selling price. and sell price.!!
 
 Calculator Draggable and on all dialogs**
 
-User list long and scroll -> 50-60 items
+#User list long and scroll -> 50-60 items
 
 #RMA usage amount on printed page
 
@@ -464,11 +466,11 @@ Enter percentages for markup.** -> disable by default -> markup for each price l
 
 Product Group, change price together.---
 
-Customer activity report show all customers.!!
+#Customer activity report show all customers.!!
 
 Send item to print tag queue on product edit page and in row price edit.
 
-Product name on dialog and barcode....and packaging.!!!
+Product name on dialog and barcode....and packaging.!!! -> reserve price manager
 
 /\Customer on each log item on inventory.
 
@@ -484,7 +486,7 @@ Re-checkout 2 week limit...Put original date purchase??
 
 RMA on customer statement**
 
-Run front on backend
+Run front on backend -> Monday
 
 Ciggerates -> 200
 
@@ -581,7 +583,7 @@ Add customer name column
 
 Fix registration form
 
-Add other costs on bottom
+#Add other costs on bottom
 
 Promo price with expiry date, with a quantity cap
 
@@ -602,3 +604,23 @@ Customer statement add calendar, add token to apply and submit
 Customer number KMS Quick stop, 1969 bug on invoice history
 
 Show cost on managers on price override
+
+DP hide quote
+
+Do full sync and ignore unsynced tables every night
+
+Latest items all items
+
+Add password edit on front
+
+Disable right click.
+
+Customer Activity Report -> Monthly Customer report, with all sales matching daily sales report.
+
+Add calculator on customer info. --> even not logged in
+
+Save back to original search !!!
+
+Show similar barcode items on bottom in a box.
+
+Add check marks, on search to add to groups.
