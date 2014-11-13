@@ -89,7 +89,7 @@ jQuery(function($) {
 		         url: this.employeeSession.get('apiServer')+'/pos-api/customers/'+this.employeeSession.get("token"),
 		         replace: _.bind(this.resolveSearchRPC, this)
 		      },
-		      limit: 8,
+		      limit: 50,
 		      template: _.template($('#customer-search-result').html())
 		    });
 		},

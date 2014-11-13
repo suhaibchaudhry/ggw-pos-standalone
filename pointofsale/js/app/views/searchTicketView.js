@@ -308,7 +308,7 @@ jQuery(function($) {
 		         url: this.employeeSession.get('apiServer')+'/pos-api/tickets/'+this.employeeSession.get("token"),
 		         replace: _.bind(this.resolveSearchRPC, this)
 		      },
-		      limit: 8,
+		      limit: 50,
 		      template: _.template($('#ticket-search-result').html())
 		    });
 
