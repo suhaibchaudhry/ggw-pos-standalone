@@ -394,13 +394,13 @@ Qty field**
 
 Search on ticket dialog fields**
 
-Favorites list in the order it was scanned in. Create favorite list button on mobile and webiste.!!
+#Favorites list in the order it was scanned in. Create favorite list button #on mobile and webiste.!!
 
 customer create new account from website**
 
 Turn on spinning again on product add.**
 
-Remove more button for 1-2-3 on website catalog, replace with pagination.*
+#Remove more button for 1-2-3 on website catalog, replace with pagination.*
 
 Customer: Ask shipping address (auto populated), box count, case count, and shipping cost.
    On checkout add box, count, shipping cost added to order amount...*
@@ -411,11 +411,11 @@ link back and forth between tickets and show close price.!!
 
 register id on invoice !!
 
-Employee on ticket log!! and who closed!!
+#Employee on ticket log!! and who closed!!
 
-RMA show cash refund receipt!!..change
+#RMA show cash refund receipt!!..change
 
-Calculator form everywhere ven dialogs!!..new calculator
+#Calculator form everywhere ven dialogs!!..new calculator
 
 Quick price edit in row !!
  Cost
@@ -435,22 +435,22 @@ Calculator Draggable and on all dialogs**
 
 User list long and scroll -> 50-60 items
 
-RMA usage amount on printed page
+#RMA usage amount on printed page
 
-Sign up on front!!
+#Sign up on front!!
 
-Re-checkout**
- |_Expire 1 day, period.
+#Re-checkout**
+# |_Expire 2 weeks, period.
 
 queue items for big label print on product item.!!
 
 Search on rma first dialog*
 
-another calcuator
+#another calcuator
 
-Invoice show who created.!!
+#Invoice show who created.!!
 
-Add another customer report with all users...customer activity report!!
+#Add another customer report with all users...customer activity report!!
 
 
 Galaxy s5 issues**
@@ -476,9 +476,9 @@ Product name on dialog and barcode....and packaging.!!!
 
 Red diactivated items on backend list on product page. !!
 
-Ticket log, who opened it on each ticket.!!
-   |_Who closed the ticket on invoice and what register
-   |_Who closed ticket on backend
+#Ticket log, who opened it on each ticket.!!
+#   |_Who closed the ticket on invoice and what register
+#   |_Who closed ticket on backend
 
 Re-checkout 2 week limit...Put original date purchase??
 
@@ -581,7 +581,7 @@ Add customer name column
 
 Fix registration form
 
-Add costs on bottom
+Add other costs on bottom
 
 Promo price with expiry date, with a quantity cap
 
