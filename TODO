@@ -624,3 +624,14 @@ Save back to original search !!!
 Show similar barcode items on bottom in a box.
 
 Add check marks, on search to add to groups.
+
+
+Addressed unsettled Payments:
+
+SELECT cu.uid, cu.cuid, cu.credit_amount, settlements.samount FROM user_term_credits_usages cu
+INNER JOIN (SELECT cs.cuid, SUM(cs.settlement_amount) AS samount FROM user_term_credits_settlements cs GROUP BY cs.cuid) settlements
+ON cu.cuid = settlements.cuid WHERE cu.settled = '0' AND ((cu.credit_amount = settlements.samount) OR ABS(cu.credit_amount-settlements.samount) < '0.01')
+
+SELECT cu.uid, cu.cuid, cu.credit_amount, settlements.samount FROM user_term_credits_usages cu
+INNER JOIN (SELECT cs.cuid, SUM(cs.settlement_amount) AS samount FROM user_term_credits_settlements cs GROUP BY cs.cuid) settlements
+ON cu.cuid = settlements.cuid WHERE cu.settled = '0' AND (cu.credit_amount = settlements.samount)
