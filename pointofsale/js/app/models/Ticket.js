@@ -402,12 +402,14 @@ jQuery(function($) {
                               productId: productId
                             });
 
+      this.trigger('ticket:preloader', true);
       $.ajax({
           type: 'POST',
           url: this.employeeSession.get('apiServer')+'/pos-api/ticket/remove-product',
           data: {request: removeTicketItemRequest},
           timeout: 15000,
           success: function(res, status, xhr) {
+            ticket.trigger('ticket:preloader', false);
             if(!res.status) {
               //User token is rejected by server server.
               ticket.employeeSession.set('login', false);
@@ -415,6 +417,7 @@ jQuery(function($) {
           },
           error: function(xhr, errorType, error) {
             //Something is wrong log user out.
+            ticket.trigger('ticket:preloader', false);
             ticket.employeeSession.set('login', false);
           }
       });
