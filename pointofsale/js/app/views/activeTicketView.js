@@ -85,6 +85,7 @@ jQuery(function($) {
       this.listenTo(this.ticket, 'change:total', this.updateTotal);
       this.listenTo(this.ticket, 'change:productCount', this.updateProductCount);
       this.listenTo(this.ticket, 'ticket:preloader', _.bind(this.appFrame.ticketPreloader, this.appFrame));
+      this.listenTo(this.ticket, 'ticket:checkoutHide', _.bind(this.appFrame.checkoutHidePreloader, this.appFrame));
 
       //AppFrame Buttons
       this.appFrame.$('a.new-ticket-button').on('click', _.bind(this.createNewTicket, this));

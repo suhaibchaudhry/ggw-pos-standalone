@@ -278,17 +278,17 @@ jQuery(function($) {
       });
 
       var updateQuantityRequest = JSON.stringify({token: sessionStorage.token, qtyGraph: qtyGraph, ticketId: this.get('ticketId')});
-      //Start preloader
-      this.trigger('ticket:preloader', true);
+      //Start preloaders
+      ticket.trigger('ticket:preloader', true);
+      ticket.trigger('ticket:checkoutHide', true, ticket.get('status'), ticket.get('locked'));
+
       $.ajax({
         type: 'POST',
         url: this.employeeSession.get('apiServer')+'/pos-api/ticket/update-qty',
         data: {request: updateQuantityRequest},
         timeout: 15000,
         success: function(res, status, xhr) {
-          if(ticket.get('status') == 'pos_in_progress' && !ticket.get('locked')) {
-            $('.ticketSearch .checkout').show();
-          }
+          ticket.trigger('ticket:checkoutHide', false, ticket.get('status'), ticket.get('locked'));
 
           if(!res.status) {
             ticket.employeeSession.set('login', false);
@@ -356,9 +356,7 @@ jQuery(function($) {
 
       productAttributes['locked'] = false;
 
-      if(ticket.get('status') == 'pos_in_progress' && !ticket.get('locked')) {
-        $('.ticketSearch .checkout').hide();
-      }
+      ticket.trigger('ticket:checkoutHide', true, ticket.get('status'), ticket.get('locked'));
 
       $.ajax({
           type: 'POST',
@@ -366,9 +364,7 @@ jQuery(function($) {
           data: {request: addItemToTicketRequest},
           timeout: 15000,
           success: function(res, status, xhr) {
-            if(ticket.get('status') == 'pos_in_progress' && !ticket.get('locked')) {
-              $('.ticketSearch .checkout').show();
-            }
+            ticket.trigger('ticket:checkoutHide', false, ticket.get('status'), ticket.get('locked'));
 
             if(res.status) {
               var id = productAttributes['id'];

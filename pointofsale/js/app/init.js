@@ -20,6 +20,7 @@ jQuery(function($) {
       this.employeeSession = new employeeSession({apiServer: 'http://test.general-goods.com:7000'});
       this.activeCustomer = new activeCustomer();
       this.preloaderSemaphore = 0;
+      this.checkoutHideSemaphore = 0;
 
       //Modal Dialogs
       this.ticketStatusDialogModal = new ticketStatusDialogModal({
@@ -121,6 +122,23 @@ jQuery(function($) {
         $('.loaderOverlay').show();
       } else {
         $('.loaderOverlay').hide();
+      }
+    },
+    checkoutHidePreloader: function(preloader, status, locked) {
+      if(preloader) {
+        this.checkoutHideSemaphore = this.checkoutHideSemaphore+1;
+      } else {
+        this.checkoutHideSemaphore = this.checkoutHideSemaphore-1;
+      }
+
+      if(this.checkoutHideSemaphore > 0) {
+        if(status == 'pos_in_progress' && !locked) {
+          $('.ticketSearch .checkout').hide();
+        }
+      } else {
+        if(status == 'pos_in_progress' && !locked) {
+          $('.ticketSearch .checkout').show();
+        }
       }
     },
     printTicket: function(e) {
