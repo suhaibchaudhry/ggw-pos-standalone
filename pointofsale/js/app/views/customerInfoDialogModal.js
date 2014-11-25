@@ -7,7 +7,7 @@ jQuery(function($) {
       //Initialize RMA Choose dialog
       this.rmaDialogModal = new rmaDialogModal({employeeSession: this.employeeSession});
       this.activeCustomer = attributes['activeCustomer'];
-      this.customerInfoDialogView = new customerInfoDialogView({el: $('.customerInfoOverlay').get(0), activeCustomer: attributes['activeCustomer'], modal: this, employeeSession: attributes['employeeSession'], ticket: attributes['ticket'], rmaDialogModal: this.rmaDialogModal, activeCustomerView: attributes['activeCustomerView']});
+      this.customerInfoDialogView = new customerInfoDialogView({el: $('.customerInfoOverlay').get(0), activeCustomer: attributes['activeCustomer'], modal: this, employeeSession: attributes['employeeSession'], ticket: attributes['ticket'], rmaDialogModal: this.rmaDialogModal, activeCustomerView: attributes['activeCustomerView'], appFrame: attributes['appFrame']});
     },
     beforeCancel: function() {
       return false;
