@@ -631,3 +631,5 @@ Hide RMA if 0 on payments aswell like checkout.
 
 Remove r4032login form local modules on production server.
   |_ Update country defs
+
+Enforce company number over personal number to avoid breaking customer search query.
