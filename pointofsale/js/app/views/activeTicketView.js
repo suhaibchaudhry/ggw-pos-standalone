@@ -160,17 +160,18 @@ jQuery(function($) {
     //DOM Event Controllers
     createNewTicket: function(e) {
       e.preventDefault();
-      if(this.appFrame.checkoutHideSemaphore == 0) {
-        var status = this.ticket.get('status');
-        var total = this.ticket.get('total');
-        var customer = this.activeCustomer.get('id');
 
-        if(status != 'pos_quote' || customer != 0) {
+      var status = this.ticket.get('status');
+      var total = this.ticket.get('total');
+      var customer = this.activeCustomer.get('id');
+
+      if(status != 'pos_quote' || customer != 0) {
+        if(this.appFrame.checkoutHideSemaphore == 0) {
           this.ticket.createTicketOnServer(this.employeeSession.get('login'), true);
           $('.customer-search input.tt-query').attr('disabled', false);
+        } else {
+          alert("Cannot create a new ticket while product scanning is in progress.");
         }
-      } else {
-        alert("Cannot create a new ticket while product scanning is in progress.");
       }
     },
     activateScanFocus: function(e) {
