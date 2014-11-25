@@ -146,20 +146,40 @@ jQuery(function($) {
       this.activeTicketRegion.printTicket();
     },
     loadRecentTickets: function(e) {
-      this.invoiceDialog.display(true);
-      this.invoiceDialog.invoiceDialogView.loadRecentInvoices(e);
+      if(this.checkoutHideSemaphore == 0) {
+        this.invoiceDialog.display(true);
+        this.invoiceDialog.invoiceDialogView.loadRecentInvoices(e);
+      } else {
+        e.preventDefault();
+        alert("Cannot change ticket while product scanning is in progress.");
+      }
     },
     loadQuoteTickets: function(e) {
-      this.invoiceDialog.display(true);
-      this.invoiceDialog.invoiceDialogView.loadQuoteInvoices(e);
+      if(this.checkoutHideSemaphore == 0) {
+        this.invoiceDialog.display(true);
+        this.invoiceDialog.invoiceDialogView.loadQuoteInvoices(e);
+      } else {
+        e.preventDefault();
+        alert("Cannot change ticket while product scanning is in progress.");
+      }
     },
     loadOpenTickets: function(e) {
-      this.invoiceDialog.display(true);
-      this.invoiceDialog.invoiceDialogView.loadOpenInvoices(e);
+      if(this.checkoutHideSemaphore == 0) {
+        this.invoiceDialog.display(true);
+        this.invoiceDialog.invoiceDialogView.loadOpenInvoices(e);
+      } else {
+        e.preventDefault();
+        alert("Cannot change ticket while product scanning is in progress.");
+      }
     },
     loadCloseTickets: function(e) {
-      this.invoiceDialog.display(true);
-      this.invoiceDialog.invoiceDialogView.loadClosedInvoices(e);
+      if(this.checkoutHideSemaphore == 0) {
+        this.invoiceDialog.display(true);
+        this.invoiceDialog.invoiceDialogView.loadClosedInvoices(e);
+      } else {
+        e.preventDefault();
+        alert("Cannot change ticket while product scanning is in progress.");
+      }
     },
     calculatorInitiate: function(e) {
       e.preventDefault();
