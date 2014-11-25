@@ -21,6 +21,7 @@ jQuery(function($) {
 		initialize: function(attributes, options) {
 			this.lockInterval = false;
 			this.employeeSession = attributes['employeeSession'];
+			this.appFrame = attributes['appFrame'];
 			this.ticketStatusDialogModal = attributes['ticketStatusDialogModal'];
 			this.rma_process_debounced = _.debounce(this.rma_process, 2000, true);
 			var authCallback = _.bind(this.authorizedCallback, this);
@@ -245,42 +246,45 @@ jQuery(function($) {
                 ticketId: datum['ticketId'],
                 customerUid: datum['customerUid']
             });*/
-			
-			$.ajax({
-	          type: 'GET',
-	          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+datum['ticketId']+'&register_id='+$('#register-id').html()+'&op=acquire',
-	          timeout: 1000,
-	          success: function(res) {
-	          	if(res.status) {
-	          		ticket.trigger('ticket:preloader', true);
-		            //Get Latest Customer UID on ticket, incase cache is dirty.
-		            var currentTicketRequest = JSON.stringify({token: sessionStorage.token, ticketId: datum['ticketId']});
-		            $.ajax({
-			          type: 'POST',
-			          url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/get-current',
-			          data: {request: currentTicketRequest},
-			          timeout: 15000,
-			          success: function(res, status, xhr) {
-			            if(res.status) {
-			              ticket.set(res.ticket);
-			            } else {
-			              ticket.employeeSession.set('login', false);
-			            }
-			            ticket.trigger('ticket:preloader', false);
-			          },
-			          error: function(xhr, errorType, error) {
-			          	ticket.trigger('ticket:preloader', false);
-			            ticket.employeeSession.set('login', false);
-			          }
-			        });
-	          	} else {
-	          		alert(res.message);
-	          	}
-	          },
-	          error: function(xhr, errorType, error) {
-	            ticket.employeeSession.set('login', false);
-	          }
-	        });
+			if(this.appFrame.checkoutHideSemaphore == 0) {
+				$.ajax({
+		          type: 'GET',
+		          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+datum['ticketId']+'&register_id='+$('#register-id').html()+'&op=acquire',
+		          timeout: 1000,
+		          success: function(res) {
+		          	if(res.status) {
+		          		ticket.trigger('ticket:preloader', true);
+			            //Get Latest Customer UID on ticket, incase cache is dirty.
+			            var currentTicketRequest = JSON.stringify({token: sessionStorage.token, ticketId: datum['ticketId']});
+			            $.ajax({
+				          type: 'POST',
+				          url: ticket.employeeSession.get('apiServer')+'/pos-api/ticket/get-current',
+				          data: {request: currentTicketRequest},
+				          timeout: 15000,
+				          success: function(res, status, xhr) {
+				            if(res.status) {
+				              ticket.set(res.ticket);
+				            } else {
+				              ticket.employeeSession.set('login', false);
+				            }
+				            ticket.trigger('ticket:preloader', false);
+				          },
+				          error: function(xhr, errorType, error) {
+				          	ticket.trigger('ticket:preloader', false);
+				            ticket.employeeSession.set('login', false);
+				          }
+				        });
+		          	} else {
+		          		alert(res.message);
+		          	}
+		          },
+		          error: function(xhr, errorType, error) {
+		            ticket.employeeSession.set('login', false);
+		          }
+		        });
+			} else {
+			    alert("Cannot change ticket while product scanning is in progress.");
+			}
 		},
 		resolveSearchRPC: function(url, uriEncodedQuery) {
 			//Preprocess URL: Strip forward slashes to make compatible with Drupal GET arg syntax, Decouple later via POST. 

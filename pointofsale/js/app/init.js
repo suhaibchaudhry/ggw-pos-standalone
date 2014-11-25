@@ -34,7 +34,8 @@ jQuery(function($) {
       this.searchTicketRegion = new searchTicketView({
         el: this.$('.ticketSearch').get(0),
         ticketStatusDialogModal: this.ticketStatusDialogModal,
-        employeeSession: this.employeeSession
+        employeeSession: this.employeeSession,
+        appFrame: this
       });
 
       this.activeCustomerRegion = new activeCustomerView({
