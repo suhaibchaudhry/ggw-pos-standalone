@@ -16,7 +16,7 @@ jQuery(function($) {
       this.activeCustomer = attributes['activeCustomer'];
       this.employeeSession = attributes['employeeSession'];
       this.modal = attributes['modal'];
-      this.appFrame =attributes['appFrame'];
+      this.appFrame = attributes['appFrame'];
     },
     template: _.template($('#ticket-status-modal').html()),
     render: function() {
