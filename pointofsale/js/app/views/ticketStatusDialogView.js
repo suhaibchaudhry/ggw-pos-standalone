@@ -16,6 +16,7 @@ jQuery(function($) {
       this.activeCustomer = attributes['activeCustomer'];
       this.employeeSession = attributes['employeeSession'];
       this.modal = attributes['modal'];
+      this.appFrame =attributes['appFrame'];
     },
     template: _.template($('#ticket-status-modal').html()),
     render: function() {
@@ -85,26 +86,30 @@ jQuery(function($) {
       this.modal.switch(false);
     },
     selectInvoice: function(e) {
-      var ticketId = $('td:eq(1)', e.currentTarget).text();
-      var that = this;
-      var ticket = that.activeTicketView.ticket;
-      if(ticketId) {
-        $.ajax({
-          type: 'GET',
-          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+ticketId+'&register_id='+$('#register-id').html()+'&op=acquire',
-          timeout: 1000,
-          success: function(res) {
-            if(res.status) {
-              that.modal.switch(false);
-              that.loadSelectedTicket(ticketId);
-            } else {
-              alert(res.message);
+      if(this.appFrame.checkoutHideSemaphore == 0) {
+        var ticketId = $('td:eq(1)', e.currentTarget).text();
+        var that = this;
+        var ticket = that.activeTicketView.ticket;
+        if(ticketId) {
+          $.ajax({
+            type: 'GET',
+            url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+ticketId+'&register_id='+$('#register-id').html()+'&op=acquire',
+            timeout: 1000,
+            success: function(res) {
+              if(res.status) {
+                that.modal.switch(false);
+                that.loadSelectedTicket(ticketId);
+              } else {
+                alert(res.message);
+              }
+            },
+            error: function(xhr, errorType, error) {
+              ticket.employeeSession.set('login', false);
             }
-          },
-          error: function(xhr, errorType, error) {
-            ticket.employeeSession.set('login', false);
-          }
-        });
+          });
+        }
+      } else {
+        alert("Cannot change ticket while product scanning is in progress.");
       }
     },
     loadSelectedTicket: function(ticketId) {

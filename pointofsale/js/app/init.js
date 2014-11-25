@@ -25,7 +25,8 @@ jQuery(function($) {
       //Modal Dialogs
       this.ticketStatusDialogModal = new ticketStatusDialogModal({
         activeCustomer: this.activeCustomer,
-        employeeSession: this.employeeSession
+        employeeSession: this.employeeSession,
+        appFrame: this
       });
 
   		//Regional Views

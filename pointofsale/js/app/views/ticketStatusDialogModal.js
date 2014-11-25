@@ -5,7 +5,7 @@ jQuery(function($) {
     },
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
-      this.ticketStatusDialogView = new ticketStatusDialogView({el: $('.statusOverlay').get(0), activeCustomer: attributes['activeCustomer'], employeeSession: attributes['employeeSession'], modal: this});
+      this.ticketStatusDialogView = new ticketStatusDialogView({el: $('.statusOverlay').get(0), activeCustomer: attributes['activeCustomer'], employeeSession: attributes['employeeSession'], modal: this, appFrame: attributes['appFrame']});
     },
     beforeCancel: function() {
       return false;
