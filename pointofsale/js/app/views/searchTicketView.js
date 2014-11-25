@@ -237,16 +237,17 @@ jQuery(function($) {
         	}
     	},
 		itemSelected: function(e, datum) {
-			var ticket = this.ticket;
-			this.$searchbox.typeahead('setQuery', '');
-			/*
-			ticket.set({
-                status: datum['ticketStatus'],
-                status_en: datum['ticketStatus_en'],
-                ticketId: datum['ticketId'],
-                customerUid: datum['customerUid']
-            });*/
 			if(this.appFrame.checkoutHideSemaphore == 0) {
+				var ticket = this.ticket;
+				this.$searchbox.typeahead('setQuery', '');
+				/*
+				ticket.set({
+	                status: datum['ticketStatus'],
+	                status_en: datum['ticketStatus_en'],
+	                ticketId: datum['ticketId'],
+	                customerUid: datum['customerUid']
+	            });*/
+
 				$.ajax({
 		          type: 'GET',
 		          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+datum['ticketId']+'&register_id='+$('#register-id').html()+'&op=acquire',
