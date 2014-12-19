@@ -645,3 +645,20 @@ Mom and pop wholesale, black mamba two
 #activity report showing 0 balances;
 Full activity report like sales report consolidated.
 Delete customer hooks and delete da designers customer.
+
+Order doesnt dissappear...
+
+#Register 4, logging off. -> Move server
+
+#Move live server to nginx to avoid file permissions and 14.04
+          |_ Full sync ignore cache and unreplicated tables
+          |_ Run full sync and restart replication every night
+
+Send customer push notification from page
+           Send from page and mobile orders
+
+Store name edit, and full signup page.
+
+Ask for static ip.
+
+Remove alias generation message.
