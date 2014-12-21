@@ -28,7 +28,6 @@ jQuery(function($) {
 			this.authorizationModal = new authorizationModal({authorizedCallback: authCallback, employeeSession: attributes['employeeSession'], el: $('.unlockAuthorizationOverlay'), title: 'Admin Authorization'});
 			this.lastScannedItemDebounced = _.debounce(this.lastScannedItem, 500);
 			this.lastItemScanned = this.$('.last-scan-item');
-			Mousetrap.bind('ctrl+shift+i', _.bind(this.inventoryCatch, this));
 		},
 		setActiveTicket: function(activeTicketView) {
 			this.activeTicketView = activeTicketView;
@@ -318,6 +317,7 @@ jQuery(function($) {
 		    });
 
 		    Mousetrap.bind('shift+d p', _.bind(this.mouseTrapCatch, this));
+		    Mousetrap.bind('ctrl+shift+i', _.bind(this.inventoryCatch, this));
 		},
 		rma_process_credit_return: function(e) {
 			e.preventDefault();
@@ -389,6 +389,7 @@ jQuery(function($) {
 			}
 
 			Mousetrap.unbind('shift+d p');
+			Mousetrap.unbind('ctrl+shift+i');
 			this.$('.ticket-search input.search').typeahead('destroy');
 			this.$('.ticket-search').empty();
 			this.$('.category-breakdown').empty();
