@@ -28,6 +28,7 @@ jQuery(function($) {
 			this.authorizationModal = new authorizationModal({authorizedCallback: authCallback, employeeSession: attributes['employeeSession'], el: $('.unlockAuthorizationOverlay'), title: 'Admin Authorization'});
 			this.lastScannedItemDebounced = _.debounce(this.lastScannedItem, 500);
 			this.lastItemScanned = this.$('.last-scan-item');
+			this.redisAttempts = 0;
 		},
 		setActiveTicket: function(activeTicketView) {
 			this.activeTicketView = activeTicketView;
@@ -42,6 +43,7 @@ jQuery(function($) {
 		},
 		changeTicket: function(ticket, ticketId, options) {
 			var previous_ticketId = ticket.previous('ticketId');
+			var that = this;
 
 			if(this.lockInterval) {
 				clearInterval(this.lockInterval);
@@ -55,8 +57,23 @@ jQuery(function($) {
 			          type: 'GET',
 			          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+ticketId+'&register_id='+$('#register-id').html()+'&op=renew',
 			          timeout: 3000,
+			          success: function(res, status, xhr) {
+			          	if(res.status) {
+			          		that.redisAttempts = 0;
+			          	} else {
+			          		that.redisAttempts++;
+			          		if(that.redisAttempts >= 3) {
+			          			ticket.employeeSession.set('login', false);
+			          			alert("Multiple attempts to unlock ticket resulted in failure.");
+			          		}
+			          	}
+			          },
 			          error: function(xhr, errorType, error) {
-			            ticket.employeeSession.set('login', false);
+			            that.redisAttempts++;
+		          		if(that.redisAttempts >= 3) {
+		          			ticket.employeeSession.set('login', false);
+		          			alert("Multiple attempts to unlock ticket resulted in failure.");
+		          		}
 			          }
 			        });
 				}, 30000);
@@ -69,8 +86,15 @@ jQuery(function($) {
 		          type: 'GET',
 		          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+previous_ticketId+'&register_id='+$('#register-id').html()+'&op=unlock',
 		          timeout: 3000,
+		          success: function(res, status, xhr) {
+		          	if(!res.status) {
+		          		ticket.employeeSession.set('login', false);
+		          		$.jGrowl("Could not unlock previous ticket.");
+		          	}
+		          },
 		          error: function(xhr, errorType, error) {
 		            ticket.employeeSession.set('login', false);
+		            $.jGrowl("Could not unlock previous ticket.");
 		          }
 		        });
 			}
@@ -280,6 +304,7 @@ jQuery(function($) {
 		          },
 		          error: function(xhr, errorType, error) {
 		            ticket.employeeSession.set('login', false);
+		            alert("Failed to acquire ticket.");
 		          }
 		        });
 			} else {
@@ -382,8 +407,15 @@ jQuery(function($) {
 		          type: 'GET',
 		          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+previous_ticket_id+'&register_id='+$('#register-id').html()+'&op=unlock',
 		          timeout: 3000,
+		          success: function(res, status, xhr) {
+		          	if(!res.status) {
+		          		ticket.employeeSession.set('login', false);
+		          		$.jGrowl("Could not unlock previous ticket.");
+		          	}
+		          },
 		          error: function(xhr, errorType, error) {
 		            ticket.employeeSession.set('login', false);
+		            $.jGrowl("Could not unlock previous ticket.");
 		          }
 		        });
 			}
