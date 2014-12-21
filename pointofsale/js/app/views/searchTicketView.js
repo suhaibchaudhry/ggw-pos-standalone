@@ -317,7 +317,7 @@ jQuery(function($) {
 		    });
 
 		    Mousetrap.bind('shift+d p', _.bind(this.mouseTrapCatch, this));
-		    Mousetrap.bind('ctrl+shift+i', _.bind(this.inventoryCatch, this));
+		    Mousetrap.bind('ctrl+alt+i', _.bind(this.inventoryCatch, this));
 		},
 		rma_process_credit_return: function(e) {
 			e.preventDefault();
@@ -389,7 +389,7 @@ jQuery(function($) {
 			}
 
 			Mousetrap.unbind('shift+d p');
-			Mousetrap.unbind('ctrl+shift+i');
+			Mousetrap.unbind('ctrl+alt+i');
 			this.$('.ticket-search input.search').typeahead('destroy');
 			this.$('.ticket-search').empty();
 			this.$('.category-breakdown').empty();
