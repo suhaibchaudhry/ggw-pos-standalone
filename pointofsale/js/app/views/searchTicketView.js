@@ -54,7 +54,7 @@ jQuery(function($) {
 					$.ajax({
 			          type: 'GET',
 			          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+ticketId+'&register_id='+$('#register-id').html()+'&op=renew',
-			          timeout: 1000,
+			          timeout: 3000,
 			          error: function(xhr, errorType, error) {
 			            ticket.employeeSession.set('login', false);
 			          }
@@ -68,7 +68,7 @@ jQuery(function($) {
 				$.ajax({
 		          type: 'GET',
 		          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+previous_ticketId+'&register_id='+$('#register-id').html()+'&op=unlock',
-		          timeout: 1000,
+		          timeout: 3000,
 		          error: function(xhr, errorType, error) {
 		            ticket.employeeSession.set('login', false);
 		          }
@@ -250,7 +250,7 @@ jQuery(function($) {
 				$.ajax({
 		          type: 'GET',
 		          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+datum['ticketId']+'&register_id='+$('#register-id').html()+'&op=acquire',
-		          timeout: 1000,
+		          timeout: 3000,
 		          success: function(res) {
 		          	if(res.status) {
 		          		ticket.trigger('ticket:preloader', true);
@@ -381,7 +381,7 @@ jQuery(function($) {
 				$.ajax({
 		          type: 'GET',
 		          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+previous_ticket_id+'&register_id='+$('#register-id').html()+'&op=unlock',
-		          timeout: 1000,
+		          timeout: 3000,
 		          error: function(xhr, errorType, error) {
 		            ticket.employeeSession.set('login', false);
 		          }
