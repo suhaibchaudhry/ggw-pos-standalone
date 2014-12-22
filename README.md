@@ -39,7 +39,7 @@ sudo update-initramfs -u
 sudo update-grub
 
 Add user to 'dialout' group for triggering register.
-
+sudo adduser user dialout
 Deployment Todo:
 ----------------
 Test screen count dependency
