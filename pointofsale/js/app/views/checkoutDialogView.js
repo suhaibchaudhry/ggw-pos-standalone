@@ -204,7 +204,9 @@ jQuery(function($) {
               alert("Checkout Complete.");
               //Close ticket
               ticket.set('status_en', 'Closed Ticket');
-              ticket.set('status', 'pos_completed');         
+              ticket.set('status', 'pos_completed');
+              //Eject Cash Drawer
+              $.ajax({url: 'http://127.0.0.1:3000/drawer', type: 'GET'});
             } else {
               alert(res.message);
             }
@@ -276,6 +278,8 @@ jQuery(function($) {
                 //Close ticket
                 ticket.set('status_en', 'Closed Ticket');
                 ticket.set('status', 'pos_completed');
+                //Eject Cash Drawer
+                $.ajax({url: 'http://127.0.0.1:3000/drawer', type: 'GET'});
               } else {
                 alert(res.message);
               }
@@ -546,6 +550,8 @@ jQuery(function($) {
                   ticket.set('status', 'pos_completed');
                   alert(res.message);
                   that.closeCheckoutDialog();
+                  //Eject Cash Drawer
+                  $.ajax({url: 'http://127.0.0.1:3000/drawer', type: 'GET'});
                 } else {
                   that.$('.status-message').removeClass('in-progress');
                   alert(res.error);
@@ -590,6 +596,8 @@ jQuery(function($) {
               ticket.set('status', 'pos_completed');
               alert(res.message);
               that.closeCheckoutDialog();
+              //Eject Cash Drawer
+              $.ajax({url: 'http://127.0.0.1:3000/drawer', type: 'GET'});
             } else {
               that.$('.status-message').removeClass('in-progress');
               alert(res.error);
