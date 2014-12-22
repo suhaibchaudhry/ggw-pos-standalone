@@ -324,7 +324,7 @@ Abid
 
 #Inventory page
 # |_ Inventory log of all products
-  |_Change order and pagination
+#  |_Change order and pagination
 
 #Clear DP on range
 
@@ -472,9 +472,8 @@ Send item to print tag queue on product edit page and in row price edit.
 
 Product name on dialog and barcode....and packaging.!!! -> reserve price manager
 
-/\Customer on each log item on inventory.
-
-/\Show more button on dialog not on main page on inventory page.
+#/\Customer on each log item on inventory.
+#/\Show more button on dialog not on main page on inventory page.
 
 Red diactivated items on backend list on product page. !!
 
@@ -563,9 +562,9 @@ Add cron to clear prints.
 
 #Permissions
 
-Inventory manager paginate
+#Inventory manager paginate
 
-less details on inventory manager
+#less details on inventory manager
 
 Inline edit and percentage markup
 
@@ -613,7 +612,7 @@ Latest items all items
 
 Add password edit on front
 
-Disable right click.
+/\Disable right click.
 
 Customer Activity Report -> Monthly Customer report, with all sales matching daily sales report.
 
