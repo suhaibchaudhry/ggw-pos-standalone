@@ -132,3 +132,18 @@ a.exit-app:hover {
 #edit-reset-wrapper {
 	clear: both;
 }
+.item-pagination ul {
+	margin: 0;
+	padding: 0;
+}
+.item-pagination ul li {
+	list-style: none inside none;
+}
+
+.item-pagination ul li.active, .item-pagination ul li a {
+	padding: 10px;
+	border: 2px solid #ccc;
+	margin: 10px;
+	float: left;
+	text-decoration: none;
+}
