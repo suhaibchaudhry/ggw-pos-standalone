@@ -6,10 +6,12 @@ jQuery(function($) {
     		"keyup .item-search input.search": 'searchKeyUp',
     		"click .item-search a.clear-search": 'clearProductSearch',
     		"typeahead:selected .item-search": 'itemSelected',
-    		"click .inventory-item": 'inventoryItemSelected'
+    		"click .inventory-item": 'inventoryItemSelected',
+    		"click .item-pagination ul li a": 'changeInventoryPage'
     	},
     	searchBoxTemplate: _.template($('#item-search-components').html()),
     	inventoryOutterTemplate: _.template($('#inventory-line-item-heading').html()),
+    	paginationTemplate: _.template($('#pagination-template').html()),
     	initialize: function(attributes, options) {
     		var data = JSON.parse(decodeURIComponent(this.getUrlVars()['data']));
 
@@ -128,7 +130,11 @@ jQuery(function($) {
 
 	      this.$searchbox.typeahead('setQuery', '');
 	    },
-	    loadInventoryEntries: function() {
+	    loadInventoryEntries: function(currentPage) {
+	      if(typeof currentPage == "undefined") {
+	      	currentPage = '1';
+	      }
+
 	      var inventoryRequest = JSON.stringify({
 	        token: this.token
 	      });
@@ -136,52 +142,42 @@ jQuery(function($) {
 
 	      $.ajax({
 	        type: 'POST',
-	        url: this.api_server+'/pos-api/inventory/list',
+	        url: this.api_server+'/pos-api/inventory/list?page='+currentPage,
 	        data: {request: inventoryRequest},
 	        timeout: 10000,
 	        success: function(res, status, xhr) {
-	          that.loadInventoryList(res.inventory_list);
+	          that.loadInventoryList(res.inventory_list, res.total_pages, currentPage);
 	        },
 	        error: function(xhr, errorType, error) {
 	          alert("Could not connect to the network. Please check connection.");
 	        }
 	      });
 	    },
-	    loadInventoryList: function(inventoryList) {
+	    loadInventoryList: function(inventoryList, total_pages, currentPage) {
 	    	var that = this;
+	    	var $container = this.$('.ticket-container');
+	    	$container.empty().append(this.paginationTemplate({total_pages: total_pages, currentPage: currentPage}));
 	    	$.each(inventoryList, function(key, e) {
 	    		that.getItemByNid(key, e);
 	    	});
+	    	$container.append(this.paginationTemplate({total_pages: total_pages, currentPage: currentPage}));
+	    	$container.scrollTop(0);
 	    },
 	    itemSelected: function(e, datum) {
 	    	this.$searchbox.typeahead('setQuery', '');
 	    	this.$clearSearch.hide();
-	    	console.log(datum);
 	    	this.modifyStockDialog.openDialog(datum['id'], datum['name'], datum['packaging'], datum['thumbnail']);
 	    },
 	    inventoryItemSelected: function(e) {
 	    	this.modifyStockDialog.openDialog(e.currentTarget.dataset.productNid, e.currentTarget.dataset.productName, e.currentTarget.dataset.productPackaging, e.currentTarget.dataset.productImage);
 	    },
-	    getItemByNid: function(nid, log_events) {
-	      var itemRequestByNid = JSON.stringify({
-	        token: this.token,
-	        product_nid: nid
-	      });
-
-	      var that = this;
-
-	      $.ajax({
-	        type: 'POST',
-	        url: this.api_server+'/pos-api/inventory/lookup',
-	        data: {request: itemRequestByNid},
-	        timeout: 10000,
-	        success: function(res, status, xhr) {
-	          that.$('.ticket-container').append(that.inventoryOutterTemplate({nid: nid, product: res.product, log_events: log_events}));
-	        },
-	        error: function(xhr, errorType, error) {
-	          alert("Could not connect to the network. Please check connection.");
-	        }
-	      });
+	    getItemByNid: function(key, element) {
+	      this.$('.ticket-container').append(this.inventoryOutterTemplate({nid: element.product_nid, product: element.product, log_events: element.event_logs}));
+	    },
+	    changeInventoryPage: function(e) {
+	    	e.preventDefault();
+	    	e.stopPropagation();
+	    	this.loadInventoryEntries(e.currentTarget.dataset.pageNum);
 	    }
 	});
 });
