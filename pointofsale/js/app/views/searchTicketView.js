@@ -64,7 +64,7 @@ jQuery(function($) {
 			          		that.redisAttempts++;
 			          		if(that.redisAttempts >= 3) {
 			          			ticket.employeeSession.set('login', false);
-			          			alert("Multiple attempts to unlock ticket resulted in failure.");
+			          			$.jGrowl("Multiple attempts to unlock ticket resulted in failure.");
 			          		}
 			          	}
 			          },
@@ -72,7 +72,7 @@ jQuery(function($) {
 			            that.redisAttempts++;
 		          		if(that.redisAttempts >= 3) {
 		          			ticket.employeeSession.set('login', false);
-		          			alert("Multiple attempts to unlock ticket resulted in failure.");
+		          			$.jGrowl("Multiple attempts to unlock ticket resulted in failure.");
 		          		}
 			          }
 			        });
@@ -88,12 +88,14 @@ jQuery(function($) {
 		          timeout: 3000,
 		          success: function(res, status, xhr) {
 		          	if(!res.status) {
-		          		ticket.employeeSession.set('login', false);
+		          		//Forgive Unlock Error
+		          		//ticket.employeeSession.set('login', false);
 		          		$.jGrowl("Could not unlock previous ticket.");
 		          	}
 		          },
 		          error: function(xhr, errorType, error) {
-		            ticket.employeeSession.set('login', false);
+		            //Forgive Unlock Error
+		            //ticket.employeeSession.set('login', false);
 		            $.jGrowl("Could not unlock previous ticket.");
 		          }
 		        });
@@ -304,7 +306,7 @@ jQuery(function($) {
 		          },
 		          error: function(xhr, errorType, error) {
 		            ticket.employeeSession.set('login', false);
-		            alert("Failed to acquire ticket.");
+		            $.jGrowl("Failed to acquire ticket.");
 		          }
 		        });
 			} else {
@@ -409,12 +411,14 @@ jQuery(function($) {
 		          timeout: 3000,
 		          success: function(res, status, xhr) {
 		          	if(!res.status) {
-		          		ticket.employeeSession.set('login', false);
+		          		//Forgive Unlock Error
+		          		//ticket.employeeSession.set('login', false);
 		          		$.jGrowl("Could not unlock previous ticket.");
 		          	}
 		          },
 		          error: function(xhr, errorType, error) {
-		            ticket.employeeSession.set('login', false);
+		          	//Forgive Unlock Error
+		            //ticket.employeeSession.set('login', false);
 		            $.jGrowl("Could not unlock previous ticket.");
 		          }
 		        });
