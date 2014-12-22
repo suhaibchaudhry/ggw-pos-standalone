@@ -616,6 +616,9 @@ jQuery(function($) {
     },
     printReceipt: function(res) {
       var ticketId = this.ticket.get('ticketId');
+      //Eject Cash Drawer
+      $.ajax({url: 'http://127.0.0.1:3000/drawer', type: 'GET'});
+
       //Print Ticket
       //window.open(this.employeeSession.get('apiServer')+'/admin/invoice/print/'+ticketId+'?token='+this.employeeSession.get("token"));
       if(confirm('Would you like to print a receipt?')) {
