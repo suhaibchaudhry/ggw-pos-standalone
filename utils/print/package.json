@@ -6,7 +6,8 @@
     "wkhtmltopdf": "0.x.x",
     "express": "~4.0.0",
     "body-parser": "~1.0.0",
-    "tmp": "0.x.x"
+    "tmp": "0.x.x",
+    "glob": "4.x.x"
   },
   "engine": "node >= 0.4.1"
 }
