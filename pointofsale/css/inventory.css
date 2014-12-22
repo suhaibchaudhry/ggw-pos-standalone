@@ -146,4 +146,13 @@ a.exit-app:hover {
 	margin: 10px;
 	float: left;
 	text-decoration: none;
+	min-width: 15pt;
+	text-align: center;
+	color: #2DA3F9;
+	background: #F0F0F0;
+}
+
+.item-pagination ul li.active, .item-pagination ul li a:hover {
+	color: #000;
+	background: #fff;
 }

@@ -162,7 +162,7 @@ jQuery(function($) {
 	    loadInventoryList: function(inventoryList, total_pages, currentPage) {
 	    	var that = this;
 	    	var $container = this.$('.ticket-container');
-	    	$container.empty().append(this.paginationTemplate({total_pages: total_pages, currentPage: currentPage}));
+	    	$container.empty();
 	    	$.each(inventoryList, function(key, e) {
 	    		that.getItemByNid(key, e);
 	    	});
