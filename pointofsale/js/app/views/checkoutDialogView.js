@@ -594,8 +594,6 @@ jQuery(function($) {
               ticket.set('status', 'pos_completed');
               alert(res.message);
               that.closeCheckoutDialog();
-              //Eject Cash Drawer
-              $.ajax({url: 'http://127.0.0.1:3000/drawer', type: 'GET'});
             } else {
               that.$('.status-message').removeClass('in-progress');
               alert(res.error);
