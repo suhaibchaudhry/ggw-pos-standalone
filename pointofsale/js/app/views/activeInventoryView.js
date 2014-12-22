@@ -17,12 +17,15 @@ jQuery(function($) {
 
     		this.api_server = data.api_server;
     		this.token = data.token;
+    		this.appFrame = attributes["appFrame"];
 
     		this.modifyStockDialog = new modifyStockDialog({}, {api_server: this.api_server, token: this.token});
 
-    		this.render();
     		this.focusSearch();
     		$('.app-wrap').on('click', _.bind(this.focusSearch, this));
+
+    		this.listenTo(this, 'inventory:preloader', _.bind(this.appFrame.inventoryPreloader, this.appFrame));
+    		this.render();
     	},
     	getUrlVars: function() {
 		    var vars = {};
@@ -131,6 +134,7 @@ jQuery(function($) {
 	      this.$searchbox.typeahead('setQuery', '');
 	    },
 	    loadInventoryEntries: function(currentPage) {
+	      this.trigger('inventory:preloader', true);
 	      if(typeof currentPage == "undefined") {
 	      	currentPage = '1';
 	      }
@@ -147,9 +151,11 @@ jQuery(function($) {
 	        timeout: 10000,
 	        success: function(res, status, xhr) {
 	          that.loadInventoryList(res.inventory_list, res.total_pages, currentPage);
+	          that.trigger('inventory:preloader', false);
 	        },
 	        error: function(xhr, errorType, error) {
 	          alert("Could not connect to the network. Please check connection.");
+	          that.trigger('inventory:preloader', false);
 	        }
 	      });
 	    },
