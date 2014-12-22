@@ -3,6 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var tmp = require('tmp');
 var exec = require('child_process').exec;
+var glob = require("glob");
 
 var app = express();
 app.use(bodyParser.json());
@@ -27,6 +28,15 @@ app.post('/', function(req, res){
     } else {
       res.send("Printing failed. Ticket not found.");
     }
+});
+
+app.get('/drawer', function(req, res) {
+	glob("/dev/ttyUSB*", {}, function (er, files) {
+		for(i in files) {
+			exec('echo "open" > '+files[i]);
+		}
+	});
+	res.send("Drawer ejected.");
 });
 
 app.listen(3000);
