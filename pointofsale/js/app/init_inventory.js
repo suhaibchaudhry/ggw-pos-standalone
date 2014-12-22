@@ -22,7 +22,6 @@ jQuery(function($) {
       location.reload();
     },
     inventoryPreloader: function(preloader) {
-      console.log(preloader);
       if(preloader) {
         this.preloaderSemaphore = this.preloaderSemaphore+1;
       } else {
