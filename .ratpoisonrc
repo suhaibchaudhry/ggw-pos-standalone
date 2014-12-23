@@ -2,12 +2,14 @@ startup_message off
 
 exec xsetroot -display :0.0 -cursor_name left_ptr -bg black
 
-exec $HOME/ggw-pos-standalone/init_pos.sh
-exec nodewebkit $HOME/ggw-pos-standalone/pointofsale
+#exec $HOME/ggw-pos-standalone/init_pos.sh
+#exec nodewebkit $HOME/ggw-pos-standalone/pointofsale
 
-nextscreen
+exec chromium-browser --app="file:///home/posuser/ggw-pos-standalone/pointofsale/main.html" --disable-web-security
 
-exec $HOME/ggw-pos-standalone/init_second_screen.sh
+#nextscreen
+
+#exec $HOME/ggw-pos-standalone/init_second_screen.sh
 
 # unbind *all* keys - Disable c and N after before deploying
 unbind a
