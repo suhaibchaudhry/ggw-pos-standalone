@@ -5,7 +5,7 @@ Required/Optional Packages:
 ---------------------------
 xorg-dev and libX11-dev are required to compile utilities.
 
-node npm and nodewebkit in global space
+node npm and nodewebkit in global space or chromium-browser with chromium-codecs-ffmpeg chromium-codecs-ffmpeg-extra
 
 Xorg -> Display Server
 
