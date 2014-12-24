@@ -305,7 +305,10 @@ jQuery(function($) {
           }, 3000);
         });
       } else {
-        alertify.alert("No items could be found for barcode: "+barcode);
+        that.$searchbox.blur();
+        alertify.alert("No items could be found for barcode: "+barcode, function() {
+          that.$searchbox.focus();
+        });
       }
     },
     //Render and demolish logic, and other view methods.
