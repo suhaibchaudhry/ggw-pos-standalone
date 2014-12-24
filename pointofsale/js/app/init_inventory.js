@@ -21,7 +21,7 @@ jQuery(function($) {
           pinned: true,
           padding: true,
           overflow: true,
-          maintainFocus: false,
+          maintainFocus: true,
           transition:'pulse',
 
           // notifier defaults
