@@ -327,7 +327,10 @@ jQuery(function($) {
             ticket.addItemToCollection(res.product, qty);
           } else {
             //$.jGrowl("Could not find item with barcode: <strong>"+barcode+"</strong>");
-            alertify.alert("Could not find item with barcode: "+barcode);
+            that.$searchbox.blur();
+            alertify.alert("Could not find item with barcode: "+barcode, function() {
+              that.$searchbox.focus();
+            });
           }
         },
         error: function(xhr, errorType, error) {
