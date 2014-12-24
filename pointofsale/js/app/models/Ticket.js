@@ -180,10 +180,10 @@ jQuery(function($) {
               $.ajax({
                 type: 'GET',
                 url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+res.ticketId+'&register_id='+$('#register-id').html()+'&op=acquire',
-                timeout: 1000,
-                error: function(xhr, errorType, error) {
+                timeout: 1000//,
+                /*error: function(xhr, errorType, error) {
                   ticket.employeeSession.set('login', false);
-                }
+                }*/
               });
             }
           } else {
