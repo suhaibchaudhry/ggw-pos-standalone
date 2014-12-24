@@ -221,6 +221,7 @@ jQuery(function($) {
       }
     },
     searchKeyUp: function(e) {
+      var that = this;
       if(e.target.value == '') {
         this.$clearSearch.hide();
       } else {
@@ -240,7 +241,9 @@ jQuery(function($) {
           this.$searchbox.typeahead('setQuery', '');
           this.$clearSearch.hide();
         } else if(value.charAt(0) == '+' || value.charAt(0) == '.') {
-          alertify.alert("Please insert a quantity: i.e. quantity+barcode");
+          alertify.alert("Please insert a quantity: i.e. quantity+barcode", function() {
+            that.$searchbox.focus();
+          });
         } else if(value != '') {
           this.scanItem(value);
 
