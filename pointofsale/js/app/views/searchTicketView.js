@@ -405,6 +405,7 @@ jQuery(function($) {
 			}
 
 			if(previous_ticket_id > 0) {
+				ticket.set('ticketId', 0, {silent: true});
 				$.ajax({
 		          type: 'GET',
 		          url: ticket.employeeSession.get('apiServer')+'/lock/index.php?ticket_id='+previous_ticket_id+'&register_id='+$('#register-id').html()+'&op=unlock',
