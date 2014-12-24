@@ -221,17 +221,17 @@ jQuery(function($) {
     },
     blockCustomerUid: function(e) {
       e.preventDefault();
+      var that = this;
       var customerName = this.$('.bbm-modal__title').text();
       this.activeCustomerView.$searchbox.typeahead('clearCache');
-      if(confirm('Are you sure you want to disable customer: '+customerName+'?')) {
-        var that = this;
-        var customer_uid = this.customer_uid;
-        var ticket = this.ticket;
+      confirm('Are you sure you want to disable customer: '+customerName+'?', function() {
+        var customer_uid = that.customer_uid;
+        var ticket = that.ticket;
         var blockCustomerUidRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid});
         ticket.trigger('ticket:preloader', true);
         var request = $.ajax({
           type: 'POST',
-          url: this.employeeSession.get('apiServer')+'/pos-api/customer/block',
+          url: that.employeeSession.get('apiServer')+'/pos-api/customer/block',
           data: {request: blockCustomerUidRequest},
           timeout: 15000,
           success: function(res, status, xhr) {
@@ -252,8 +252,8 @@ jQuery(function($) {
           }
         });
 
-        this.requests.push(request);
-      }
+        that.requests.push(request);
+      });
     },
     changeSettlementsPage: function(e) {
       e.preventDefault();
