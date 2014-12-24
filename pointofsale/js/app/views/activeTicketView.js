@@ -161,6 +161,7 @@ jQuery(function($) {
     createNewTicket: function(e) {
       e.preventDefault();
 
+      var that = this;
       var status = this.ticket.get('status');
       var total = this.ticket.get('total');
       var customer = this.activeCustomer.get('id');
@@ -170,8 +171,12 @@ jQuery(function($) {
           this.ticket.createTicketOnServer(this.employeeSession.get('login'), true);
           $('.customer-search input.tt-query').attr('disabled', false);
         } else {
-          alertify.alert("Cannot create a new ticket while product scanning is in progress.");
+          alertify.alert("Cannot create a new ticket while product scanning is in progress.", function() {
+            that.$searchbox.focus();
+          });
         }
+      } else {
+        that.$searchbox.focus();
       }
     },
     activateScanFocus: function(e) {
