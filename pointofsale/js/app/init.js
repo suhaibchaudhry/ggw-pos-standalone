@@ -90,6 +90,11 @@ jQuery(function($) {
       //$(window).mouseup(function(){
          //$('.mousetrap').css('z-index', 0);
       //});
+
+      //Allow shortcuts on input fields
+      Mousetrap.stopCallback = function () {
+        return false;
+      }
   	},
     reload: function(e) {
       e.preventDefault();
