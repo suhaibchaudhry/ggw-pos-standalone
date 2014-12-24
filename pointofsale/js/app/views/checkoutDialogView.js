@@ -177,9 +177,9 @@ jQuery(function($) {
         this.closeCheckoutDialog(e);
       } else if(total.gt(this.available_credit)) {
         if(that.credit_limit.eq(Big('0'))) {
-          if (confirm('Customer has an insufficient credit limit. Are you sure you want to continue anyways?')) {
-            this.performCreditCheckout(that, ticket, total, e);
-          }
+          alertify.confirm('Customer has an insufficient credit limit. Are you sure you want to continue anyways?', function() {
+            that.performCreditCheckout(that, ticket, total, e);
+          });
         } else {
           alertify.alert("Customer has insufficient credit limit. Transaction could not be completed.");
         }

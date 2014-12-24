@@ -25,10 +25,11 @@ jQuery(function($) {
 		},
 		clearCustomer: function(e) {
 			e.preventDefault();
-			if(confirm('Are you sure you want to clear the customer?')) {
-				this.activeCustomer.set('id', false);
-				this.activeCustomer.updateTicketCustomerUidOnServer(0);
-			}
+			var that = this;
+			alertify.confirm('Are you sure you want to clear the customer?', function() {
+				that.activeCustomer.set('id', false);
+				that.activeCustomer.updateTicketCustomerUidOnServer(0);
+			});
 		},
 		customerInfo: function(e) {
 			e.preventDefault();
@@ -56,13 +57,19 @@ jQuery(function($) {
 			}
 		},
 		itemSelected: function(e, datum) {
+			var that = this;
 			this.$searchbox.typeahead('setQuery', '');
 			//this.searchTicketView.$searchbox.typeahead('setQuery', '');
 			this.searchTicketView.$searchbox.typeahead('clearCache');
 
-			if(this.activeCustomer.get('id') == 0 || confirm("Are you sure you want to change the customer to '"+datum.company_name+"'?")) {
-				this.activeCustomer.set(datum);
-				this.activeCustomer.updateTicketCustomerUidOnServer(datum['id']);
+			if(this.activeCustomer.get('id') == 0) {
+				that.activeCustomer.set(datum);
+				that.activeCustomer.updateTicketCustomerUidOnServer(datum['id']);
+			} else {
+				alertify.confirm("Are you sure you want to change the customer to '"+datum.company_name+"'?", function() {
+					that.activeCustomer.set(datum);
+					that.activeCustomer.updateTicketCustomerUidOnServer(datum['id']);
+				});
 			}
 		},
 		resolveSearchRPC: function(url, uriEncodedQuery) {

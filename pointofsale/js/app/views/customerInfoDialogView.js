@@ -615,18 +615,19 @@ jQuery(function($) {
       }
     },
     printReceipt: function(res) {
+      var that = this;
       var ticketId = this.ticket.get('ticketId');
       //Eject Cash Drawer
       $.ajax({url: 'http://127.0.0.1:3000/drawer', type: 'GET'});
 
       //Print Ticket
       //window.open(this.employeeSession.get('apiServer')+'/admin/invoice/print/'+ticketId+'?token='+this.employeeSession.get("token"));
-      if(confirm('Would you like to print a receipt?')) {
+      alertify.confirm('Would you like to print a receipt?', function() {
         $.ajax({
             url: 'http://127.0.0.1:3000/', 
             type: 'POST', 
             contentType: 'application/json', 
-            data: JSON.stringify({ticket : this.employeeSession.get('apiServer')+'/admin/invoice/print-reciept/'+res.cuid+'/'+res.time+'?token='+this.employeeSession.get("token")}),
+            data: JSON.stringify({ticket : that.employeeSession.get('apiServer')+'/admin/invoice/print-reciept/'+res.cuid+'/'+res.time+'?token='+that.employeeSession.get("token")}),
             success: function(data) {
               alertify.alert("Receipt was sent to printer.");
             },
@@ -634,7 +635,7 @@ jQuery(function($) {
               alertify.alert("Failed to send receipt to printer.");
             }
         });
-      }
+      });
     },
     selectInvoice: function(e) {
       if(this.appFrame.checkoutHideSemaphore == 0) {
