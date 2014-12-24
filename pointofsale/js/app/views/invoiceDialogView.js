@@ -151,7 +151,7 @@ jQuery(function($) {
               that.modal.display(false);
               that.loadSelectedTicket(ticketId);
             } else {
-              alert(res.message);
+              alertify.alert(res.message);
             }
           },
           error: function(xhr, errorType, error) {

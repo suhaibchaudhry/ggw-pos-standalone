@@ -31,13 +31,13 @@ jQuery(function($) {
             that.managerPriceView.$('a.unlock-price-override').hide();
             that.managerPriceView.$('.overriden-price').attr('disabled', false);
           } else {
-            alert('Provided manager login/password were invalid.');
+            alertify.alert('Provided manager login/password were invalid.');
           }*/
           that.authorizationModal.display(false);
           that.loginPreloader(false);
         },
         error: function(xhr, errorType, error) {
-          alert('Error connecting to the network. Check connection and try again.');
+          alertify.alert('Error connecting to the network. Check connection and try again.');
           that.loginPreloader(false);
           that.authorizationModal.display(false);
         }

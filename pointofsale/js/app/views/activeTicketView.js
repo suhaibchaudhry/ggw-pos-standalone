@@ -170,7 +170,7 @@ jQuery(function($) {
           this.ticket.createTicketOnServer(this.employeeSession.get('login'), true);
           $('.customer-search input.tt-query').attr('disabled', false);
         } else {
-          alert("Cannot create a new ticket while product scanning is in progress.");
+          alertify.alert("Cannot create a new ticket while product scanning is in progress.");
         }
       }
     },
@@ -234,7 +234,7 @@ jQuery(function($) {
           this.$searchbox.typeahead('setQuery', '');
           this.$clearSearch.hide();
         } else if(value.charAt(0) == '+' || value.charAt(0) == '.') {
-          alert("Please insert a quantity: i.e. quantity+barcode");
+          alertify.alert("Please insert a quantity: i.e. quantity+barcode");
         } else if(value != '') {
           this.scanItem(value);
 
@@ -295,7 +295,7 @@ jQuery(function($) {
           }, 3000);
         });
       } else {
-        alert("No items could be found for barcode: "+barcode);
+        alertify.alert("No items could be found for barcode: "+barcode);
       }
     },
     //Render and demolish logic, and other view methods.
@@ -326,7 +326,7 @@ jQuery(function($) {
             ticket.addItemToCollection(res.product, qty);
           } else {
             //$.jGrowl("Could not find item with barcode: <strong>"+barcode+"</strong>");
-            alert("Could not find item with barcode: "+barcode);
+            alertify.alert("Could not find item with barcode: "+barcode);
           }
         },
         error: function(xhr, errorType, error) {
@@ -392,10 +392,10 @@ jQuery(function($) {
           contentType: 'application/json', 
           data: JSON.stringify({ticket : this.employeeSession.get('apiServer')+'/admin/invoice/print/'+ticketId+'?token='+this.employeeSession.get("token")}),
           success: function(data) {
-            alert(data);
+            alertify.alert(data);
           },
           error: function() {
-            alert("Failed to send ticket to printer.");
+            alertify.alert("Failed to send ticket to printer.");
           }
       });
     },

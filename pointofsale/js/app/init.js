@@ -158,7 +158,7 @@ jQuery(function($) {
         this.invoiceDialog.invoiceDialogView.loadRecentInvoices(e);
       } else {
         e.preventDefault();
-        alert("Cannot change ticket while product scanning is in progress.");
+        alertify.alert("Cannot change ticket while product scanning is in progress.");
       }
     },
     loadQuoteTickets: function(e) {
@@ -167,7 +167,7 @@ jQuery(function($) {
         this.invoiceDialog.invoiceDialogView.loadQuoteInvoices(e);
       } else {
         e.preventDefault();
-        alert("Cannot change ticket while product scanning is in progress.");
+        alertify.alert("Cannot change ticket while product scanning is in progress.");
       }
     },
     loadOpenTickets: function(e) {
@@ -176,7 +176,7 @@ jQuery(function($) {
         this.invoiceDialog.invoiceDialogView.loadOpenInvoices(e);
       } else {
         e.preventDefault();
-        alert("Cannot change ticket while product scanning is in progress.");
+        alertify.alert("Cannot change ticket while product scanning is in progress.");
       }
     },
     loadCloseTickets: function(e) {
@@ -185,7 +185,7 @@ jQuery(function($) {
         this.invoiceDialog.invoiceDialogView.loadClosedInvoices(e);
       } else {
         e.preventDefault();
-        alert("Cannot change ticket while product scanning is in progress.");
+        alertify.alert("Cannot change ticket while product scanning is in progress.");
       }
     },
     calculatorInitiate: function(e) {

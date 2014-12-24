@@ -236,7 +236,7 @@ jQuery(function($) {
           timeout: 15000,
           success: function(res, status, xhr) {
             if(res.status) {
-              alert(res.message);
+              alertify.alert(res.message);
             } else {
               that.employeeSession.set('login', false);
             }
@@ -417,7 +417,7 @@ jQuery(function($) {
     },
     calculateCashChange: function(e) {
       if(_.isUndefined(this.pending_payments)) {
-        alert("Could not load customer. Please close and try again.");
+        alertify.alert("Could not load customer. Please close and try again.");
       } else {
         var total = this.pending_payments.pending_payments;
         var input_field = this.$('input.cash-paid');
@@ -544,7 +544,7 @@ jQuery(function($) {
       if(!_.isUndefined(this.change_left) && !_.isUndefined(this.change_value) && !_.isUndefined(this.cash_paid)) {
         var formatedCash = accounting.formatNumber(this.cash_paid, 2, "");
         if(formatedCash == "0.00") {
-          alert("Please enter a cash amount higher than $0.00 to continue.");
+          alertify.alert("Please enter a cash amount higher than $0.00 to continue.");
         } else {
           var ticket = this.ticket;
           if(_.isUndefined(this.customer_uid)) {
@@ -587,17 +587,17 @@ jQuery(function($) {
               if(res.status) {
                 var formattedChange = accounting.formatNumber(that.change_value, 2, "");
                 if(formattedChange == "0.00") {
-                  alert("Payment Complete. No CHANGE.");
+                  alertify.alert("Payment Complete. No CHANGE.");
                 } else {
                   if(that.$('input.stash-change').is(':checked')) {
-                    alert("Payment Complete. Please make NO CHANGE, Customer RMA was credited with amount: "+accounting.formatMoney(that.change_value));
+                    alertify.alert("Payment Complete. Please make NO CHANGE, Customer RMA was credited with amount: "+accounting.formatMoney(that.change_value));
                   } else {
-                    alert("Payment Complete. Please make change for amount: "+accounting.formatMoney(that.change_value));
+                    alertify.alert("Payment Complete. Please make change for amount: "+accounting.formatMoney(that.change_value));
                   }
                 }
                 that.printReceipt(res);
               } else {
-                alert(res.message);
+                alertify.alert(res.message);
               }
 
               that.closeCheckoutDialog(e);
@@ -611,7 +611,7 @@ jQuery(function($) {
           });
         }
       } else {
-        alert("Please input cash amount before checkout.");
+        alertify.alert("Please input cash amount before checkout.");
       }
     },
     printReceipt: function(res) {
@@ -628,10 +628,10 @@ jQuery(function($) {
             contentType: 'application/json', 
             data: JSON.stringify({ticket : this.employeeSession.get('apiServer')+'/admin/invoice/print-reciept/'+res.cuid+'/'+res.time+'?token='+this.employeeSession.get("token")}),
             success: function(data) {
-              alert("Receipt was sent to printer.");
+              alertify.alert("Receipt was sent to printer.");
             },
             error: function() {
-              alert("Failed to send receipt to printer.");
+              alertify.alert("Failed to send receipt to printer.");
             }
         });
       }
@@ -652,7 +652,7 @@ jQuery(function($) {
                 that.modal.display(false);
                 that.loadSelectedTicket(ticketId);
               } else {
-                alert(res.message);
+                alertify.alert(res.message);
               }
             },
             error: function(xhr, errorType, error) {
@@ -661,7 +661,7 @@ jQuery(function($) {
           });
         }
       } else {
-        alert("Cannot change ticket while product scanning is in progress.");
+        alertify.alert("Cannot change ticket while product scanning is in progress.");
       }
     },
     loadSelectedTicket: function(ticketId) {
@@ -837,7 +837,7 @@ jQuery(function($) {
                 });
               }
             }
-            alert(res.message);
+            alertify.alert(res.message);
             that.closeCheckoutDialog(e);
             ticket.trigger('ticket:preloader', false);
           },
@@ -849,7 +849,7 @@ jQuery(function($) {
           }
         });
       } else {
-          alert("Cannot open new rma ticket while product scanning is in progress.");
+          alertify.alert("Cannot open new rma ticket while product scanning is in progress.");
       }
     },
     ticket_rma_return: function(e) {
@@ -914,7 +914,7 @@ jQuery(function($) {
                   });
                 }
               }
-              alert(res.message);
+              alertify.alert(res.message);
               that.closeCheckoutDialog(e);
               ticket.trigger('ticket:preloader', false);
             },
@@ -926,10 +926,10 @@ jQuery(function($) {
             }
           });
         } else {
-            alert('No items to refund on RMA.');
+            alertify.alert('No items to refund on RMA.');
         }
       } else {
-        alert("Cannot open new rma ticket while product scanning is in progress.");
+        alertify.alert("Cannot open new rma ticket while product scanning is in progress.");
       }
     },
     toggleUsageDisplay: function(e) {

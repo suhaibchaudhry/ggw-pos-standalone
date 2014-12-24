@@ -28,7 +28,7 @@ jQuery(function($) {
         this.$('a.unlock-price-override').hide();
         this.$('.overriden-price').attr('disabled', false);
       } else {
-        alert('Provided manager login/password were invalid.');
+        alertify.alert('Provided manager login/password were invalid.');
       }
     },
     template: _.template($('#manager-price-modal').html()),

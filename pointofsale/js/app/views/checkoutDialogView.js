@@ -173,7 +173,7 @@ jQuery(function($) {
       var ticket = this.ticket;
       var total = this.ticketTotal;
       if(_.isUndefined(this.available_credit) || _.isUndefined(this.term_limit)) {
-        alert("Insufficient credit limit. Transaction could not be completed.");
+        alertify.alert("Insufficient credit limit. Transaction could not be completed.");
         this.closeCheckoutDialog(e);
       } else if(total.gt(this.available_credit)) {
         if(that.credit_limit.eq(Big('0'))) {
@@ -181,7 +181,7 @@ jQuery(function($) {
             this.performCreditCheckout(that, ticket, total, e);
           }
         } else {
-          alert("Customer has insufficient credit limit. Transaction could not be completed.");
+          alertify.alert("Customer has insufficient credit limit. Transaction could not be completed.");
         }
       } else {
         this.performCreditCheckout(that, ticket, total, e);
@@ -201,12 +201,12 @@ jQuery(function($) {
             //stop preloader
             ticket.trigger('ticket:preloader', false);
             if(res.status) {
-              alert("Checkout Complete.");
+              alertify.alert("Checkout Complete.");
               //Close ticket
               ticket.set('status_en', 'Closed Ticket');
               ticket.set('status', 'pos_completed');
             } else {
-              alert(res.message);
+              alertify.alert(res.message);
             }
 
             that.closeCheckoutDialog(e);
@@ -225,9 +225,9 @@ jQuery(function($) {
       if(!_.isUndefined(this.change_left) && !_.isUndefined(this.change_value) && !_.isUndefined(this.cash_paid)) {
         var formattedChange = this.change_left.toFixed(2);
         if(this.change_left.gt(Big('0')) && formattedChange != "0.00") {
-          alert("Customer still owes amount: $"+formattedChange);
+          alertify.alert("Customer still owes amount: $"+formattedChange);
         } else if(this.$('input#rma-payment').is(':checked') && accounting.unformat(this.$('input#rma-amount').val()) == 0) {
-          alert("RMA credit cannot be set to 0.00.");
+          alertify.alert("RMA credit cannot be set to 0.00.");
         } else {
           var ticket = this.ticket;
           var cuid = this.activeCustomer.get('id');
@@ -269,9 +269,9 @@ jQuery(function($) {
               ticket.trigger('ticket:preloader', false);
               if(res.status) {
                 if(that.change_value.toFixed(2) == '0.00') {
-                  alert("Checkout Complete. No CHANGE.");
+                  alertify.alert("Checkout Complete. No CHANGE.");
                 } else {
-                  alert("Checkout Complete. Please make change for amount: $"+that.change_value.toFixed(2));
+                  alertify.alert("Checkout Complete. Please make change for amount: $"+that.change_value.toFixed(2));
                 }
                 //Close ticket
                 ticket.set('status_en', 'Closed Ticket');
@@ -279,7 +279,7 @@ jQuery(function($) {
                 //Eject Cash Drawer
                 $.ajax({url: 'http://127.0.0.1:3000/drawer', type: 'GET'});
               } else {
-                alert(res.message);
+                alertify.alert(res.message);
               }
 
               that.closeCheckoutDialog(e);
@@ -293,7 +293,7 @@ jQuery(function($) {
           });
         }
       } else {
-        alert("Please insert cash amount before checkout.");
+        alertify.alert("Please insert cash amount before checkout.");
       }
     },
     changeTab: function(e) {
@@ -503,7 +503,7 @@ jQuery(function($) {
         if(split && cc_payment) {
           var formattedChange = this.change_left.toFixed(2);
           if(formattedChange == "0.00") {
-            alert("There are no remaining payments to be placed on the card. Please continue with regular checkout.");
+            alertify.alert("There are no remaining payments to be placed on the card. Please continue with regular checkout.");
           } else {
             var partialSwipeRequest = JSON.stringify({token: sessionStorage.token,
                                                     ticketId: ticket.get('ticketId'),
@@ -546,13 +546,13 @@ jQuery(function($) {
                   //Close ticket
                   ticket.set('status_en', 'Closed Ticket');
                   ticket.set('status', 'pos_completed');
-                  alert(res.message);
+                  alertify.alert(res.message);
                   that.closeCheckoutDialog();
                   //Eject Cash Drawer
                   $.ajax({url: 'http://127.0.0.1:3000/drawer', type: 'GET'});
                 } else {
                   that.$('.status-message').removeClass('in-progress');
-                  alert(res.error);
+                  alertify.alert(res.error);
                 }
               },
               error: function(xhr, errorType, error) {
@@ -564,7 +564,7 @@ jQuery(function($) {
             });
           }
         } else {
-          alert('Please select "Credit Card Payment" and "Swipe Remaining Amount" before swiping a card.');
+          alertify.alert('Please select "Credit Card Payment" and "Swipe Remaining Amount" before swiping a card.');
         }
       } else if(this.currentTab == 1) {
         var swipeCheckoutRequest = JSON.stringify({
@@ -592,11 +592,11 @@ jQuery(function($) {
               //Close ticket
               ticket.set('status_en', 'Closed Ticket');
               ticket.set('status', 'pos_completed');
-              alert(res.message);
+              alertify.alert(res.message);
               that.closeCheckoutDialog();
             } else {
               that.$('.status-message').removeClass('in-progress');
-              alert(res.error);
+              alertify.alert(res.error);
             }
           },
           error: function(xhr, errorType, error) {
@@ -607,11 +607,11 @@ jQuery(function($) {
           }
         });
       } else {
-        alert('Credit Card swipes are not allowed in this mode.');
+        alertify.alert('Credit Card swipes are not allowed in this mode.');
       }
     },
     creditCardScanFail: function() {
-      alert('We could not read this card, please try again.');
+      alertify.alert('We could not read this card, please try again.');
     }
   });
 });

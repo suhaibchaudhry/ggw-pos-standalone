@@ -75,7 +75,7 @@ jQuery(function($) {
           }
         });
       } else {
-        alert("You must be clocked in before starting lunch.");
+        alertify.alert("You must be clocked in before starting lunch.");
       }
     },
 

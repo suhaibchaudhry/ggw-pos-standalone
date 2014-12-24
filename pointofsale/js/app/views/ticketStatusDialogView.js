@@ -61,7 +61,7 @@ jQuery(function($) {
       if(customer_uid) {
         this.activeCustomerView.customerInfoDialogModal.display(true, customer_uid, 1);
       } else {
-        alert("Cannot make payments on walk-in customers.");
+        alertify.alert("Cannot make payments on walk-in customers.");
       }
 
       if(this.activeTicketView.ticket.get('productCollection').length == 0) {
@@ -74,7 +74,7 @@ jQuery(function($) {
       if(customer_uid) {
         this.activeCustomerView.customerInfoDialogModal.display(true, customer_uid, 2);
       } else {
-        alert("Cannot make returns for walk-in customers.");
+        alertify.alert("Cannot make returns for walk-in customers.");
       }
 
       if(this.activeTicketView.ticket.get('productCollection').length == 0) {
@@ -100,7 +100,7 @@ jQuery(function($) {
                 that.modal.switch(false);
                 that.loadSelectedTicket(ticketId);
               } else {
-                alert(res.message);
+                alertify.alert(res.message);
               }
             },
             error: function(xhr, errorType, error) {
@@ -109,7 +109,7 @@ jQuery(function($) {
           });
         }
       } else {
-        alert("Cannot change ticket while product scanning is in progress.");
+        alertify.alert("Cannot change ticket while product scanning is in progress.");
       }
     },
     loadSelectedTicket: function(ticketId) {
