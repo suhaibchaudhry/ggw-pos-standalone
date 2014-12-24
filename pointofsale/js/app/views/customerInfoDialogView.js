@@ -591,15 +591,20 @@ jQuery(function($) {
               if(res.status) {
                 var formattedChange = accounting.formatNumber(that.change_value, 2, "");
                 if(formattedChange == "0.00") {
-                  alertify.alert("Payment Complete. No CHANGE.");
+                  alertify.alert("Payment Complete. No CHANGE.", function() {
+                    that.printReceipt(res);
+                  });
                 } else {
                   if(that.$('input.stash-change').is(':checked')) {
-                    alertify.alert("Payment Complete. Please make NO CHANGE, Customer RMA was credited with amount: "+accounting.formatMoney(that.change_value));
+                    alertify.alert("Payment Complete. Please make NO CHANGE, Customer RMA was credited with amount: "+accounting.formatMoney(that.change_value), function() {
+                      that.printReceipt(res);
+                    });
                   } else {
-                    alertify.alert("Payment Complete. Please make change for amount: "+accounting.formatMoney(that.change_value));
+                    alertify.alert("Payment Complete. Please make change for amount: "+accounting.formatMoney(that.change_value), function() {
+                      that.printReceipt(res);
+                    });
                   }
                 }
-                that.printReceipt(res);
               } else {
                 alertify.alert(res.message);
               }
@@ -629,14 +634,18 @@ jQuery(function($) {
       alertify.confirm('Would you like to print a receipt?', function() {
         $.ajax({
             url: 'http://127.0.0.1:3000/', 
-            type: 'POST', 
+            type: 'POST',
             contentType: 'application/json', 
             data: JSON.stringify({ticket : that.employeeSession.get('apiServer')+'/admin/invoice/print-reciept/'+res.cuid+'/'+res.time+'?token='+that.employeeSession.get("token")}),
             success: function(data) {
-              alertify.alert("Receipt was sent to printer.");
+              alertify.alert("Receipt was sent to printer.", function() {
+
+              });
             },
             error: function() {
-              alertify.alert("Failed to send receipt to printer.");
+              alertify.alert("Failed to send receipt to printer.", function() {
+                
+              });
             }
         });
       });
