@@ -1200,7 +1200,7 @@
                 }
                 // focus
                 if (element && element.focus) {
-                    element.focus();
+                    //element.focus();
                     // if selectable
                     if (focus.select && element.select) {
                         element.select();
