@@ -88,8 +88,12 @@ jQuery(function($) {
     noPendingPaymentsMessage: _.template($('#no-pending-payments').html()),
     continueProcessDebouncedTrigger: function(e) {
       e.preventDefault();
-      this.calculateCashChange(false);
-      this.continueProcessDebounced(e);
+      if(this.$('input.cash-paid').length > 0) {
+        this.calculateCashChange(false);
+        this.continueProcessDebounced(e);
+      } else {
+        this.closeCheckoutDialog(e);
+      }
     },
     loadUserProfile: function(uid, default_tab_flag) {
       var that = this;
