@@ -26,7 +26,8 @@ jQuery(function($) {
       this.listenTo(this.get('productCollection'), 'remove', this.removeFromCategoryBreakdown);
 
       //Listen for changes in total and product count and update on server
-      this.listenTo(this, 'change:total', _.debounce(this.updateTotal, 2000));
+      this.updateTotalDebounced = _.debounce(this.updateTotal, 2000);
+      this.listenTo(this, 'change:total', this.updateTotalDebouncedTrigger);
 
       //Listen for changing ticket status on ui to update on server
       this.listenTo(this, 'change:status', this.updateTicketStatus);
@@ -196,13 +197,22 @@ jQuery(function($) {
         }
       });
     },
-    //Detect debounced Updates on ticket totals and product counts on server.
-    updateTotal: function(ticket, total, options) {
+    updateTotalDebouncedTrigger: function(ticket, total, options) {
       var ticket = this;
       var status = ticket.get('status');
+      var ticketId = ticket.get('ticketId');
+      var productCount = ticket.get('productCount');
+      var ticketLocked = ticket.get('locked');
+      var token = sessionStorage.token;
 
-      if(!_.isUndefined(ticket.get('ticketId')) && (status != 'pos_completed' && status != 'pos_return_closed' && status != 'pos_return' || !ticket.get('locked')) && checkoutActive != true) {
-        var updateTotalRequest = JSON.stringify({token: sessionStorage.token, ticketId: ticket.get('ticketId'), productCount: ticket.get('productCount')});
+      if(!_.isUndefined(ticketId) && ticketId > 0 && !_.isEmpty(token)) {
+        this.updateTotalDebounced(ticket, status, ticketId, productCount, ticketLocked, token);
+      }
+    },
+    //Detect debounced Updates on ticket totals and product counts on server.
+    updateTotal: function(ticket, status, ticketId, productCount, ticketLocked, token) {
+      if((status != 'pos_completed' && status != 'pos_return_closed' && status != 'pos_return' || !ticketLocked) && checkoutActive != true) {
+        var updateTotalRequest = JSON.stringify({token: token, ticketId: ticketId, productCount: productCount});
         //Start preloader
         //this.trigger('ticket:preloader', true);
         $.ajax({
@@ -269,19 +279,24 @@ jQuery(function($) {
         $('.ticketSearch .checkout').hide();
       }
 
-      this.changeProductQuantityDebounced(product, qty, options);
-    },
-    changeProductQuantity: function(product, qty, options) {
-      //Debounce and update product quantity on server.
       var ticket = this;
-      var qtyGraph = this.get('productCollection').map(function(item) {
-        return {productId: item.get('id'), qty: item.get('qty')};
-      });
+      var ticketId = this.get('ticketId');
+      var token = sessionStorage.token;
+      if(!_.isUndefined(ticketId) && ticketId > 0 && !_.isEmpty(token)) {
+        var qtyGraph = this.get('productCollection').map(function(item) {
+          return {productId: item.get('id'), qty: item.get('qty')};
+        });
 
-      var updateQuantityRequest = JSON.stringify({token: sessionStorage.token, qtyGraph: qtyGraph, ticketId: this.get('ticketId')});
+        this.changeProductQuantityDebounced(ticket, ticketId, qtyGraph, sessionStorage.token);
+      }
+    },
+    changeProductQuantity: function(ticket, ticketId, qtyGraph, token) {
       //Start preloaders
       ticket.trigger('ticket:preloader', true);
       ticket.trigger('ticket:checkoutHide', true, ticket.get('status'), ticket.get('locked'));
+
+      //Debounce and update product quantity on server.
+      var updateQuantityRequest = JSON.stringify({token: token, qtyGraph: qtyGraph, ticketId: ticketId});
 
       $.ajax({
         type: 'POST',
