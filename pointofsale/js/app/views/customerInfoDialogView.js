@@ -224,7 +224,7 @@ jQuery(function($) {
       var that = this;
       var customerName = this.$('.bbm-modal__title').text();
       this.activeCustomerView.$searchbox.typeahead('clearCache');
-      confirm('Are you sure you want to disable customer: '+customerName+'?', function() {
+      alertify.confirm('Are you sure you want to disable customer: '+customerName+'?', function() {
         var customer_uid = that.customer_uid;
         var ticket = that.ticket;
         var blockCustomerUidRequest = JSON.stringify({token: sessionStorage.token, customer_uid: customer_uid});
