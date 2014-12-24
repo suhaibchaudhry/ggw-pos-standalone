@@ -1200,7 +1200,7 @@
                 }
                 // focus
                 if (element && element.focus) {
-                    element.focus();
+                    //element.focus();
                     // if selectable
                     if (focus.select && element.select) {
                         element.select();
@@ -2848,6 +2848,7 @@
             },
             prepare: function () {
                 //nothing
+                document.body.focus();
             },
             setMessage: function (message) {
                 this.setContent(message);
