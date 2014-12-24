@@ -298,6 +298,7 @@ jQuery(function($) {
         },
         error: function(xhr, errorType, error) {
           //stop pre loader and logout user.
+          ticket.trigger('ticket:checkoutHide', false, ticket.get('status'), ticket.get('locked'));
           ticket.trigger('ticket:preloader', false);
           ticket.employeeSession.set('login', false);
         }
@@ -381,6 +382,7 @@ jQuery(function($) {
             }
           },
           error: function(xhr, errorType, error) {
+            ticket.trigger('ticket:checkoutHide', false, ticket.get('status'), ticket.get('locked'));
             //Something is wrong log user out.
             ticket.employeeSession.set('login', false);
           }
