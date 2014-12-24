@@ -241,6 +241,7 @@ jQuery(function($) {
           this.$searchbox.typeahead('setQuery', '');
           this.$clearSearch.hide();
         } else if(value.charAt(0) == '+' || value.charAt(0) == '.') {
+          that.$searchbox.blur();
           alertify.alert("Please insert a quantity: i.e. quantity+barcode", function() {
             that.$searchbox.focus();
           });
