@@ -178,7 +178,7 @@ jQuery(function($) {
 	    	this.modifyStockDialog.openDialog(e.currentTarget.dataset.productNid, e.currentTarget.dataset.productName, e.currentTarget.dataset.productPackaging, e.currentTarget.dataset.productImage);
 	    },
 	    getItemByNid: function(key, element) {
-	      this.$('.ticket-container').append(this.inventoryOutterTemplate({nid: element.product_nid, product: element.product, log_events: element.event_logs}));
+	      this.$('.ticket-container').append(this.inventoryOutterTemplate({nid: element.product_nid, product: element.product}));
 	    },
 	    changeInventoryPage: function(e) {
 	    	e.preventDefault();
