@@ -29,6 +29,7 @@ jQuery(function($) {
       } else {
         $('.modifyProductStock').stop().fadeOut(function() {
           $(this).empty();
+          $('.item-search input.search').focus();
         });
       }
     },

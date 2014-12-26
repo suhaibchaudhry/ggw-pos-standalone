@@ -21,7 +21,6 @@ jQuery(function($) {
 
     		this.modifyStockDialog = new modifyStockDialog({}, {api_server: this.api_server, token: this.token});
 
-    		this.focusSearch();
     		$('.app-wrap').on('click', _.bind(this.focusSearch, this));
 
     		this.listenTo(this, 'inventory:preloader', _.bind(this.appFrame.inventoryPreloader, this.appFrame));
@@ -55,6 +54,8 @@ jQuery(function($) {
 	        minLength: 3,
 	        template: _.template($('#item-search-result').html())
 	      });
+
+	      this.focusSearch();
 
 	      this.loadInventoryEntries();
 	    },
