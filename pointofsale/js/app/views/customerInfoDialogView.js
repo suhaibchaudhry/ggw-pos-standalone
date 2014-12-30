@@ -240,7 +240,9 @@ jQuery(function($) {
           timeout: 15000,
           success: function(res, status, xhr) {
             if(res.status) {
-              alertify.alert(res.message);
+              alertify.alert(res.message, function() {
+
+              });
             } else {
               that.employeeSession.set('login', false);
             }
@@ -421,7 +423,9 @@ jQuery(function($) {
     },
     calculateCashChange: function(e) {
       if(_.isUndefined(this.pending_payments)) {
-        alertify.alert("Could not load customer. Please close and try again.");
+        alertify.alert("Could not load customer. Please close and try again.", function() {
+
+        });
       } else {
         var total = this.pending_payments.pending_payments;
         var input_field = this.$('input.cash-paid');
@@ -548,7 +552,9 @@ jQuery(function($) {
       if(!_.isUndefined(this.change_left) && !_.isUndefined(this.change_value) && !_.isUndefined(this.cash_paid)) {
         var formatedCash = accounting.formatNumber(this.cash_paid, 2, "");
         if(formatedCash == "0.00") {
-          alertify.alert("Please enter a cash amount higher than $0.00 to continue.");
+          alertify.alert("Please enter a cash amount higher than $0.00 to continue.", function() {
+            $(".tabs input.cash-paid").focus();
+          });
         } else {
           var ticket = this.ticket;
           if(_.isUndefined(this.customer_uid)) {
@@ -606,7 +612,9 @@ jQuery(function($) {
                   }
                 }
               } else {
-                alertify.alert(res.message);
+                alertify.alert(res.message, function() {
+
+                });
               }
 
               that.closeCheckoutDialog(e);
@@ -620,7 +628,9 @@ jQuery(function($) {
           });
         }
       } else {
-        alertify.alert("Please input cash amount before checkout.");
+        alertify.alert("Please input cash amount before checkout.", function() {
+            $(".tabs input.cash-paid").focus();
+        });
       }
     },
     printReceipt: function(res) {
@@ -666,7 +676,9 @@ jQuery(function($) {
                 that.modal.display(false);
                 that.loadSelectedTicket(ticketId);
               } else {
-                alertify.alert(res.message);
+                alertify.alert(res.message, function() {
+
+                });
               }
             },
             error: function(xhr, errorType, error) {
@@ -675,7 +687,9 @@ jQuery(function($) {
           });
         }
       } else {
-        alertify.alert("Cannot switch ticket while current ticket is loading or updating. Try again later.");
+        alertify.alert("Cannot switch ticket while current ticket is loading or updating. Try again later.", function() {
+
+        });
       }
     },
     loadSelectedTicket: function(ticketId) {
@@ -851,7 +865,9 @@ jQuery(function($) {
                 });
               }
             }
-            alertify.alert(res.message);
+            alertify.alert(res.message, function() {
+
+            });
             that.closeCheckoutDialog(e);
             ticket.trigger('ticket:preloader', false);
           },
@@ -863,7 +879,9 @@ jQuery(function($) {
           }
         });
       } else {
-          alertify.alert("Cannot switch ticket while current ticket is loading or updating. Try again later.");
+          alertify.alert("Cannot switch ticket while current ticket is loading or updating. Try again later.", function() {
+
+          });
       }
     },
     ticket_rma_return: function(e) {
@@ -928,7 +946,9 @@ jQuery(function($) {
                   });
                 }
               }
-              alertify.alert(res.message);
+              alertify.alert(res.message, function() {
+
+              });
               that.closeCheckoutDialog(e);
               ticket.trigger('ticket:preloader', false);
             },
@@ -940,10 +960,14 @@ jQuery(function($) {
             }
           });
         } else {
-            alertify.alert('No items to refund on RMA.');
+            alertify.alert('No items to refund on RMA.', function() {
+              $('.rma-scan').focus();
+            });
         }
       } else {
-        alertify.alert("Cannot switch ticket while current ticket is loading or updating. Try again later.");
+        alertify.alert("Cannot switch ticket while current ticket is loading or updating. Try again later.", function() {
+
+        });
       }
     },
     toggleUsageDisplay: function(e) {
