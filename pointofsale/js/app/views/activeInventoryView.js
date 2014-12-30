@@ -124,11 +124,15 @@ jQuery(function($) {
 	          	that.modifyStockDialog.openDialog(res.product.id, res.product.name, res.product.packaging, res.product.thumbnail);
 	          } else {
 	            //$.jGrowl("Could not find item with barcode: <strong>"+barcode+"</strong>");
-	            alertify.alert("Could not find item with barcode: "+barcode);
+	            alertify.alert("Could not find item with barcode: "+barcode, function() {
+	            	that.focusSearch();
+	            });
 	          }
 	        },
 	        error: function(xhr, errorType, error) {
-	          alertify.alert("Could not connect to the network. Please check connection.");
+	          alertify.alert("Could not connect to the network. Please check connection.", function() {
+	            	that.focusSearch();
+	          });
 	        }
 	      });
 
@@ -155,7 +159,9 @@ jQuery(function($) {
 	          that.trigger('inventory:preloader', false);
 	        },
 	        error: function(xhr, errorType, error) {
-	          alertify.alert("Could not connect to the network. Please check connection.");
+	          alertify.alert("Could not connect to the network. Please check connection.", function() {
+	            that.focusSearch();
+	          });
 	          that.trigger('inventory:preloader', false);
 	        }
 	      });
