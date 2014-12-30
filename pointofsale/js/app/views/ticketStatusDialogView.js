@@ -61,7 +61,8 @@ jQuery(function($) {
       if(customer_uid) {
         this.activeCustomerView.customerInfoDialogModal.display(true, customer_uid, 1);
       } else {
-        alertify.alert("Cannot make payments on walk-in customers.");
+        alertify.alert("Cannot make payments on walk-in customers.", function() {
+        });
       }
 
       if(this.activeTicketView.ticket.get('productCollection').length == 0) {
@@ -74,7 +75,8 @@ jQuery(function($) {
       if(customer_uid) {
         this.activeCustomerView.customerInfoDialogModal.display(true, customer_uid, 2);
       } else {
-        alertify.alert("Cannot make returns for walk-in customers.");
+        alertify.alert("Cannot make returns for walk-in customers.", function() {
+        });
       }
 
       if(this.activeTicketView.ticket.get('productCollection').length == 0) {
@@ -100,7 +102,8 @@ jQuery(function($) {
                 that.modal.switch(false);
                 that.loadSelectedTicket(ticketId);
               } else {
-                alertify.alert(res.message);
+                alertify.alert(res.message, function() {
+                });
               }
             },
             error: function(xhr, errorType, error) {
@@ -109,7 +112,8 @@ jQuery(function($) {
           });
         }
       } else {
-        alertify.alert("Cannot switch ticket while current ticket is loading or updating. Try again later.");
+        alertify.alert("Cannot switch ticket while current ticket is loading or updating. Try again later.", function() {
+        });
       }
     },
     loadSelectedTicket: function(ticketId) {
