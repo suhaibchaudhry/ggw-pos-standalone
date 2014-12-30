@@ -25,7 +25,8 @@ jQuery(function($) {
     },
     messagePrompt: function(session, message, options) {
       if(message) {
-        alertify.alert(message);
+        alertify.alert(message, function() {
+        });
       }
     }
   });

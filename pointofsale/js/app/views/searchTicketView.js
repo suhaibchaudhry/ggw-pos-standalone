@@ -38,7 +38,9 @@ jQuery(function($) {
 			if(this.ticket.get('productCount') > 0) {
 				this.checkoutDialogModal.display(true);
 			} else {
-				alertify.alert("Please scan products before continuing with checkout.");
+				alertify.alert("Please scan products before continuing with checkout.", function() {
+					$('.item-search input.search').focus();
+				});
 			}
 		},
 		changeTicket: function(ticket, ticketId, options) {
@@ -130,13 +132,15 @@ jQuery(function($) {
     			if(res.login && res.privileged) {
     				this.unlockTicket();
     			} else {
-    				alertify.alert('Provided manager login/password were invalid.');
+    				alertify.alert('Provided manager login/password were invalid.', function() {
+    				});
     			}
     		} else {
     			if(res.admin) {
 	    			this.unlockTicket();
 	    		} else {
-	        		alertify.alert('Provided admin login/password were invalid.');
+	        		alertify.alert('Provided admin login/password were invalid.', function() {
+    				});
 	      		}
     		}
     	},
@@ -301,7 +305,8 @@ jQuery(function($) {
 				          }
 				        });
 		          	} else {
-		          		alertify.alert(res.message);
+		          		alertify.alert(res.message, function() {
+    					});
 		          	}
 		          },
 		          error: function(xhr, errorType, error) {
@@ -310,7 +315,8 @@ jQuery(function($) {
 		          }
 		        });
 			} else {
-			    alertify.alert("Cannot switch ticket while current ticket is loading or updating. Try again later.");
+			    alertify.alert("Cannot switch ticket while current ticket is loading or updating. Try again later.", function() {
+    			});
 			}
 		},
 		resolveSearchRPC: function(url, uriEncodedQuery) {
@@ -351,7 +357,8 @@ jQuery(function($) {
 			if(this.ticket.get('productCount') > 0) {
 				this.rma_process_debounced(true);
 			} else {
-				alertify.alert("Cannot process an empty RMA ticket.");
+				alertify.alert("Cannot process an empty RMA ticket.", function() {
+    			});
 			}
 		},
 		rma_process_cash_return: function(e) {
@@ -359,7 +366,8 @@ jQuery(function($) {
 			if(this.ticket.get('productCount') > 0) {
 				this.rma_process_debounced(false);
 			} else {
-				alertify.alert("Cannot process an empty RMA ticket.");
+				alertify.alert("Cannot process an empty RMA ticket.", function() {
+    			});
 			}
 		},
 		rma_process: function(credit_return) {
@@ -378,7 +386,8 @@ jQuery(function($) {
 		      timeout: 15000,
 		      success: function(res, status, xhr) {
 		        if(res.status) {
-		          alertify.alert(res.message);
+		          alertify.alert(res.message, function() {
+    			  });
 		          ticket.set('status_en', 'Closed RMA Ticket');
               	  ticket.set('status', 'pos_return_closed');
 		        } else {

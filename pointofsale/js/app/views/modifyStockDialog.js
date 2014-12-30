@@ -59,7 +59,8 @@ jQuery(function($) {
           }
         },
         error: function(xhr, errorType, error) {
-          alertify.alert("Could not connect to the network. Please check connection.");
+          alertify.alert("Could not connect to the network. Please check connection.", function() {
+          });
         }
       });
     },
@@ -94,11 +95,15 @@ jQuery(function($) {
             }
           },
           error: function(xhr, errorType, error) {
-            alertify.alert("Could not connect to the network. Please check connection.");
+            alertify.alert("Could not connect to the network. Please check connection.", function() {
+
+            });
           }
         });
       } else {
-        alertify.alert("Please make sure to set unit cost and quanity.");
+        alertify.alert("Please make sure to set unit cost and quanity.", function() {
+          
+        });
       }
     }
   });
