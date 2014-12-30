@@ -651,7 +651,7 @@ jQuery(function($) {
       });
     },
     selectInvoice: function(e) {
-      if(this.appFrame.checkoutHideSemaphore == 0) {
+      if(this.appFrame.checkoutHideSemaphore == 0 && !this.appFrame.modificationsLock) {
         var ticketId = $('td:eq(1)', e.currentTarget).text();
         var that = this;
         var ticket = this.ticket;
@@ -675,7 +675,7 @@ jQuery(function($) {
           });
         }
       } else {
-        alertify.alert("Cannot change ticket while product scanning is in progress.");
+        alertify.alert("Cannot switch ticket while current ticket's modifications are in progress.");
       }
     },
     loadSelectedTicket: function(ticketId) {
@@ -813,7 +813,7 @@ jQuery(function($) {
       this.$('.returning-items #line-item-'+id+' .qty span.return-value').text(qty);
     },
     ticket_create_rma_empty: function(e) {
-      if(this.appFrame.checkoutHideSemaphore == 0) {
+      if(this.appFrame.checkoutHideSemaphore == 0 && !this.appFrame.modificationsLock) {
         var ticket = this.ticket;
         var customer_uid = this.customer_uid;
         var that = this;
@@ -863,11 +863,11 @@ jQuery(function($) {
           }
         });
       } else {
-          alertify.alert("Cannot open new rma ticket while product scanning is in progress.");
+          alertify.alert("Cannot switch ticket while current ticket's modifications are in progress.");
       }
     },
     ticket_rma_return: function(e) {
-      if(this.appFrame.checkoutHideSemaphore == 0) {
+      if(this.appFrame.checkoutHideSemaphore == 0 && !this.appFrame.modificationsLock) {
         var ticket = this.ticket;
         var customer_uid = this.customer_uid;
         var total = this.rmaTicket.get('total');
@@ -943,7 +943,7 @@ jQuery(function($) {
             alertify.alert('No items to refund on RMA.');
         }
       } else {
-        alertify.alert("Cannot open new rma ticket while product scanning is in progress.");
+        alertify.alert("Cannot switch ticket while current ticket's modifications are in progress.");
       }
     },
     toggleUsageDisplay: function(e) {

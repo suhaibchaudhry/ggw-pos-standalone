@@ -86,7 +86,7 @@ jQuery(function($) {
       this.modal.switch(false);
     },
     selectInvoice: function(e) {
-      if(this.appFrame.checkoutHideSemaphore == 0) {
+      if(this.appFrame.checkoutHideSemaphore == 0 && !this.appFrame.modificationsLock) {
         var ticketId = $('td:eq(1)', e.currentTarget).text();
         var that = this;
         var ticket = that.activeTicketView.ticket;
@@ -109,7 +109,7 @@ jQuery(function($) {
           });
         }
       } else {
-        alertify.alert("Cannot change ticket while product scanning is in progress.");
+        alertify.alert("Cannot switch ticket while current ticket's modifications are in progress.");
       }
     },
     loadSelectedTicket: function(ticketId) {

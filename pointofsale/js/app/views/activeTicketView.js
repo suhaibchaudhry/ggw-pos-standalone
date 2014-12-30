@@ -86,6 +86,7 @@ jQuery(function($) {
       this.listenTo(this.ticket, 'change:productCount', this.updateProductCount);
       this.listenTo(this.ticket, 'ticket:preloader', _.bind(this.appFrame.ticketPreloader, this.appFrame));
       this.listenTo(this.ticket, 'ticket:checkoutHide', _.bind(this.appFrame.checkoutHidePreloader, this.appFrame));
+      this.listenTo(this.ticket, 'ticket:lockModifications', _.bind(this.appFrame.ticketLockModifications, this.appFrame));
 
       //AppFrame Buttons
       this.appFrame.$('a.new-ticket-button').on('click', _.bind(this.createNewTicket, this));
@@ -167,11 +168,11 @@ jQuery(function($) {
       var customer = this.activeCustomer.get('id');
 
       if(status != 'pos_quote' || customer != 0) {
-        if(this.appFrame.checkoutHideSemaphore == 0) {
+        if(this.appFrame.checkoutHideSemaphore == 0 && !this.appFrame.modificationsLock) {
           this.ticket.createTicketOnServer(this.employeeSession.get('login'), true);
           $('.customer-search input.tt-query').attr('disabled', false);
         } else {
-          alertify.alert("Cannot create a new ticket while product scanning is in progress.", function() {
+          alertify.alert("Cannot switch ticket while current ticket's modifications are in progress.", function() {
             that.$searchbox.focus();
           });
         }

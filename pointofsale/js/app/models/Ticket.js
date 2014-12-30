@@ -199,6 +199,7 @@ jQuery(function($) {
     },
     updateTotalDebouncedTrigger: function(ticket, total, options) {
       var ticket = this;
+      ticket.trigger('ticket:lockModifications', true);
       var status = ticket.get('status');
       var ticketId = ticket.get('ticketId');
       var productCount = ticket.get('productCount');
@@ -224,12 +225,14 @@ jQuery(function($) {
             if(!res.status) {
               ticket.employeeSession.set('login', false);
             }
+            ticket.trigger('ticket:lockModifications', false);
             //ticket.trigger('ticket:preloader', false);
           },
           error: function(xhr, errorType, error) {
             //stop pre loader and logout user.
             //ticket.trigger('ticket:preloader', false);
             ticket.employeeSession.set('login', false);
+            ticket.trigger('ticket:lockModifications', false);
           }
         });
       }

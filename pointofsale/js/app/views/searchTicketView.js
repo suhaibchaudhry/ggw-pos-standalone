@@ -262,7 +262,7 @@ jQuery(function($) {
         	}
     	},
 		itemSelected: function(e, datum) {
-			if(this.appFrame.checkoutHideSemaphore == 0) {
+			if(this.appFrame.checkoutHideSemaphore == 0 && !this.appFrame.modificationsLock) {
 				var ticket = this.ticket;
 				this.$searchbox.typeahead('setQuery', '');
 				/*
@@ -310,7 +310,7 @@ jQuery(function($) {
 		          }
 		        });
 			} else {
-			    alertify.alert("Cannot change ticket while product scanning is in progress.");
+			    alertify.alert("Cannot switch ticket while current ticket's modifications are in progress.");
 			}
 		},
 		resolveSearchRPC: function(url, uriEncodedQuery) {

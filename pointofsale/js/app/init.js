@@ -65,6 +65,7 @@ jQuery(function($) {
       this.activeCustomer = new activeCustomer();
       this.preloaderSemaphore = 0;
       this.checkoutHideSemaphore = 0;
+      this.modificationsLock = false;
 
       //Modal Dialogs
       this.ticketStatusDialogModal = new ticketStatusDialogModal({
@@ -192,12 +193,15 @@ jQuery(function($) {
         }
       }
     },
+    ticketLockModifications: function(lock) {
+      this.modificationsLock = lock;
+    },
     printTicket: function(e) {
       e.preventDefault();
       this.activeTicketRegion.printTicket();
     },
     loadRecentTickets: function(e) {
-      if(this.checkoutHideSemaphore == 0) {
+      if(this.checkoutHideSemaphore == 0 && !this.modificationsLock) {
         this.invoiceDialog.display(true);
         this.invoiceDialog.invoiceDialogView.loadRecentInvoices(e);
       } else {
@@ -208,7 +212,7 @@ jQuery(function($) {
       }
     },
     loadQuoteTickets: function(e) {
-      if(this.checkoutHideSemaphore == 0) {
+      if(this.checkoutHideSemaphore == 0 && !this.modificationsLock) {
         this.invoiceDialog.display(true);
         this.invoiceDialog.invoiceDialogView.loadQuoteInvoices(e);
       } else {
@@ -219,7 +223,7 @@ jQuery(function($) {
       }
     },
     loadOpenTickets: function(e) {
-      if(this.checkoutHideSemaphore == 0) {
+      if(this.checkoutHideSemaphore == 0 && !this.modificationsLock) {
         this.invoiceDialog.display(true);
         this.invoiceDialog.invoiceDialogView.loadOpenInvoices(e);
       } else {
@@ -230,7 +234,7 @@ jQuery(function($) {
       }
     },
     loadCloseTickets: function(e) {
-      if(this.checkoutHideSemaphore == 0) {
+      if(this.checkoutHideSemaphore == 0 && !this.modificationsLock) {
         this.invoiceDialog.display(true);
         this.invoiceDialog.invoiceDialogView.loadClosedInvoices(e);
       } else {
