@@ -184,11 +184,11 @@ jQuery(function($) {
       }
 
       if(this.checkoutHideSemaphore > 0) {
-        if(status == 'pos_in_progress' && !locked) {
+        if(status == 'pos_in_progress' || !locked) {
           $('.ticketSearch .checkout').hide();
         }
       } else {
-        if(status == 'pos_in_progress' && !locked) {
+        if(status == 'pos_in_progress' || !locked) {
           $('.ticketSearch .checkout').show();
         }
       }

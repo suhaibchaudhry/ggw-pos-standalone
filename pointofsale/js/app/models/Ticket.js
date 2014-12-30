@@ -282,7 +282,7 @@ jQuery(function($) {
       }
     },
     changeProductQuantityImmediate: function(product, qty, options) {
-      if(this.get('status') == 'pos_in_progress' && !this.get('locked')) {
+      if(this.get('status') == 'pos_in_progress' || !this.get('locked')) {
         $('.ticketSearch .checkout').hide();
       }
 
