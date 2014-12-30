@@ -409,10 +409,14 @@ jQuery(function($) {
           contentType: 'application/json', 
           data: JSON.stringify({ticket : this.employeeSession.get('apiServer')+'/admin/invoice/print/'+ticketId+'?token='+this.employeeSession.get("token")}),
           success: function(data) {
-            alertify.alert(data);
+            alertify.alert(data, function() {
+
+            });
           },
           error: function() {
-            alertify.alert("Failed to send ticket to printer.");
+            alertify.alert("Failed to send ticket to printer.", function() {
+              
+            });
           }
       });
     },
