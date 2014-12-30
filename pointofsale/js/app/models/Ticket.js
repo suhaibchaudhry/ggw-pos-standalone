@@ -199,19 +199,21 @@ jQuery(function($) {
     },
     updateTotalDebouncedTrigger: function(ticket, total, options) {
       var ticket = this;
-      ticket.trigger('ticket:lockModifications', true);
-      var status = ticket.get('status');
-      var ticketId = ticket.get('ticketId');
-      var productCount = ticket.get('productCount');
-      var ticketLocked = ticket.get('locked');
       var token = sessionStorage.token;
+      var ticketId = ticket.get('ticketId');
+      var status = ticket.get('status');
+      var ticketLocked = ticket.get('locked');
+      var productCount = ticket.get('productCount');
 
-      if(!_.isUndefined(ticketId) && ticketId > 0 && !_.isEmpty(token)) {
+      if(!_.isUndefined(ticketId) && ticketId > 0 && !_.isEmpty(token) && (status != 'pos_completed' && status != 'pos_return_closed' && status != 'pos_return' || !ticketLocked)) {
+        ticket.trigger('ticket:lockModifications', true);
         this.updateTotalDebounced(ticket, status, ticketId, productCount, ticketLocked, token);
       }
     },
     //Detect debounced Updates on ticket totals and product counts on server.
     updateTotal: function(ticket, status, ticketId, productCount, ticketLocked, token) {
+      var ticketLocked = ticket.get('locked');
+
       if((status != 'pos_completed' && status != 'pos_return_closed' && status != 'pos_return' || !ticketLocked) && checkoutActive != true) {
         var updateTotalRequest = JSON.stringify({token: token, ticketId: ticketId, productCount: productCount});
         //Start preloader
@@ -235,6 +237,8 @@ jQuery(function($) {
             ticket.trigger('ticket:lockModifications', false);
           }
         });
+      } else {
+        ticket.trigger('ticket:lockModifications', false);
       }
     },
     //Product Collection Event Handlers
