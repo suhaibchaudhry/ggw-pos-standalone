@@ -675,7 +675,7 @@ jQuery(function($) {
           });
         }
       } else {
-        alertify.alert("Cannot switch ticket while current ticket's modifications are in progress.");
+        alertify.alert("Cannot switch ticket while current ticket is loading or updating. Try again later.");
       }
     },
     loadSelectedTicket: function(ticketId) {
@@ -863,7 +863,7 @@ jQuery(function($) {
           }
         });
       } else {
-          alertify.alert("Cannot switch ticket while current ticket's modifications are in progress.");
+          alertify.alert("Cannot switch ticket while current ticket is loading or updating. Try again later.");
       }
     },
     ticket_rma_return: function(e) {
@@ -943,7 +943,7 @@ jQuery(function($) {
             alertify.alert('No items to refund on RMA.');
         }
       } else {
-        alertify.alert("Cannot switch ticket while current ticket's modifications are in progress.");
+        alertify.alert("Cannot switch ticket while current ticket is loading or updating. Try again later.");
       }
     },
     toggleUsageDisplay: function(e) {

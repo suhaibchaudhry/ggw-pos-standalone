@@ -206,7 +206,7 @@ jQuery(function($) {
         this.invoiceDialog.invoiceDialogView.loadRecentInvoices(e);
       } else {
         e.preventDefault();
-        alertify.alert("Cannot switch ticket while current ticket's modifications are in progress.", function() {
+        alertify.alert("Cannot switch ticket while current ticket is loading or updating. Try again later.", function() {
           $('.item-search input.search').focus();
         });
       }
@@ -217,7 +217,7 @@ jQuery(function($) {
         this.invoiceDialog.invoiceDialogView.loadQuoteInvoices(e);
       } else {
         e.preventDefault();
-        alertify.alert("Cannot switch ticket while current ticket's modifications are in progress.", function() {
+        alertify.alert("Cannot switch ticket while current ticket is loading or updating. Try again later.", function() {
           $('.item-search input.search').focus();
         });
       }
@@ -228,7 +228,7 @@ jQuery(function($) {
         this.invoiceDialog.invoiceDialogView.loadOpenInvoices(e);
       } else {
         e.preventDefault();
-        alertify.alert("Cannot switch ticket while current ticket's modifications are in progress.", function() {
+        alertify.alert("Cannot switch ticket while current ticket is loading or updating. Try again later.", function() {
           $('.item-search input.search').focus();
         });
       }
@@ -239,7 +239,7 @@ jQuery(function($) {
         this.invoiceDialog.invoiceDialogView.loadClosedInvoices(e);
       } else {
         e.preventDefault();
-        alertify.alert("Cannot switch ticket while current ticket's modifications are in progress.", function() {
+        alertify.alert("Cannot switch ticket while current ticket is loading or updating. Try again later.", function() {
           $('.item-search input.search').focus();
         });
       }

@@ -172,7 +172,7 @@ jQuery(function($) {
           this.ticket.createTicketOnServer(this.employeeSession.get('login'), true);
           $('.customer-search input.tt-query').attr('disabled', false);
         } else {
-          alertify.alert("Cannot switch ticket while current ticket's modifications are in progress.", function() {
+          alertify.alert("Cannot switch ticket while current ticket is loading or updating. Try again later.", function() {
             that.$searchbox.focus();
           });
         }
