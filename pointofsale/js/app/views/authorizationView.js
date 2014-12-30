@@ -37,7 +37,9 @@ jQuery(function($) {
           that.loginPreloader(false);
         },
         error: function(xhr, errorType, error) {
-          alertify.alert('Error connecting to the network. Check connection and try again.');
+          alertify.alert('Error connecting to the network. Check connection and try again.', function() {
+            
+          });
           that.loginPreloader(false);
           that.authorizationModal.display(false);
         }
