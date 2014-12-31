@@ -664,21 +664,21 @@ Remove alias generation message. (Bulk generation of nodes completed, ...)
 
 #Wasi Comments -
 New unrequired form
-Error message that disappears on bad scan
+#Error message that disappears on bad scan
 
-DP ticket total
+#DP ticket total
 
-Add inbox
+Add inbox on mobile
 
 F9 open drawer manager only
 
-New alerts
+#New alerts
 
-Disable chrome new window shortcuts and inspector
+#Disable chrome new window shortcuts and inspector - switch to nodewebkit 11.4
 
 Add closed change summary on side.
 
-Add print count per ticket.
+/\Add print count per ticket.
 
 Recheckout disable cc swipe
 
