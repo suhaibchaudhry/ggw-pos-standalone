@@ -681,3 +681,7 @@ Add closed change summary on side.
 Add print count per ticket.
 
 Recheckout disable cc swipe
+
+Disable should be manager only.
+
+Signup should check for existing numbers.
