@@ -91,6 +91,11 @@ jQuery(function($) {
 
               that.creditCardSwiperSetup();
               that.creditTermCheckoutSetup();
+
+              //Disable credit card swiping on re-checkout.
+              if(ticket.get('status') == 'pos_completed') {
+                that.$('.info-menu-tabs ul li.card-checkout, #cc-payment-split, #cc-payment-split-label').hide();
+              }
           } else {
             ticket.employeeSession.set('login', false);
           }
