@@ -685,3 +685,7 @@ Recheckout disable cc swipe
 Disable should be manager only.
 
 Signup should check for existing numbers.
+
+Show disabled users that owe money page, -> possibly move debt.
+
+Install reorder module
