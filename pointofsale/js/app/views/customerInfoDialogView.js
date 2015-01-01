@@ -406,6 +406,13 @@ jQuery(function($) {
       this.$('a.customer-info-cancel').hide();
 
       this.remaining = 0;
+
+      if(this.employeeSession.get('privileged')) {
+        this.$('a.block-current-customer').show();
+      } else {
+        this.$('a.block-current-customer').hide();
+      }
+
       return this;
     },
     cashInputValidate: function(e) {
