@@ -693,3 +693,5 @@ Install reorder module
 Rma re-checkout and summary
 
 Change on bottom
+
+Manager show cost on price override, for unlocked also since they imply auth.
