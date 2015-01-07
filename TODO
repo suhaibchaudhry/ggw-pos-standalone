@@ -703,3 +703,14 @@ Error out disabling if pending balances
 Show bounced check error
 
 Inventory no refresh, event append
+
+Scan inner comming,  ? should work on other barocde
+   |_Scanned: 041420243820
+   |_Found: 041420243110
+
+Fix profit margin
+Duplicate skus avoid
+Label printer queue
+Percentage Edit
+     Inline edit and fix formula
+     Automagic: 136-1013
