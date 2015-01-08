@@ -857,7 +857,7 @@ jQuery(function($) {
                 status: res.ticketStatus,
                 status_en: stasuses[res.ticketStatus],
                 ticketId: res.ticketId,
-                customerUid: customer_uid
+                customerUid: res.customer_uid
               });
 
               //Unconditionally acquire new rma ticket from lock server.
@@ -938,7 +938,7 @@ jQuery(function($) {
                   status: res.ticketStatus,
                   status_en: stasuses[res.ticketStatus],
                   ticketId: res.ticketId,
-                  customerUid: customer_uid
+                  customerUid: res.customer_uid
                 });
 
                 //Unconditionally acquire new rma ticket from lock server.
