@@ -205,7 +205,7 @@ jQuery(function($) {
       var ticketLocked = ticket.get('locked');
       var productCount = ticket.get('productCount');
 
-      if(!_.isUndefined(ticketId) && ticketId > 0 && !_.isEmpty(token) && (status != 'pos_completed' && status != 'pos_return_closed' && status != 'pos_return' || !ticketLocked)) {
+      if(!_.isUndefined(ticketId) && ticketId > 0 && !_.isEmpty(token) && (status != 'pos_completed' && status != 'pos_return_closed' || !ticketLocked)) {
         ticket.trigger('ticket:lockModifications', true);
         this.updateTotalDebounced(ticket, status, ticketId, productCount, ticketLocked, token);
       }
@@ -214,7 +214,7 @@ jQuery(function($) {
     updateTotal: function(ticket, status, ticketId, productCount, ticketLocked, token) {
       var ticketLocked = ticket.get('locked');
 
-      if((status != 'pos_completed' && status != 'pos_return_closed' && status != 'pos_return' || !ticketLocked) && checkoutActive != true) {
+      if((status != 'pos_completed' && status != 'pos_return_closed' || !ticketLocked) && checkoutActive != true) {
         var updateTotalRequest = JSON.stringify({token: token, ticketId: ticketId, productCount: productCount});
         //Start preloader
         //this.trigger('ticket:preloader', true);
