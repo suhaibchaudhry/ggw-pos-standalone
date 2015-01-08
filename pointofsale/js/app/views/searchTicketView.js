@@ -355,7 +355,12 @@ jQuery(function($) {
 		rma_process_credit_return: function(e) {
 			e.preventDefault();
 			if(this.ticket.get('productCount') > 0) {
-				this.rma_process_debounced(true);
+				if(this.appFrame.checkoutHideSemaphore == 0 && !this.appFrame.modificationsLock) {
+					this.rma_process_debounced(true);
+				} else {
+					alertify.alert("RMA ticket is currently being updated, please try again momentarily.", function() {
+    				});
+				}
 			} else {
 				alertify.alert("Cannot process an empty RMA ticket.", function() {
     			});
@@ -364,7 +369,12 @@ jQuery(function($) {
 		rma_process_cash_return: function(e) {
 			e.preventDefault();
 			if(this.ticket.get('productCount') > 0) {
-				this.rma_process_debounced(false);
+				if(this.appFrame.checkoutHideSemaphore == 0 && !this.appFrame.modificationsLock) {
+					this.rma_process_debounced(false);
+				} else {
+					alertify.alert("RMA ticket is currently being updated, please try again momentarily.", function() {
+    				});
+				}
 			} else {
 				alertify.alert("Cannot process an empty RMA ticket.", function() {
     			});
