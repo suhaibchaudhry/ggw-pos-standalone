@@ -410,6 +410,11 @@ jQuery(function($) {
     			  });
 		          ticket.set('status_en', 'Closed RMA Ticket');
               	  ticket.set('status', 'pos_return_closed');
+ 
+              	  if(!credit_return) {
+              	  	//Eject Cash Drawer
+      				$.ajax({url: 'http://127.0.0.1:3000/drawer', type: 'GET'});
+              	  }
 		        } else {
 		          that.employeeSession.set('login', false);
 		        }
