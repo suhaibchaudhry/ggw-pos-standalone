@@ -581,7 +581,10 @@ jQuery(function($) {
       var that = this;
 
       if(!_.isUndefined(this.change_left) && !_.isUndefined(this.change_value) && !_.isUndefined(this.cash_paid)) {
-        var formatedCash = this.change_left.toFixed(2);
+        var formatedCash = this.cash_paid.toFixed(2);
+        console.log(formatedCash);
+        console.log(this.change_value.toFixed(2));
+        console.log(this.change_left.toFixed(2));
         if(formatedCash == "0.00") {
           alertify.alert("Please enter a cash amount higher than $0.00 to continue.", function() {
             $(".tabs input.cash-paid").focus();
