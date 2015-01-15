@@ -434,35 +434,55 @@ jQuery(function($) {
 
         });
       } else {
-        var total = this.pending_payments.pending_payments;
+        var total, rma_total;
+
+        if(isNaN(this.pending_payments.pending_payments)) {
+          total = Big('0');
+        } else {
+          total = Big(this.pending_payments.pending_payments);
+        }
+
+        if(isNaN(this.rma_credits)) {
+          rma_total = Big('0');
+        } else {
+          rma_total = Big(this.rma_credits);
+        }
+
+        
         var input_field = this.$('input.cash-paid');
         var val = input_field.val().replace('..', '.');
+        
+        var big_zero = Big('0');
         var paid;
         var $subject;
 
         if(val == '') {
-          paid = 0;
+          paid = big_zero;
         } else {
-          paid = parseFloat(val);
+          if(isNaN(val)) {
+            paid = Big(0);
+          } else {
+            paid = Big(val);
+          }
         }
 
         var check = this.$('input#check-payment');
         val = this.$('input.check-amount').val();
-        if(check.is(':checked') && val != '') {
-          paid += parseFloat(val);
+        if(check.is(':checked') && val != '' && !isNaN(val)) {
+          paid = paid.plus(Big(val));
         }
 
         check = this.$('input#mo-payment');
         val = this.$('input.mo-amount').val();
-        if(check.is(':checked') && val != '') {
-          paid += parseFloat(val);
+        if(check.is(':checked') && val != '' && !isNaN(val)) {
+          paid = paid.plus(Big(val));
         }
 
         check = this.$('input#cc-payment');
         val = this.$('input.charge-amount').val();
 
-        if(check.is(':checked') && val != '') {
-          paid += parseFloat(val);
+        if(check.is(':checked') && val != '' && !isNaN(val)) {
+          paid = paid.plus(Big(val));
         }
 
         check = this.$('input#rma-payment');
@@ -470,30 +490,30 @@ jQuery(function($) {
         val = $subject.val();
 
         if(check.is(':checked') && val != '' && !isNaN(val)) {
-          val = parseFloat(val);
-          var rma_credits = parseFloat(this.rma_credits);
-          if(val <= rma_credits) {
-            paid += val;
+          val = Big(val);
+          var comparison = rma_total.cmp(val) == -1;
+          if(comparison == -1 || comparison == 0) {
+            paid = paid.plus(val);
           } else {
-            paid += rma_credits;
+            paid = paid.plus(rma_total);
             if(e) {
-              $subject.val(rma_credits);
-              //e.currentTarget.value = rma_credits;
+              $subject.val(rma_total.toFixed(2));
+              //e.currentTarget.value = this.rma_credits.toFixed(2);
             }
           }
         }
 
-        var change = total - paid;
+        var change = total.minus(paid);
 
-        if(change > 0) {
+        if(change.cmp(big_zero) == 1) {
           total = change;
-          change = 0;
-        } else if(change < 0) {
-          total = 0;
-          change = -change;
+          change = big_zero;
+        } else if(change.cmp(big_zero) == -1) {
+          total = big_zero;
+          change = change.times(Big('-1'));
         } else {
-          total = 0;
-          change = 0;
+          total = big_zero;
+          change = big_zero;
         }
 
         this.change_left = total;
@@ -517,9 +537,9 @@ jQuery(function($) {
           }
         }
 
-        this.$('.payment-made-value').html(accounting.formatMoney(paid));
-        this.$('.remaining-due-value').html(accounting.formatMoney(total));
-        this.$('.change-due-value').html(accounting.formatMoney(change));
+        this.$('.payment-made-value').html(accounting.formatMoney(paid.toFixed(2)));
+        this.$('.remaining-due-value').html(accounting.formatMoney(total.toFixed(2)));
+        this.$('.change-due-value').html(accounting.formatMoney(change.toFixed(2)));
       }
     },
     changeModeToSwipe: function(e) {
@@ -561,7 +581,7 @@ jQuery(function($) {
       var that = this;
 
       if(!_.isUndefined(this.change_left) && !_.isUndefined(this.change_value) && !_.isUndefined(this.cash_paid)) {
-        var formatedCash = accounting.formatNumber(this.cash_paid, 2, "");
+        var formatedCash = this.change_left.toFixed(2);
         if(formatedCash == "0.00") {
           alertify.alert("Please enter a cash amount higher than $0.00 to continue.", function() {
             $(".tabs input.cash-paid").focus();
@@ -575,8 +595,8 @@ jQuery(function($) {
           }
 
           var creditCashCheckoutRequest = JSON.stringify({token: sessionStorage.token,
-                                                    cash: this.cash_paid,
-                                                    change: this.change_value,
+                                                    cash: this.cash_paid.toFixed(2),
+                                                    change: this.change_value.toFixed(2),
                                                     customer: cuid,
                                                     cash_val: this.$('input.cash-paid').val(),
                                                     check: this.$('input#check-payment').is(':checked'),
@@ -606,18 +626,17 @@ jQuery(function($) {
               //stop preloader
               ticket.trigger('ticket:preloader', false);
               if(res.status) {
-                var formattedChange = accounting.formatNumber(that.change_value, 2, "");
-                if(formattedChange == "0.00") {
+                if(that.change_value.toFixed(2) == "0.00") {
                   alertify.alert("Payment Complete. No CHANGE.", function() {
                     that.printReceipt(res);
                   });
                 } else {
                   if(that.$('input.stash-change').is(':checked')) {
-                    alertify.alert("Payment Complete. Please make NO CHANGE, Customer RMA was credited with amount: "+accounting.formatMoney(that.change_value), function() {
+                    alertify.alert("Payment Complete. Please make NO CHANGE, Customer RMA was credited with amount: $"+that.change_value.toFixed(2), function() {
                       that.printReceipt(res);
                     });
                   } else {
-                    alertify.alert("Payment Complete. Please make change for amount: "+accounting.formatMoney(that.change_value), function() {
+                    alertify.alert("Payment Complete. Please make change for amount: "+that.change_value.toFixed(2), function() {
                       that.printReceipt(res);
                     });
                   }
