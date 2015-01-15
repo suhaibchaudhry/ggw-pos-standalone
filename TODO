@@ -727,7 +727,7 @@ Embed history pages
 #Another password on warehouse.general-goods.com
 #RMA change status on close
 #Cash rma identify on invoice - Now changed to Cash Refund Receipt
-Seperate inventory and backoffice perm
+#Seperate inventory and backoffice perm
 
 *Ask for columns on product history
 Remove partial customer activity report, and add summary report.
