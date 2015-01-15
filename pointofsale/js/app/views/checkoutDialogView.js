@@ -391,6 +391,7 @@ jQuery(function($) {
 
       var big_zero = Big('0');
       var paid;
+      var $subject;
 
       if(val == '') {
         paid = big_zero;
@@ -428,7 +429,8 @@ jQuery(function($) {
       }
 
       check = this.$('input#rma-payment');
-      val = this.$('input.rma-amount').val();
+      $subject = this.$('input.rma-amount');
+      val = $subject.val();
 
       if(check.is(':checked') && val != '' && !isNaN(val)) {
         val = Big(val);
@@ -438,7 +440,8 @@ jQuery(function($) {
         } else {
           paid = paid.plus(this.rma_credits);
           if(e) {
-            e.currentTarget.value = this.rma_credits.toFixed(2);
+            $subject.val(this.rma_credits.toFixed(2));
+            //e.currentTarget.value = this.rma_credits.toFixed(2);
           }
         }
       }

@@ -438,6 +438,8 @@ jQuery(function($) {
         var input_field = this.$('input.cash-paid');
         var val = input_field.val().replace('..', '.');
         var paid;
+        var $subject;
+
         if(val == '') {
           paid = 0;
         } else {
@@ -464,7 +466,8 @@ jQuery(function($) {
         }
 
         check = this.$('input#rma-payment');
-        val = this.$('input.rma-amount').val();
+        $subject = this.$('input.rma-amount');
+        val = $subject.val();
 
         if(check.is(':checked') && val != '' && !isNaN(val)) {
           val = parseFloat(val);
@@ -474,7 +477,8 @@ jQuery(function($) {
           } else {
             paid += rma_credits;
             if(e) {
-              e.currentTarget.value = rma_credits;
+              $subject.val(rma_credits);
+              //e.currentTarget.value = rma_credits;
             }
           }
         }
