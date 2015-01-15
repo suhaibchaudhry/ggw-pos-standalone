@@ -474,7 +474,7 @@ jQuery(function($) {
 			this.$('.last-scan-item').html(this.lastScanItemTpl(product['attributes']));
 		},
 		inventoryCatch: function() {
-			if(this.employeeSession.get('privileged')) {
+			if(this.employeeSession.get('inventory')) {
 				var data = {
 					api_server: this.employeeSession.get('apiServer'),
 					token: this.employeeSession.get('token')
