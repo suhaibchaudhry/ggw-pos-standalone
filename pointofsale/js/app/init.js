@@ -264,6 +264,13 @@ jQuery(function($) {
     clearCalculator: function(e) {
       e.preventDefault();
       $('.calcOverlay').empty().hide();
+    },
+    decimalForward: function(str) {
+      if(typeof str == "string") {
+        return str.replace('..', '.');
+      } else {
+        return '';
+      }
     }
   });
 

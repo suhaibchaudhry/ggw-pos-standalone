@@ -450,8 +450,8 @@ jQuery(function($) {
 
         
         var input_field = this.$('input.cash-paid');
-        var val = input_field.val().replace('..', '.');
-        
+        var val = this.appFrame.decimalForward(input_field.val());
+
         var big_zero = Big('0');
         var paid;
         var $subject;
@@ -467,19 +467,19 @@ jQuery(function($) {
         }
 
         var check = this.$('input#check-payment');
-        val = this.$('input.check-amount').val();
+        val = this.appFrame.decimalForward(this.$('input.check-amount').val());
         if(check.is(':checked') && val != '' && !isNaN(val)) {
           paid = paid.plus(Big(val));
         }
 
         check = this.$('input#mo-payment');
-        val = this.$('input.mo-amount').val();
+        val = this.appFrame.decimalForward(this.$('input.mo-amount').val());
         if(check.is(':checked') && val != '' && !isNaN(val)) {
           paid = paid.plus(Big(val));
         }
 
         check = this.$('input#cc-payment');
-        val = this.$('input.charge-amount').val();
+        val = this.appFrame.decimalForward(this.$('input.charge-amount').val());
 
         if(check.is(':checked') && val != '' && !isNaN(val)) {
           paid = paid.plus(Big(val));
@@ -487,7 +487,7 @@ jQuery(function($) {
 
         check = this.$('input#rma-payment');
         $subject = this.$('input.rma-amount');
-        val = $subject.val();
+        val = this.appFrame.decimalForward($subject.val());
 
         if(check.is(':checked') && val != '' && !isNaN(val)) {
           val = Big(val);
