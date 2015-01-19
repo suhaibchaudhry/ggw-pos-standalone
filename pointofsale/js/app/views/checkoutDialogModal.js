@@ -6,7 +6,7 @@ jQuery(function($) {
     initialize: function(attributes, options) {
       this.activeCustomer = attributes['activeCustomer'];
       this.ticket = attributes['ticket'];
-      this.checkoutDialogView = new checkoutDialogView({el: $('.checkoutOverlay').get(0), activeCustomer: attributes['activeCustomer'], modal: this, ticket: attributes['ticket'], employeeSession: attributes['employeeSession']});
+      this.checkoutDialogView = new checkoutDialogView({el: $('.checkoutOverlay').get(0), activeCustomer: attributes['activeCustomer'], modal: this, ticket: attributes['ticket'], employeeSession: attributes['employeeSession'], appFrame: attributes['appFrame']});
     },
     beforeCancel: function() {
       return false;
