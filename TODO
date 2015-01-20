@@ -731,3 +731,16 @@ Embed history pages
 
 *Ask for columns on product history
 Remove partial customer activity report, and add summary report.
+
+Active All on product search
+Barcode duplicate give item already exist error with active don't allow and non active show warning.
+Customer Account Number
+Customer Number -> Store Name
+Phone Number
+Quantity Purchased
+Price Purchased
+Extended Price
+Pre expanded on one result.
+
+Temporary sales price, or quanity cap expire
+Sell Price -> Black, and change sell price to sell price on Catalog and related items
