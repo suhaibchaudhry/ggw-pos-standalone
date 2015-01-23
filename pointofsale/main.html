@@ -30,6 +30,7 @@
 	<script type="text/javascript" src="js/vendor/jquery.kinetic.min.js"></script>
 	<script type="text/javascript" src="js/vendor/jquery.jgrowl.min.js"></script>
 	<script type="text/javascript" src="js/vendor/jquery.cardswipe.js"></script>
+	<script type="text/javascript" src="js/vendor/jquery.formance.min.js"></script>
 
 	<!-- Backbone JS -->
 	<script type="text/javascript" src="js/vendor/underscore-min.js"></script>
@@ -150,21 +151,21 @@
 			<div class="signup-wrap">
 				<div class="wrap-inner">
 				<h3 class="bbm-modal__title title">New Customer</h3><a href="#" class="clear-calculator">Clear</a>
-					<form name="signup-form" class="signup-form">
+					<form name="signup-form" action="#" class="signup-form">
 						<div class="form-field left-field">
-							<input id="firstName" placeholder="First Name" class="form-item" />
+							<input type="text" id="firstName" placeholder="First Name" class="form-item" />
 						</div>
 						<div class="form-field right-field">
-							<input id="lastName" placeholder="Last Name" class="form-item" />
+							<input type="text" id="lastName" placeholder="Last Name" class="form-item" />
 						</div>
 						<div class="form-field left-field">
-							<input id="account-id" placeholder="Account #" class="form-item" />
+							<input type="text" id="account-id" placeholder="Account #" class="form-item" />
 						</div>
 						<div class="form-field right-field">
-							<input id="phone" type="tel" pattern="[0-9]*" placeholder="Phone" class="form-item" />
+							<input id="phone" type="text" pattern="[0-9]*" placeholder="Phone" class="form-item phone_number" />
 						</div>
 						<div class="form-field full-field">
-							<input id="email" placeholder="email@domain.com" class="form-item" />
+							<input type="text" autofill="off" id="email" placeholder="email@domain.com" class="form-item" />
 						</div>
 						<div class="form-field left-field">
 							<input type="password" id="password" placeholder="Password" class="form-item" />
@@ -173,13 +174,13 @@
 							<input type="password" id="cpassword" placeholder="Confirm Password" class="form-item" />
 						</div>
 						<div class="form-field left-field">
-							<input id="tax-id" placeholder="Tax ID" class="form-item" />
+							<input type="text" id="tax-id" placeholder="Tax ID" class="form-item" />
 						</div>
 						<div class="form-field right-field">
-							<input id="tobacco" placeholder="Tobacco Permit ID" class="form-item" />
+							<input type="text" id="tobacco" placeholder="Tobacco Permit ID" class="form-item" />
 						</div>
 						<div class="form-field full-field">
-							<input id="tremarks" placeholder="Tobacco Remarks" class="form-item" />
+							<input type="text" id="tremarks" placeholder="Tobacco Remarks" class="form-item" />
 						</div>
 						<div class="form-field left-field">
 							<h3 class="formLabel">Tobacco Permit Expiration:</h3>
@@ -188,13 +189,13 @@
 							<input type="date" id="tdate" placeholder="Tobacco Permit Expiration" class="form-item" />
 						</div>
 						<div class="form-field full-field">
-							<input id="street-address-1" placeholder="Company Address" class="form-item" />
+							<input type="text" id="street-address-1" placeholder="Company Address" class="form-item" />
 						</div>
 						<div class="form-field full-field street-addr-2">
-							<input id="street-address-2" class="form-item" />
+							<input type="text" id="street-address-2" class="form-item" />
 						</div>
 						<div class="form-field left-field">
-							<input id="city" placeholder="City" class="form-item" />
+							<input type="text" id="city" placeholder="City" class="form-item" />
 						</div>
 						<div class="form-field right-field">
 							<select id="comp-state">
@@ -252,10 +253,13 @@
 							</select>
 						</div>
 						<div class="form-field left-field zip-field">
-							<input id="zip" placeholder="Zip Code" class="form-item" />
+							<input type="text" id="zip" placeholder="Zip Code" class="form-item" />
 						</div>
 						<div class="form-field right-field">
-							<input id="fax" type="tel" placeholder="Fax" class="form-item" />
+							<input type="text" id="fax" placeholder="Fax" class="form-item phone_number" />
+						</div>
+						<div class="form-field full-field">
+						<input type="submit" class="create-button" value="Create Account" />
 						</div>
 					</form>
 				</div>

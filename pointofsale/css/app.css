@@ -1056,3 +1056,15 @@ div.signup-wrap #comp-state {
 div.signup-wrap .zip-field {
     clear: both;
 }
+
+div.signup-wrap .create-button {
+    width: 100%;
+    font-size: 30px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+div.signup-wrap .errorField{
+    border-color: red;
+    border-size: 2px;
+}

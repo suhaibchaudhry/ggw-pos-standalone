@@ -254,12 +254,34 @@ jQuery(function($) {
     },
     signupFormInitiate: function(e) {
       e.preventDefault();
-      $('.calcOverlay').html(this.addCustomer({
+      var $context = $('.calcOverlay');
+      var context = $context.get(0);
+      $context.html(this.addCustomer({
         api_server: this.employeeSession.get('apiServer'),
         token: this.employeeSession.get("token")
       })).show();
-      $('.calcOverlay a.clear-calculator').on('click', _.bind(this.clearCalculator, this));
-      $('.calcOverlay iframe').focus();
+      $context.find('a.clear-calculator').on('click', _.bind(this.clearCalculator, this));
+
+      $("input.phone_number", context).formance("format_phone_number") // setup the formatter
+                             .on( 'keyup change blur', function (event) { // setup the event listeners to validate the field whenever the user takes an action
+                               if ( $(this).formance('validate_phone_number') || $(this).val() == '' ) {
+                                 $("input[type='submit']", context).prop("disabled", false); // enable the submit button if valid phone number
+                                 $(this).removeClass('errorField');
+                               } else {
+                                 $("input[type='submit']", context).prop("disabled", true); // disable the submit button if invalid phone number
+                                 $(this).addClass('errorField');
+                               }
+                             });
+
+      $("input#email", context).on( 'keyup change blur', function (event) {
+        if ( $(this).formance('validate_email') || $(this).val() == '' ) {
+           $("input[type='submit']", context).prop("disabled", false); // enable the submit button if valid phone number
+           $(this).removeClass('errorField');
+         } else {
+           $("input[type='submit']", context).prop("disabled", true); // disable the submit button if invalid phone number
+           $(this).addClass('errorField');
+         }
+      });
     },
     clearCalculator: function(e) {
       e.preventDefault();
@@ -279,6 +301,17 @@ jQuery(function($) {
   		el: $('div.app-wrap').get(0)
   	});
   }
+
+  $(document).on('submit', 'form.signup-form', function(e) {
+    e.preventDefault();
+    var pass = $('#password');
+    var cpass = $('#cpassword');
+    if(pass.val() != cpass.val()) {
+      alertify.alert("Password and confirm password are not the same.", function() {
+        pass.focus();
+      });
+    }
+  });
 
   appBootstrap();
 });
