@@ -256,10 +256,7 @@ jQuery(function($) {
       e.preventDefault();
       var $context = $('.calcOverlay');
       var context = $context.get(0);
-      $context.html(this.addCustomer({
-        api_server: this.employeeSession.get('apiServer'),
-        token: this.employeeSession.get("token")
-      })).show();
+      $context.html(this.addCustomer()).show();
       $context.find('a.clear-calculator').on('click', _.bind(this.clearCalculator, this));
 
       $("input.phone_number", context).formance("format_phone_number") // setup the formatter
@@ -300,7 +297,11 @@ jQuery(function($) {
   	var app = new applicationFrame({
   		el: $('div.app-wrap').get(0)
   	});
+
+    return app;
   }
+
+  var app = appBootstrap();
 
   $(document).on('submit', 'form.signup-form', function(e) {
     e.preventDefault();
@@ -310,8 +311,54 @@ jQuery(function($) {
       alertify.alert("Password and confirm password are not the same.", function() {
         pass.focus();
       });
-    }
-  });
 
-  appBootstrap();
+      return false;
+    }
+
+    var account_id = $('#account-id');
+    if($.trim(account_id.val()) == '') {
+      alertify.alert("Customer account id cannot be blank.", function() {
+        account_id.focus();
+      });
+    }
+
+      var signupRequest = JSON.stringify({
+        token: sessionStorage.token,
+        firstName: $('#firstName').val(),
+        lastName: $('#lastName').val(),
+        accountId: account_id.val(),
+        phone: $('#phone').val(),
+        email: $('#email').val(),
+        password: pass.val(),
+        taxId: $('#tax-id').val(),
+        tobacco: $('#tobacco').val(),
+        tremarks: $('#tremarks').val(),
+        tdate: $('#tdate').val(),
+        st_one: $('#street-address-1').val(),
+        st_two: $('#street-address-2').val(),
+        city: $('#city').val(),
+        state: $('#comp-state').val(),
+        zip: $('#zip').val(),
+        fax: $('#fax').val()
+      });
+
+      $.ajax({
+        type: 'POST',
+        url: app.employeeSession.get('apiServer')+'/pos-api/customer/add-customer',
+        data: {request: signupRequest},
+        timeout: 10000,
+        success: function(res, status, xhr) {
+          if(res.status) {
+
+          } else {
+            alertify.alert(res.error, function() {
+            });
+          }
+        },
+        error: function(xhr, errorType, error) {
+          alertify.alert("There was an error creating customer.", function() {
+          });
+        }
+      });
+  });
 });
