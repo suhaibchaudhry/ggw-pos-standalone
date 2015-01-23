@@ -979,3 +979,80 @@ a.exit-modal:hover {
     font-size: 14px;
     margin: 20px 0 0;
 }
+
+div.signup-wrap {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+div.signup-wrap div.wrap-inner {
+    float: left;
+    background: #fff;
+    padding: 0px 5px 31px 13px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+div.signup-wrap .signup-form {
+    clear: both;
+}
+
+div.signup-wrap h3 {
+    float: left;
+    padding: 14px 0 19px;
+}
+
+div.signup-wrap .clear-calculator {
+    float: right;
+}
+
+div.signup-wrap .form-item {
+    font-size: 30px;
+    padding: 10px 8px;
+}
+
+div.signup-wrap .left-field {
+   float: left;
+   margin: 10px 0 0 30px;
+}
+
+div.signup-wrap .right-field {
+   float: right;
+   margin: 10px 30px 0 0;
+}
+
+div.signup-wrap .full-field {
+    padding: 20px 30px 10px;
+    float: left;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+div.signup-wrap .full-field .form-item {
+    width: 100%;
+}
+
+div.signup-wrap ::-webkit-input-placeholder { /* WebKit browsers */
+    color: #60ABF8 ;
+}
+
+div.signup-wrap h3.formLabel {
+   font-weight: normal;
+    font-size: 25px;
+    padding: 0;
+    margin: 20px 0;
+    color: #215FA0;
+}
+
+div.signup-wrap .street-addr-2 {
+    padding-top: 2px;
+}
+
+div.signup-wrap #comp-state {
+    font-size: 42px;
+}
+
+div.signup-wrap .zip-field {
+    clear: both;
+}
