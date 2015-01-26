@@ -570,7 +570,7 @@ Inline edit and percentage markup
 
 CHANGE MASTER TO MASTER_HOST='127.0.0.1',MASTER_USER='slaveuser', MASTER_PASSWORD='xyz786', MASTER_LOG_FILE='mysql-bin.000261', MASTER_LOG_POS=3637598
 
-Distinguish RMA and Invoice on customer statement.
+Distinguish RMA and Invoice on customer statement. ON BOTTOM.
 
 Add check number on tickets: 14803
     |_ also add on dp tickets
@@ -590,7 +590,7 @@ Show related barcodes, and save takes back to same results
 
 #Mobile order on back office
 
-Show closed invoice register id and customer on invoice
+Show closed invoice register id and customer on invoice on top
 
 Dialog close on item alert do not close
 
@@ -653,8 +653,8 @@ Order doesnt dissappear...
           |_ Full sync ignore cache and unreplicated tables
           |_ Run full sync and restart replication every night
 
-Send customer push notification from page
-           Send from page and mobile orders
+#Send customer push notification from page
+#           Send from page and mobile orders
 
 Store name edit, and full signup page.
 
@@ -670,7 +670,7 @@ New unrequired form
 
 Add inbox on mobile
 
-F9 open drawer manager only
+F9 open drawer manager only, with log * manager only
 
 #New alerts
 
@@ -700,7 +700,7 @@ Fix nodewebkit print exit crash bug.
 
 Error out disabling if pending balances
 
-Show bounced check error
+Show bounced check error*
 
 Inventory no refresh, event append
 
@@ -710,9 +710,9 @@ Scan inner comming,  ? should work on other barocde
 
 #Fix profit margin
 Duplicate skus avoid
-Label printer queue
+Label printer queue -> As button
 Percentage Edit
-     Inline edit and fix formula
+     Inline edit and fix formula -> ADD Packing*
      Automagic: 136-1013
 
 Second time disable comes back for non managers.
@@ -721,18 +721,19 @@ RMA close right away on checkout.
 
 Add edit customer form
 Formulas and inline edit
-Cost on manager override price for managers
+CUSTOMER HISTORY CHECK PRICE, HOW MANY PURCHASES showing december only.
+Cost on manager override price for managers -> PC
 Drop down for states
 Embed history pages
 #Another password on warehouse.general-goods.com
 #RMA change status on close
 #Cash rma identify on invoice - Now changed to Cash Refund Receipt
-#Seperate inventory and backoffice perm
+#Seperate inventory and backoffice perm, *Mobile orders to manager only
 
 *Ask for columns on product history
 Remove partial customer activity report, and add summary report.
 
-Active All on product search
+Active All on product search -> Default all
 Barcode duplicate give item already exist error with active don't allow and non active show warning.
 Customer Account Number
 Customer Number -> Store Name
@@ -744,3 +745,9 @@ Pre expanded on one result.
 
 Temporary sales price, or quanity cap expire
 Sell Price -> Black, and change sell price to sell price on Catalog and related items
+
+Turn off unit barcode scan, and search additional barcodes on ?
+
+*Default broadcast messages:
+   We have received your order.
+   The order is ready.
