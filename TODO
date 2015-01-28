@@ -751,3 +751,5 @@ Turn off unit barcode scan, and search additional barcodes on ?
 *Default broadcast messages:
    We have received your order.
    The order is ready.
+
+Setup SMTP module
