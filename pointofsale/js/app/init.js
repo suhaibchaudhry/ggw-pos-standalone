@@ -385,7 +385,9 @@ jQuery(function($) {
       timeout: 10000,
       success: function(res, status, xhr) {
         if(res.status) {
-
+          alertify.alert("Customer account created successfully.", function() {
+            $('.calcOverlay').empty().hide();
+          });
         } else {
           alertify.alert(res.error, function() {
           });
