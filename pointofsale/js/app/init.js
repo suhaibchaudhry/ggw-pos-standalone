@@ -293,20 +293,27 @@ jQuery(function($) {
     }
   });
 
-  var appBootstrap = function() {
-  	var app = new applicationFrame({
-  		el: $('div.app-wrap').get(0)
-  	});
+  var fieldEmptyTest = function($field, message) {
+    if($.trim($field.val()) == '') {
+      alertify.alert(message, function() {
+        $field.focus();
+      });
 
-    return app;
-  }
+      return true;
+    } else {
+      return false;
+    }
+  };
 
-  var app = appBootstrap();
-
-  $(document).on('submit', 'form.signup-form', function(e) {
+  var signupSubmitCallback = function(e) {
     e.preventDefault();
     var pass = $('#password');
     var cpass = $('#cpassword');
+
+    if(fieldEmptyTest(pass, "Password cannot be blank.")) {
+      return false;
+    }
+
     if(pass.val() != cpass.val()) {
       alertify.alert("Password and confirm password are not the same.", function() {
         pass.focus();
@@ -315,50 +322,90 @@ jQuery(function($) {
       return false;
     }
 
-    var account_id = $('#account-id');
-    if($.trim(account_id.val()) == '') {
-      alertify.alert("Customer account id cannot be blank.", function() {
-        account_id.focus();
-      });
+    var company_name = $('#company-name');
+    if(fieldEmptyTest(company_name, "Company name cannot be blank.")) {
+      return false;
     }
 
-      var signupRequest = JSON.stringify({
-        token: sessionStorage.token,
-        firstName: $('#firstName').val(),
-        lastName: $('#lastName').val(),
-        accountId: account_id.val(),
-        phone: $('#phone').val(),
-        email: $('#email').val(),
-        password: pass.val(),
-        taxId: $('#tax-id').val(),
-        tobacco: $('#tobacco').val(),
-        tremarks: $('#tremarks').val(),
-        tdate: $('#tdate').val(),
-        st_one: $('#street-address-1').val(),
-        st_two: $('#street-address-2').val(),
-        city: $('#city').val(),
-        state: $('#comp-state').val(),
-        zip: $('#zip').val(),
-        fax: $('#fax').val()
-      });
+    var account_id = $('#account-id');
+    if(fieldEmptyTest(account_id, "Account # is required.")) {
+      return false;
+    }
 
-      $.ajax({
-        type: 'POST',
-        url: app.employeeSession.get('apiServer')+'/pos-api/customer/add-customer',
-        data: {request: signupRequest},
-        timeout: 10000,
-        success: function(res, status, xhr) {
-          if(res.status) {
+    var firstName = $('#firstName');
+    if(fieldEmptyTest(firstName, "First Name is required.")) {
+      return false;
+    }
 
-          } else {
-            alertify.alert(res.error, function() {
-            });
-          }
-        },
-        error: function(xhr, errorType, error) {
-          alertify.alert("There was an error creating customer.", function() {
+    var lastName = $('#lastName');
+    if(fieldEmptyTest(lastName, "Last Name is required.")) {
+      return false;
+    }
+
+    var taxId = $('#tax-id');
+    if(fieldEmptyTest(taxId, "Tax ID is required.")) {
+      return false;
+    }
+
+    var tobaccoId = $('#tobacco');
+    if(fieldEmptyTest(tobaccoId, "Tobacco Permit ID is required.")) {
+      return false;
+    }
+
+    var tdate = $('#tdate');
+    if(fieldEmptyTest(tdate, "Tobacco permit expiration date is required.")) {
+      return false;
+    }
+
+    var signupRequest = JSON.stringify({
+      token: sessionStorage.token,
+      firstName: firstName.val(),
+      lastName: lastName.val(),
+      accountId: account_id.val(),
+      companyName: company_name.val(),
+      phone: $('#phone').val(),
+      email: $('#email').val(),
+      password: pass.val(),
+      taxId: taxId.val(),
+      tobacco: tobaccoId.val(),
+      tremarks: $('#tremarks').val(),
+      tdate: tdate.val(),
+      st_one: $('#street-address-1').val(),
+      st_two: $('#street-address-2').val(),
+      city: $('#city').val(),
+      state: $('#comp-state').val(),
+      zip: $('#zip').val(),
+      fax: $('#fax').val()
+    });
+
+    $.ajax({
+      type: 'POST',
+      url: app.employeeSession.get('apiServer')+'/pos-api/customer/add-customer',
+      data: {request: signupRequest},
+      timeout: 10000,
+      success: function(res, status, xhr) {
+        if(res.status) {
+
+        } else {
+          alertify.alert(res.error, function() {
           });
         }
-      });
-  });
+      },
+      error: function(xhr, errorType, error) {
+        alertify.alert("There was an error creating customer.", function() {
+        });
+      }
+    });
+  };
+
+  var appBootstrap = function() {
+  	var app = new applicationFrame({
+  		el: $('div.app-wrap').get(0)
+  	});
+
+    return app;
+  };
+
+  var app = appBootstrap();
+  $(document).on('submit', 'form.signup-form', signupSubmitCallback);
 });
