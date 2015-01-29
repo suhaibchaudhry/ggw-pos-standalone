@@ -141,6 +141,9 @@ jQuery(function($) {
         return false;
       };
   	},
+    clearCustomerCache: function() {
+      this.activeCustomerRegion.$searchbox.typeahead('clearCache');
+    },
     reload: function(e) {
       e.preventDefault();
       location.reload();
@@ -305,6 +308,16 @@ jQuery(function($) {
     }
   };
 
+  var appBootstrap = function() {
+  	var app = new applicationFrame({
+  		el: $('div.app-wrap').get(0)
+  	});
+
+    return app;
+  };
+
+  var app = appBootstrap();
+
   var signupSubmitCallback = function(e) {
     e.preventDefault();
     var pass = $('#password');
@@ -386,6 +399,7 @@ jQuery(function($) {
       success: function(res, status, xhr) {
         if(res.status) {
           alertify.alert("Customer account created successfully.", function() {
+            app.clearCustomerCache();
             $('.calcOverlay').empty().hide();
           });
         } else {
@@ -400,14 +414,5 @@ jQuery(function($) {
     });
   };
 
-  var appBootstrap = function() {
-  	var app = new applicationFrame({
-  		el: $('div.app-wrap').get(0)
-  	});
-
-    return app;
-  };
-
-  var app = appBootstrap();
   $(document).on('submit', 'form.signup-form', signupSubmitCallback);
 });
