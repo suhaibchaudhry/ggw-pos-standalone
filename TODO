@@ -759,4 +759,6 @@ DP print website
 Invoice number on bottom of tickets
 Remove quote tickets on customer tabs and move them to new ticket dialog.
 
-Show breakdown option.
+Show breakdown option on each settlement.
+
+Keep same date option on re-checkout.
