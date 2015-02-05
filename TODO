@@ -764,7 +764,15 @@ Show breakdown option on each settlement.
 
 Keep same date option on re-checkout.
    |_Figure out what date to put on recheckout.
+   |_Show Warning message to enforce recheckout
+
+Page for disabled user credit usages
+Page for over due credits
+
+Recheckout message
+
+Fix date on recheckedout ticket.
 
 Category Report
 
-Payment confirm dialog.
+Payment confirm dialog with breakdown.
