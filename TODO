@@ -54,7 +54,7 @@ Checkbox to mark item as sent
 #accept payments
    |_Swipe
 
-#add pos payment reciept -> 
+#add pos payment reciept ->
 
 #Clear quote ticket from customer on dialog. and show old invoices.
 
@@ -280,7 +280,7 @@ Abid
 #Remove dl fromm invoice
 #   |_ \s*(T|t)?(X|x)?(D|d)(L|l).{0,3}(\d+|[^a-zA-Z]$)
 #   |_ \#\d+
-#   |_ DL: 
+#   |_ DL:
 
 #Search &amp; sign in customer search
 
@@ -777,3 +777,5 @@ Fix date on recheckedout ticket.
 Category Report
 
 Payment confirm dialog with breakdown.
+
+Current ticket customer on inconsistent tickets.
