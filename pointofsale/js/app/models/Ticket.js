@@ -393,7 +393,7 @@ jQuery(function($) {
             if(res.status) {
               var id = productAttributes['id'];
               productAttributes['id'] = res.ticketProductId;
-              product['local_price_set'] = true;
+              productAttributes['local_price_set'] = true;
               var product = ticket.get('productCollection').add(productAttributes);
               productAttributes['id'] = id;
               if(typeof callback == "function") {
