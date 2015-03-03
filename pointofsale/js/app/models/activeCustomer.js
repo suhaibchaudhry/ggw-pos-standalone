@@ -77,6 +77,12 @@ jQuery(function($) {
 	            if(!res.status) {
 	              ticket.employeeSession.set('login', false);
 	            }
+
+              $.each(res.new_pricing, function(index, key) {
+                var product = ticket.get('productCollection').get(index);
+                product.set('price', key);
+              });
+
 	            ticket.trigger('ticket:preloader', false);
 	          },
 	          error: function(xhr, errorType, error) {
