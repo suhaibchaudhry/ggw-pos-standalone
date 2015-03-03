@@ -33,6 +33,12 @@ jQuery(function($) {
       this.requests = new Array();
       this.checkoutProcessDebounced = _.debounce(this.checkoutProcess, 2000, true);
 
+      $.cardswipe({
+        parser: _.bind(this.creditCardParser, this),
+        success: _.bind(this.creditCardScan, this),
+        error: _.bind(this.creditCardScanFail, this)
+      });
+
       $.cardswipe('disable');
     },
     calculatorInitiate: function(e) {
@@ -115,12 +121,6 @@ jQuery(function($) {
       }
     },
     creditCardSwiperSetup: function() {
-      $.cardswipe({
-        parser: _.bind(this.creditCardParser, this),
-        success: _.bind(this.creditCardScan, this),
-        error: _.bind(this.creditCardScanFail, this)
-      });
-
       this.$('.credit-card-checkout').html(this.ccCheckoutTemplate({
         subtotal: accounting.formatMoney(this.ticket.get('total')),
         tax: accounting.formatMoney(this.ticketTax.toFixed(2)),
