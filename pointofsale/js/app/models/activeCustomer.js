@@ -78,12 +78,17 @@ jQuery(function($) {
 	              ticket.employeeSession.set('login', false);
 	            }
 
+              var i = 0;
+              var length = Object.keys(res.new_pricing).length;
               $.each(res.new_pricing, function(index, key) {
                 var product = ticket.get('productCollection').get(index);
                 product.set('price', key);
+                if(i == length-1) {
+                  ticket.trigger('ticket:preloader', false);
+                }
+                i++;
               });
-
-	            ticket.trigger('ticket:preloader', false);
+	            //ticket.trigger('ticket:preloader', false);
 	          },
 	          error: function(xhr, errorType, error) {
 	            ticket.employeeSession.set('login', false);
