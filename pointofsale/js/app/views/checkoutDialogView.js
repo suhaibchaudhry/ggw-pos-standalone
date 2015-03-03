@@ -72,6 +72,7 @@ jQuery(function($) {
       this.change_value = undefined;
       this.cash_paid = undefined;
       checkoutActive = true;
+      $.cardswipe('enable');
 
       ticket.trigger('ticket:preloader', true);
       var request = $.ajax({
@@ -95,8 +96,6 @@ jQuery(function($) {
               //Disable credit card swiping on re-checkout.
               if(ticket.get('status') == 'pos_completed') {
                 that.$('.info-menu-tabs ul li.card-checkout, #cc-payment-split, #cc-payment-split-label').hide();
-              } else {
-                $.cardswipe('enable');
               }
           } else {
             ticket.employeeSession.set('login', false);
