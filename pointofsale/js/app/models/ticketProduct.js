@@ -7,11 +7,10 @@ jQuery(function($) {
 
       this.set('activeCustomer', activeCustomer);
       this.set('ticket', ticket);
-
       this.set('retail', true);
       //Set last price before triggering price change to subtract from totals.
       //this.set('last_price', this.get('price'));
-      if(activeCustomer.get('id') && ticket.get('status') != 'pos_return_closed' && ticket.get('status') != 'pos_completed') {
+      if(attributes['local_price_set'] && activeCustomer.get('id') && ticket.get('status') != 'pos_return_closed' && ticket.get('status') != 'pos_completed') {
         //Perform role checks, and set the smallest price for current user.
         this.set('price', this.getRolePrice());
       } else {

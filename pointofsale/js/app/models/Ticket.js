@@ -393,6 +393,7 @@ jQuery(function($) {
             if(res.status) {
               var id = productAttributes['id'];
               productAttributes['id'] = res.ticketProductId;
+              product['local_price_set'] = true;
               var product = ticket.get('productCollection').add(productAttributes);
               productAttributes['id'] = id;
               if(typeof callback == "function") {
@@ -473,6 +474,7 @@ jQuery(function($) {
               _.each(res.products, function(product) {
                 product['nid'] = product['id'];
                 product['id'] = product['order_product_id'];
+                product['local_price_set'] = false;
                 ticket.get('productCollection').add(product);
               });
               if(ticket.get('status') == 'pos_completed') {
