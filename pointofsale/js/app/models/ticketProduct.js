@@ -76,7 +76,11 @@ jQuery(function($) {
       } else {
         //Return special role based price
         this.set('retail', false);
-        return min_role_price;
+        if(this.attributes['local_price_set']) {
+          return min_role_price;
+        } else {
+          return this.get('sell_price');
+        }
       }
     }
   });
