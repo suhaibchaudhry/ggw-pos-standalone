@@ -787,7 +787,8 @@ Missing options in forms user
    |_ Do not make tobacco permit and tobacco date requried
 
 show sale page
-#show sale price web |||| and invoice
+#show sale price web crossed red
+#show sale price invoice crossed
 Rma return tax
 Red cross original price on sale
    |_ Website
