@@ -789,8 +789,11 @@ Missing options in forms user
 show sale page
 #show sale price web |||| and invoice
 Rma return tax
+Red cross original price on sale
+   |_ Website
+   |_ mobile
 
-make sue lump sum goes in daily sales,
+make sure lump sum goes in daily sales,
 
 figure out if return items should be subtracted or added separately for sales report
 
@@ -800,6 +803,6 @@ Finish product item refresh preloader on each loop end.
 
 Promotion page on mobile, link specials page.
 
-Override mobile price with sale and role prices with sale.
+#Override mobile price with sale and role prices with sale.
 
 Color mobile.
