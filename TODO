@@ -787,7 +787,7 @@ Missing options in forms user
    |_ Do not make tobacco permit and tobacco date requried
 
 show sale page
-show sale price web and invoice
+#show sale price web |||| and invoice
 Rma return tax
 
 make sue lump sum goes in daily sales,
@@ -796,4 +796,10 @@ figure out if return items should be subtracted or added separately for sales re
 
 Texas -> TX
 
-Finish product item refresh preloader
+Finish product item refresh preloader on each loop end.
+
+Promotion page on mobile, link specials page.
+
+Override mobile price with sale and role prices with sale.
+
+Color mobile.
