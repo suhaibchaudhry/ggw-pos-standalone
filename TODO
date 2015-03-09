@@ -772,8 +772,6 @@ Page for over due credits
 
 Recheckout message
 
-Fix date on recheckedout ticket.
-
 Category Report
 
 Payment confirm dialog with breakdown.
@@ -808,3 +806,7 @@ Promotion page on mobile, link specials page.
 
 Color mobile sale price.
   |_ Mobile debounce order button
+
+Edit delete Payments
+
+#Fix date on recheckedout ticket.
