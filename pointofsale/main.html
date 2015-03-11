@@ -375,6 +375,10 @@
 					label: "Packaging",
 					value: product.packaging
 				}) %></div>
+			<div class="product-info-item reserve-price"><%= labelizeData({
+					label: "Reserve Price",
+					value: accounting.formatMoney(product.cost)
+				}) %></div>
 			<% if(product.retail) { %>
 				<div class="product-info-item cust-price"><%= labelizeData({
 					label: "Price",
