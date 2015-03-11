@@ -27,6 +27,7 @@ jQuery(function($) {
       if(res.login && res.privileged) {
         this.$('a.unlock-price-override').hide();
         this.$('.overriden-price').attr('disabled', false);
+        this.$('.reserve-price').show();
       } else {
         alertify.alert('Provided manager login/password were invalid.', function() {
           
@@ -67,9 +68,11 @@ jQuery(function($) {
         if(this.employeeSession.get('privileged')) {
           this.$('.overriden-price').attr('disabled', false);
           this.$('a.unlock-price-override').hide();
+          this.$('.reserve-price').show();
         } else {
           this.$('.overriden-price').attr('disabled', true);
           this.$('a.unlock-price-override').show();
+          this.$('.reserve-price').hide();
         }
 
         if(this.activeCustomer.get('id')) {
