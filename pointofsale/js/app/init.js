@@ -360,12 +360,13 @@ jQuery(function($) {
       return false;
     }
 
-    /*var tobaccoId = $('#tobacco');
-    if(fieldEmptyTest(tobaccoId, "Tobacco Permit ID is required.")) {
+    var tobaccoId = $('#tobacco');
+    /*if(fieldEmptyTest(tobaccoId, "Tobacco Permit ID is required.")) {
       return false;
-    }
+    }*/
 
     var tdate = $('#tdate');
+    /*
     if(fieldEmptyTest(tdate, "Tobacco permit expiration date is required.")) {
       return false;
     }*/
