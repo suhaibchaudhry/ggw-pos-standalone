@@ -787,9 +787,9 @@ Missing options in forms user
 show sale page
 #show sale price web crossed red
 #show sale price invoice crossed
-Rma return tax
-Red cross original price on sale
-   |_ Website
+#Rma return tax
+#Red cross original price on sale
+#   |_ Website
    |_ mobile
 
 make sure lump sum goes in daily sales,
@@ -807,6 +807,8 @@ Promotion page on mobile, link specials page.
 Color mobile sale price.
   |_ Mobile debounce order button
 
-Edit delete Payments
+#Delete Payments
 
 #Fix date on recheckedout ticket.
+
+#Fix mobile layout by downloading to pdf.
