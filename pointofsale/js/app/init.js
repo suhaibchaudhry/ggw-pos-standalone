@@ -322,6 +322,7 @@ jQuery(function($) {
     e.preventDefault();
     var pass = $('#password');
     var cpass = $('#cpassword');
+    var pcount = 0;
 
     if(fieldEmptyTest(pass, "Password cannot be blank.")) {
       return false;
@@ -371,6 +372,9 @@ jQuery(function($) {
       return false;
     }*/
 
+    var customer_role = $('input[name="customer-role"]:checked').val();
+    var pricing_role = $('input[name="price-level"]:checked').val();
+
     var signupRequest = JSON.stringify({
       token: sessionStorage.token,
       firstName: firstName.val(),
@@ -389,7 +393,9 @@ jQuery(function($) {
       city: $('#city').val(),
       state: $('#comp-state').val(),
       zip: $('#zip').val(),
-      fax: $('#fax').val()
+      fax: $('#fax').val(),
+      customer_role: customer_role,
+      pricing_role: pricing_role
     });
 
     $.ajax({
