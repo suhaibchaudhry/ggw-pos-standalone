@@ -781,7 +781,7 @@ Current ticket customer on inconsistent tickets.
 Public sale page
 Sale price required and due date required if one provided
 
-Missing options in forms user
+#Missing options in forms user
 #   |_ Do not make tobacco permit and tobacco date requried
 
 show sale page
@@ -812,3 +812,7 @@ Color mobile sale price.
 #Fix date on recheckedout ticket.
 
 #Fix mobile layout by downloading to pdf.
+
+Crashes
+
+2043 check
