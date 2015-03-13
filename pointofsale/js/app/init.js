@@ -360,7 +360,7 @@ jQuery(function($) {
       return false;
     }
 
-    var tobaccoId = $('#tobacco');
+    /*var tobaccoId = $('#tobacco');
     if(fieldEmptyTest(tobaccoId, "Tobacco Permit ID is required.")) {
       return false;
     }
@@ -368,7 +368,7 @@ jQuery(function($) {
     var tdate = $('#tdate');
     if(fieldEmptyTest(tdate, "Tobacco permit expiration date is required.")) {
       return false;
-    }
+    }*/
 
     var signupRequest = JSON.stringify({
       token: sessionStorage.token,
