@@ -374,6 +374,7 @@ jQuery(function($) {
 
     var customer_role = $('input[name="customer-role"]:checked').val();
     var pricing_role = $('input[name="price-level"]:checked').val();
+    var tax_type = $('input[name="tax-type"]:checked').val();
 
     var signupRequest = JSON.stringify({
       token: sessionStorage.token,
@@ -395,7 +396,8 @@ jQuery(function($) {
       zip: $('#zip').val(),
       fax: $('#fax').val(),
       customer_role: customer_role,
-      pricing_role: pricing_role
+      pricing_role: pricing_role,
+      tax_type: tax_type
     });
 
     $.ajax({
