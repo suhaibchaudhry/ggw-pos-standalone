@@ -784,7 +784,7 @@ Color mobile sale price.
 
 #queue items for big label print on product item.!!
 
-Save back to original search !!!
+Save back to original search !!! #Done thru new window#
 
 Red diactivated items on backend list on product page. !!
 
@@ -796,15 +796,15 @@ Product name on dialog and barcode....and packaging.!!! -> reserve price manager
 # Change price on mobile pos and website.
 # Sale Page for website and app for sale. Number of pieces restriction.
 
-Quick price edit in row !!
+Quick price edit in row !!  -> #Done thru new window#
  Cost
  List_Price
  Pricing level
  sale price
-  |_Remove unit item and addition barcodes on products list.
-  |_ Percentage markup inside.!!
-  |_Promo cost on each product*
-  |_Partial matching, last 3 digits.*
+#  |_Remove unit item and addition barcodes on products list.
+#  |_ Percentage markup inside.!!
+#  |_Promo cost on each product*
+#  |_Partial matching, last 3 digits.*
 
 Customer: Ask shipping address (auto populated), box count, case count, and shipping cost.
    On checkout add box, count, shipping cost added to order amount...*
