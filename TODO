@@ -402,36 +402,11 @@ Turn on spinning again on product add.**
 
 #Remove more button for 1-2-3 on website catalog, replace with pagination.*
 
-Customer: Ask shipping address (auto populated), box count, case count, and shipping cost.
-   On checkout add box, count, shipping cost added to order amount...*
-
-Show mobile orders to users on website,...and add history to mmobile last 5!!
-  |_> Add reorder on invoice.
-
-link back and forth between tickets and show close price.!!
-|_http://www.general-goods.com/admin/store/orders/15053/invoice
-
-register id on invoice !! and on ticket... also on closed invoices tab
-
 #Employee on ticket log!! and who closed!!
 
 #RMA show cash refund receipt!!..change
 
 #Calculator form everywhere ven dialogs!!..new calculator
-
-Quick price edit in row !!
- Cost
- List_Price
- Pricing level
- sale price
-  |_Remove unit item and addition barcodes on products list.
-  |_ Percentage markup inside.!!
-  |_Promo cost on each product*
-  |_Partial matching, last 3 digits.*
-
-Sale date range, and selling price. and sell price.!!
- Change price on mobile pos and website.
- Sale Page for website and app for sale. Number of pieces restriction.
 
 Calculator Draggable and on all dialogs**
 
@@ -443,8 +418,6 @@ Calculator Draggable and on all dialogs**
 
 #Re-checkout**
 # |_Expire 2 weeks, period.
-
-queue items for big label print on product item.!!
 
 Search on rma first dialog*
 
@@ -468,14 +441,8 @@ Product Group, change price together.---
 
 #Customer activity report show all customers.!!
 
-Send item to print tag queue on product edit page and in row price edit.
-
-Product name on dialog and barcode....and packaging.!!! -> reserve price manager
-
 #/\Customer on each log item on inventory.
 #/\Show more button on dialog not on main page on inventory page.
-
-Red diactivated items on backend list on product page. !!
 
 #Ticket log, who opened it on each ticket.!!
 #   |_Who closed the ticket on invoice and what register
@@ -617,8 +584,6 @@ Add password edit on front
 Customer Activity Report -> Monthly Customer report, with all sales matching daily sales report.
 
 Add calculator on customer info. --> even not logged in
-
-Save back to original search !!!
 
 Show similar barcode items on bottom in a box.
 
@@ -762,21 +727,21 @@ Remove quote tickets on customer tabs and move them to new ticket dialog.
 Show breakdown option on each settlement.
    |_Change amount to amount applied.
 
-Keep same date option on re-checkout.
-   |_Figure out what date to put on recheckout.
+#Keep same date option on re-checkout.
+#   |_Figure out what date to put on recheckout.
    |_Show Warning message to enforce recheckout on unlock.
 #  |_Fix re-checkedout ticket
 
 Page for disabled user credit usages
 Page for over due credits
 
-Recheckout message
+Recheckout message on close tickets in sub script.
 
 Category Report
 
 Payment confirm dialog with breakdown.
 
-Current ticket customer on inconsistent tickets.
+#Current ticket customer on inconsistent tickets.
 
 Public sale page
 Sale price required and due date required if one provided
@@ -813,6 +778,41 @@ Color mobile sale price.
 
 #Fix mobile layout by downloading to pdf.
 
-Crashes
+#Crashes - Updated systems to node webkit 11.6
 
-2043 check
+2043 check???
+
+queue items for big label print on product item.!!
+
+Save back to original search !!!
+
+Red diactivated items on backend list on product page. !!
+
+Send item to print tag queue on product edit page and in row price edit.
+
+Product name on dialog and barcode....and packaging.!!! -> reserve price manager
+
+#Sale date range, and selling price. and sell price.!!
+# Change price on mobile pos and website.
+# Sale Page for website and app for sale. Number of pieces restriction.
+
+Quick price edit in row !!
+ Cost
+ List_Price
+ Pricing level
+ sale price
+  |_Remove unit item and addition barcodes on products list.
+  |_ Percentage markup inside.!!
+  |_Promo cost on each product*
+  |_Partial matching, last 3 digits.*
+
+Customer: Ask shipping address (auto populated), box count, case count, and shipping cost.
+   On checkout add box, count, shipping cost added to order amount...*
+
+Show mobile orders to users on website,...and add history to mmobile last 5!!
+  |_> Add reorder on invoice.
+
+link back and forth between tickets and show close price.!!
+|_http://www.general-goods.com/admin/store/orders/15053/invoice
+
+register id on invoice !! and on ticket... also on closed invoices tab
